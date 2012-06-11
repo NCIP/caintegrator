@@ -177,6 +177,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         setDefaultRollback(false);
     }
 
+    @Override
     protected String[] getConfigLocations() {
         return new String[] {"classpath*:/**/service-test-integration-config.xml"};
     }
@@ -747,8 +748,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     private void checkQueries() throws InvalidCriterionException {
         checkClinicalQuery();
-        //TODO fix genomic query so that it passes
-        //checkGenomicQuery();
+        checkGenomicQuery();
     }
 
     private void checkClinicalQuery() throws InvalidCriterionException {
