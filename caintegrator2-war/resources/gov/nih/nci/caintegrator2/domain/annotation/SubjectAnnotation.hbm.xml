@@ -8,8 +8,8 @@
 		</id>
 		<!-- Attributes mapping for the SubjectAnnotation class -->
 		<!-- Associations mapping for the SubjectAnnotation class -->
-		<many-to-one name="studySubjectAssignment" class="gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment" column="STUDY_SUBJECT_ASSIGNMENT_ID" lazy="proxy" cascade="save-update,merge" />
-		<many-to-one name="annotationValue" class="gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue" column="ANNOTATION_VALUE_ID" unique="true" lazy="proxy" cascade="all"/>
-		<many-to-one name="timepoint" class="gov.nih.nci.caintegrator2.domain.translational.Timepoint" column="TIMEPOINT_ID" lazy="proxy" cascade="all" />
+		<many-to-one name="studySubjectAssignment" class="gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment" column="STUDY_SUBJECT_ASSIGNMENT_ID" cascade="save-update,merge" />
+		<many-to-one name="annotationValue" class="gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue" column="ANNOTATION_VALUE_ID" unique="true" cascade="all"/>
+		<many-to-one name="timepoint" class="gov.nih.nci.caintegrator2.domain.translational.Timepoint" column="TIMEPOINT_ID" cascade="all" />
 	</class>
 </hibernate-mapping>

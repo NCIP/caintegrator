@@ -21,15 +21,15 @@
 		
 		<!-- Associations -->
 		<!-- For "Date Type" -->
-		<many-to-one name="survivalStartDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="SURVIVAL_START_DATE_ID" lazy="proxy" cascade="save-update,merge" />
-		<many-to-one name="deathDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="DEATH_DATE_ID" lazy="proxy" cascade="save-update,merge" />
-		<many-to-one name="lastFollowupDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="LAST_FOLLOWUP_DATE_ID" lazy="proxy" cascade="save-update,merge" />
+		<many-to-one name="survivalStartDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="SURVIVAL_START_DATE_ID" cascade="save-update,merge" />
+		<many-to-one name="deathDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="DEATH_DATE_ID" cascade="save-update,merge" />
+		<many-to-one name="lastFollowupDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="LAST_FOLLOWUP_DATE_ID" cascade="save-update,merge" />
 		
 		<!-- For "Length of time" type -->
 		<property name="valueForCensored" type="string" column="VALUE_FOR_CENSORED"/>
 		<property name="survivalLengthUnits" type="SurvivalLengthUnitsEnum" column="SURVIVAL_LENGTH_UNITS"/>
-		<many-to-one name="survivalLength" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="SURVIVAL_LENGTH_ID" lazy="proxy" cascade="save-update,merge" />
-		<many-to-one name="survivalStatus" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="SURVIVAL_STATUS_ID" lazy="proxy" cascade="save-update,merge" />
+		<many-to-one name="survivalLength" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="SURVIVAL_LENGTH_ID" cascade="save-update,merge" />
+		<many-to-one name="survivalStatus" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="SURVIVAL_STATUS_ID" cascade="save-update,merge" />
 
 	</class>
 </hibernate-mapping>
