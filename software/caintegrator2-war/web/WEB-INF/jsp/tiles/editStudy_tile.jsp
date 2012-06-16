@@ -77,7 +77,7 @@
                         <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" cssStyle="width: 280px;"/>
                         <tr>
                             <td class="tdLabel" align="right">
-                                <label class="label">Allow public to browse this study:</label>
+                                <label class="label">Allow public or Authorized Groups to browse this study:</label>
                             </td>
                             <td>
                                 <s:checkbox name="studyConfiguration.study.publiclyAccessible" theme="simple"/>
@@ -502,7 +502,12 @@
                             </s:url>
                             <li>
                                 <s:a href="%{authorizeGroup}" cssClass="btn" cssStyle="margin: 0pt;">
-                                    <span class="btn_img"><span class="add">Authorize Additional Group</span></span>
+                                    <s:if test="%{studyConfiguration.authorizedStudyElementsGroups.size == 0}">
+                                        <span class="btn_img"><span class="add">Activate Group Authorization</span></span>
+                                    </s:if>
+                                    <s:else>
+                                        <span class="btn_img"><span class="add">Authorize Additional Group</span></span>
+                                    </s:else>
                                 </s:a>
                             </li>                           
                         </ul>   

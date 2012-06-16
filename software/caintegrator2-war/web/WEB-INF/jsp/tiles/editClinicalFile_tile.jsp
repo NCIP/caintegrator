@@ -61,7 +61,7 @@
                                 </s:if>
                             </td>
                             <td>
-                                <s:if test="%{fieldDescriptor != null}">
+                                <s:if test="%{fieldDescriptor != null && !identifierType}">
                                     <s:checkbox name="displayableFields[%{#columnIterator.count - 1}].fieldDescriptor.showInAuthorization"
                                         theme="simple" disabled="false"/>
                                 </s:if>
