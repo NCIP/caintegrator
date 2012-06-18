@@ -173,17 +173,19 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
     public String add() {
         try {
             AuthorizedStudyElementsGroup group = getAuthorizedGroup();
-            group.setStudyConfiguration(getStudyConfiguration());
-            group.setAuthorizedGroup(getSecurityManager().getAuthorizationManager().getGroupById(
-                    String.valueOf(getSelectedGroupId())));
-            getStudyConfiguration().getAuthorizedStudyElementsGroups().add(group);
-            getStudyManagementService().daoSave(group);
+            group.setAuthorizedGroup(getSelectedCsmGroup());
+            getStudyManagementService().addAuthorizedStudyElementsGroup(getStudyConfiguration(), group);
         } catch (CSException e) {
             addActionError("Error adding group authorization: " + e.getMessage());
             LOG.error("Error adding group authorization", e);
             return ERROR;
         }
         return SUCCESS;
+    }
+
+    private Group getSelectedCsmGroup() throws CSException {
+        String groupId = String.valueOf(getSelectedGroupId());
+        return getSecurityManager().getAuthorizationManager().getGroupById(groupId);
     }
 
     /**

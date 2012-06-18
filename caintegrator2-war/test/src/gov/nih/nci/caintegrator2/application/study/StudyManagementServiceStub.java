@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
@@ -170,6 +171,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public StudyConfiguration refreshedStudyConfiguration = new StudyConfiguration();
 
 
+    @Override
     public DelimitedTextClinicalSourceConfiguration loadClinicalAnnotation(Long studyConfigurationId,
             Long clinicalSourceConfigurationId)
         throws ValidationException {
@@ -181,6 +183,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return refreshedClinicalSource;
     }
 
+    @Override
     public StudyConfiguration reLoadClinicalAnnotation(Long studyConfigurationId)
         throws ValidationException {
         reLoadClinicalAnnotationCalled = true;
@@ -190,14 +193,17 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return refreshedStudyConfiguration;
     }
 
+    @Override
     public void save(StudyConfiguration studyConfiguration) {
         saveCalled = true;
     }
 
+    @Override
     public void delete(StudyConfiguration studyConfiguration) {
         deleteCalled = true;
     }
 
+    @Override
     public StudyConfiguration deleteClinicalSource(Long studyConfigurationId,
             Long clinicalSourceId) throws ValidationException {
         deleteCalled = true;
@@ -259,11 +265,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
         checkForSampleUpdates = false;
     }
 
+    @Override
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
         addGenomicSourceCalled = true;
         studyConfiguration.getGenomicDataSources().add(genomicSource);
     }
 
+    @Override
     public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
             File annotationFile, String filename, boolean createNewAnnotationDefinition)
     throws ValidationException, IOException {
@@ -276,16 +284,19 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return new DelimitedTextClinicalSourceConfiguration();
     }
 
-    public <T> T getRefreshedEntity(T entity) {
+    @Override
+    public <T extends AbstractCaIntegrator2Object> T getRefreshedEntity(T entity) {
         getRefreshedStudyEntityCalled = true;
         return entity;
     }
 
+    @Override
     public List<AnnotationDefinition> getMatchingDefinitions(List<String> keywords) {
         getMatchingDefinitionsCalled = true;
         return Collections.emptyList();
     }
 
+    @Override
     public List<CommonDataElement> getMatchingDataElements(List<String> keywords) {
         getMatchingDataElementsCalled = true;
         if (throwSearchError) {
@@ -294,6 +305,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return Collections.emptyList();
     }
 
+    @Override
     public void setDataElement(AnnotationFieldDescriptor fieldDescriptor, CommonDataElement dataElement, Study study, EntityTypeEnum entityType, String keywords) throws ValidationException, ConnectionException {
         setDataElementCalled = true;
         if (throwConnectionException) {
@@ -304,6 +316,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
+    @Override
     public void setDefinition(Study study, AnnotationFieldDescriptor fieldDescriptor, AnnotationDefinition annotationDefinition,
                                 EntityTypeEnum entityType) throws ValidationException {
         setDefinitionCalled = true;
@@ -312,6 +325,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
+    @Override
     public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile, GenomicDataSourceConfiguration genomicSource)throws ValidationException, IOException {
         mapSamplesCalled = true;
         if (studyConfiguration.getStudy().getShortTitleText().equals("Invalid")) {
@@ -322,6 +336,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
+    @Override
     public ImageAnnotationConfiguration addImageAnnotationFile(ImageDataSourceConfiguration imageDataSourceConfiguration,
             File annotationFile, String filename, boolean createNewAnnotationDefinition)
     throws ValidationException, IOException {
@@ -336,6 +351,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return imageAnnotationConfiguration;
     }
 
+    @Override
     public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
             throws ConnectionException {
         addImageSourceCalled = true;
@@ -344,6 +360,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
+    @Override
     public void loadImageAnnotation(ImageDataSourceConfiguration imageSource) throws ValidationException {
         loadImageAnnotationCalled = true;
         if (throwValidationException) {
@@ -351,6 +368,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
+    @Override
     public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration,
             ImageDataSourceConfiguration imageSource, File mappingFile, ImageDataSourceMappingTypeEnum mappingType)
         throws ValidationException, IOException {
@@ -364,6 +382,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
 
+    @Override
     public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType, AnnotationTypeEnum annotationType) {
         AnnotationDefinition definition = new AnnotationDefinition();
         if (descriptor != null) {
@@ -379,6 +398,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addControlSampleSet(GenomicDataSourceConfiguration genomicSource,
             String controlSampleSetName, File controlSampleFile, String controlFileName)
             throws ValidationException {
@@ -392,6 +412,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDuplicateStudyName(Study study, String username) {
         isDuplicateStudyNameCalled = true;
         return study.getShortTitleText().equals("Duplicate");
@@ -400,11 +421,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addStudyLogo(StudyConfiguration studyConfiguration, File imageFile, String fileName, String fileType) throws IOException {
         addStudyLogoCalled = true;
 
     }
 
+    @Override
     public StudyLogo retrieveStudyLogo(Long id, String name) {
         retrieveStudyLogoCalled = true;
         return new StudyLogo();
@@ -421,10 +444,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /* (non-Javadoc)
      * @see gov.nih.nci.caintegrator2.application.study.StudyManagementService#removeSurvivalValueDefinition(gov.nih.nci.caintegrator2.domain.translational.Study, gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition)
      */
+    @Override
     public void removeSurvivalValueDefinition(Study study, SurvivalValueDefinition survivalValueDefinition) {
         removeSurvivalValueDefinitionCalled = true;
     }
 
+    @Override
     public ImageDataSourceConfiguration retrieveImageDataSource(Study study) {
         retrieveImageDataSourceCalled = true;
         return new ImageDataSourceConfiguration();
@@ -433,6 +458,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveDnaAnalysisMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration,
             File mappingFile, String filename) {
         saveDnaAnalysisMappingFileCalled = true;
@@ -441,19 +467,23 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSampleMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration,
             File mappingFile, String filename) throws IOException {
         saveSampleMappingFileCalled = true;
     }
 
+    @Override
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
         deleteCalled = true;
     }
 
+    @Override
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
 
     }
 
+    @Override
     public void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
             throws ValidationException {
         deleteCalled = true;
@@ -462,42 +492,51 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
+    @Override
     public void addGenomicSourceToStudy(StudyConfiguration studyConfiguration,
             GenomicDataSourceConfiguration genomicSource) {
     }
 
+    @Override
     public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
             ExperimentNotFoundException {
         loadGenomicSourceCalled = true;
     }
 
+    @Override
     public void addImageSourceToStudy(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) {
         addImageSourceToStudyCalled = true;
     }
 
+    @Override
     public void loadImageSource(ImageDataSourceConfiguration imageSource) throws ConnectionException {
         loadImageSourceCalled = true;
     }
 
+    @Override
     public File saveFileToStudyDirectory(StudyConfiguration studyConfiguration, File file) throws IOException {
         saveFileStoStudyDirectoryCalled = true;
         return null;
     }
 
+    @Override
     public void updateImageDataSourceStatus(StudyConfiguration studyConfiguration) {
         updateImageDataSourceStatusCalled = true;
     }
 
+    @Override
     public ImageDataSourceConfiguration getRefreshedImageSource(Long id) {
         getRefreshedImageSourceCalled = true;
         return refreshedImageSource;
     }
 
+    @Override
     public GenomicDataSourceConfiguration getRefreshedGenomicSource(Long id) {
         getRefreshedGenomicSourceCalled = true;
         return refreshedGenomicSource;
     }
 
+    @Override
     public StudyConfiguration getRefreshedSecureStudyConfiguration(String username, Long id)
     throws CSSecurityException {
         getRefreshedStudyConfigurationCalled = true;
@@ -507,14 +546,17 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return refreshedStudyConfiguration;
     }
 
+    @Override
     public void save(AnnotationDefinition definition) throws ValidationException {
 
     }
 
+    @Override
     public void setStudyLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy, TimeStampable object, String systemLogMessage) {
 
     }
 
+    @Override
     public void addExternalLinksToStudy(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList)
             throws ValidationException, IOException {
         if (throwValidationException) {
@@ -526,11 +568,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
         addExternalLinksToStudyCalled = true;
     }
 
+    @Override
     public void delete(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList) {
         deleteCalled = true;
 
     }
 
+    @Override
     public void saveAnnotationGroup(AnnotationGroup annotationGroup, StudyConfiguration studyConfiguration,
             File annotationGroupFile) throws ValidationException {
         if (throwValidationException) {
@@ -540,6 +584,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     }
 
+    @Override
     public void delete(StudyConfiguration studyConfiguration, AnnotationGroup annotationGroup) {
         deleteCalled = true;
     }
@@ -549,21 +594,25 @@ public class StudyManagementServiceStub implements StudyManagementService {
         saveAnnotationGroupCalled = true;
     }
 
+    @Override
     public AnnotationFieldDescriptor updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor, AnnotationFieldType type)
             throws ValidationException {
         fieldDescriptor.setType(type);
         return fieldDescriptor;
     }
 
+    @Override
     public Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor)
             throws ValidationException {
         return new HashSet<String>();
     }
 
+    @Override
     public void makeFieldDescriptorValid(AnnotationFieldDescriptor descriptor) {
 
     }
 
+    @Override
     public void daoSave(Object persistentObject) {
         daoSaveCalled = true;
     }
@@ -577,15 +626,18 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return null;
     }
 
+    @Override
     public void unloadAllClinicalAnnotation(StudyConfiguration studyConfiguration) {
         unLoadClinicalAnnotationCalled = true;
     }
 
+    @Override
     public ImageAnnotationConfiguration addAimAnnotationSource(ServerConnectionProfile aimConnection,
             ImageDataSourceConfiguration imageSource) {
         return null;
     }
 
+    @Override
     public void loadAimAnnotations(ImageDataSourceConfiguration imageSource)
     throws ConnectionException, ValidationException {
         loadAimAnnotationsCalled = true;
@@ -597,15 +649,18 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
 
+    @Override
     public StudyConfiguration getRefreshedStudyConfiguration(Long id) {
         getRefreshedStudyConfigurationCalled = true;
         return refreshedStudyConfiguration;
     }
 
+    @Override
     public void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source) {
 
     }
 
+    @Override
     public StudyConfiguration copy(StudyConfiguration copyFrom, StudyConfiguration copyTo)
         throws ValidationException, IOException,
             ConnectionException {
