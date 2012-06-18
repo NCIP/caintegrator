@@ -436,12 +436,6 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
         studyManagementService.getRefreshedEntity(studyConfiguration);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetStudyEntityIllegalClass() {
-        Object object = new Object();
-        studyManagementService.getRefreshedEntity(object);
-    }
-
     @Test
     public void testGetMatchingDefinitions() {
         List<AnnotationDefinition> definitions = studyManagementService.getMatchingDefinitions(

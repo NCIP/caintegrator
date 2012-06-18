@@ -135,6 +135,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         if (doesUserExist(studyConfiguration.getUserWorkspace().getUsername())) {
             User user = retrieveCsmUser(studyConfiguration.getUserWorkspace().getUsername());
@@ -153,6 +154,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // CSM API is untyped
     public void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         ProtectionElement element = createProtectionElementInstance(studyConfiguration);
@@ -171,6 +173,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // CSM API is untyped
     public void initializeFiltersForUserGroups(String username, Session session) throws CSException {
         if (doesUserExist(username)) {
@@ -184,7 +187,7 @@ public class SecurityManagerImpl implements SecurityManager {
         }
     }
 
-    /*
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -212,6 +215,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<StudyConfiguration> retrieveManagedStudyConfigurations(String username, Collection<Study> studies)
         throws CSException {
         if (!doesUserExist(username)) {
@@ -270,6 +274,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean doesUserExist(String username) {
         try {
             return retrieveCsmUser(username) != null ? true : false;
@@ -313,6 +318,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public AuthorizationManager getAuthorizationManager() throws CSException {
         return authorizationManagerFactory.getAuthorizationManager(APPLICATION_CONTEXT_NAME);
     }
@@ -377,6 +383,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // CSM API is untyped
     public void deleteProtectionElement(AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
         ProtectionElement element = createProtectionElementInstance(authorizedStudyElementsGroup);
@@ -390,6 +397,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public Collection<Group> getUnauthorizedGroups(StudyConfiguration studyConfiguration) throws CSException {
         SearchCriteria criteria = new GroupSearchCriteria(new Group());

@@ -22,30 +22,30 @@ public enum ResultTypeEnum {
     /**
      * Gene Expression data.
      */
-    GENE_EXPRESSION("geneExpression", ReporterTypeEnum.GENE_EXPRESSION_GENE, 
+    GENE_EXPRESSION("geneExpression", ReporterTypeEnum.GENE_EXPRESSION_GENE,
             ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET),
-    
+
     /**
      * Copy Number.
      */
-     COPY_NUMBER("copyNumber", ReporterTypeEnum.DNA_ANALYSIS_REPORTER, 
+     COPY_NUMBER("copyNumber", ReporterTypeEnum.DNA_ANALYSIS_REPORTER,
              ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER),
-    
+
     /**
      * IGV viewer.
      */
     IGV_VIEWER("igvViewer"),
-    
+
     /**
      * Heat Map viewer.
      */
     HEATMAP_VIEWER("heatmapViewer");
-    
+
     private static Map<String, ResultTypeEnum> valueToTypeMap = new HashMap<String, ResultTypeEnum>();
 
     private String value;
     private List<ReporterTypeEnum> associatedReporterTypes = new ArrayList<ReporterTypeEnum>();
-    
+
     private ResultTypeEnum(String value, ReporterTypeEnum... associatedReporterTypes) {
         setValue(value);
         this.associatedReporterTypes.addAll(Arrays.asList(associatedReporterTypes));
@@ -70,13 +70,13 @@ public enum ResultTypeEnum {
         }
         return valueToTypeMap;
     }
-    
+
     /**
      * Used in the JSP's to retrieve the displayable string version of the Enum values.
-     * Ex usage: 
-     * list="@gov.nih.nci.caintegrator2.application.query.ResultTypeEnum@getValueToDisplayableMap()" 
+     * Ex usage:
+     * list="@gov.nih.nci.caintegrator2.application.query.ResultTypeEnum@getValueToDisplayableMap()"
      *              listKey="key" listValue="value"
-     * @return HashMap of EnumeratedValue's String to Displayable String. 
+     * @return HashMap of EnumeratedValue's String to Displayable String.
      */
     public static Map<String, String> getValueToDisplayableMap() {
         Map<String, String> map = new LinkedHashMap<String, String>();
@@ -87,11 +87,11 @@ public enum ResultTypeEnum {
         map.put(ResultTypeEnum.HEATMAP_VIEWER.getValue(), "Heat Map Viewer");
         return map;
     }
-    
+
     /**
      * Returns the <code>ResultTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
-     * 
+     *
      * @param value the value to match
      * @return the matching type.
      */
@@ -102,7 +102,7 @@ public enum ResultTypeEnum {
 
     /**
      * Checks to see that the value given is a legal <code>AssayType</code> value.
-     * 
+     *
      * @param value the value to check;
      */
     public static void checkType(String value) {
@@ -110,7 +110,7 @@ public enum ResultTypeEnum {
             throw new IllegalArgumentException("No matching type for " + value);
         }
     }
-    
+
     /**
      * Function to determine if the given reporterType is associated with this result type.
      * @param reporterType to check against.
@@ -119,4 +119,5 @@ public enum ResultTypeEnum {
     public boolean isReporterMatch(ReporterTypeEnum reporterType) {
         return associatedReporterTypes.contains(reporterType);
     }
+
 }

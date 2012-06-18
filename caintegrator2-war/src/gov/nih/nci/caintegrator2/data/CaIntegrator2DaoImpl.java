@@ -128,6 +128,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.security.SecurityManager;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
@@ -177,6 +178,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public UserWorkspace getWorkspace(String username) {
         @SuppressWarnings(UNCHECKED)
         List results = getCurrentSession().
@@ -192,6 +194,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public void refresh(Object persistentObject) {
         getHibernateTemplate().refresh(persistentObject);
     }
@@ -199,6 +202,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clearSession() {
         getCurrentSession().clear();
     }
@@ -206,6 +210,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public void save(Object persistentObject) {
         getHibernateTemplate().saveOrUpdate(persistentObject);
     }
@@ -213,6 +218,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public void delete(Object persistentObject) {
         getHibernateTemplate().delete(persistentObject);
     }
@@ -220,6 +226,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public <T> T get(Long id, Class<T> objectClass) {
         return (T) getHibernateTemplate().get(objectClass, id);
@@ -228,6 +235,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source) {
         getHibernateTemplate().evict(source);
         AbstractClinicalSourceConfiguration newSource = get(source.getId(), AbstractClinicalSourceConfiguration.class);
@@ -239,6 +247,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public void removeObjects(Collection objects) {
         if (objects != null) {
@@ -249,6 +258,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public List<AnnotationDefinition> findMatches(Collection<String> keywords) {
         List<AnnotationDefinition> annotationDefinitions = new ArrayList<AnnotationDefinition>();
@@ -275,6 +285,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<UserWorkspace> retrieveAllSubscribedWorkspaces(Study study) {
         Criteria workspaceCriteria = getCurrentSession().createCriteria(UserWorkspace.class);
@@ -286,6 +297,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<ImageSeries> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.IMAGESERIES)) {
@@ -310,6 +322,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE)) {
@@ -329,6 +342,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.SUBJECT)) {
@@ -350,6 +364,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<StudySubjectAssignment> findMatchingSubjects(SubjectListCriterion subjectListCriterion, Study study) {
         Criteria studySubjectAssignmentCrit = getCurrentSession().createCriteria(StudySubjectAssignment.class);
@@ -361,6 +376,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
             ReporterTypeEnum reporterType, Study study, Platform platform) {
@@ -382,6 +398,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      * @throws InvalidCriterionException
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
             Study study, Platform platform) throws InvalidCriterionException {
@@ -399,6 +416,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch,
             Study study, Platform platform) {
@@ -421,6 +439,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isGenomeVersionMapped(GenomeBuildVersionEnum genomeVersion) {
         return !getCurrentSession().createCriteria(GeneLocationConfiguration.class).
                     add(Restrictions.eq("genomeBuildVersion", genomeVersion)).list().isEmpty();
@@ -429,6 +448,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public GeneLocationConfiguration getGeneLocationConfiguration(GenomeBuildVersionEnum genomeVersion) {
         List<GeneLocationConfiguration> geneLocationConfigurations =
@@ -440,6 +460,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<Gene> findGenesByLocation(String chromosome, Integer startPosition, Integer endPosition,
             GenomeBuildVersionEnum genomeBuildVersion) {
@@ -509,6 +530,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public AnnotationDefinition getAnnotationDefinition(String name, AnnotationTypeEnum dataType) {
         List<AnnotationDefinition> values = getCurrentSession().createCriteria(AnnotationDefinition.class)
@@ -524,6 +546,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public AnnotationDefinition getAnnotationDefinition(Long cdeId, Float version) {
         List<AnnotationDefinition> values = (version == null)
@@ -554,6 +577,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, Gene> getGeneSymbolMap() {
         Map <String, Gene> resultMap = new HashMap<String, Gene>();
         Query query = getCurrentSession().createQuery("from Gene");
@@ -567,6 +591,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public Gene getGene(String symbol) {
         @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
         List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol",
@@ -581,6 +606,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public Gene lookupOrCreateGene(String symbol) {
         Gene gene = getGene(symbol);
         if (gene == null) {
@@ -593,6 +619,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public Platform getPlatform(String name) {
         @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
         List values = getHibernateTemplate().findByNamedParam("from Platform where name = :name",
@@ -607,6 +634,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public PlatformConfiguration getPlatformConfiguration(String name) {
         @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
         List values = getHibernateTemplate().findByNamedParam("from PlatformConfiguration where name = :name",
@@ -621,6 +649,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
         Criteria reporterCriteria = getCurrentSession().createCriteria(AbstractReporter.class);
@@ -646,6 +675,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public ReporterList getReporterList(String name) {
         List values = getHibernateTemplate().findByNamedParam("from ReporterList where name = :name",
@@ -664,6 +694,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<Platform> getPlatforms() {
         Query query = getCurrentSession().createQuery("from Platform order by name");
@@ -673,6 +704,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<PlatformConfiguration> getPlatformConfigurations() {
         List<PlatformConfiguration> platformConfigurationList =
@@ -691,6 +723,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public boolean isPlatformInUsed(Platform platform) {
         List<GenomicDataSourceConfiguration> result = getHibernateTemplate().find(
@@ -706,6 +739,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public List<StudyConfiguration> getStudyConfigurationsWhichNeedThisPlatform(Platform platform) {
         List<StudyConfiguration> listOfStudyConfigurations = new ArrayList<StudyConfiguration>();
@@ -736,6 +770,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<Study> getPublicStudies() {
         return getCurrentSession().createCriteria(Study.class)
@@ -746,6 +781,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<Study> getStudies(String username) {
         secureCurrentSession(username);
@@ -756,6 +792,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username,
                                                                                 Long studyConfigurationId) {
@@ -764,12 +801,32 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                                          createCriteria(AuthorizedStudyElementsGroup.class).
                                                          createCriteria("studyConfiguration").
                                                          add(Restrictions.eq("id", studyConfigurationId));
-        return authorizedStudyElementsGroupCriteria.list();
+        List<AuthorizedStudyElementsGroup> authorizedGroups = authorizedStudyElementsGroupCriteria.list();
+        return getGroupsUserIsIn(username, authorizedGroups);
+    }
+
+    @SuppressWarnings(UNCHECKED)
+    private List<AuthorizedStudyElementsGroup> getGroupsUserIsIn(String username,
+            List<AuthorizedStudyElementsGroup> authorizedGroups) {
+        List<AuthorizedStudyElementsGroup> groupsUserIsIn = new ArrayList<AuthorizedStudyElementsGroup>();
+        try {
+            String userId = String.valueOf(securityManager.getAuthorizationManager().getUser(username).getUserId());
+            Set<Group> userGroups = securityManager.getAuthorizationManager().getGroups(userId);
+            for (AuthorizedStudyElementsGroup authorizedGroup : authorizedGroups) {
+                if (userGroups.contains(authorizedGroup.getAuthorizedGroup())) {
+                    groupsUserIsIn.add(authorizedGroup);
+                }
+            }
+        } catch (CSException e) {
+            throw new IllegalStateException("Unable to retrieve authorized groups");
+        }
+        return groupsUserIsIn;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<AnnotationFieldDescriptor> getAuthorizedAnnotationFieldDescriptors(String username,
                                                                                 StudyConfiguration studyConfiguration) {
@@ -793,6 +850,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public boolean isDuplicateStudyName(Study study, String username) {
         secureCurrentSession(username);
@@ -807,6 +865,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText) {
         List<StudyConfiguration> studyConfigurationList =
@@ -824,6 +883,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public <T> List<T> retrieveUniqueValuesForStudyAnnotation(Study study,
                                                                AnnotationDefinition definition,
@@ -897,6 +957,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public int retrieveNumberImages(Collection<ImageSeries> imageSeries) {
         Criteria imageCriteria = getCurrentSession().createCriteria(Image.class);
         imageCriteria.add(Restrictions.in("series", imageSeries));
@@ -907,6 +968,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public List<Platform> retrievePlatformsForGenomicSource(GenomicDataSourceConfiguration genomicSource) {
         Criteria arrayCriteria = getCurrentSession().createCriteria(Array.class);
@@ -921,6 +983,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public List<FileColumn> getFileColumnsUsingAnnotationFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
         return getCurrentSession().createCriteria(FileColumn.class).add(
@@ -930,6 +993,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public List<ResultColumn> getResultColumnsUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor) {
         return getCurrentSession().createCriteria(ResultColumn.class).add(
@@ -939,6 +1003,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public List<AbstractAnnotationCriterion> getCriteriaUsingAnnotation(
             AnnotationFieldDescriptor fieldDescriptor) {
@@ -950,6 +1015,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("unchecked")      // hibernate operation not parameterized
     public <T> T merge(T persistentObject) {
         return (T) getHibernateTemplate().merge(persistentObject);
@@ -958,6 +1024,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public ImageDataSourceConfiguration retrieveImagingDataSourceForStudy(Study study) {
         Criteria imagingDataSourceConfigurationCrit = getCurrentSession().
@@ -974,6 +1041,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("unchecked")      // hibernate operation not parameterized
     public Set<GisticAnalysis> getGisticAnalysisUsingGenomicSource(
             GenomicDataSourceConfiguration genomicSource) {
@@ -995,6 +1063,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFlushMode(int mode) {
         getHibernateTemplate().setFlushMode(mode);
     }
@@ -1002,6 +1071,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public void runSessionKeepAlive() {
         getCurrentSession().createSQLQuery("select 1").list();
     }
@@ -1009,6 +1079,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings(UNCHECKED)
     public List<GenomicDataSourceConfiguration> getAllGenomicDataSources() {
         return getCurrentSession().createCriteria(GenomicDataSourceConfiguration.class).list();
@@ -1017,6 +1088,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @Override
     public void markStudiesAsNeedingRefresh() {
         StringBuilder builder = new StringBuilder();
         builder.append("update ").append(StudyConfiguration.class.getName()).append(" sc set sc.dataRefreshed = ")

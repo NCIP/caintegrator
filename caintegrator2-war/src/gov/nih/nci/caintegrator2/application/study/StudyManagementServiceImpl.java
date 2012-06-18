@@ -183,6 +183,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void save(StudyConfiguration studyConfiguration) {
         if (isNew(studyConfiguration)) {
             configureNew(studyConfiguration);
@@ -195,6 +196,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(rollbackFor = {ValidationException.class, IOException.class, ConnectionException.class })
     public StudyConfiguration copy(StudyConfiguration copyFrom, StudyConfiguration copyTo)
     throws ValidationException, IOException,
@@ -214,6 +216,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(rollbackFor = ValidationException.class)
     public void save(AnnotationDefinition definition) throws ValidationException {
         if (!definition.getAnnotationValueCollection().isEmpty()) {
@@ -229,18 +232,21 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source) {
         getDao().saveSubjectSourceStatus(source);
     }
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         securityManager.createProtectionElement(studyConfiguration);
     }
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createProtectionElement(StudyConfiguration studyConfiguration,
                                         AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
         securityManager.createProtectionElement(studyConfiguration, authorizedStudyElementsGroup);
@@ -249,6 +255,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void delete(StudyConfiguration studyConfiguration) throws CSException {
         securityManager.deleteProtectionElement(studyConfiguration);
         fileManager.deleteStudyDirectory(studyConfiguration);
@@ -287,6 +294,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
             File inputFile, String filename, boolean createNewAnnotationDefinition)
     throws ValidationException, IOException {
@@ -303,6 +311,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addStudyLogo(StudyConfiguration studyConfiguration,
                              File imageFile,
                              String fileName,
@@ -319,8 +328,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     /**
      * {@inheritDoc}
-     * @throws CSException
      */
+    @Override
     public void addAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
                                         AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
         studyConfiguration.getAuthorizedStudyElementsGroups().add(authorizedStudyElementsGroup);
@@ -339,8 +348,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     /**
      * {@inheritDoc}
-     * @throws CSException
      */
+    @Override
     public void deleteAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
                                         AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
         securityManager.deleteProtectionElement(authorizedStudyElementsGroup);
@@ -375,6 +384,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText) {
         return getDao().retrieveStudyLogo(studyId, studyShortTitleText);
     }
@@ -383,6 +393,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      * @throws InvalidFieldDescriptorException
      */
+    @Override
     @Transactional(rollbackFor = ValidationException.class)
     public DelimitedTextClinicalSourceConfiguration loadClinicalAnnotation(Long studyConfigurationId,
             Long clinicalSourceId)
@@ -442,6 +453,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void makeFieldDescriptorValid(AnnotationFieldDescriptor descriptor) {
         descriptor.setHasValidationErrors(false);
         descriptor.setValidationErrorMessage(null);
@@ -451,6 +463,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public StudyConfiguration reLoadClinicalAnnotation(Long studyConfigurationId) throws ValidationException {
         StudyConfiguration studyConfiguration = getRefreshedStudyConfiguration(studyConfigurationId);
         deleteClinicalAnnotation(studyConfiguration);
@@ -466,6 +479,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unloadAllClinicalAnnotation(StudyConfiguration studyConfiguration) {
         deleteClinicalAnnotation(studyConfiguration);
         for (AbstractClinicalSourceConfiguration configuration
@@ -528,6 +542,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public StudyConfiguration deleteClinicalSource(Long studyConfigurationId,
             Long clinicalSourceId) throws ValidationException {
         StudyConfiguration studyConfiguration = getRefreshedStudyConfiguration(studyConfigurationId);
@@ -543,6 +558,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
         studyConfiguration.getGenomicDataSources().remove(genomicSource);
         if (genomicSource.isCopyNumberData()) {
@@ -569,6 +585,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
         throws ValidationException {
         studyConfiguration.getImageDataSources().remove(imageSource);
@@ -580,6 +597,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void delete(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList) {
         studyConfiguration.getExternalLinkLists().remove(externalLinkList);
         getDao().delete(externalLinkList);
@@ -610,6 +628,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(rollbackFor = {ValidationException.class, IOException.class })
     public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile,
             GenomicDataSourceConfiguration genomicSource)
@@ -644,6 +663,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addControlSampleSet(GenomicDataSourceConfiguration genomicSource,
             String controlSampleSetName, File controlSampleFile, String controlSampleFileName)
             throws ValidationException, IOException {
@@ -655,6 +675,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource)
         throws ConnectionException, ExperimentNotFoundException {
         addGenomicSourceToStudy(studyConfiguration, genomicSource);
@@ -664,6 +685,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addGenomicSourceToStudy(StudyConfiguration studyConfiguration,
                                         GenomicDataSourceConfiguration genomicSource) {
         studyConfiguration.getGenomicDataSources().add(genomicSource);
@@ -674,6 +696,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource)
     throws ConnectionException, ExperimentNotFoundException {
         if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())
@@ -704,6 +727,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException {
         for (GenomicDataSourceConfiguration gdsc : sc.getGenomicDataSources()) {
             checkForSampleUpdates(gdsc);
@@ -734,6 +758,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public GenomicDataSourceConfiguration getRefreshedGenomicSource(Long id) {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.setId(id);
@@ -745,6 +770,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public StudyConfiguration getRefreshedSecureStudyConfiguration(String username, Long id)
     throws CSSecurityException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -780,6 +806,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(readOnly = true)
     public List<AnnotationDefinition> getMatchingDefinitions(List<String> keywords) {
         return getDao().findMatches(keywords);
@@ -788,6 +815,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(readOnly = true)
     public List<CommonDataElement> getMatchingDataElements(List<String> keywords) {
         return caDSRFacade.retreiveCandidateDataElements(keywords);
@@ -810,6 +838,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("PMD.ExcessiveMethodLength")
     @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
     public void setDataElement(AnnotationFieldDescriptor fieldDescriptor,
@@ -906,6 +935,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(rollbackFor = ValidationException.class)
     public void setDefinition(Study study, AnnotationFieldDescriptor fieldDescriptor,
             AnnotationDefinition annotationDefinition, EntityTypeEnum entityType) throws ValidationException {
@@ -965,6 +995,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public File saveFileToStudyDirectory(StudyConfiguration studyConfiguration, File file) throws IOException {
         return fileManager.storeStudyFile(file, file.getName(), studyConfiguration);
     }
@@ -972,6 +1003,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImageAnnotationConfiguration addImageAnnotationFile(
             ImageDataSourceConfiguration imageDataSourceConfiguration,
             File inputFile, String filename, boolean createNewAnnotationDefinition)
@@ -993,6 +1025,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImageAnnotationConfiguration addAimAnnotationSource(ServerConnectionProfile aimConnection,
             ImageDataSourceConfiguration imageSource) {
         ImageAnnotationConfiguration annotationConfiguration = new ImageAnnotationConfiguration();
@@ -1008,6 +1041,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED,
             rollbackFor = {ConnectionException.class, ValidationException.class })
     // Using Propagation.NOT_SUPPORTED because when it was being run it wouldn't always save the
@@ -1056,6 +1090,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
         throws ConnectionException, InvalidImagingCollectionException {
         addImageSourceToStudy(studyConfiguration, imageSource);
@@ -1065,6 +1100,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addImageSourceToStudy(StudyConfiguration studyConfiguration,
             ImageDataSourceConfiguration imageSource) {
         imageSource.setStudyConfiguration(studyConfiguration);
@@ -1076,6 +1112,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadImageSource(ImageDataSourceConfiguration imageSource)
         throws ConnectionException, InvalidImagingCollectionException {
         List<ImageSeriesAcquisition> acquisitions = getNciaFacade().getImageSeriesAcquisitions(
@@ -1092,6 +1129,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadImageAnnotation(ImageDataSourceConfiguration imageDataSource) throws ValidationException {
         ImageAnnotationConfiguration imageAnnotationConfiguration = imageDataSource.getImageAnnotationConfiguration();
         if (validateAnnotationFieldDescriptors(imageDataSource.getStudyConfiguration(),
@@ -1108,6 +1146,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration,
             ImageDataSourceConfiguration imageSource, File mappingFile, ImageDataSourceMappingTypeEnum mappingType)
         throws ValidationException, IOException {
@@ -1120,6 +1159,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateImageDataSourceStatus(StudyConfiguration studyConfiguration) {
         for (ImageDataSourceConfiguration imageSource : studyConfiguration.getImageDataSources()) {
             if (Status.PROCESSING.equals(imageSource.getStatus())) {
@@ -1154,6 +1194,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImageDataSourceConfiguration getRefreshedImageSource(Long id) {
         ImageDataSourceConfiguration imagingSource = new ImageDataSourceConfiguration();
         imagingSource.setId(id);
@@ -1165,6 +1206,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public StudyConfiguration getRefreshedStudyConfiguration(Long id) {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(id);
@@ -1176,6 +1218,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor,
                                                  Study study,
                                                  EntityTypeEnum entityType,
@@ -1266,6 +1309,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addExternalLinksToStudy(StudyConfiguration studyConfiguration, ExternalLinkList externalLinkList)
         throws ValidationException, IOException {
         ExternalLinksLoader.loadLinks(externalLinkList);
@@ -1290,6 +1334,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(readOnly = true)
     public boolean isDuplicateStudyName(Study study, String username) {
         return getDao().isDuplicateStudyName(study, username);
@@ -1298,6 +1343,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeSurvivalValueDefinition(Study study, SurvivalValueDefinition survivalValueDefinition) {
        study.getSurvivalValueDefinitionCollection().remove(survivalValueDefinition);
        Collection <SurvivalValueDefinition> objectsToRemove = new HashSet<SurvivalValueDefinition>();
@@ -1309,6 +1355,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImageDataSourceConfiguration retrieveImageDataSource(Study study) {
         ImageDataSourceConfiguration dataSource = getDao().retrieveImagingDataSourceForStudy(study);
         if (dataSource != null) {
@@ -1320,6 +1367,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(rollbackFor = {IOException.class, ValidationException.class })
     public void saveDnaAnalysisMappingFile(GenomicDataSourceConfiguration genomicSource,
             File mappingFile, String filename) throws IOException, ValidationException {
@@ -1340,6 +1388,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSampleMappingFile(GenomicDataSourceConfiguration source,
             File mappingFile, String filename) throws IOException {
         File savedFile = getFileManager().storeStudyFile(mappingFile, filename, source.getStudyConfiguration());
@@ -1357,6 +1406,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
    /**
     * {@inheritDoc}
     */
+    @Override
     public void setStudyLastModifiedByCurrentUser(StudyConfiguration studyConfiguration, UserWorkspace lastModifiedBy,
             TimeStampable timeStampedStudyObject, String systemLogMessage) {
         Date lastModifiedDate = new Date();
@@ -1379,6 +1429,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
     public void saveAnnotationGroup(AnnotationGroup annotationGroup,
             StudyConfiguration studyConfiguration, File annotationGroupFile)
@@ -1468,6 +1519,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void delete(StudyConfiguration studyConfiguration, AnnotationGroup annotationGroup) {
         studyConfiguration.getStudy().getAnnotationGroups().remove(annotationGroup);
         for (AnnotationFieldDescriptor afd : annotationGroup.getAnnotationFieldDescriptors()) {
@@ -1488,6 +1540,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(rollbackFor = ValidationException.class)
     public AnnotationFieldDescriptor updateFieldDescriptorType(AnnotationFieldDescriptor fieldDescriptor,
             AnnotationFieldType type) throws ValidationException {
@@ -1513,6 +1566,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("PMD.EmptyCatchBlock") // See message inside catch block.
     public Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor)
     throws ValidationException {
@@ -1541,6 +1595,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void daoSave(Object persistentObject) {
         getDao().save(persistentObject);
     }

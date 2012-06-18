@@ -9,6 +9,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfigurationFactory;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -29,7 +30,7 @@ import com.opensymphony.xwork2.Action;
 
 
 public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest {
-    
+
     private DefineSurvivalDefinitionAction action;
     private LocalStudyManagementServiceStub studyManagementServiceStub;
     private AnnotationDefinition startDate;
@@ -38,15 +39,16 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
     private AnnotationDefinition survivalLength;
     private Map<Long, AnnotationDefinition> annotationDefinitionMap = new HashMap<Long, AnnotationDefinition>();
 
+    @Override
     @Before
     public void setUp() {
         super.setUp();
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", DefineSurvivalDefinitionActionTest.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", DefineSurvivalDefinitionActionTest.class);
         action = (DefineSurvivalDefinitionAction) context.getBean("defineSurvivalDefinitionAction");
         studyManagementServiceStub = new LocalStudyManagementServiceStub();
         studyManagementServiceStub.clear();
         action.setStudyManagementService(studyManagementServiceStub);
-        
+
         StudyConfiguration studyConfiguration = StudyConfigurationFactory.createNewStudyConfiguration();
         action.setStudyConfiguration(studyConfiguration);
         startDate = new AnnotationDefinition();
@@ -67,16 +69,16 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         annotationDefinitionMap.put(deathDate.getId(), deathDate);
         annotationDefinitionMap.put(survivalLength.getId(), survivalLength);
     }
-    
+
     @Test
     public void testPrepare() {
         SurvivalValueDefinition defaultDefinition = new SurvivalValueDefinition();
         defaultDefinition.setId(1l);
         action.getStudyConfiguration().setId(null);
-        Study study = action.getStudyConfiguration().getStudy(); 
+        Study study = action.getStudyConfiguration().getStudy();
         study.getSurvivalValueDefinitionCollection().add(defaultDefinition);
         AnnotationGroup group = new AnnotationGroup();
-        
+
         AnnotationFieldDescriptor dateAfd1 = new AnnotationFieldDescriptor();
         dateAfd1.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         AnnotationDefinition dateAd1 = new AnnotationDefinition();
@@ -84,7 +86,7 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         dateAd1.setDataType(AnnotationTypeEnum.DATE);
         dateAfd1.setDefinition(dateAd1);
         dateAfd1.setShownInBrowse(true);
-        
+
         AnnotationFieldDescriptor numericAfd1 = new AnnotationFieldDescriptor();
         numericAfd1.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         AnnotationDefinition numericAd1 = new AnnotationDefinition();
@@ -92,7 +94,7 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         numericAd1.setDataType(AnnotationTypeEnum.NUMERIC);
         numericAfd1.setDefinition(numericAd1);
         numericAfd1.setShownInBrowse(true);
-        
+
         AnnotationFieldDescriptor statusAfd1 = new AnnotationFieldDescriptor();
         statusAfd1.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         AnnotationDefinition statusAd1 = new AnnotationDefinition();
@@ -102,8 +104,8 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         statusAd1.getPermissibleValueCollection().add(pv1);
         statusAfd1.setDefinition(statusAd1);
         statusAfd1.setShownInBrowse(true);
-        
-        
+
+
         group.getAnnotationFieldDescriptors().add(dateAfd1);
         group.getAnnotationFieldDescriptors().add(numericAfd1);
         group.getAnnotationFieldDescriptors().add(statusAfd1);
@@ -115,7 +117,7 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         assertEquals(numericAd1, action.getNumericAnnotationDefinitions().get("3"));
         assertEquals(statusAd1, action.getSurvivalStatusAnnotationDefinitions().get("4"));
     }
-    
+
     @Test
     public void testUpdateSurvivalStatusValues() {
         SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
@@ -137,17 +139,17 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         assertEquals(Action.SUCCESS, action.updateSurvivalStatusValues());
         assertEquals(null, survivalValueDefinition.getSurvivalStatus());
     }
-    
+
     @Test
     public void testEditSurvivalValueDefinitions() {
         assertEquals(Action.SUCCESS, action.editSurvivalValueDefinitions());
     }
-    
+
     @Test
     public void testEditSurvivalValueDefinition() {
         SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
         survivalValueDefinition.setId(Long.valueOf(1));
-        
+
         survivalValueDefinition.setDeathDate(deathDate);
         survivalValueDefinition.setSurvivalStartDate(startDate);
         survivalValueDefinition.setLastFollowupDate(lastFollowup);
@@ -157,19 +159,19 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         assertEquals(deathDate.getId().toString(), action.getSurvivalDefinitionFormValues().getSurvivalDeathDateId());
         assertEquals(lastFollowup.getId().toString(), action.getSurvivalDefinitionFormValues().getLastFollowupDateId());
     }
-    
+
     @Test
     public void testNewSurvivalValueDefinition() {
         assertEquals(Action.SUCCESS, action.newSurvivalValueDefinition());
-        
+
     }
-    
+
     @Test
     public void testSaveSurvivalValueDefinition() {
         action.prepare();
         assertEquals(Action.INPUT, action.saveSurvivalValueDefinition()); // New survival value definition
         assertTrue(action.isNewDefinition());
-        
+
         action.getSurvivalDefinitionFormValues().setSurvivalStartDateId("100");
         action.getSurvivalDefinitionFormValues().setSurvivalDeathDateId("101");
         action.getSurvivalDefinitionFormValues().setLastFollowupDateId("102");
@@ -177,7 +179,7 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         action.prepare();
         assertEquals(Action.INPUT, action.saveSurvivalValueDefinition()); // Existing survival value definition, no name
         assertFalse(action.isNewDefinition());
-        
+
         action.getSurvivalDefinitionFormValues().setSurvivalValueDefinitionName("uniqueName");
         action.prepare();
         action.getSurvivalDefinitionFormValues().setSurvivalValueType(SurvivalValueTypeEnum.DATE.getValue());
@@ -187,27 +189,27 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         action.getSurvivalDefinitionFormValues().setSurvivalValueType(SurvivalValueTypeEnum.LENGTH_OF_TIME.getValue());
         assertEquals(Action.INPUT, action.saveSurvivalValueDefinition()); // All valid.
         assertTrue(studyManagementServiceStub.saveCalled);
-        
+
         action.getSurvivalDefinitionFormValues().setSurvivalLengthId("103");
         action.getSurvivalDefinitionFormValues().setSurvivalStatusId("104");
         action.prepare();
         assertEquals(Action.INPUT, action.saveSurvivalValueDefinition()); // All valid.
-        
+
         action.getSurvivalDefinitionFormValues().setValueForCensored("alive");
         assertEquals(Action.SUCCESS, action.saveSurvivalValueDefinition()); // All valid.
-        
+
     }
-    
+
     @Test
     public void testDeleteSurvivalValueDefinition() {
         assertEquals(Action.SUCCESS, action.deleteSurvivalValueDefinition());
         assertTrue(studyManagementServiceStub.removeSurvivalValueDefinitionCalled);
     }
-    
+
     private class LocalStudyManagementServiceStub extends StudyManagementServiceStub {
         @SuppressWarnings("unchecked")
         @Override
-        public <T> T getRefreshedEntity(T entity) {
+        public <T extends AbstractCaIntegrator2Object> T getRefreshedEntity(T entity) {
             getRefreshedStudyEntityCalled = true;
             Long id;
             try {
@@ -221,6 +223,6 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
             return entity;
         }
     }
-    
+
 
 }
