@@ -230,8 +230,6 @@ public final class HibernateUtil {
     public static void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) {
         if (genomicSource != null) {
             loadSamples(genomicSource.getSamples());
-            loadSamples(genomicSource.getControlSamples());
-            loadSamples(genomicSource.getMappedSamples());
             loadSampleSets(genomicSource.getControlSampleSetCollection());
             Hibernate.initialize(genomicSource.getServerProfile());
         }
