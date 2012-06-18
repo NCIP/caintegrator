@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -245,7 +246,7 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     private static class StudyManagmentServiceStubForGenomicSource extends StudyManagementServiceStub {
         @SuppressWarnings("unchecked")
         @Override
-        public <T> T getRefreshedEntity(T entity) {
+        public <T extends AbstractCaIntegrator2Object> T getRefreshedEntity(T entity) {
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
             genomicSource.setStudyConfiguration(new StudyConfiguration());
             super.getRefreshedEntity(entity);
@@ -257,10 +258,12 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
 
         public boolean runJobCalled = false;
 
+        @Override
         public void initializeJsp() {
 
         }
 
+        @Override
         public void runJob(Long id) {
             runJobCalled = true;
         }

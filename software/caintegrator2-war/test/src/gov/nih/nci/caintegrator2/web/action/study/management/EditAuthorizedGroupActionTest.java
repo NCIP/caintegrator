@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.security.SecurityManager;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.transfer.QueryNode;
@@ -152,7 +153,7 @@ public class EditAuthorizedGroupActionTest extends AbstractSessionBasedTest {
         action.setSecurityManager(securityManager);
 
         studyManagementService = mock(StudyManagementService.class);
-        when(studyManagementService.getRefreshedEntity(any())).thenAnswer(new Answer<Object>() {
+        when(studyManagementService.getRefreshedEntity(any(AbstractCaIntegrator2Object.class))).thenAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 return invocation.getArguments()[0];
