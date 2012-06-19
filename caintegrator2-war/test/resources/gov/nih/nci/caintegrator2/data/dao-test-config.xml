@@ -12,6 +12,9 @@
     default-autowire="no">
     
     <bean id="caIntegrator2Dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
+        <property name="securityManager" >
+            <ref local="securityManager" />
+        </property>
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
@@ -26,6 +29,14 @@
     </bean>
     
     <!-- Services -->
+    
+    <bean id="securityManager" class="gov.nih.nci.caintegrator2.security.SecurityManagerImpl"> 
+        <property name="authorizationManagerFactory">
+            <ref local="authorizationManagerFactory" />
+        </property>
+    </bean>
+    
+    <bean id="authorizationManagerFactory" class="gov.nih.nci.caintegrator2.security.AuthorizationManagerFactoryImpl"/>
         
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">
