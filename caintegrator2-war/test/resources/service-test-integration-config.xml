@@ -89,6 +89,9 @@
     <bean id="resultHandler" class="gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl" />
     
     <bean id="caIntegrator2Dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
+        <property name="securityManager" >
+            <ref local="securityManager" />
+        </property>
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
