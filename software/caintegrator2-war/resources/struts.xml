@@ -140,8 +140,11 @@
             <result name="login" type="redirectAction">workspace</result>
         </action>
         
-        <action name="logout" class="emptyAction">
-            <result>logout.jsp</result>
+        <action name="logout" class="gov.nih.nci.caintegrator2.web.action.LogoutAction" method="logout">
+            <result name="success" type="redirectAction">login</result>
+            <result name="casLogout" type="redirect">
+                <param name="location">${casServerLogoutUrl}</param>
+            </result>
             <interceptor-ref name="paramsPrepareParamsStack">
                 <param name="tokenSession.includeMethods">*</param>
             </interceptor-ref> 
