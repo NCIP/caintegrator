@@ -198,6 +198,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     private static final String USER_EXISTS = "studyManager";
     private static final String EXP_ID = "caArray Experiment ID 1";
 
+    @Override
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
         UserWorkspace userWorkspace = new UserWorkspace();
@@ -205,10 +206,12 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return userWorkspace;
     }
 
+    @Override
     public void save(Object entity) {
         saveCalled = true;
     }
 
+    @Override
     public void delete(Object persistentObject) {
         deleteCalled = true;
     }
@@ -255,6 +258,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         retrieveAllSubscribedWorkspacesCalled = false;
     }
 
+    @Override
     public <T> T get(Long id, Class<T> objectClass) {
         getCalled = true;
         T object;
@@ -267,6 +271,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         }
     }
 
+    @Override
     public List<AnnotationDefinition> findMatches(Collection<String> keywords) {
         findMatchesCalled = true;
         List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
@@ -284,6 +289,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<ImageSeries> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
         findMatchingImageSeriesCalled = true;
         ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
@@ -299,6 +305,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study) {
         findMatchingSamplesCalled = true;
         SampleAcquisition sampleAcquisition = new SampleAcquisition();
@@ -312,6 +319,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study) {
         findMatchingSubjectsCalled = true;
         List<StudySubjectAssignment> ssaList = new ArrayList<StudySubjectAssignment>();
@@ -342,6 +350,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public AnnotationDefinition getAnnotationDefinition(String name, AnnotationTypeEnum dataType) {
         return null;
     }
@@ -349,6 +358,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public AnnotationDefinition getAnnotationDefinition(Long cdeId, Float version) {
         return null;
     }
@@ -356,6 +366,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Gene getGene(String symbol) {
         getGeneCalled = true;
         Gene gene = new Gene();
@@ -366,6 +377,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public PlatformConfiguration getPlatformConfiguration(String name) {
         getPlatformConfigurationCalled = true;
         PlatformConfiguration platformConfiguration = new PlatformConfiguration();
@@ -378,6 +390,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Platform getPlatform(String name) {
         getPlatformCalled = true;
         platform.setName(name);
@@ -390,6 +403,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void removeObjects(Collection objects) {
         removeObjectsCalled = true;
@@ -398,16 +412,19 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDuplicateStudyName(Study study, String username) {
         isDuplicateStudyNameCalled =true;
         return false;
     }
 
+    @Override
     public StudyLogo retrieveStudyLogo(Long id, String fileName) {
         retrieveStudyLogoCalled = true;
         return new StudyLogo();
     }
 
+    @Override
     @SuppressWarnings({"PMD", "unchecked"})
     public <T> List<T> retrieveUniqueValuesForStudyAnnotation(Study study, AnnotationDefinition definition,
             EntityTypeEnum entityType, Class<T> objectClass) {
@@ -427,16 +444,19 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return values;
     }
 
+    @Override
     public <T> T merge(T persistentObject) {
         mergeCalled = true;
         return persistentObject;
     }
 
+    @Override
     public ImageDataSourceConfiguration retrieveImagingDataSourceForStudy(Study study) {
         retrieveImagingDataSourceForStudyCalled = true;
         return new ImageDataSourceConfiguration();
     }
 
+    @Override
     public List<Platform> getPlatforms() {
         getPlatformsCalled = true;
         return Collections.emptyList();
@@ -447,6 +467,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return Collections.emptyList();
     }
 
+    @Override
     public List<Study> getStudies(String username) {
         getStudiesCalled = true;
         Study study = new Study();
@@ -458,6 +479,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFlushMode(int mode) {
         setFlushModeCalled = true;
     }
@@ -465,6 +487,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbol, ReporterTypeEnum reporterType,
             Study study, Platform platform) {
         findGeneExpressionReportersCalled = true;
@@ -474,10 +497,12 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void refresh(Object persistentObject) {
         refreshCalled = true;
     }
 
+    @Override
     public int retrieveNumberImages(Collection<ImageSeries> imageSeriesCollection) {
         int numberImages = 0;
         for (ImageSeries imageSeries : imageSeriesCollection) {
@@ -490,6 +515,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     }
 
 
+    @Override
     public List<Platform> retrievePlatformsForGenomicSource(GenomicDataSourceConfiguration genomicSource) {
         Set<Platform> platforms = new HashSet<Platform>();
         for (Sample sample : genomicSource.getSamples()) {
@@ -503,15 +529,18 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return platformList;
     }
 
+    @Override
     public List<UserWorkspace> retrieveAllSubscribedWorkspaces(Study study) {
         retrieveAllSubscribedWorkspacesCalled = true;
         return new ArrayList<UserWorkspace>();
     }
 
+    @Override
     public ReporterList getReporterList(String name) {
         return platform.addReporterList(name, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
     }
 
+    @Override
     public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
         Set<String> symbolsSet = new HashSet<String>();
         symbolsSet.addAll(symbols);
@@ -519,14 +548,17 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return symbolsSet;
     }
 
+    @Override
     public boolean isPlatformInUsed(Platform platform) {
         return false;
     }
 
+    @Override
     public List<PlatformConfiguration> getPlatformConfigurations() {
         return null;
     }
 
+    @Override
     public List<StudySubjectAssignment> findMatchingSubjects(SubjectListCriterion subjectListCriterion, Study study) {
         findMatchingSubjectsCalled = true;
         List<StudySubjectAssignment> ssaList = new ArrayList<StudySubjectAssignment>();
@@ -534,11 +566,13 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return ssaList;
     }
 
+    @Override
     public List<FileColumn> getFileColumnsUsingAnnotationFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
 
         return fileColumns;
     }
 
+    @Override
     public List<Study> getPublicStudies() {
         getStudiesCalled = true;
         Study study = new Study();
@@ -547,66 +581,80 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return studies;
     }
 
+    @Override
     public List<AbstractAnnotationCriterion> getCriteriaUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor) {
         return new ArrayList<AbstractAnnotationCriterion>();
     }
 
+    @Override
     public List<ResultColumn> getResultColumnsUsingAnnotation(AnnotationFieldDescriptor fieldDescriptor) {
         return new ArrayList<ResultColumn>();
     }
 
+    @Override
     public Gene lookupOrCreateGene(String symbol) {
         Gene gene = new Gene();
         gene.setSymbol(symbol.toUpperCase(Locale.getDefault()));
         return gene;
     }
 
+    @Override
     public Map<String, Gene> getGeneSymbolMap() {
         return new HashMap<String, Gene>();
     }
 
+    @Override
     public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion, Study study,
             Platform platform) throws InvalidCriterionException {
         return null;
     }
 
+    @Override
     public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch, Study study,
             Platform platform) {
         return null;
     }
 
+    @Override
     public List<Gene> findGenesByLocation(String chromosome, Integer startPosition, Integer endPosition,
             GenomeBuildVersionEnum genomeBuildVersion) {
         return new ArrayList<Gene>();
     }
 
+    @Override
     public boolean isGenomeVersionMapped(GenomeBuildVersionEnum genomeVersion) {
         return true;
     }
 
 
+    @Override
     public void saveSubjectSourceStatus(AbstractClinicalSourceConfiguration source) {
 
     }
 
+    @Override
     public void clearSession() {
 
     }
 
+    @Override
     public GeneLocationConfiguration getGeneLocationConfiguration(GenomeBuildVersionEnum genomeVersion) {
         return null;
     }
 
+    @Override
     public Set<GisticAnalysis> getGisticAnalysisUsingGenomicSource(GenomicDataSourceConfiguration genomicSource) {
         Set<GisticAnalysis> gisticAnalysisSet = new HashSet<GisticAnalysis>();
         gisticAnalysisSet.add(new GisticAnalysis());
         return gisticAnalysisSet;
     }
 
+    @Override
     public void runSessionKeepAlive() {
 
     }
 
+    @Override
     public List<StudyConfiguration> getStudyConfigurationsWhichNeedThisPlatform(Platform platform) {
         return null;
     }
@@ -647,6 +695,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<AnnotationFieldDescriptor> getAuthorizedAnnotationFieldDescriptors(String username,
                                                                                 StudyConfiguration studyConfiguration) {
 
@@ -660,8 +709,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
             }
         }
         return listAfd;
-    }     
-    
+    }
+
     private void authorizeStudyElements(StudyConfiguration studyConfiguration)
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {
 
@@ -729,8 +778,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
         stringComparisonCriterion.setStringValue(annotationValue);
         stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        AbstractCriterion abstractCriterion = new AbstractAnnotationCriterion();
-        abstractCriterion = stringComparisonCriterion;
+        AbstractCriterion abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         abstractCriterionCollection.add(abstractCriterion);
         query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);

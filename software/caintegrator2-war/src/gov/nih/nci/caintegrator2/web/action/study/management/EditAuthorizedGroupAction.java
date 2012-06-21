@@ -86,13 +86,19 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedAnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedQuery;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
@@ -103,6 +109,7 @@ import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSException;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -111,6 +118,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -122,6 +130,7 @@ import com.google.common.collect.Collections2;
  */
 public class EditAuthorizedGroupAction extends AbstractStudyAction {
     private static final long serialVersionUID = 1L;
+    private static final int MAX_QUERY_NAME_LENGTH = 70;
     private SecurityManager securityManager;
     private AuthorizedStudyElementsGroup authorizedGroup = new AuthorizedStudyElementsGroup();
     private Collection<Group> unauthorizedGroups = new ArrayList<Group>();
@@ -252,10 +261,6 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
         return SUCCESS;
     }
 
-    /**
-     * @param filteredParams
-     * @param mappedResults
-     */
     private void handleAuthorizedQueries(Collection<QueryNode> filteredParams) {
         final Map<Long, List<String>> mappedResults = new HashMap<Long, List<String>>();
         for (QueryNode node : filteredParams) {
@@ -269,37 +274,78 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
         }
         getAuthorizedGroup().getAuthorizedQuerys().clear();
         for (Map.Entry<Long, List<String>> entry : mappedResults.entrySet()) {
-            AuthorizedQuery authorizedQuery = createQuery(entry);
+            AuthorizedQuery authorizedQuery = createAuthorizedQuery(entry);
             getAuthorizedGroup().getAuthorizedQuerys().add(authorizedQuery);
         }
     }
 
-    /**
-     * @param entry
-     * @return
-     */
-    private AuthorizedQuery createQuery(Map.Entry<Long, List<String>> entry) {
-        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
-        descriptor.setId(entry.getKey());
-        descriptor = getStudyManagementService().getRefreshedEntity(descriptor);
-
-        Query query = new Query();
-        query.setName("Authorized Query created for " + descriptor.getDisplayName());
-        query.setLastModifiedDate(new Date());
-        query.setCompoundCriterion(new CompoundCriterion());
-        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.OR);
-
-        for (String value : entry.getValue()) {
-            StringComparisonCriterion criterion = new StringComparisonCriterion();
-            criterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
-            criterion.setStringValue(value);
-            criterion.setAnnotationFieldDescriptor(descriptor);
-            query.getCompoundCriterion().getCriterionCollection().add(criterion);
-        }
+    private AuthorizedQuery createAuthorizedQuery(Map.Entry<Long, List<String>> entry) {
+        Query query = createQuery(entry.getKey(), entry.getValue());
         AuthorizedQuery authorizedQuery = new AuthorizedQuery();
         authorizedQuery.setAuthorizedStudyElementsGroup(getAuthorizedGroup());
         authorizedQuery.setQuery(query);
         return authorizedQuery;
+    }
+
+    private Query createQuery(Long descriptorId, List<String> values) {
+        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
+        descriptor.setId(descriptorId);
+        descriptor = getStudyManagementService().getRefreshedEntity(descriptor);
+
+        Query query = new Query();
+        // query name is 100 chars in the DB, so make sure the generated name isn't too long by abbreviated
+        query.setName("Authorized Query created for " + StringUtils.abbreviate(descriptor.getDisplayName(),
+                                                                               MAX_QUERY_NAME_LENGTH));
+        query.setLastModifiedDate(new Date());
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.OR);
+
+        AnnotationTypeEnum descriptorType = descriptor.getDefinition().getDataType();
+
+        for (String value : values) {
+            if (descriptorType == AnnotationTypeEnum.NUMERIC) {
+                query.getCompoundCriterion().getCriterionCollection().add(createNumericComparisonCriterion(descriptor,
+                                                                                                           value));
+            } else if (descriptorType == AnnotationTypeEnum.DATE) {
+                query.getCompoundCriterion().getCriterionCollection().add(createDateComparisonCriterion(descriptor,
+                                                                                                        value));
+            } else {
+                query.getCompoundCriterion().getCriterionCollection().add(createStringComparisonCriterion(descriptor,
+                                                                                                          value));
+            }
+        }
+        return query;
+    }
+
+    private NumericComparisonCriterion createNumericComparisonCriterion(AnnotationFieldDescriptor descriptor,
+            String value) {
+        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.EQUAL);
+        criterion.setNumericValue(Double.valueOf(value));
+        criterion.setAnnotationFieldDescriptor(descriptor);
+        return criterion;
+    }
+
+    private DateComparisonCriterion createDateComparisonCriterion(AnnotationFieldDescriptor descriptor,
+            String value) {
+        DateComparisonCriterion criterion = new DateComparisonCriterion();
+        criterion.setDateComparisonOperator(DateComparisonOperatorEnum.EQUAL);
+        try {
+            criterion.setDateValue(DateUtil.createDate(value));
+        } catch (ParseException e) {
+            throw new IllegalStateException("Invalid date format for date " + value, e);
+        }
+        criterion.setAnnotationFieldDescriptor(descriptor);
+        return criterion;
+    }
+
+    private StringComparisonCriterion createStringComparisonCriterion(AnnotationFieldDescriptor descriptor,
+            String value) {
+        StringComparisonCriterion criterion = new StringComparisonCriterion();
+        criterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
+        criterion.setStringValue(value);
+        criterion.setAnnotationFieldDescriptor(descriptor);
+        return criterion;
     }
 
     /**

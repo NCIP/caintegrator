@@ -95,11 +95,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.security.SecurityManager;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.transfer.QueryNode;
@@ -156,7 +159,15 @@ public class EditAuthorizedGroupActionTest extends AbstractSessionBasedTest {
         when(studyManagementService.getRefreshedEntity(any(AbstractCaIntegrator2Object.class))).thenAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
-                return invocation.getArguments()[0];
+                Object arg = invocation.getArguments()[0];
+                if (arg instanceof AnnotationFieldDescriptor) {
+                    AnnotationFieldDescriptor descriptor = (AnnotationFieldDescriptor) arg;
+                    AnnotationDefinition definition = new AnnotationDefinition();
+                    definition.setDataType(AnnotationTypeEnum.STRING);
+                    descriptor.setDefinition(definition);
+                    arg = descriptor;
+                }
+                return arg;
             }
         });
         action.setStudyManagementService(studyManagementService);
