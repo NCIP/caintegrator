@@ -9,7 +9,6 @@ import java.util.Map;
 /**
  * Annotation of allowed values for <code>AnnotationDefintion.type</code>.
  */
-@SuppressWarnings("unchecked") // For the "Class" operations.
 public enum AnnotationTypeEnum  {
 
     /**
@@ -21,17 +20,17 @@ public enum AnnotationTypeEnum  {
      * Numeric type.
      */
     NUMERIC("numeric", Double.class),
-    
+
     /**
      * String type.
      */
     STRING("string", String.class);
-    
+
     private static Map<String, AnnotationTypeEnum> valueToTypeMap = new HashMap<String, AnnotationTypeEnum>();
 
     private String value;
     private Class classType;
-    
+
     private AnnotationTypeEnum(String value, Class classType) {
         this.value = value;
         this.classType = classType;
@@ -59,11 +58,11 @@ public enum AnnotationTypeEnum  {
         }
         return valueToTypeMap;
     }
-    
+
     /**
      * Returns the <code>AnnotationTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
-     * 
+     *
      * @param value the value to match
      * @return the matching type.
      */
@@ -74,7 +73,7 @@ public enum AnnotationTypeEnum  {
 
     /**
      * Checks to see that the value given is a legal <code>AssayType</code> value.
-     * 
+     *
      * @param value the value to check;
      */
     public static void checkType(String value) {

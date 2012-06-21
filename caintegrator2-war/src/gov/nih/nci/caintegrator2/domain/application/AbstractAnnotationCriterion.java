@@ -3,12 +3,12 @@ package gov.nih.nci.caintegrator2.domain.application;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 
 /**
- * 
+ *
  */
-public class AbstractAnnotationCriterion extends AbstractCriterion implements Cloneable {
-    
+public abstract class AbstractAnnotationCriterion extends AbstractCriterion implements Cloneable {
+
     private static final long serialVersionUID = 1L;
-    
+
     private EntityTypeEnum entityType;
     private AnnotationFieldDescriptor annotationFieldDescriptor;
 
@@ -34,7 +34,7 @@ public class AbstractAnnotationCriterion extends AbstractCriterion implements Cl
     protected AbstractAnnotationCriterion clone() throws CloneNotSupportedException {
         return (AbstractAnnotationCriterion) super.clone();
     }
-    
+
     /**
      * @return the annotationFieldDescriptor
      */
@@ -51,7 +51,7 @@ public class AbstractAnnotationCriterion extends AbstractCriterion implements Cl
             this.entityType = annotationFieldDescriptor.getAnnotationEntityType();
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -64,6 +64,7 @@ public class AbstractAnnotationCriterion extends AbstractCriterion implements Cl
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // Default implementation is null
     public String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType) {
         return null;
     }

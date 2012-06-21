@@ -108,7 +108,6 @@ import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -653,8 +652,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
         stringComparisonCriterion.setStringValue(annotationValue);
         stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        AbstractCriterion abstractCriterion = new AbstractAnnotationCriterion();
-        abstractCriterion = stringComparisonCriterion;
+        AbstractCriterion abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         abstractCriterionCollection.add(abstractCriterion);
         query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);
@@ -763,8 +761,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         stringComparisonCriterion.setStringValue(getQueryAnnotationValue());
         stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
         stringComparisonCriterion.setEntityType(EntityTypeEnum.SUBJECT);
-        AbstractCriterion abstractCriterion = new AbstractAnnotationCriterion();
-        abstractCriterion = stringComparisonCriterion;
+        AbstractCriterion abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         abstractCriterionCollection.add(abstractCriterion);
         query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);
