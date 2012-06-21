@@ -2,15 +2,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
             
 <div id="content">
-
-    <!--Page Help-->
-
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('')" class="help">
-   &nbsp;</a>
-    </div>
-
-    <!--/Page Help-->        
-    
     <!--ADD CONTENT HERE-->
     
     <h1><s:property value="#subTitleText" /></h1>

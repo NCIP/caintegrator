@@ -15,7 +15,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('survival_values_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-DefiningSurvivalValues')" class="help">
    </a>
     </div>
 

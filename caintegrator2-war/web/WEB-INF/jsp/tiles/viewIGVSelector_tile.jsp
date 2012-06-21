@@ -29,7 +29,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_genomic_data_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-AddingorEditingGenomicData')" class="help">
    &nbsp;</a>
     </div>
 

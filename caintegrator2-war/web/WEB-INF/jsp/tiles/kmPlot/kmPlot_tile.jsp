@@ -42,7 +42,7 @@
 <div id="content">
         <!--Page Help-->
 
-        <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('KM_annotation_help')" class="help">
+        <div class="pagehelp"><a href="javascript:openWikiHelp('DYDnAg', '6-AnalyzingStudies-CreatingKaplanMeierPlots')" class="help">
        &nbsp;</a>
         </div>
 

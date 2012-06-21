@@ -26,7 +26,7 @@
 
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_sample_mappings_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-MappingGenomicDatatoSubjectAnnotationData')" class="help">
    &nbsp;</a>
     </div>
 

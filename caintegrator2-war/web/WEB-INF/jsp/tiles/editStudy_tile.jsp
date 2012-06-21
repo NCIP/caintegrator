@@ -31,7 +31,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_study_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-CreatingorEditingaStudy')" class="help">
    &nbsp;</a>
     </div>
 

@@ -23,7 +23,7 @@
     </script>
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('register_user_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-RegisteringasaNewcaIntegratorUser')" class="help">
     &nbsp;</a>
     </div>
 

@@ -27,7 +27,7 @@
 
     <!--Page Help-->
     
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('manage_study_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('3xeSB', '3-ManagingaStudyorPlatform-ManagingaStudy')" class="help">
     &nbsp;</a>
     </div>
     

@@ -6,15 +6,6 @@
 <script type='text/javascript' src='dwr/util.js'></script>
 
 <div id="content">
-
-    <!--Page Help-->
-
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('IGV_help')" class="help">
-   &nbsp;</a>
-    </div>
-
-    <!--/Page Help-->
-
     <h1><s:property value="#subTitleText" /></h1>
     
     <div id="errorMessages" style="color: red;"> </div>

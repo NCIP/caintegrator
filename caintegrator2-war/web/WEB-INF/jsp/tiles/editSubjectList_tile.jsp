@@ -6,7 +6,7 @@
 
 <!--Page Help-->
 
-<div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_gene_list_help')" class="help">
+<div class="pagehelp"><a href="javascript:openWikiHelp('B4DnAg', '4-ViewingQueryResults-EditingaGeneorSubjectList')" class="help">
 &nbsp;</a>
 </div>
 

@@ -5,7 +5,7 @@
 
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('control_samples_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-UploadingControlSamples')" class="help">
    &nbsp;</a>
     </div>
 
