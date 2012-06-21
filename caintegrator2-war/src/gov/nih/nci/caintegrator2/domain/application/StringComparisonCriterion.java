@@ -1,22 +1,23 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 /**
- * 
+ *
  */
-public class StringComparisonCriterion extends AbstractAnnotationCriterion {
+public class StringComparisonCriterion extends AbstractComparisonCriterion {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String stringValue;
     private WildCardTypeEnum wildCardType;
-    
+
     /**
      * @return the stringValue
      */
+    @Override
     public String getStringValue() {
         return stringValue;
     }
-    
+
     /**
      * @param stringValue the stringValue to set
      */

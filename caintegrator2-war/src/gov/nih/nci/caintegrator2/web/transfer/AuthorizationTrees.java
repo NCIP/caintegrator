@@ -96,8 +96,8 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.domain.application.AbstractComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -220,10 +220,19 @@ public class AuthorizationTrees {
     private boolean isSelected(AnnotationFieldDescriptor descriptor, String value,
             AuthorizedStudyElementsGroup authGroup) {
         for (AuthorizedQuery query : authGroup.getAuthorizedQuerys()) {
-            for (AbstractCriterion crit : query.getQuery().getCompoundCriterion().getCriterionCollection()) {
-                StringComparisonCriterion criterion = (StringComparisonCriterion) crit;
-                if (criterion.getAnnotationFieldDescriptor().equals(descriptor)
-                        && StringUtils.equals(criterion.getStringValue(), value)) {
+            if (isQuerySelected(descriptor, value, query)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isQuerySelected(AnnotationFieldDescriptor descriptor, String value, AuthorizedQuery query) {
+        for (AbstractCriterion crit : query.getQuery().getCompoundCriterion().getCriterionCollection()) {
+            if (crit instanceof AbstractComparisonCriterion) {
+                AbstractComparisonCriterion compCrit = (AbstractComparisonCriterion) crit;
+                if (compCrit.getAnnotationFieldDescriptor().equals(descriptor)
+                        && StringUtils.equals(compCrit.getStringValue(), value)) {
                     return true;
                 }
             }

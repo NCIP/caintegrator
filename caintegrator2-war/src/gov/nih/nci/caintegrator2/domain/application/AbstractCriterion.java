@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 
+ *
  */
 public abstract class AbstractCriterion extends AbstractCaIntegrator2Object implements Cloneable {
 
@@ -19,6 +19,7 @@ public abstract class AbstractCriterion extends AbstractCaIntegrator2Object impl
     /**
      * {@inheritDoc}
      */
+    @Override
     protected AbstractCriterion clone() throws CloneNotSupportedException {
         return (AbstractCriterion) super.clone();
     }
@@ -29,20 +30,19 @@ public abstract class AbstractCriterion extends AbstractCaIntegrator2Object impl
     protected List<String> getGeneSymbolsInCriterion() {
         return new ArrayList<String>();
     }
-    
+
     /**
-     * 
+     *
      * @return all subject identifiers in this criterion.
      */
     protected Set<String> getSubjectIdentifiers() {
         return new HashSet<String>();
     }
-    
+
     /**
      * @param genomicCriterionType the type of genomic criterion to get platform for.
      * @return default value for platformName is null;
      */
-    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // Default implementation is null
     public abstract String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType);
 
     /**
@@ -58,7 +58,7 @@ public abstract class AbstractCriterion extends AbstractCaIntegrator2Object impl
     public void setFinalMaskApplied(boolean finalMaskApplied) {
         this.finalMaskApplied = finalMaskApplied;
     }
-    
+
     /**
      * Determines if this criterion has masked criterion.
      * @return boolean determining if this is a masked criterion or not.
@@ -67,6 +67,6 @@ public abstract class AbstractCriterion extends AbstractCaIntegrator2Object impl
     protected boolean isMaskedCriterion() {
         return false;
     }
-    
-    
+
+
 }

@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
@@ -1571,9 +1572,12 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public Set<String> getAvailableValuesForFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor)
     throws ValidationException {
         Set<String> allAvailableValues = new HashSet<String>();
-        allAvailableValues.addAll(AnnotationUtil.getAdditionalValue(fieldDescriptor.getDefinition()
-                .getAnnotationValueCollection(), new ArrayList<String>(), PermissibleValueUtil
-                .getDisplayPermissibleValue(fieldDescriptor.getDefinition().getPermissibleValueCollection())));
+        Set<PermissibleValue> permissibleValues = fieldDescriptor.getDefinition().getPermissibleValueCollection();
+        Set<String> displayPermissibleValues = PermissibleValueUtil.getDisplayPermissibleValue(permissibleValues);
+        Set<AbstractAnnotationValue> annotationValues = fieldDescriptor.getDefinition()
+                .getAnnotationValueCollection();
+        allAvailableValues.addAll(AnnotationUtil.getAdditionalValue(annotationValues, new ArrayList<String>(),
+                                                                    displayPermissibleValues));
         for (FileColumn fileColumn : getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor)) {
             List<String> fileDataValues = fileColumn.getAnnotationFile() != null ? fileColumn.getDataValues()
                     : new ArrayList<String>();
@@ -1585,9 +1589,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     // This function is for JSP display so it can't fail.
                 }
             }
-            allAvailableValues.addAll(AnnotationUtil.getAdditionalValue(fieldDescriptor.getDefinition()
-                    .getAnnotationValueCollection(), fileDataValues, PermissibleValueUtil
-                    .getDisplayPermissibleValue(fieldDescriptor.getDefinition().getPermissibleValueCollection())));
+            allAvailableValues.addAll(AnnotationUtil.getAdditionalValue(annotationValues, fileDataValues,
+                                                                        displayPermissibleValues));
         }
         return allAvailableValues;
     }

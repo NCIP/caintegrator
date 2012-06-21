@@ -106,7 +106,6 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -651,8 +650,7 @@ public class QueryManagementServiceImplTest {
         stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
         stringComparisonCriterion.setStringValue(annotationValue);
         stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        AbstractCriterion abstractCriterion = new AbstractAnnotationCriterion();
-        abstractCriterion = stringComparisonCriterion;
+        AbstractCriterion abstractCriterion = stringComparisonCriterion;
         HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         abstractCriterionCollection.add(abstractCriterion);
         query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);

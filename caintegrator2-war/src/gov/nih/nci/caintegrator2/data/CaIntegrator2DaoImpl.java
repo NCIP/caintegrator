@@ -356,9 +356,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                            studySubjectAssignmentCrit.createCriteria("subjectAnnotationCollection"),
                                            ANNOTATION_VALUE_ASSOCIATION);
         }
-            createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
+        createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
         return studySubjectAssignmentCrit.list();
-
     }
 
     /**
