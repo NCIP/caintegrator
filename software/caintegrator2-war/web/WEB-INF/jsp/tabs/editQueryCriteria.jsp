@@ -12,7 +12,7 @@
     </h2>
     <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
         <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
-            <a href="javascript:openHelpWindowWithNavigation('search_criteria_help')" class="help">
+            <a href="javascript:openWikiHelp('B4DnAg', '3-SearchingacaIntegratorStudy-SearchingaStudy')" class="help">
             &nbsp;</a>
         </div>
     </div>    

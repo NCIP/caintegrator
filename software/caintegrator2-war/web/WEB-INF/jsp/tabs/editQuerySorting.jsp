@@ -8,7 +8,7 @@
     
     <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
         <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
-	       <a href="javascript:openHelpWindowWithNavigation('search_columns_help')" class="help">
+	       <a href="javascript:openWikiHelp('B4DnAg', '4-SearchingacaIntegratorStudy-SortingTab')" class="help">
 	       &nbsp;</a>
         </div>
     </div>

@@ -519,7 +519,7 @@
 	                </s:if>                  
                     <li><a href="/caintegrator/workspace.action">Browse Public Studies</a></li>
                 </s:if>
-                <li><a href="javascript:openHelpWindowWithNavigation('app_support_help')">Support</a></li>
+                <li><a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-ApplicationSupport')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>
                 <li><a href="javascript:openUsersGuideWindow('top')">User Guide</a></li>
             </ul>

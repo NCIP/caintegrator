@@ -8,7 +8,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('add_annotation_group_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-AddinganAnnotationGroup')" class="help">
    </a>
     </div>
 

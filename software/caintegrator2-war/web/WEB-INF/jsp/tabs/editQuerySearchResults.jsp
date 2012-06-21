@@ -36,7 +36,7 @@
             </s:else>
         </div>
         <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
-            <a href="javascript:openHelpWindowWithNavigation('query_results_help')" class="help">&nbsp;</a>
+            <a href="javascript:openWikiHelp('FoDnAg', '5-ViewingQueryResults-QueryResultsOverview')" class="help">&nbsp;</a>
         </div>
     </div>
     <s:if test="%{!query.geneSymbolsNotFound.isEmpty()}" >
