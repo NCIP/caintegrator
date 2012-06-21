@@ -448,6 +448,8 @@
                 <filter token="svn.revision" value="${svn.info.rev}"/>
                 <filter token="caintegrator2.svntag" value="${caintegrator2.svntag}"/>
                 <filter token="caintegrator2.builddate" value="${build.date}"/>
+                <filter token="cas.server.hostname" value="${cas.server.hostname}"/>
+                <filter token="cas.server.post" value="${cas.server.port}"/>
             </filterset>
         </copy>
 
@@ -494,6 +496,7 @@
         		<xmltask source="${web-inf.working.dir}/web.xml" dest="${web-inf.working.dir}/web.xml">
                     <uncomment path="//:context-param[:param-name/text()='contextConfigLocation']/:param-value/comment()[4]"/>
         			<remove path="//:context-param[:param-name/text()='ssoEnabled']"/>
+        		    <remove path="//:context-param[:param-name/text()='casServerLogoutUrl']"/>
                 </xmltask>
     		</else>
         </if>

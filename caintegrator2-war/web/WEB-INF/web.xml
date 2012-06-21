@@ -23,6 +23,12 @@
     </context-param>
     
     <context-param>
+        <description>CAS Logout URL</description>
+        <param-name>casServerLogoutUrl</param-name>
+        <param-value>https://@cas.server.hostname@:@cas.server.port@/cas/logout</param-value>
+    </context-param>
+    
+    <context-param>
       <param-name>log4jConfigLocation</param-name>
       <param-value>/WEB-INF/classes/log4j.xml</param-value>
     </context-param>
