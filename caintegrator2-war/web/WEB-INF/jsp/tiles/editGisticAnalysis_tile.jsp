@@ -6,7 +6,7 @@
 
 <!--Page Help-->
 
-<div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_GISTIC_help')" class="help">
+<div class="pagehelp"><a href="javascript:openWikiHelp('DYDnAg', '6-AnalyzingStudies-EditingaGISTICAnalysis')" class="help">
 &nbsp;</a>
 </div>
 

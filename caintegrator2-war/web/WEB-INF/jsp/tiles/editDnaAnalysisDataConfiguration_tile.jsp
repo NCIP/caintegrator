@@ -64,7 +64,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('configure_copy_number_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-ConfiguringCopyNumberData')" class="help">
    &nbsp;</a>
     </div>
 

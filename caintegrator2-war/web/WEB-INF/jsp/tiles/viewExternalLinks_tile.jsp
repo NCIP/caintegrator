@@ -3,15 +3,6 @@
 
             
 <div id="content">                      
-    
-    <!--Page Help-->
-
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('external_links_help')" class="help">
-   &nbsp;</a>
-    </div>
-
-    <!--/Page Help-->         
-    
     <!--ADD CONTENT HERE-->
     
     <h1><s:property value="externalLinkList.name" /></h1>

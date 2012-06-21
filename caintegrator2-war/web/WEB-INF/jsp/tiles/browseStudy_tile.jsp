@@ -5,7 +5,7 @@
     
     <!--Page Help-->
     
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('welcome_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-WelcometothecaIntegratorWorkspace')" class="help">
     &nbsp;</a>
     </div>
     

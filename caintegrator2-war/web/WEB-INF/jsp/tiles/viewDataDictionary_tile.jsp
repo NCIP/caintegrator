@@ -16,7 +16,7 @@
 
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('data_dictionary_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-DataDictionary')" class="help">
    &nbsp;</a>
     </div>
 

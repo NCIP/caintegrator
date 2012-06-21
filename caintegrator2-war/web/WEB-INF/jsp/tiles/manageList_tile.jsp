@@ -6,7 +6,7 @@
 
 <!--Page Help-->
 
-<div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('create_gene_list_help')" class="help">
+<div class="pagehelp"><a href="javascript:openWikiHelp('FoDnAg', '5-ViewingQueryResults-CreatingaGeneorSubjectList')" class="help">
 &nbsp;</a>
 </div>
 

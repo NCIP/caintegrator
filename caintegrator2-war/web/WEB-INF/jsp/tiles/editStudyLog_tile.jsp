@@ -8,7 +8,7 @@
 
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('view_log_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-StudyLog')" class="help">
    &nbsp;</a>
     </div>
 

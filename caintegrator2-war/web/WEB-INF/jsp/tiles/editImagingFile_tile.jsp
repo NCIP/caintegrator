@@ -19,7 +19,7 @@
    
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('define_fields_help')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-DefineFieldsPageforEditingAnnotations')" class="help">
    &nbsp;</a>
     </div>
 

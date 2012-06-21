@@ -2,15 +2,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
             
 <div id="content">                      
-    
-    <!--Page Help-->
-
-    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('')" class="help">
-   &nbsp;</a>
-    </div>
-
-    <!--/Page Help-->         
-    
     <h1><s:property value="#subTitleText" /></h1>
     
     <p>The system encountered an error while attempting to add your file to the system. This usually indicates that the
