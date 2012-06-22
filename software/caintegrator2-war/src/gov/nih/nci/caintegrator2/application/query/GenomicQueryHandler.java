@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.application.query;
@@ -119,9 +119,8 @@ import java.util.Set;
 /**
  * Runs queries that return <code>GenomicDataQueryResults</code>.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // See addMatchesFromArrayDatas
 class GenomicQueryHandler {
-    
+
     private static final float DECIMAL_100 = 100.0f;
     private final Query query;
     private final CaIntegrator2Dao dao;
@@ -140,11 +139,11 @@ class GenomicQueryHandler {
         ArrayDataValues values = getDataValues();
         return createGeneExpressionResult(values);
     }
-    
+
     Collection<SegmentData> retrieveSegmentDataQuery() throws InvalidCriterionException {
         Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
         return getMatchingSegmentDatas(arrayDatas);
-        
+
     }
 
     private GenomicDataQueryResult createGeneExpressionResult(ArrayDataValues values) {
@@ -157,13 +156,13 @@ class GenomicQueryHandler {
         result.setQuery(query);
         return result;
     }
-    
-    private GenomicDataQueryResult createCopyNumberResult() 
+
+    private GenomicDataQueryResult createCopyNumberResult()
         throws InvalidCriterionException {
         GenomicDataQueryResult result = new GenomicDataQueryResult();
         Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
         Collection<SegmentData> segmentDatas = getMatchingSegmentDatas(arrayDatas);
-        Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap = 
+        Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap =
             createCopyNumberResultRows(result, arrayDatas, segmentDatas);
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
                 query.getCompoundCriterion(), query.getResultType());
@@ -178,7 +177,7 @@ class GenomicQueryHandler {
     private void addToCopyNumberResult(GenomicDataQueryResult result,
             Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap, ArrayData arrayData,
             CompoundCriterionHandler criterionHandler) {
-        
+
         GenomicDataResultColumn column = result.addColumn();
         column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
         for (SegmentData segmentData : segmentDataToRowMap.keySet()) {
@@ -201,11 +200,11 @@ class GenomicQueryHandler {
     private Float twoDecimalPoint(Float floatValue) {
         return floatValue == null ? null : Math.round(floatValue * DECIMAL_100) / DECIMAL_100;
     }
-    
+
     private Map<SegmentData, GenomicDataResultRow> createCopyNumberResultRows(
             GenomicDataQueryResult result, Collection<ArrayData> arrayDatas,
             Collection<SegmentData> segmentDatas) {
-        Map<Integer, Map<Integer, GenomicDataResultRow>> startEndPositionResultRowMap 
+        Map<Integer, Map<Integer, GenomicDataResultRow>> startEndPositionResultRowMap
             = new HashMap<Integer, Map<Integer, GenomicDataResultRow>>();
         Map<SegmentData, GenomicDataResultRow> segmentDataToRowMap = new HashMap<SegmentData, GenomicDataResultRow>();
         GenomeBuildVersionEnum genomeVersion = query.getCopyNumberPlatform().getGenomeVersion();
@@ -261,14 +260,14 @@ class GenomicQueryHandler {
                 value.setValue(twoDecimalPoint(floatValue));
                 if (query.isNeedsGenomicHighlighting()) {
                     checkMeetsGeneExpressionCriterion(result, criterionHandler, reporter, row, value);
-                    checkHighVariance(result, arrayData, reporter, value);    
+                    checkHighVariance(result, arrayData, reporter, value);
                 }
             }
             row.getValues().add(value);
         }
     }
 
-    private void checkMeetsGeneExpressionCriterion(GenomicDataQueryResult result, 
+    private void checkMeetsGeneExpressionCriterion(GenomicDataQueryResult result,
             CompoundCriterionHandler criterionHandler,
             AbstractReporter reporter, GenomicDataResultRow row, GenomicDataResultValue value) {
         if (result.isHasCriterionSpecifiedValues()) {
@@ -277,23 +276,23 @@ class GenomicQueryHandler {
             row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
         }
     }
-    
+
     private void checkMeetsCopyNumberCriterion(GenomicDataQueryResult result, CompoundCriterionHandler criterionHandler,
             GenomicDataResultRow row, GenomicDataResultValue value) {
-        if (result.isHasCriterionSpecifiedValues()) { 
+        if (result.isHasCriterionSpecifiedValues()) {
             if (criterionHandler.hasCriterionSpecifiedSegmentValues()
                     && !criterionHandler.hasCriterionSpecifiedSegmentCallsValues()) {
                 value.setCriteriaMatchType(criterionHandler.
                         getSegmentValueMatchCriterionType(value.getValue()));
             } else {
                 value.setCriteriaMatchType(criterionHandler.
-                        getSegmentCallsValueMatchCriterionType(value.getCallsValue()));                
+                        getSegmentCallsValueMatchCriterionType(value.getCallsValue()));
             }
             row.setHasMatchingValues(row.isHasMatchingValues() || value.isMeetsCriterion());
         }
     }
 
-    private void checkHighVariance(GenomicDataQueryResult result, 
+    private void checkHighVariance(GenomicDataQueryResult result,
             ArrayData arrayData, AbstractReporter reporter, GenomicDataResultValue value) {
         if (reporter.getSamplesHighVariance().contains(arrayData.getSample())) {
             value.setHighVariance(true);
@@ -319,7 +318,7 @@ class GenomicQueryHandler {
     private ArrayDataValues getDataValues() throws InvalidCriterionException {
         Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
         Collection<AbstractReporter> reporters = getMatchingReporters(arrayDatas);
-        return getDataValues(arrayDatas, reporters);              
+        return getDataValues(arrayDatas, reporters);
     }
 
     private ArrayDataValues getDataValues(Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters) {
@@ -333,41 +332,44 @@ class GenomicQueryHandler {
             return arrayDataService.getData(request);
         }
     }
-    
+
     private Collection<ArrayData> getMatchingArrayDatas() throws InvalidCriterionException {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
                 query.getCompoundCriterion(), query.getResultType());
         Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
         samplesOnly.add(EntityTypeEnum.SAMPLE);
-        Set<ResultRow> rows = criterionHandler.getMatches(dao, 
+        Set<ResultRow> rows = criterionHandler.getMatches(dao,
                 arrayDataService, query, samplesOnly);
         return getArrayDatas(rows);
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    private void addMatchesFromArrayDatas(Set<ArrayData> matchingArrayDatas, 
+    private void addMatchesFromArrayDatas(Set<ArrayData> matchingArrayDatas,
             Collection<ArrayData> candidateArrayDatas) {
         Platform platform = query.getGeneExpressionPlatform();
         ReporterTypeEnum reporterTypeToUse = query.getReporterType();
-        if (ResultTypeEnum.COPY_NUMBER.equals(query.getResultType())) {
+        if (ResultTypeEnum.COPY_NUMBER == query.getResultType()) {
             platform = query.getCopyNumberPlatform();
             reporterTypeToUse = ReporterTypeEnum.DNA_ANALYSIS_REPORTER;
         }
         for (ArrayData arrayData : candidateArrayDatas) {
             for (ReporterList reporterList : arrayData.getReporterLists()) {
-                if (reporterTypeToUse.equals(reporterList.getReporterType())
-                        && (platform.equals(arrayData.getArray().getPlatform()))) {
+                if (isMatchingArrayData(platform, reporterTypeToUse, arrayData, reporterList)) {
                     matchingArrayDatas.add(arrayData);
                 }
             }
         }
     }
 
+    private boolean isMatchingArrayData(Platform platform, ReporterTypeEnum reporterType, ArrayData arrayData,
+            ReporterList reporterList) {
+        return reporterType == reporterList.getReporterType() && platform.equals(arrayData.getArray().getPlatform());
+    }
+
     private Set<ArrayData> getArrayDatas(Set<ResultRow> rows) {
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (ResultRow row : rows) {
             if (row.getSampleAcquisition() != null) {
-                Collection<ArrayData> candidateArrayDatas = 
+                Collection<ArrayData> candidateArrayDatas =
                     row.getSampleAcquisition().getSample().getArrayDataCollection();
                 addMatchesFromArrayDatas(arrayDatas, candidateArrayDatas);
             }
@@ -381,7 +383,7 @@ class GenomicQueryHandler {
         if (arrayDatas.isEmpty()) {
             return Collections.emptySet();
         } else if (criterionHandler.hasReporterCriterion() && !query.isAllGenomicDataQuery()) {
-            return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy(), 
+            return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy(),
                     query.getReporterType(), query.getGeneExpressionPlatform());
         } else {
             return getAllReporters(arrayDatas);
@@ -396,21 +398,21 @@ class GenomicQueryHandler {
         }
         return reporters;
     }
-    
-    private Collection<SegmentData> getMatchingSegmentDatas(Collection<ArrayData> arrayDatas) 
+
+    private Collection<SegmentData> getMatchingSegmentDatas(Collection<ArrayData> arrayDatas)
         throws InvalidCriterionException {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
                 query.getCompoundCriterion(), query.getResultType());
         if (arrayDatas.isEmpty()) {
             return Collections.emptySet();
         } else if (criterionHandler.hasSegmentDataCriterion() && !query.isAllGenomicDataQuery()) {
-            return criterionHandler.getSegmentDataMatches(dao, query.getSubscription().getStudy(), 
+            return criterionHandler.getSegmentDataMatches(dao, query.getSubscription().getStudy(),
                     query.getCopyNumberPlatform());
         } else {
             return getAllSegmentDatas(arrayDatas);
         }
     }
-    
+
     private Collection<SegmentData> getAllSegmentDatas(Collection<ArrayData> arrayDatas) {
         HashSet<SegmentData> segmentDatas = new HashSet<SegmentData>();
         for (ArrayData arrayData : arrayDatas) {
