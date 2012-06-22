@@ -55,7 +55,7 @@
 	    </s:if>
 	    <s:else>
 	       <div>
-	           <s:url var="loginUrl" value="logout.jsp" includeParams="all">
+	           <s:url var="loginUrl" value="login.jsp" includeParams="all">
 	               <s:param name="selectedPage" value="'login'"/>
 	               <s:param name="struts.token.name">struts.token</s:param>
                    <s:param name="struts.token" value="%{struts.token}" />
