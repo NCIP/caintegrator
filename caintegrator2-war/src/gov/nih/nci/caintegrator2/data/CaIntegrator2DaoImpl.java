@@ -180,7 +180,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @Override
     public UserWorkspace getWorkspace(String username) {
-        @SuppressWarnings(UNCHECKED)
         List results = getCurrentSession().
                         createCriteria(UserWorkspace.class).
                         add(Restrictions.eq("username", username)).list();
@@ -248,7 +247,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings(UNCHECKED)
     public void removeObjects(Collection objects) {
         if (objects != null) {
             getHibernateTemplate().deleteAll(objects);
@@ -592,7 +590,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @Override
     public Gene getGene(String symbol) {
-        @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
         List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol",
                 SYMBOL_ATTRIBUTE, symbol.toUpperCase(Locale.getDefault()));
         if (values.isEmpty()) {
@@ -620,7 +617,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @Override
     public Platform getPlatform(String name) {
-        @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
         List values = getHibernateTemplate().findByNamedParam("from Platform where name = :name",
                 NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
@@ -635,7 +631,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @Override
     public PlatformConfiguration getPlatformConfiguration(String name) {
-        @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
         List values = getHibernateTemplate().findByNamedParam("from PlatformConfiguration where name = :name",
                 NAME_ATTRIBUTE, name);
         if (values.isEmpty()) {
@@ -675,7 +670,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public ReporterList getReporterList(String name) {
         List values = getHibernateTemplate().findByNamedParam("from ReporterList where name = :name",
                 NAME_ATTRIBUTE, name);
@@ -794,7 +788,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @Override
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username,
-                                                                                Long studyConfigurationId) {
+                                                                              Long studyConfigurationId) {
         secureCurrentSession(username);
         Criteria authorizedStudyElementsGroupCriteria = getCurrentSession().
                                                          createCriteria(AuthorizedStudyElementsGroup.class).
@@ -826,25 +820,21 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<AnnotationFieldDescriptor> getAuthorizedAnnotationFieldDescriptors(String username,
                                                                                 StudyConfiguration studyConfiguration) {
         secureCurrentSession(username);
         Long studyConfigurationId = studyConfiguration.getId();
-        Criteria authorizedAfdCriteria = getCurrentSession().
-                                                         createCriteria(AuthorizedAnnotationFieldDescriptor.class).
-                                                         createCriteria("authorizedStudyElementsGroup").
-                                                         createCriteria("studyConfiguration").
-                                                         add(Restrictions.eq("id", studyConfigurationId));
-        List<AuthorizedAnnotationFieldDescriptor> listAAFD = authorizedAfdCriteria.list();
+        List<AuthorizedStudyElementsGroup> authorizedGroups = getAuthorizedStudyElementGroups(username,
+                                                                                              studyConfigurationId);
         List<AnnotationFieldDescriptor> listAfd = new ArrayList<AnnotationFieldDescriptor>();
-        for (AuthorizedAnnotationFieldDescriptor aafd : listAAFD) {
-            listAfd.add(aafd.getAnnotationFieldDescriptor());
+        for (AuthorizedStudyElementsGroup group : authorizedGroups) {
+            for (AuthorizedAnnotationFieldDescriptor aafd : group.getAuthorizedAnnotationFieldDescriptors()) {
+                listAfd.add(aafd.getAnnotationFieldDescriptor());
+            }
         }
 
         return listAfd;
     }
-
 
     /**
      * {@inheritDoc}
