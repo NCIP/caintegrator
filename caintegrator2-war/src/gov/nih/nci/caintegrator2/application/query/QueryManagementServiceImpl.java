@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.application.query;
@@ -124,6 +124,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -131,10 +132,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementation of the QueryManagementService interface.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // See handleCheckedRowForImageStudy()
 @Transactional(propagation = Propagation.REQUIRED)
 public class QueryManagementServiceImpl extends CaIntegrator2BaseService implements QueryManagementService {
-    
+
     private ResultHandler resultHandler;
     private ArrayDataService arrayDataService;
     private FileManager fileManager;
@@ -149,33 +149,37 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(readOnly = true)
     public QueryResult execute(Query query) throws InvalidCriterionException {
-        return new QueryTranslator(retrieveQueryToExecute(query), getDao(), 
+        return new QueryTranslator(retrieveQueryToExecute(query), getDao(),
                 arrayDataService, resultHandler).execute();
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(readOnly = true)
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException {
-        return new GenomicQueryHandler(retrieveQueryToExecute(query), 
+        return new GenomicQueryHandler(retrieveQueryToExecute(query),
                 getDao(), arrayDataService).execute();
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(readOnly = true)
     public Collection<SegmentData> retrieveSegmentDataQuery(Query query) throws InvalidCriterionException {
-        return new GenomicQueryHandler(retrieveQueryToExecute(query), 
+        return new GenomicQueryHandler(retrieveQueryToExecute(query),
                 getDao(), arrayDataService).retrieveSegmentDataQuery();
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public Query retrieveQueryToExecute(Query query) throws InvalidCriterionException {
         try {
             query.getCompoundCriterion().validateGeneExpressionCriterion();
@@ -209,7 +213,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
     }
 
-    private Platform retrievePlatform(Query query, Set<String> platformNames, 
+    private Platform retrievePlatform(Query query, Set<String> platformNames,
             GenomicCriterionTypeEnum genomicCriterionType) throws InvalidCriterionException {
         if (platformNames.size() == 1) {
             return getDao().getPlatform(platformNames.iterator().next());
@@ -217,19 +221,19 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             Set<String> allPlatformNames = query.getCompoundCriterion().getAllPlatformNames(genomicCriterionType);
             if (allPlatformNames.size() != 1) {
                throw new InvalidCriterionException("A " + genomicCriterionType.getValue()
-                       + " query must contain exactly 1 platform of type " 
-                       + genomicCriterionType.getValue() + ".  This one contains " 
-                       + allPlatformNames.size() + " platforms.  " 
+                       + " query must contain exactly 1 platform of type "
+                       + genomicCriterionType.getValue() + ".  This one contains "
+                       + allPlatformNames.size() + " platforms.  "
                        + "Create a query and within the criterion, select a platform.");
             }
             return getDao().getPlatform(allPlatformNames.iterator().next());
         }
     }
-    
+
     private void checkCriterionColumnsForMasks(Query query) {
         if (!query.isHasMaskedValues()) {
             for (ResultColumn column : query.getColumnCollection()) {
-                if (column.getAnnotationFieldDescriptor() != null 
+                if (column.getAnnotationFieldDescriptor() != null
                      && !column.getAnnotationFieldDescriptor().getAnnotationMasks().isEmpty()) {
                     query.setHasMaskedValues(true);
                     break;
@@ -237,7 +241,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
         }
     }
-    
+
     private void maskCompoundCriterion(CompoundCriterion compoundCriterion) {
         Set<AbstractCriterion> criterionToRemove = new HashSet<AbstractCriterion>();
         Set<AbstractCriterion> criterionToAdd = new HashSet<AbstractCriterion>();
@@ -255,7 +259,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         compoundCriterion.getCriterionCollection().addAll(criterionToAdd);
         compoundCriterion.getCriterionCollection().removeAll(criterionToRemove);
     }
-    
+
     private AbstractCriterion retrieveMaskedCriterion(AbstractCriterion abstractCriterion) {
         if (abstractCriterion instanceof AbstractAnnotationCriterion
                 && ((AbstractAnnotationCriterion) abstractCriterion).getAnnotationFieldDescriptor() != null
@@ -267,38 +271,46 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
         return abstractCriterion;
     }
-    
+
     private void addSubjectsNotFoundToQuery(Query query) throws InvalidCriterionException {
         query.getSubjectIdsNotFound().clear();
         query.getSubjectIdsNotFound().addAll(getAllSubjectsNotFoundInCriteria(query));
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<String> getAllSubjectsNotFoundInCriteria(Query query) throws InvalidCriterionException {
         if (query == null) {
             return new HashSet<String>();
         }
         Set<String> allSubjectsInCriterion = query.getCompoundCriterion().getAllSubjectIds();
         Set<String> allSubjectsNotFound = new HashSet<String>(allSubjectsInCriterion);
-        Set<String> allSubjectsInStudy = new HashSet<String>();
         if (!allSubjectsInCriterion.isEmpty()) {
-            for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
-                allSubjectsInStudy.add(assignment.getIdentifier());
-            }
+            Set<String> allSubjectsInStudy = getAllSubjectsInStudy(query);
             allSubjectsNotFound.removeAll(allSubjectsInStudy);
-            if (!allSubjectsNotFound.isEmpty() && allSubjectsNotFound.size() == allSubjectsInCriterion.size()) {
-                String queryNameString = StringUtils.isNotBlank(query.getName()) ? "'" 
-                        + query.getName() + "'  " : "";
-                throw new InvalidCriterionException(
-                        "None of the Subject IDs in the query "
-                        +  queryNameString + "were found in the study.");
+            if (areNoQuerySubjectsInStudy(allSubjectsInCriterion, allSubjectsNotFound)) {
+                String queryNameString = StringUtils.isNotBlank(query.getName()) ? "'" + query.getName() + "'  " : "";
+                throw new InvalidCriterionException("None of the Subject IDs in the query " + queryNameString
+                        + "were found in the study.");
             }
         }
         return allSubjectsNotFound;
     }
-    
+
+    private Set<String> getAllSubjectsInStudy(Query query) {
+        Set<String> allSubjectsInStudy = new HashSet<String>();
+        for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
+            allSubjectsInStudy.add(assignment.getIdentifier());
+        }
+        return allSubjectsInStudy;
+    }
+
+    private boolean areNoQuerySubjectsInStudy(Set<String> allSubjectsInCriterion, Set<String> allSubjectsNotFound) {
+        return !allSubjectsNotFound.isEmpty() && allSubjectsNotFound.size() == allSubjectsInCriterion.size();
+    }
+
     private void addGenesNotFoundToQuery(Query query) throws InvalidCriterionException {
         List<String> allGeneSymbols = query.getCompoundCriterion().getAllGeneSymbols();
         query.getGeneSymbolsNotFound().clear();
@@ -310,17 +322,18 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
         }
     }
-    
+
     private boolean isQueryOnAllGenes(Collection<String> allGeneSymbols) {
         if (allGeneSymbols.contains("")) {
             return true;
         }
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
         Set<String> platformsInStudy = new HashSet<String>();
         for (Platform platform : arrayDataService.getPlatformsInStudy(
@@ -329,10 +342,11 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         return platformsInStudy;
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<String> retrieveCopyNumberPlatformsForStudy(Study study) {
         Set<String> platformsInStudy = new HashSet<String>();
         for (Platform platform : arrayDataService.getPlatformsInStudy(
@@ -341,10 +355,11 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         }
         return platformsInStudy;
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<String> retrieveCopyNumberPlatformsWithCghCallForStudy(Study study) {
         Set<String> platformsInStudy = new HashSet<String>();
         for (Platform platform : arrayDataService.getPlatformsWithCghCallInStudy(
@@ -357,6 +372,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Query> createQueriesFromSubjectLists(StudySubscription subscription) {
         List<Query> queries = new ArrayList<Query>();
         for (SubjectList subjectList : subscription.getStudy().getStudyConfiguration().getSubjectLists()) {
@@ -371,6 +387,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public Query createQueryFromSubjectList(StudySubscription subscription, SubjectList subjectList) {
         Query query = new Query();
         SubjectListCriterion criterion = new SubjectListCriterion();
@@ -387,10 +404,11 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         query.setSubjectListVisibility(subjectList.getVisibility());
         return query;
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
         NCIADicomJob dicomJob = new NCIADicomJob();
         dicomJob.setImageAggregationType(retrieveAggregationType(checkedRows));
@@ -402,13 +420,14 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
         NCIABasket basket = new NCIABasket();
         basket.setImageAggregationType(retrieveAggregationType(checkedRows));
         fillImageAggregatorFromCheckedRows(basket, checkedRows);
         return basket;
     }
-    
+
     private NCIAImageAggregationTypeEnum retrieveAggregationType(List<DisplayableResultRow> rows) {
         NCIAImageAggregationTypeEnum aggregationType = NCIAImageAggregationTypeEnum.IMAGESERIES;
         for (DisplayableResultRow row : rows) {
@@ -420,7 +439,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
         return aggregationType;
     }
 
-    private void fillImageAggregatorFromCheckedRows(NCIAImageAggregator imageAggregator, 
+    private void fillImageAggregatorFromCheckedRows(NCIAImageAggregator imageAggregator,
                                                     List<DisplayableResultRow> checkedRows) {
         for (DisplayableResultRow row : checkedRows) {
             switch(imageAggregator.getImageAggregationType()) {
@@ -443,29 +462,28 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
             throw new IllegalArgumentException(
                 "Aggregation is based on Image Series, and a row doesn't contain an Image Series.");
         }
-        
+
     }
-    
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Null checks
+
     private void handleCheckedRowForImageStudy(NCIAImageAggregator imageAggregator, DisplayableResultRow row) {
         StudySubjectAssignment studySubjectAssignment = row.getSubjectAssignment();
         if (studySubjectAssignment != null) {
             studySubjectAssignment = getDao().get(row.getSubjectAssignment().getId(), StudySubjectAssignment.class);
         }
-        if (studySubjectAssignment != null 
-            && studySubjectAssignment.getImageStudyCollection() != null
-            && !studySubjectAssignment.getImageStudyCollection().isEmpty()) {
+        if (studySubjectAssignment != null
+                && CollectionUtils.isNotEmpty(studySubjectAssignment.getImageStudyCollection())) {
             for (ImageSeriesAcquisition imageStudy : studySubjectAssignment.getImageStudyCollection()) {
                 imageAggregator.getImageStudyIDs().add(imageStudy.getIdentifier());
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
-        File csvFile = new File(fileManager.getNewTemporaryDirectory("tempGenomicResultsDownload"), 
+        File csvFile = new File(fileManager.getNewTemporaryDirectory("tempGenomicResultsDownload"),
                 "genomicData-" + System.currentTimeMillis() + ".csv");
         return GenomicDataFileWriter.writeAsCsv(result, csvFile);
     }
@@ -473,6 +491,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void save(Query query) {
         if (query.getId() == null) {
             getDao().save(query);
@@ -484,13 +503,15 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void delete(Query query) {
         getDao().delete(query);
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
             throws GenesNotFoundInStudyException {
         List<String> genesNotFound = new ArrayList<String>();

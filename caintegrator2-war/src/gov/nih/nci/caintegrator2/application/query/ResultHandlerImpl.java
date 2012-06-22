@@ -119,6 +119,7 @@ public class ResultHandlerImpl implements ResultHandler {
     /**
      * {@inheritDoc}
      */
+    @Override
     public QueryResult createResults(Query query, Set<ResultRow> resultRows, CaIntegrator2Dao dao) {
         QueryResult queryResult = new QueryResult();
         queryResult.setRowCollection(resultRows);
@@ -135,7 +136,7 @@ public class ResultHandlerImpl implements ResultHandler {
      * @param dao
      */
     // Have to iterate over many collections to get values.
-    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" })
+    @SuppressWarnings({ "PMD.ExcessiveMethodLength" })
     private void addColumns(QueryResult queryResult, CaIntegrator2Dao dao) {
         Query query = queryResult.getQuery();
         Collection<ResultColumn> columns = query.retrieveVisibleColumns();
@@ -172,42 +173,34 @@ public class ResultHandlerImpl implements ResultHandler {
         }
     }
 
-
     /**
      * Takes an input collection of ResultColumns, and removes any column for
      * which the corresponding AnnotationFieldDescriptor is restricted by the
      * users AuthorizedStudyElementsGroups.
-     *
-     * @param columns
-     * @param query
-     * @param dao
-     * @return
      */
     private Collection<ResultColumn> removeUnauthorizedColumns(Collection<ResultColumn> columns,
             Query query, CaIntegrator2Dao dao) {
         String username = query.getSubscription().getUserWorkspace().getUsername();
-        StudyConfiguration studyconfiguration = query.getSubscription().getStudy().getStudyConfiguration();
+        StudyConfiguration studyConfig = query.getSubscription().getStudy().getStudyConfiguration();
 
-        List<AnnotationFieldDescriptor> authorizedAfdList = new ArrayList<AnnotationFieldDescriptor>();
-        authorizedAfdList = dao.getAuthorizedAnnotationFieldDescriptors(username, studyconfiguration);
+        List<AnnotationFieldDescriptor> authorizedAfdList = dao.getAuthorizedAnnotationFieldDescriptors(username,
+                                                                                                        studyConfig);
 
         if (!authorizedAfdList.isEmpty()) {
-            List<ResultColumn> tempColumns = new ArrayList<ResultColumn>();
-            tempColumns.addAll(columns);
+            List<ResultColumn> restrictedColumns = new ArrayList<ResultColumn>();
+            restrictedColumns.addAll(columns);
 
-            for (ResultColumn column1 : columns) {
-                if (!authorizedAfdList.contains(column1.getAnnotationFieldDescriptor())) {
-                    tempColumns.remove(column1);
+            for (ResultColumn column : columns) {
+                if (!authorizedAfdList.contains(column.getAnnotationFieldDescriptor())) {
+                    restrictedColumns.remove(column);
                 }
             }
-            reindexColumns(tempColumns);
-            return tempColumns;
+            reindexColumns(restrictedColumns);
+            return restrictedColumns;
         }
 
         return columns;
     }
-
-
 
     private void reindexColumns(List<ResultColumn> columns) {
         Collections.sort(columns);
@@ -216,7 +209,6 @@ public class ResultHandlerImpl implements ResultHandler {
         }
     }
 
-    @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Have to iterate over many collections to get values.
     private AbstractAnnotationValue handleImageSeriesRow(ResultRow row, ResultColumn column) {
         ImageSeries imageSeries = row.getImageSeries();
         if (imageSeries != null) {
