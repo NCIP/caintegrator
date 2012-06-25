@@ -112,8 +112,6 @@ import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -131,7 +129,7 @@ public class AuthorizationTreeTest {
     private List<String> availableValues = Arrays.asList("Value 1" , "Value 2", "Value 3");
 
     /**
-     * Set's up the data for the unit test.
+     * Sets up the data for the unit test.
      */
     @Before
     public void setUp() throws Exception {
@@ -149,6 +147,7 @@ public class AuthorizationTreeTest {
                 descriptor.setShowInAuthorization(true);
                 AnnotationDefinition def = new AnnotationDefinition();
                 def.setDisplayName("Annotation Definition #" + j);
+                def.addPermissibleValues(new HashSet<Object>(availableValues));
                 descriptor.setDefinition(def);
                 annotationGroup.getAnnotationFieldDescriptors().add(descriptor);
             }
@@ -165,8 +164,6 @@ public class AuthorizationTreeTest {
         }
 
         studyManagementService = mock(StudyManagementService.class);
-        Set<String> values = new HashSet<String>(availableValues);
-        when(studyManagementService.getAvailableValuesForFieldDescriptor(any(AnnotationFieldDescriptor.class))).thenReturn(values);
     }
 
     /**
@@ -174,7 +171,7 @@ public class AuthorizationTreeTest {
      */
     @Test
     public void construction() {
-        AuthorizationTrees tree = new AuthorizationTrees(studyConfig, new AuthorizedStudyElementsGroup(), studyManagementService);
+        AuthorizationTrees tree = new AuthorizationTrees(studyConfig, new AuthorizedStudyElementsGroup());
         assertEquals(NUM_DATA_SOURCES / 2, tree.getCopyNumberDataSources().size());
         for (TreeNode node : tree.getCopyNumberDataSources()) {
             assertNotNull(node.getNodeId());
@@ -250,7 +247,7 @@ public class AuthorizationTreeTest {
             }
         }
 
-        AuthorizationTrees tree = new AuthorizationTrees(studyConfig, authGroup, studyManagementService);
+        AuthorizationTrees tree = new AuthorizationTrees(studyConfig, authGroup);
         for (TreeNode node : tree.getCopyNumberDataSources()) {
             assertTrue(node.isSelected());
         }
@@ -272,12 +269,12 @@ public class AuthorizationTreeTest {
     }
 
     /**
-     * Test's the creation of a tree when the validation for field descriptors fail.
+     * Tests the creation of a tree when the validation for field descriptors fail.
      */
     @Test
     public void constructionValidationException() throws ValidationException {
         when(studyManagementService.getAvailableValuesForFieldDescriptor(any(AnnotationFieldDescriptor.class))).thenThrow(new ValidationException("Error"));
-        AuthorizationTrees tree = new AuthorizationTrees(studyConfig, new AuthorizedStudyElementsGroup(), studyManagementService);
+        AuthorizationTrees tree = new AuthorizationTrees(studyConfig, new AuthorizedStudyElementsGroup());
         assertNotNull(tree);
     }
 }

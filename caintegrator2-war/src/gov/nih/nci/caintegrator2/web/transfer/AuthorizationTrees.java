@@ -94,8 +94,7 @@ import gov.nih.nci.caintegrator2.application.study.AuthorizedQuery;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 
@@ -103,7 +102,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -113,7 +111,6 @@ import com.google.common.collect.Collections2;
  *
  */
 public class AuthorizationTrees {
-    private static final Logger LOG = Logger.getLogger(AuthorizationTrees.class);
     private final Set<TreeNode> annotationGroups = new TreeSet<TreeNode>();
     private final Set<TreeNode> expressionDataSources = new TreeSet<TreeNode>();
     private final Set<TreeNode> copyNumberDataSources = new TreeSet<TreeNode>();
@@ -123,46 +120,30 @@ public class AuthorizationTrees {
      * Class constructor.
      * @param studyConfig the study configuration
      * @param authGroup the group authorization
-     * @param studyManagementService the study management service
      */
-    public AuthorizationTrees(StudyConfiguration studyConfig, final AuthorizedStudyElementsGroup authGroup,
-            final StudyManagementService studyManagementService) {
+    public AuthorizationTrees(StudyConfiguration studyConfig, final AuthorizedStudyElementsGroup authGroup) {
         handleDataSources(studyConfig, authGroup);
         handleAnnotationGroups(studyConfig, authGroup);
-        handleAnnotationFieldDescriptors(studyConfig, authGroup, studyManagementService);
+        handleAnnotationFieldDescriptors(studyConfig, authGroup);
     }
 
-    /**
-     * @param studyConfig
-     * @param authGroup
-     * @param studyManagementService
-     */
     private void handleAnnotationFieldDescriptors(StudyConfiguration studyConfig,
-            final AuthorizedStudyElementsGroup authGroup, final StudyManagementService studyManagementService) {
-        for (final AnnotationFieldDescriptor descriptor
-                : studyConfig.getStudy().getAuthorizedFieldDescriptors()) {
+            final AuthorizedStudyElementsGroup authGroup) {
+        for (final AnnotationFieldDescriptor descriptor : studyConfig.getStudy().getAuthorizedFieldDescriptors()) {
             TreeNode node = new TreeNode(descriptor.getId(), descriptor.getDisplayName(), false);
-            try {
-                node.getChildren().addAll(Collections2.transform(
-                        studyManagementService.getAvailableValuesForFieldDescriptor(descriptor),
-                        new Function<String, TreeNode>() {
-                            @Override
-                            public TreeNode apply(String value) {
-                                TreeNode node = new TreeNode(null, value, isSelected(descriptor, value, authGroup));
-                                return node;
-                            }
-                        }));
-                fieldDescriptors.add(node);
-            } catch (ValidationException e) {
-                LOG.error("Error retriving values for " + descriptor.getDisplayName(), e);
-            }
+            Set<String> permissibleValues = PermissibleValueUtil.getDisplayPermissibleValue(descriptor
+                .getPermissibleValues());
+            node.getChildren().addAll(Collections2.transform(permissibleValues, new Function<String, TreeNode>() {
+                @Override
+                public TreeNode apply(String value) {
+                    TreeNode node = new TreeNode(null, value, isSelected(descriptor, value, authGroup));
+                    return node;
+                }
+            }));
+            fieldDescriptors.add(node);
         }
     }
 
-    /**
-     * @param studyConfig
-     * @param authGroup
-     */
     private void handleAnnotationGroups(StudyConfiguration studyConfig, final AuthorizedStudyElementsGroup authGroup) {
         for (AnnotationGroup group : studyConfig.getStudy().getSortedAnnotationGroups()) {
             TreeNode node = new TreeNode(null, group.getName(), false);
@@ -179,10 +160,6 @@ public class AuthorizationTrees {
         }
     }
 
-    /**
-     * @param studyConfig
-     * @param authGroup
-     */
     private void handleDataSources(StudyConfiguration studyConfig, final AuthorizedStudyElementsGroup authGroup) {
         for (GenomicDataSourceConfiguration config : studyConfig.getGenomicDataSources()) {
             TreeNode node = new TreeNode(config.getId(), config.getExperimentIdentifier(),
