@@ -103,8 +103,8 @@ import java.util.Set;
  * Contains the information about a particular annotation field prior to association to an
  * <code>AnnotationDefinition</code>.
  */
-public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object
-implements Comparable<AnnotationFieldDescriptor> {
+public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object implements
+        Comparable<AnnotationFieldDescriptor> {
 
     private static final long serialVersionUID = 1L;
     private String name;
@@ -318,6 +318,7 @@ implements Comparable<AnnotationFieldDescriptor> {
      * Compare based on the Display Name.
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(AnnotationFieldDescriptor o) {
         return getDisplayName().compareTo(o.getDisplayName());
     }

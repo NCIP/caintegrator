@@ -222,7 +222,7 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
     @SuppressWarnings("unchecked")
     public String edit() {
         getGroupMembers().addAll(getAuthorizedGroup().getAuthorizedGroup().getUsers());
-        setTrees(new AuthorizationTrees(getStudyConfiguration(), getAuthorizedGroup(), getStudyManagementService()));
+        setTrees(new AuthorizationTrees(getStudyConfiguration(), getAuthorizedGroup()));
         return SUCCESS;
     }
 
