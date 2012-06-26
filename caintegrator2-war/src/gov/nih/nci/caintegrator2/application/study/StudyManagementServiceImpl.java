@@ -274,9 +274,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         configureNew(studyConfiguration.getStudy());
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity",
-                        "PMD.ExcessiveMethodLength",
-                        "PMD.NPathComplexity" })   // multiple simple null checks
     private void configureNew(Study study) {
         if (study.getDefaultTimepoint() == null) {
             Timepoint defaultTimepoint = new Timepoint();
@@ -381,7 +378,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         return list;
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -392,7 +388,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     /**
      * {@inheritDoc}
-     * @throws InvalidFieldDescriptorException
      */
     @Override
     @Transactional(rollbackFor = ValidationException.class)
@@ -840,7 +835,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
     @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
     public void setDataElement(AnnotationFieldDescriptor fieldDescriptor,
                                 CommonDataElement dataElement,

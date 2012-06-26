@@ -289,7 +289,7 @@ public class SecurityManagerImpl implements SecurityManager {
 
     @SuppressWarnings(UNCHECKED) // CSM API is untyped
     private Set<ProtectionGroup> retrieveProtectionGroups(String userId, String csmRoleToBeRetrieved)
-    throws CSException {
+            throws CSException {
         Set<ProtectionGroup> protectionGroups = new HashSet<ProtectionGroup>();
         Set<Group> groups = getAuthorizationManager().getGroups(userId);
         for (Group group : groups) {
@@ -301,6 +301,22 @@ public class SecurityManagerImpl implements SecurityManager {
                         protectionGroups.add(pgrc.getProtectionGroup());
                         break;
                     }
+                }
+            }
+        }
+        return protectionGroups;
+    }
+
+    @SuppressWarnings(UNCHECKED) // CSM API is untyped
+    private Set<ProtectionGroup> retrieveProtectionGroups(Group group, String csmRoleToBeRetrieved) throws CSException {
+        Set<ProtectionGroup> protectionGroups = new HashSet<ProtectionGroup>();
+        Set<ProtectionGroupRoleContext> pgrcs = getAuthorizationManager()
+            .getProtectionGroupRoleContextForGroup(String.valueOf(group.getGroupId()));
+        for (ProtectionGroupRoleContext pgrc : pgrcs) {
+            for (Role role : (Set<Role>) pgrc.getRoles()) {
+                if (csmRoleToBeRetrieved.equals(role.getName())) {
+                    protectionGroups.add(pgrc.getProtectionGroup());
+                    break;
                 }
             }
         }
@@ -342,19 +358,19 @@ public class SecurityManagerImpl implements SecurityManager {
      */
     @Override
     public void createProtectionElement(StudyConfiguration studyConfiguration,
-                                        AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup) throws CSException {
         if (doesUserExist(studyConfiguration.getUserWorkspace().getUsername())) {
             User user = retrieveCsmUser(studyConfiguration.getUserWorkspace().getUsername());
-            String userId = String.valueOf(user.getUserId());
             ProtectionElement element = createProtectionElementInstance(authorizedStudyElementsGroup);
             if (element == null) {
                 throw new CSInsufficientAttributesException();
             } else {
-                element.setProtectionElementName(authorizedStudyElementsGroup.getAuthorizedGroup().getGroupName());
+                Group authorizedGroup = authorizedStudyElementsGroup.getAuthorizedGroup();
+                element.setProtectionElementName(authorizedGroup.getGroupName());
                 Set<User> owners = new HashSet<User>();
                 owners.add(user);
                 element.setOwners(owners);
-                element.setProtectionGroups(retrieveProtectionGroups(userId, STUDY_MANAGER_ROLE));
+                element.setProtectionGroups(retrieveProtectionGroups(authorizedGroup, STUDY_INVESTIGATOR_ROLE));
                 getAuthorizationManager().createProtectionElement(element);
             }
         }
