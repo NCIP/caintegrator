@@ -521,7 +521,7 @@
                 </s:if>
                 <li><a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-ApplicationSupport')">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>
-                <li><a href="javascript:openUsersGuideWindow('top')">User Guide</a></li>
+                <li><a href="javascript:openWikiHelp('mwPTAg', '')">User Guide</a></li>
             </ul>
         </li>
     </ul>
