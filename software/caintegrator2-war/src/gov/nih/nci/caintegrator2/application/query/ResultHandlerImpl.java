@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.SortTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -124,8 +125,10 @@ public class ResultHandlerImpl implements ResultHandler {
         QueryResult queryResult = new QueryResult();
         queryResult.setRowCollection(resultRows);
         queryResult.setQuery(query);
-        addColumns(queryResult, dao);
-        sortRows(queryResult);
+        if (CollectionUtils.isNotEmpty(resultRows)) {
+            addColumns(queryResult, dao);
+            sortRows(queryResult);
+        }
         return queryResult;
     }
 
@@ -180,13 +183,16 @@ public class ResultHandlerImpl implements ResultHandler {
      */
     private Collection<ResultColumn> removeUnauthorizedColumns(Collection<ResultColumn> columns,
             Query query, CaIntegrator2Dao dao) {
-        String username = query.getSubscription().getUserWorkspace().getUsername();
-        StudyConfiguration studyConfig = query.getSubscription().getStudy().getStudyConfiguration();
+        List<AnnotationFieldDescriptor> authorizedAfdList = new ArrayList<AnnotationFieldDescriptor>();
+        UserWorkspace userWorkspace = query.getSubscription().getUserWorkspace();
 
-        List<AnnotationFieldDescriptor> authorizedAfdList = dao.getAuthorizedAnnotationFieldDescriptors(username,
-                                                                                                        studyConfig);
+        if (userWorkspace != null) {
+            String username = userWorkspace.getUsername();
+            StudyConfiguration studyConfig = query.getSubscription().getStudy().getStudyConfiguration();
+            authorizedAfdList = dao.getAuthorizedAnnotationFieldDescriptors(username, studyConfig);
+        }
 
-        if (!authorizedAfdList.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(authorizedAfdList)) {
             List<ResultColumn> restrictedColumns = new ArrayList<ResultColumn>();
             restrictedColumns.addAll(columns);
 
