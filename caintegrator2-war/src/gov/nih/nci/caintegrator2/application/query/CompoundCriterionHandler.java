@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedQuery;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -104,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -250,65 +252,79 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     /**
      * This method takes the query result rows as an input and removes any restricted study data
-     * as determined by the dao.getAuthorizedStudyElementGroups, that are assigned to this user.
-     * The rowsAfterRestriction are returned.  If dao.getAuthorizedStudyElementGroups does not
-     * produce any AuthorizedStudyElementsGroups for this user, then the input rowsBeforeRestriction
-     * are returned unmodified.
-     *
-     * @param rowsBeforeRestriction
-     * @param dao
-     * @param query
-     * @return rowsAfterRestriction
+     * as determined by the AuthorizedStudyElementGroups that are assigned to this user.
+     * If there are no AuthorizedStudyElementGroups for the study, then the input rowsBeforeRestriction
+     * is returned unmodified.
      */
-    @SuppressWarnings({"PMD.ExcessiveMethodLength" })  //TODO refactor and remove SuppressWarnings
-    private Set<ResultRow> removeUnauthorizedStudyElements(Set<ResultRow> rowsBeforeRestriction,
-                                                            CaIntegrator2Dao dao,
-                                                            Query query) {
-        String username = query.getSubscription().getUserWorkspace().getUsername();
+    private Set<ResultRow> removeUnauthorizedStudyElements(Set<ResultRow> rowsBeforeRestriction, CaIntegrator2Dao dao,
+            Query query) {
         Study study = query.getSubscription().getStudy();
-
-        List<AuthorizedStudyElementsGroup> authorizedStudyElementGroups = dao
-            .getAuthorizedStudyElementGroups(username, study.getStudyConfiguration().getId());
-        if (CollectionUtils.isNotEmpty(authorizedStudyElementGroups)) {
+        StudyConfiguration studyConfiguration = study.getStudyConfiguration();
+        boolean isStudyRestricted = CollectionUtils.isNotEmpty(studyConfiguration.getAuthorizedStudyElementsGroups());
+        Set<ResultRow> rowsAfterRestriction = new HashSet<ResultRow>();
+        String username = getUsername(query);
+        if (isStudyRestricted) {
+            if (username == null) {
+                return rowsAfterRestriction;
+            }
             Set<StudySubjectAssignment> listOfAllowedStudySubjectAssignments = new HashSet<StudySubjectAssignment>();
             Set<String> listOfAllowedExperimentIdentifiers = new HashSet<String>();
+            List<AuthorizedStudyElementsGroup> authorizedStudyElementGroups = dao
+                .getAuthorizedStudyElementGroups(username, studyConfiguration.getId());
             for (AuthorizedStudyElementsGroup asg : authorizedStudyElementGroups) {
                 addToListOfAllowedStudySubjectAssignments(dao, listOfAllowedStudySubjectAssignments, study, asg);
                 addToListOfAllowedExperimentIdentifiers(listOfAllowedExperimentIdentifiers, asg);
             }
 
-            Set<ResultRow> rowsAfterRestriction = new HashSet<ResultRow>();
             ResultTypeEnum queryResultType = query.getResultType();
             if (isFilterableResultType(queryResultType)) {
-
-                List<StudySubjectAssignment> listOfRestrictedStudySubjectAssignments
-                                                             = new ArrayList<StudySubjectAssignment>();
-                for (ResultRow resultRow : rowsBeforeRestriction) {
-                    listOfRestrictedStudySubjectAssignments.add(resultRow.getSubjectAssignment());
-                }
-
-                listOfRestrictedStudySubjectAssignments.retainAll(listOfAllowedStudySubjectAssignments);
-                String expId = StringUtils.EMPTY;
-                for (ResultRow resultRow2 : rowsBeforeRestriction) {
-                    if (queryResultType == ResultTypeEnum.GENE_EXPRESSION
-                            || queryResultType == ResultTypeEnum.COPY_NUMBER) {
-
-                        expId = resultRow2.getSampleAcquisition().getSample().getGenomicDataSource()
-                                                                                        .getExperimentIdentifier();
-                        if (listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment())
-                                && listOfAllowedExperimentIdentifiers.contains(expId)) {
-                            rowsAfterRestriction.add(resultRow2);
-                        }
-                    } else if (listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment())) {
-                        rowsAfterRestriction.add(resultRow2);
-                    }
-                }
+                filterResults(rowsBeforeRestriction, listOfAllowedStudySubjectAssignments,
+                              listOfAllowedExperimentIdentifiers, rowsAfterRestriction, queryResultType);
             }
-
             return rowsAfterRestriction;
-        } else {
+        } else { // unrestricted
             return rowsBeforeRestriction;
         }
+    }
+
+    private String getUsername(Query query) {
+        UserWorkspace userWorkspace = query.getSubscription().getUserWorkspace();
+        String username = null;
+        if (userWorkspace != null) {
+            username = userWorkspace.getUsername();
+        }
+        return username;
+    }
+
+    private void filterResults(Set<ResultRow> rowsBeforeRestriction,
+            Set<StudySubjectAssignment> listOfAllowedStudySubjectAssignments,
+            Set<String> listOfAllowedExperimentIdentifiers, Set<ResultRow> rowsAfterRestriction,
+            ResultTypeEnum queryResultType) {
+        List<StudySubjectAssignment> listOfRestrictedStudySubjectAssignments
+                                                     = new ArrayList<StudySubjectAssignment>();
+        for (ResultRow resultRow : rowsBeforeRestriction) {
+            listOfRestrictedStudySubjectAssignments.add(resultRow.getSubjectAssignment());
+        }
+
+        listOfRestrictedStudySubjectAssignments.retainAll(listOfAllowedStudySubjectAssignments);
+        String expId = StringUtils.EMPTY;
+        for (ResultRow resultRow2 : rowsBeforeRestriction) {
+            if (areQueryResultsGenomic(queryResultType)) {
+                expId = resultRow2.getSampleAcquisition().getSample().getGenomicDataSource()
+                                                                                .getExperimentIdentifier();
+                if (listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment())
+                        && listOfAllowedExperimentIdentifiers.contains(expId)) {
+                    rowsAfterRestriction.add(resultRow2);
+                }
+            } else if (listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment())) {
+                rowsAfterRestriction.add(resultRow2);
+            }
+        }
+    }
+
+
+    private boolean areQueryResultsGenomic(ResultTypeEnum queryResultType) {
+        return queryResultType == ResultTypeEnum.GENE_EXPRESSION || queryResultType == ResultTypeEnum.COPY_NUMBER;
     }
 
     private void addToListOfAllowedStudySubjectAssignments(CaIntegrator2Dao dao,
