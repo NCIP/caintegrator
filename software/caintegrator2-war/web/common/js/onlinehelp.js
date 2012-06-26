@@ -4,7 +4,6 @@
 // 
 // help constants
 var contextPath = "/caintegrator/";
-var usersguideURL = "/help/users_guide/caIntegrator_Users_Guide.pdf";
 var overviewTutorialURL = "https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/docs/project_management/external_meetings/overview_screencast/overview_screencast.html";
 var deployStudyTutorialURL = "https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/docs/project_management/external_meetings/deploy_study_screencast/deploy_study_screencast.html";
 var useStudyTutorialURL = "https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/docs/project_management/external_meetings/use_study_screencast/use_study.html";
@@ -13,17 +12,6 @@ var wikiHelpURL = "https://wiki.nci.nih.gov/x/";
 // actually opens the help window
 function openWin(pageURL) {
     window.open(pageURL,"Help","status,scrollbars,resizable,alwaysRaised,dependent,width=800,height=500");
-}
-
-// open users guide window (default; no navigation)
-function openUsersGuideWindow(contextName) {
-    var pageURL = makeUsersGuideURL() + contextName;
-    openWin(pageURL);
-}
-
-// method to create the full URL for users guide
-function makeUsersGuideURL(includeNav) {
-    return (contextPath + usersguideURL + "#" + "pagemode=bookmarks" + "&" +"nameddest=");
 }
 
 // open tutorial window (default; no navigation)
