@@ -114,7 +114,6 @@ import org.apache.commons.lang.math.NumberUtils;
 /**
  * This is a static utility class used by the UI to display the annotation value.
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking for type and null.
 public final class AnnotationUtil {
 
     private AnnotationUtil() {
@@ -154,7 +153,6 @@ public final class AnnotationUtil {
      * @return annotation value.
      * @throws ValidationException for validation errors.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
     public static AbstractAnnotationValue createAnnotationValue(AnnotationFieldDescriptor annotationDescriptor,
            String value) throws ValidationException {
        if (annotationDescriptor.getDefinition() == null
@@ -244,7 +242,6 @@ public final class AnnotationUtil {
      * @return annotation field descriptor.
      * @throws ValidationException if invalid afd.
      */
-    @SuppressWarnings("PMD.ExcessiveParameterList") // necessary parameters.
     public static AnnotationFieldDescriptor retrieveOrCreateFieldDescriptor(CaIntegrator2Dao dao,
             StudyConfiguration studyConfiguration, EntityTypeEnum type, boolean createNewAnnotationDefinition,
             String annotationFieldDescriptorName, String annotationGroupName)
@@ -266,7 +263,6 @@ public final class AnnotationUtil {
         return fieldDescriptor;
     }
 
-    @SuppressWarnings("PMD.ExcessiveParameterList") // necessary parameters.
     private static AnnotationFieldDescriptor createNewAnnotationFieldDescriptor(CaIntegrator2Dao dao,
             StudyConfiguration studyConfiguration,
             EntityTypeEnum type, boolean createNewAnnotationDefinition,

@@ -128,7 +128,6 @@ import com.opensymphony.xwork2.util.ValueStack;
 /**
  * Session singleton object used for displaying user workspace items such as Study's, Queries, and Lists.
  */
-@SuppressWarnings({"PMD.TooManyFields", "PMD.ExcessiveClassLength" }) // Keep track of all current jobs
 public class DisplayableUserWorkspace {
 
     /**
@@ -351,6 +350,7 @@ public class DisplayableUserWorkspace {
 
     private void sortStudySubscriptions(List<StudySubscription> orderedSubscriptionCollection) {
         Comparator<StudySubscription> nameComparator = new Comparator<StudySubscription>() {
+            @Override
             public int compare(StudySubscription subscription1, StudySubscription subscription2) {
                 return subscription1.getStudy().getShortTitleText().
                        compareToIgnoreCase(subscription2.getStudy().getShortTitleText());
@@ -434,6 +434,7 @@ public class DisplayableUserWorkspace {
             queries.addAll(getCurrentStudySubscription().getQueryCollection());
         }
         Comparator<Query> nameComparator = new Comparator<Query>() {
+            @Override
             public int compare(Query query1, Query query2) {
                 return query1.getName().compareToIgnoreCase(query2.getName());
             }
@@ -456,6 +457,7 @@ public class DisplayableUserWorkspace {
             }
         }
         Comparator<GisticAnalysis> nameComparator = new Comparator<GisticAnalysis>() {
+            @Override
             public int compare(GisticAnalysis gisticAnalysis1, GisticAnalysis gisticAnalysis2) {
                 return gisticAnalysis1.getName().compareToIgnoreCase(gisticAnalysis2.getName());
             }

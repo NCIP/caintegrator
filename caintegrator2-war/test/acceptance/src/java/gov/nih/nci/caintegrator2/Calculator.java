@@ -3,7 +3,6 @@ package gov.nih.nci.caintegrator2;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("PMD")
 public class Calculator {
 
 	private static final int HISTORY_SIZE = 6;

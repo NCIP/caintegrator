@@ -271,7 +271,6 @@ class GenomicDataHelper {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "PMD.UnnecessaryLocalBeforeReturn" })  // for efficient conversion of List.
     private List<DnaAnalysisReporter> convertToDnaAnalysisReporters(ReporterList reporterList) {
         List reporters = reporterList.getReporters();
         return reporters;

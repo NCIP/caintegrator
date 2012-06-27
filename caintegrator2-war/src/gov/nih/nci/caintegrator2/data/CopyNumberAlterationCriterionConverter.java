@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.data;
@@ -106,53 +106,51 @@ import org.hibernate.criterion.SimpleExpression;
 /**
  * Handles creation of hibernate criteria objects given a CopyNumberAlterationCriterion.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // See addSegmentValueCriterion()
 public class CopyNumberAlterationCriterionConverter {
-    
+
     private static final String LOCATION_START_ATTRIBUTE = "Location.startPosition";
     private static final String LOCATION_END_ATTRIBUTE = "Location.endPosition";
     private final CopyNumberAlterationCriterion copyNumberCriterion;
-    
+
     CopyNumberAlterationCriterionConverter(CopyNumberAlterationCriterion copyNumberCriterion) {
         this.copyNumberCriterion = copyNumberCriterion;
     }
-    
+
     Criteria retrieveSegmentDataCriteria(Study study, Platform platform, Session currentSession) {
         Criteria segmentDataCrit = currentSession.createCriteria(SegmentData.class);
         Criteria arrayDataCrit = segmentDataCrit.createCriteria("arrayData");
         arrayDataCrit.createCriteria("reporterLists").add(Restrictions.eq("platform", platform));
         arrayDataCrit.add(Restrictions.eq("study", study));
         if (CopyNumberCriterionTypeEnum.SEGMENT_VALUE.equals(copyNumberCriterion.getCopyNumberCriterionType())) {
-            addSegmentValueCriterion(segmentDataCrit);    
+            addSegmentValueCriterion(segmentDataCrit);
         } else { // Calls type...
             addCallsValueCriterion(segmentDataCrit);
         }
-        
+
         addGenomicIntervalTypeToCriteria(segmentDataCrit, currentSession, platform.getGenomeVersion());
         return segmentDataCrit;
     }
-    
+
     private void addCallsValueCriterion(Criteria segmentDataCrit) {
         if (!copyNumberCriterion.getCallsValues().isEmpty()) {
             segmentDataCrit.add(Restrictions.in("callsValue", copyNumberCriterion.getCallsValues()));
         }
     }
-    
-    @SuppressWarnings("PMD.CyclomaticComplexity") // There are 5 different cases of segment value criteria.
+
     private void addSegmentValueCriterion(Criteria segmentDataCrit) {
         // First case, if both are null.
         if (copyNumberCriterion.getUpperLimit() == null && copyNumberCriterion.getLowerLimit() == null) {
             return;
         }
-        SimpleExpression upperLimitExpression = Restrictions.le("segmentValue", 
+        SimpleExpression upperLimitExpression = Restrictions.le("segmentValue",
                 copyNumberCriterion.getUpperLimit());
-        SimpleExpression lowerLimitExpression = Restrictions.ge("segmentValue", 
+        SimpleExpression lowerLimitExpression = Restrictions.ge("segmentValue",
                 copyNumberCriterion.getLowerLimit());
         // Second case, upper limit is higher than lower limit, value is in between the two
         if (copyNumberCriterion.isInsideBoundaryType()) {
             segmentDataCrit.add(Restrictions.conjunction().add(upperLimitExpression).add(lowerLimitExpression));
             return;
-         } 
+         }
         // Third case, lower limit is higher than upper limit, value is outside of the limits
         if (copyNumberCriterion.isOutsideBoundaryType()) {
             segmentDataCrit.add(Restrictions.disjunction().add(upperLimitExpression).add(lowerLimitExpression));
@@ -168,29 +166,29 @@ public class CopyNumberAlterationCriterionConverter {
             segmentDataCrit.add(lowerLimitExpression);
         }
     }
-    
-    
-    private void addGenomicIntervalTypeToCriteria(Criteria segmentDataCrit, Session currentSession, 
+
+
+    private void addGenomicIntervalTypeToCriteria(Criteria segmentDataCrit, Session currentSession,
             GenomeBuildVersionEnum genomeBuildVersion) {
         switch (copyNumberCriterion.getGenomicIntervalType()) {
             case GENE_NAME:
             handleGeneNameCriteria(segmentDataCrit, currentSession, genomeBuildVersion);
                 break;
             case CHROMOSOME_COORDINATES:
-                addChromosomeCoordinatesToCriterion(copyNumberCriterion.getChromosomeCoordinateHigh(), 
-                        copyNumberCriterion.getChromosomeCoordinateLow(), segmentDataCrit, 
+                addChromosomeCoordinatesToCriterion(copyNumberCriterion.getChromosomeCoordinateHigh(),
+                        copyNumberCriterion.getChromosomeCoordinateLow(), segmentDataCrit,
                         Cai2Util.getInternalChromosomeNumber(copyNumberCriterion.getChromosomeNumber()));
                 break;
             default:
                 throw new IllegalStateException("Unknown genomic interval type");
             }
     }
-    
-    @SuppressWarnings("unchecked") // Hibernate operations are untyped    
-    private void handleGeneNameCriteria(Criteria segmentDataCrit, Session currentSession, 
+
+    @SuppressWarnings("unchecked") // Hibernate operations are untyped
+    private void handleGeneNameCriteria(Criteria segmentDataCrit, Session currentSession,
             GenomeBuildVersionEnum genomeBuildVersion) {
         if (StringUtils.isNotBlank(copyNumberCriterion.getGeneSymbol())) {
-            List<GeneChromosomalLocation> geneLocations = 
+            List<GeneChromosomalLocation> geneLocations =
                 currentSession.createCriteria(GeneChromosomalLocation.class).add(
                 Restrictions.in("geneSymbol", copyNumberCriterion.getGeneSymbols())).createCriteria(
                 "geneLocationConfiguration").add(
@@ -200,8 +198,8 @@ public class CopyNumberAlterationCriterionConverter {
             }
         }
     }
-    
-    private void addChromosomeCoordinatesToCriterion(Integer chromosomeCoordinateHigh, 
+
+    private void addChromosomeCoordinatesToCriterion(Integer chromosomeCoordinateHigh,
             Integer chromosomeCoordinateLow, Criteria segmentDataCrit, String chromosomeNumber) {
         if (chromosomeCoordinateHigh == null || chromosomeCoordinateLow == null) {
             segmentDataCrit.add(chromosomeNumberExpression(chromosomeNumber));
@@ -213,8 +211,8 @@ public class CopyNumberAlterationCriterionConverter {
             }
         } else {
             Junction overallOrStatement = Restrictions.disjunction();
-            // (loc.startPos <= lowerInput && loc.endPos >= lowerInput && loc.chromosome == chromosomeInput) 
-            //  || (loc.startPos >= lowerInput  && loc.startPos <= higherInput && loc.chromosome == chromosomeInput) 
+            // (loc.startPos <= lowerInput && loc.endPos >= lowerInput && loc.chromosome == chromosomeInput)
+            //  || (loc.startPos >= lowerInput  && loc.startPos <= higherInput && loc.chromosome == chromosomeInput)
             overallOrStatement.add(Restrictions.conjunction().add(segmentStartLessThanLow(chromosomeCoordinateLow))
                     .add(segmentEndGreaterThanLow(chromosomeCoordinateLow)).add(
                             chromosomeNumberExpression(chromosomeNumber)));
@@ -224,12 +222,12 @@ public class CopyNumberAlterationCriterionConverter {
             segmentDataCrit.add(overallOrStatement);
         }
     }
-    
-    private void addMultipleChromosomeCoordinatesToCriterion(Criteria segmentDataCrit, 
+
+    private void addMultipleChromosomeCoordinatesToCriterion(Criteria segmentDataCrit,
             List<GeneChromosomalLocation> geneLocations) {
         Junction overallOrStatement = Restrictions.disjunction();
-        // (loc.startPos <= lowerInput && loc.endPos >= lowerInput && loc.chromosome == chromosomeInput) 
-        //  || (loc.startPos >= lowerInput  && loc.startPos <= higherInput && loc.chromosome == chromosomeInput) 
+        // (loc.startPos <= lowerInput && loc.endPos >= lowerInput && loc.chromosome == chromosomeInput)
+        //  || (loc.startPos >= lowerInput  && loc.startPos <= higherInput && loc.chromosome == chromosomeInput)
         for (GeneChromosomalLocation geneLocation : geneLocations) {
             Integer chromosomeCoordinateLow = geneLocation.getLocation().getStartPosition();
             Integer chromosomeCoordinateHigh = geneLocation.getLocation().getEndPosition();
@@ -243,28 +241,28 @@ public class CopyNumberAlterationCriterionConverter {
                                     geneLocation.getLocation().getChromosome()))));
         }
         segmentDataCrit.add(overallOrStatement);
-        
+
     }
     private SimpleExpression segmentEndLessThanHigh(Integer chromosomeCoordinateHigh) {
         return Restrictions.le(LOCATION_END_ATTRIBUTE, chromosomeCoordinateHigh);
     }
-    
+
     private SimpleExpression segmentStartGreaterThanLow(Integer chromosomeCoordinateLow) {
         return Restrictions.ge(LOCATION_START_ATTRIBUTE, chromosomeCoordinateLow);
     }
-    
+
     private SimpleExpression segmentStartLessThanLow(Integer chromosomeCoordinateLow) {
         return Restrictions.le(LOCATION_START_ATTRIBUTE, chromosomeCoordinateLow);
     }
-    
+
     private SimpleExpression segmentStartLessThanHigh(Integer chromosomeCoordinateHigh) {
         return Restrictions.le(LOCATION_START_ATTRIBUTE, chromosomeCoordinateHigh);
     }
-    
+
     private SimpleExpression segmentEndGreaterThanLow(Integer chromosomeCoordinateLow) {
         return Restrictions.ge(LOCATION_END_ATTRIBUTE, chromosomeCoordinateLow);
     }
-    
+
     private SimpleExpression chromosomeNumberExpression(String chromosomeNumber) {
         return Restrictions.eq("Location.chromosome", chromosomeNumber);
     }

@@ -108,7 +108,6 @@ import java.util.Set;
 /**
  * Service used to create, define, deploy and update studies.
  */
-@SuppressWarnings("PMD.ExcessiveClassLength")
 public interface StudyManagementService extends CaIntegrator2EntityRefresher {
 
     /**

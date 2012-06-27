@@ -114,7 +114,6 @@ import org.apache.commons.collections.CollectionUtils;
 /**
  * Creates the actual results for the Query and Subjects that passed the criterion checks.
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // see addColumns()
 public class ResultHandlerImpl implements ResultHandler {
 
     /**
@@ -138,8 +137,6 @@ public class ResultHandlerImpl implements ResultHandler {
      * @param queryResult - object that contains the rows.
      * @param dao
      */
-    // Have to iterate over many collections to get values.
-    @SuppressWarnings({ "PMD.ExcessiveMethodLength" })
     private void addColumns(QueryResult queryResult, CaIntegrator2Dao dao) {
         Query query = queryResult.getQuery();
         Collection<ResultColumn> columns = query.retrieveVisibleColumns();

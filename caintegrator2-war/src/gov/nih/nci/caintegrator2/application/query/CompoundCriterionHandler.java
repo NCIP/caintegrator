@@ -130,7 +130,6 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Handles CompoundCriterion objects.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
 final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     private final Collection <AbstractCriterionHandler> handlers;
@@ -151,7 +150,6 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @param compoundCriterion - compound criterion to create from.
      * @return CompoundCriterionHandler object returned, with the handlers collection filled.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // requires switch-like statement
     static CompoundCriterionHandler create(CompoundCriterion compoundCriterion, ResultTypeEnum resultType) {
         Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
         if (compoundCriterion.getCriterionCollection() != null) {
