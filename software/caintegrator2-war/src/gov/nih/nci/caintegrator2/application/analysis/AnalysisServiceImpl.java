@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.application.analysis;
@@ -172,7 +172,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Implementation of the AnalysisService subsystem.
  */
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-@SuppressWarnings("PMD.ExcessiveClassLength") // This is the main class for running all analysis, consider refactor
 public class AnalysisServiceImpl extends CaIntegrator2BaseService implements AnalysisService {
     private KMPlotService kmPlotService;
     private GeneExpressionPlotService gePlotService;
@@ -187,6 +186,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server)
     throws WebServiceException {
         return new GenePatternHelper(retrieveClient(server)).getMethods();
@@ -199,14 +199,15 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
-    public JobInfoWrapper executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
+    @Override
+    public JobInfoWrapper executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation)
     throws WebServiceException {
         JobInfoWrapper jobInfo = new GenePatternHelper(retrieveClient(server)).execute(invocation);
         URL serviceUrl;
         URL resultUrl;
         try {
             serviceUrl = new URL(server.getUrl());
-            resultUrl = new URL(serviceUrl.getProtocol(), serviceUrl.getHost(), serviceUrl.getPort(), 
+            resultUrl = new URL(serviceUrl.getProtocol(), serviceUrl.getHost(), serviceUrl.getPort(),
                     "/gp/pages/jobResults.jsf");
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Invalid URL provided for server " + server.getUrl(), e);
@@ -214,43 +215,45 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         jobInfo.setUrl(resultUrl);
         return jobInfo;
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public File executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
-            ComparativeMarkerSelectionAnalysisJob job) 
+            ComparativeMarkerSelectionAnalysisJob job)
     throws ConnectionException, InvalidCriterionException {
         StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class);
         PreprocessDatasetParameters preprocessParams = job.getForm().getPreprocessDatasetparameters();
         job.setSubscription(studySubscription);
-        GctDataset gctDataset = createGctDataset(studySubscription, preprocessParams.getClinicalQueries(), 
+        GctDataset gctDataset = createGctDataset(studySubscription, preprocessParams.getClinicalQueries(),
                 preprocessParams.getPlatformName(), preprocessParams.getExcludedControlSampleSet(), true);
         File gctFile = createGctFile(gctDataset, studySubscription,
                 preprocessParams.getProcessedGctFilename());
-        File clsFile = createClassificationFile(studySubscription, 
-                job.getForm().getComparativeMarkerSelectionParameters().getClinicalQueries(), 
-                job.getForm().getComparativeMarkerSelectionParameters().getClassificationFileName(), 
+        File clsFile = createClassificationFile(studySubscription,
+                job.getForm().getComparativeMarkerSelectionParameters().getClinicalQueries(),
+                job.getForm().getComparativeMarkerSelectionParameters().getClassificationFileName(),
                 gctDataset.getColumnSampleNames());
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
-                "CMS_INPUT_" +  System.currentTimeMillis() + ".zip", 
+                "CMS_INPUT_" +  System.currentTimeMillis() + ".zip",
                 gctFile, clsFile));
         checkForMissingSubjects(job, gctDataset.getSubjectsNotFoundFromQueries());
         return genePatternGridRunner.runPreprocessComparativeMarkerSelection(updater, job, gctFile, clsFile);
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(readOnly = false)
-    public File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
+    public File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job)
     throws ConnectionException, InvalidCriterionException, ParameterException, IOException,
             DataRetrievalException {
         File resultsZipFile = null;
-        StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class); 
+        StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class);
         job.setSubscription(studySubscription);
-        GisticSamplesMarkers gisticSamplesMarkers = 
-            GenePatternUtil.createGisticSamplesMarkers(queryManagementService, 
+        GisticSamplesMarkers gisticSamplesMarkers =
+            GenePatternUtil.createGisticSamplesMarkers(queryManagementService,
                     job.getGisticAnalysisForm().getGisticParameters(), job.getSubscription());
         checkForMissingSubjects(job, queryManagementService.getAllSubjectsNotFoundInCriteria(job
                 .getGisticAnalysisForm().getGisticParameters().getClinicalQuery()));
@@ -281,7 +284,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         inputFiles.add(segmentFile);
         inputFiles.add(markersFile);
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
-                "GISTIC_INPUT_" +  System.currentTimeMillis() + ".zip", 
+                "GISTIC_INPUT_" +  System.currentTimeMillis() + ".zip",
                 inputFiles.toArray(new File[inputFiles.size()])));
         if (job.isGridServiceCall()) {
             resultsZipFile = genePatternGridRunner.runGistic(updater, job, segmentFile, markersFile, cnvFile);
@@ -290,10 +293,11 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         }
         return resultsZipFile;
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean validateGenePatternConnection(ServerConnectionProfile server) {
         try {
             return retrieveClient(server).validateConnection();
@@ -301,7 +305,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             return false;
         }
     }
-    
+
     private Map<String, Map<GisticGenomicRegionReporter, Float>> parseGisticResults(
             ReporterList reporterList, File resultsZipFile) throws DataRetrievalException {
         if (resultsZipFile != null) {
@@ -309,7 +313,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         }
         return null;
     }
-    
+
     private void createArrayData(Study study, GisticAnalysis gisticAnalysis,
             Map<String, Map<GisticGenomicRegionReporter, Float>> gisticData) {
         if (gisticData != null) {
@@ -319,7 +323,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                 getDao().save(arrayData);
                 List<AbstractReporter> regionReporters = new ArrayList<AbstractReporter>();
                 for (GisticGenomicRegionReporter reporter : gisticData.get(sampleName).keySet()) {
-                    regionReporters.add((AbstractReporter) reporter);
+                    regionReporters.add(reporter);
                 }
                 ArrayDataValues values = new ArrayDataValues(regionReporters);
                 for (GisticGenomicRegionReporter regionReporter : gisticData.get(sampleName).keySet()) {
@@ -343,7 +347,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         array.getSampleCollection().add(sample);
         sample.getArrayCollection().add(array);
         arrayData.getReporterLists().add(reporterList);
-        reporterList.getArrayDatas().add(arrayData);    
+        reporterList.getArrayDatas().add(arrayData);
         return arrayData;
     }
 
@@ -370,9 +374,9 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         gisticAnalysis.setCreationDate(job.getCreationDate());
         return gisticAnalysis;
     }
-    
-    private File runGisticWebService(GisticAnalysisJob job, StatusUpdateListener updater, 
-            File segmentFile, File markersFile) 
+
+    private File runGisticWebService(GisticAnalysisJob job, StatusUpdateListener updater,
+            File segmentFile, File markersFile)
     throws ConnectionException, InvalidCriterionException, IOException {
         ServerConnectionProfile server = job.getGisticAnalysisForm().getGisticParameters().getServer();
         GisticWebServiceRunner gisticWebServiceRunner;
@@ -382,30 +386,31 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         } catch (WebServiceException e) {
             throw new ConnectionException("Unable to connect to GenePattern.", e);
         }
-        
+
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public File executeGridPCA(StatusUpdateListener updater,
             PrincipalComponentAnalysisJob job) throws ConnectionException, InvalidCriterionException {
-        StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class); 
+        StudySubscription studySubscription = getDao().get(job.getSubscription().getId(), StudySubscription.class);
         job.setSubscription(studySubscription);
         PCAParameters parameters = job.getForm().getPcaParameters();
-        GctDataset gctDataset = createGctDataset(studySubscription, parameters.getClinicalQueries(), 
+        GctDataset gctDataset = createGctDataset(studySubscription, parameters.getClinicalQueries(),
                 parameters.getPlatformName(), parameters.getExcludedControlSampleSet(), true);
         File gctFile = createGctFile(gctDataset, studySubscription, parameters.getGctFileName());
         checkForMissingSubjects(job, gctDataset.getSubjectsNotFoundFromQueries());
         job.setInputZipFile(fileManager.createInputZipFile(studySubscription, job,
-                "PCA_INPUT_" +  System.currentTimeMillis() + ".zip", 
+                "PCA_INPUT_" +  System.currentTimeMillis() + ".zip",
                 gctFile));
         return genePatternGridRunner.runPCA(updater, job, gctFile);
     }
 
     private void checkForMissingSubjects(AbstractPersistedAnalysisJob job, Set<String> subjectsNotFound) {
         if (!subjectsNotFound.isEmpty()) {
-            job.setStatusDescription("Subjects not found in queries/subject lists: " 
+            job.setStatusDescription("Subjects not found in queries/subject lists: "
                     + StringUtils.join(subjectsNotFound, ","));
         }
     }
@@ -413,7 +418,8 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
-    public KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters) 
+    @Override
+    public KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters)
         throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         AbstractKMPlotHandler kmPlotHandler = AbstractKMPlotHandler.createKMPlotHandler(
             subscription, getDao(), kmParameters.getSurvivalValueDefinition(), queryManagementService, kmParameters);
@@ -421,28 +427,30 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return kmPlotHandler.createPlot(kmPlotService);
 
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription,
-            AbstractGEPlotParameters plotParameters) 
+            AbstractGEPlotParameters plotParameters)
     throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         if (StringUtils.isNotBlank(plotParameters.getGeneSymbol())) {
             plotParameters.getGenesNotFound().clear();
-            plotParameters.getGenesNotFound().addAll(validateGeneSymbols(studySubscription, 
+            plotParameters.getGenesNotFound().addAll(validateGeneSymbols(studySubscription,
                     Cai2Util.createListFromCommaDelimitedString(plotParameters.getGeneSymbol())));
         }
         AbstractGEPlotHandler gePlotHandler = AbstractGEPlotHandler.createGeneExpressionPlotHandler(
                 getDao(), queryManagementService, plotParameters, gePlotService);
-        
+
         return gePlotHandler.createPlots(studySubscription);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public String executeIGV(IGVParameters igvParameters) 
+    @Override
+    public String executeIGV(IGVParameters igvParameters)
     throws InvalidCriterionException {
         IGVResult igvResult = new IGVResult();
         StudySubscription studySubscription = getRefreshedEntity(igvParameters.getStudySubscription());
@@ -474,7 +482,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             IGVParameters igvParameters, IGVResult igvResult) {
         CopyNumberCriterionTypeEnum copyNumberSubType = null;
         if (igvResult.getSegmentationFile() != null) {
-            copyNumberSubType = igvParameters.isUseCGHCall() 
+            copyNumberSubType = igvParameters.isUseCGHCall()
                     ? CopyNumberCriterionTypeEnum.CALLS_VALUE : CopyNumberCriterionTypeEnum.SEGMENT_VALUE;
         }
         return copyNumberSubType;
@@ -488,7 +496,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
                     createGeneExpressionFile(igvParameters.getStudySubscription(), platform));
             } else if (platform.getPlatformConfiguration().getPlatformType().isCopyNumber()) {
                 igvResult.setSegmentationFile(
-                    createIGVSegmentationFile(igvParameters.getStudySubscription(), platform, 
+                    createIGVSegmentationFile(igvParameters.getStudySubscription(), platform,
                             igvParameters.isUseCGHCall()));
             }
             refreshedPlatforms.add(getRefreshedEntity(platform));
@@ -497,7 +505,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         igvParameters.getPlatforms().addAll(refreshedPlatforms);
     }
 
-    private IGVResult runIGVForQueryResult(IGVParameters igvParameters) 
+    private IGVResult runIGVForQueryResult(IGVParameters igvParameters)
         throws InvalidCriterionException {
         IGVResult igvResult = new IGVResult();
         Set<Query> queries = new HashSet<Query>();
@@ -525,11 +533,12 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         }
         return igvResult;
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public String executeHeatmap(HeatmapParameters heatmapParameters) 
+    @Override
+    public String executeHeatmap(HeatmapParameters heatmapParameters)
     throws InvalidCriterionException {
         HeatmapResult heatmapResult = new HeatmapResult();
         if (heatmapParameters.isViewAllData()) {
@@ -550,7 +559,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return heatmapParameters.getUrlPrefix() + HeatmapFileTypeEnum.LAUNCH_FILE.getFilename();
     }
 
-    private void generateHeatmapGenomicFileForQuery(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult) 
+    private void generateHeatmapGenomicFileForQuery(HeatmapParameters heatmapParameters, HeatmapResult heatmapResult)
     throws InvalidCriterionException {
         heatmapParameters.getQuery().setResultType(ResultTypeEnum.COPY_NUMBER);
         Set<Query> queries = new HashSet<Query>();
@@ -564,9 +573,9 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         Platform platform = heatmapParameters.getPlatform();
         StudySubscription studySubscription = heatmapParameters.getStudySubscription();
         File genomicDataFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(),
-                heatmapParameters.isUseCGHCall() ? HeatmapFileTypeEnum.CALLS_DATA 
+                heatmapParameters.isUseCGHCall() ? HeatmapFileTypeEnum.CALLS_DATA
                     : HeatmapFileTypeEnum.GENOMIC_DATA, platform.getName());
-        File layoutFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(), 
+        File layoutFile = analysisFileManager.retrieveHeatmapFile(studySubscription.getStudy(),
                 HeatmapFileTypeEnum.LAYOUT, platform.getName());
         if (!genomicDataFile.exists() || !layoutFile.exists()) {
             createHeatmapDataFiles(heatmapParameters, heatmapResult, new HashSet<Query>(), platform);
@@ -594,7 +603,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             if (genomeBuildVersion == null || !getDao().isGenomeVersionMapped(genomeBuildVersion)) {
                 genomeBuildVersion = GenomeBuildVersionEnum.HG18; // Default build.
             }
-            return getDao().getGeneLocationConfiguration(genomeBuildVersion);  
+            return getDao().getGeneLocationConfiguration(genomeBuildVersion);
         }
 
     private File createGeneExpressionFile(StudySubscription studySubscription, Platform platform) {
@@ -614,11 +623,11 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return gctFile;
     }
 
-    private File createIGVSegmentationFile(StudySubscription studySubscription, Platform platform, 
+    private File createIGVSegmentationFile(StudySubscription studySubscription, Platform platform,
             boolean isUseCGHCall) {
         File segFile = null;
         segFile = analysisFileManager.retrieveIGVFile(
-                studySubscription.getStudy(), 
+                studySubscription.getStudy(),
                 isUseCGHCall ? IGVFileTypeEnum.SEGMENTATION_CALLS : IGVFileTypeEnum.SEGMENTATION,
                 platform.getName());
         if (!segFile.exists()) {
@@ -637,6 +646,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createViewerFiles(StudySubscription studySubscription, HeatmapParameters heatmapParameters,
             Platform platform)
     throws InvalidCriterionException, IOException {
@@ -668,7 +678,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         parameters.getQuery().getColumnCollection().remove(sampleColumn);
         return result;
     }
-    
+
     private String encodeUrl(String url) {
         String encodedUrl = url.replaceAll("\\?", "%3F");
         encodedUrl = encodedUrl.replaceAll("=", "%3D");
@@ -679,19 +689,20 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
     throws GenesNotFoundInStudyException {
         return queryManagementService.validateGeneSymbols(studySubscription, geneSymbols);
     }
-    
+
     private File createClassificationFile(StudySubscription studySubscription, List<Query> clinicalQueries,
             String clsFilename, List<String> sampleColumnOrdering) throws InvalidCriterionException {
-        return fileManager.createClassificationFile(studySubscription, 
+        return fileManager.createClassificationFile(studySubscription,
                 GenePatternUtil.createSampleClassification(
-                        queryManagementService, clinicalQueries, sampleColumnOrdering), 
+                        queryManagementService, clinicalQueries, sampleColumnOrdering),
                 clsFilename);
     }
-    
+
     private File createGctFile(GctDataset gctDataset, StudySubscription studySubscription, String filename)
     throws InvalidCriterionException {
         return fileManager.createGctFile(studySubscription, gctDataset, filename);
@@ -703,17 +714,18 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         return GenePatternUtil.createGctDataset(studySubscription, querySet,
                 refreshedExcludedSet, queryManagementService, platformName, addGenesToReporters);
     }
-    
-    private Collection<SegmentData> createSegmentDataset(StudySubscription studySubscription, 
+
+    private Collection<SegmentData> createSegmentDataset(StudySubscription studySubscription,
             Collection<Query> querySet, String platformName, SampleSet excludedSet) throws InvalidCriterionException {
         SampleSet refreshedExcludedSet = excludedSet == null ? null : getRefreshedEntity(excludedSet);
         return GenePatternUtil.createSegmentDataset(studySubscription, querySet,
                 refreshedExcludedSet, queryManagementService, platformName);
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public StudySubscription getRefreshedStudySubscription(StudySubscription studySubscription) {
         StudySubscription refreshedStudySubscription = getRefreshedEntity(studySubscription);
         HibernateUtil.loadCollection(refreshedStudySubscription);
@@ -793,6 +805,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(readOnly = false)
     public void deleteAnalysisJob(Long jobId) {
         AbstractPersistedAnalysisJob job = getAnalysisJob(jobId);
@@ -803,10 +816,11 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * {@inheritDoc}
      */
+    @Override
     public void deleteViewerDirectory(Study study) {
         analysisFileManager.deleteViewerDirectory(study);
     }
-    
+
     private void deleteFiles(AbstractPersistedAnalysisJob job) {
         if (job.getResultsZipFile() != null) {
             FileUtils.deleteQuietly(job.getResultsZipFile().getFile());
@@ -819,15 +833,16 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private AbstractPersistedAnalysisJob getAnalysisJob(Long id) {
         return getDao().get(id, AbstractPersistedAnalysisJob.class);
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional(readOnly = false)
     public void deleteGisticAnalysis(GisticAnalysis gisticAnalysis) {
         StudySubscription studySubscription = gisticAnalysis.getStudySubscription();
         if (gisticAnalysis.getReporterList() != null) {
-            getArrayDataService().deleteGisticAnalysisNetCDFFile(studySubscription.getStudy(), 
+            getArrayDataService().deleteGisticAnalysisNetCDFFile(studySubscription.getStudy(),
                     gisticAnalysis.getReporterList().getId());
             for (ArrayData arrayData : gisticAnalysis.getReporterList().getArrayDatas()) {
                 for (Sample sample : arrayData.getArray().getSampleCollection()) {

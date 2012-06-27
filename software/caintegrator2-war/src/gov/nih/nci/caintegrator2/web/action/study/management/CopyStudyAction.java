@@ -103,7 +103,6 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Saves basic study information.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") //Validate the study name
 public class CopyStudyAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
@@ -209,7 +208,6 @@ public class CopyStudyAction extends AbstractStudyAction {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Validate the study name
     public void validate() {
         String studyName = getStudyConfiguration().getStudy().getShortTitleText();
         if (StringUtils.isEmpty(studyName)) {

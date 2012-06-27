@@ -124,6 +124,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
     throws ConnectionException, ExperimentNotFoundException {
         SearchService searchService = getServiceFactory().createSearchService(profile);
@@ -168,6 +169,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource)
     throws ConnectionException, DataRetrievalException {
         AbstractDataRetrievalHelper dataRetrievalHelper = getDataRetrievalHelper(genomicSource, null);
@@ -186,6 +188,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<ArrayDataValues> retrieveDnaAnalysisData(GenomicDataSourceConfiguration genomicSource,
             ArrayDataService arrayDataService)
     throws ConnectionException, DataRetrievalException {
@@ -239,6 +242,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] retrieveFile(GenomicDataSourceConfiguration genomicSource, String filename)
     throws FileNotFoundException, ConnectionException {
         File dataFile = getFile(genomicSource, filename);
@@ -262,6 +266,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("PMD.PreserveStackTrace")     // FileNotFoundException doesn't include a source Throwable
     public List<File> retrieveFilesForGenomicSource(GenomicDataSourceConfiguration genomicSource)
         throws ConnectionException, FileNotFoundException {
@@ -281,6 +286,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void validateGenomicSourceConnection(GenomicDataSourceConfiguration genomicSource)
         throws ConnectionException, ExperimentNotFoundException {
         SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
@@ -290,6 +296,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, Date> checkForSampleUpdates(String experimentIdentifier, ServerConnectionProfile profile)
             throws ConnectionException, ExperimentNotFoundException {
         SearchService searchService = getServiceFactory().createSearchService(profile);
@@ -304,6 +311,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Date getLastDataModificationDate(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
         ExperimentNotFoundException {
         SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());

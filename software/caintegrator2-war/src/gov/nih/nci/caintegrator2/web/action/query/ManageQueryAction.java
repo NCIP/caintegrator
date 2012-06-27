@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.web.action.query;
@@ -143,9 +143,6 @@ import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 /**
  * Handles the form in which the user constructs, edits and runs a query.
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength",
-    "PMD.TooManyFields" }) // see execute method
-
 public class ManageQueryAction extends AbstractDeployedStudyAction implements ParameterNameAware, ServletContextAware {
 
     private static final long serialVersionUID = 1L;
@@ -210,6 +207,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean acceptableParameterName(String parameterName) {
         boolean retVal = true;
         if (parameterName != null) {
@@ -224,11 +222,12 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         }
         return retVal;
     }
-    
+
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void prepare() {
         super.prepare();
         refreshGenomicSources();
@@ -244,7 +243,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             displayTab = CRITERIA_TAB;
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -259,9 +258,9 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
                 || "loadExecute".equals(selectedAction)) {
             getQueryForm().setQuery(null, geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
                     copyNumberPlatformsWithCghCallInStudy);
-            validateExecuteQuery(); 
+            validateExecuteQuery();
         } else if (EXECUTE_QUERY.equals(selectedAction)) {
-            validateExecuteQuery(); 
+            validateExecuteQuery();
         } else if ("saveQuery".equals(selectedAction)
                 || "saveAsQuery".equals(selectedAction)) {
             validateSaveQuery();
@@ -271,16 +270,16 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             validateSaveSubjectList();
         }
     }
-    
+
     private void validateAddCriterionRow() {
         getQueryForm().validate(this);
     }
-    
+
     private void validateExecuteQuery() {
         ensureQueryIsLoaded();
         getQueryForm().validate(this);
     }
-    
+
     private void validateSaveQuery() {
         getQueryForm().validateForSave(this);
         if (this.hasErrors()) {
@@ -292,34 +291,32 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             addActionError(e.getMessage());
             displayTab = CRITERIA_TAB;
         }
-        
+
     }
-    
+
     private void validateSaveSubjectList() {
         if (StringUtils.isEmpty(getSubjectListName())) {
             addActionError(getText("struts.messages.error.query.subject.list.name.empty"));
         } else if (getStudySubscription().getSubjectListNames().contains(getSubjectListName())) {
-            addActionError(getText("struts.messages.error.query.subject.list.name.duplicate", 
+            addActionError(getText("struts.messages.error.query.subject.list.name.duplicate",
                     getArgs(getSubjectListName())));
         }
         if (this.hasErrors()) {
             displayTab = RESULTS_TAB;
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength",
-        "PMD.NcssMethodCount" }) // Checking action type.
     public String execute() {
-        
+
         if (studyHasEmptyPlatformTypes()) {
             return "missingPlatformChannelType";
         }
-        
+
         String returnValue = ERROR;
 
         if ("selectedTabSearchResults".equals(selectedAction)) {
@@ -362,10 +359,10 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             displayTab = RESULTS_TAB;
             returnValue = exportGenomicResults();
         } else if ("createNewQuery".equals(selectedAction)) {
-            returnValue = createNewQuery();    
+            returnValue = createNewQuery();
         } else if ("forwardToNcia".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
-            returnValue = forwardToNciaBasket(); 
+            returnValue = forwardToNciaBasket();
         } else if ("viewIGV".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             returnValue = viewIGV();
@@ -409,7 +406,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             returnValue = sortGenomicResult();
         } else {
             addActionError(getText("struts.messages.error.invalid.action", getArgs(selectedAction)));
-            returnValue = ERROR; 
+            returnValue = ERROR;
         }
         return returnValue;
     }
@@ -438,7 +435,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         resetQueryResult();
         return SUCCESS;
     }
-    
+
     private String loadGeneListExecute(boolean isGlobal) {
         createNewQuery();
         if (getStudy().hasGenomicDataSources()) {
@@ -449,7 +446,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         displayTab = CRITERIA_TAB;
         return ERROR;
     }
-    
+
     private void loadGeneList(boolean isGlobal) {
         getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
         addCriterionRow();
@@ -472,7 +469,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             setOpenGlobalGeneListName(null);
         }
     }
-    
+
     private String getGeneSymbols(boolean isGlobal) {
         StringBuffer geneSymbols = new StringBuffer();
         GeneList geneList = (isGlobal)
@@ -486,14 +483,14 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         }
         return geneSymbols.toString();
     }
-    
+
     private String loadSubjectListExecute(boolean isGlobal) {
         createNewQuery();
         loadSubjectList(isGlobal);
         getQueryForm().getResultConfiguration().selectAllValues();
         return executeQuery();
     }
-    
+
     @SuppressWarnings("unchecked")
     private void loadSubjectList(boolean isGlobal) {
         getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.SAVED_LIST.getValue());
@@ -529,7 +526,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         displayTab = CRITERIA_TAB;
         getQueryForm().processCriteriaChanges();
     }
-    
+
     private void updateSorting() {
         getQueryForm().getResultConfiguration().reindexColumns();
     }
@@ -539,7 +536,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      * @return the Struts result.
      */
     public String toggleCheckboxSelections() {
-        if (getQueryResult() != null 
+        if (getQueryResult() != null
                 && getQueryResult().getRows() != null
                 && !getQueryResult().getRows().isEmpty()) {
             for (DisplayableResultRow row : getQueryResult().getRows()) {
@@ -554,7 +551,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      * @return the Struts result.
      */
     public String toggleSubjectCheckboxSelections() {
-        if (getQueryResult() != null 
+        if (getQueryResult() != null
                 && getQueryResult().getRows() != null
                 && !getQueryResult().getRows().isEmpty()) {
             for (DisplayableResultRow row : getQueryResult().getRows()) {
@@ -563,7 +560,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         }
         return SUCCESS;
     }
-    
+
     /**
      * Forwards to NCIA.
      * @return the Struts result.
@@ -572,7 +569,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         nciaBasket = queryManagementService.createNciaBasket(retrieveCheckedRows());
         return "nciaBasket";
     }
-    
+
     /**
      * View IGV.
      * @return the Struts result.
@@ -588,7 +585,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         getDisplayableWorkspace().setIgvParameters(igvParameters);
         return "viewIGV";
     }
-    
+
     /**
      * View IGV.
      * @return the Struts result.
@@ -613,7 +610,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
      * @return the Struts result.
      */
     public String createDicomJob() {
-        if (getDisplayableWorkspace().getDicomJob() != null 
+        if (getDisplayableWorkspace().getDicomJob() != null
                 && getDisplayableWorkspace().getDicomJob().isCurrentlyRunning()) {
             addActionError(getText("struts.messages.error.query.dicom.already.running"));
             return "dicomJobCurrentlyRunning";
@@ -630,7 +627,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
 
     private List<DisplayableResultRow> retrieveCheckedRows() {
         List <DisplayableResultRow> checkedRows = new ArrayList<DisplayableResultRow>();
-        if (getQueryResult() != null 
+        if (getQueryResult() != null
             && getQueryResult().getRows() != null
             && !getQueryResult().getRows().isEmpty()) {
             for (DisplayableResultRow row : getQueryResult().getRows()) {
@@ -644,7 +641,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
 
     private Set<String> retrieveSelectedSubjects() {
         Set <String> selectedIdentifiers = new HashSet<String>();
-        if (getQueryResult() != null 
+        if (getQueryResult() != null
             && getQueryResult().getRows() != null
             && !getQueryResult().getRows().isEmpty()) {
             for (DisplayableResultRow row : getQueryResult().getRows()) {
@@ -655,25 +652,25 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         }
         return selectedIdentifiers;
     }
-    
+
     /**
      * Add a a criterion row to the query, and validates that row has data for this study.
-     * 
+     *
      * @return the Struts result.
      */
     public String addCriterionRow() {
         getQueryForm().getCriteriaGroup().addCriterion(getCurrentStudy());
         return SUCCESS;
     }
-    
+
     private String removeRow() {
         getQueryForm().getCriteriaGroup().removeRow(rowNumber);
         return SUCCESS;
     }
-    
+
     /**
      * Execute the current query.
-     * 
+     *
      * @return the Struts result.
      */
     public String executeQuery() {
@@ -736,10 +733,10 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             }
         }
     }
-    
+
     /**
      * Save the current query.
-     * 
+     *
      * @return the Struts result.
      */
     public String saveQuery() {
@@ -755,10 +752,10 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         getQueryForm().setOrgQueryName(query.getName());
         return SUCCESS;
     }
-    
+
     /**
      * Save the current saved query as a new query.
-     * 
+     *
      * @return the Struts result.
      */
     public String saveAsQuery() {
@@ -796,10 +793,10 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         resetQueryResult();
         return SUCCESS;
     }
-    
+
     /**
      * Save the subject list.
-     * 
+     *
      * @return the Struts result.
      */
     public String saveSubjectList() {
@@ -836,7 +833,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
-    
+
     /**
      * @return the selectedAction
      */
@@ -857,7 +854,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public String getRowNumber() {
         return String.valueOf(rowNumber);
     }
-    
+
     /**
      * @param rowNumber the rowNumber to set
      */
@@ -866,7 +863,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             this.rowNumber = Integer.parseInt(rowNumber);
         }
     }
-        
+
     /**
      * @return the displayTab
      */
@@ -900,7 +897,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
             return null;
         }
     }
-    
+
     /**
      * @return the studyManagementService
      */
@@ -913,7 +910,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }
-    
+
     /**
      * @return the export
      */
@@ -927,7 +924,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public void setExport(boolean export) {
         this.export = export;
     }
-        
+
     /**
      * Set the page size.
      * @param pageSize the page size
@@ -1028,7 +1025,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         getQueryForm().setGenomicPreviousSorting(genomicSortingType + genomicSortingIndex);
         return ("column".equals(genomicSortingType)) ? sortGenomicColumn() : sortGenomicRow();
     }
-    
+
     private String sortGenomicColumn() {
         for (GenomicDataResultColumn genomicDataResultColumn : getGenomicDataQueryResult().getColumnCollection()) {
             genomicDataResultColumn.setSortedValue(
@@ -1038,7 +1035,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
                 new GenomicDataResultComparator(getQueryForm().getGenomicSortingOrder()));
         return SUCCESS;
     }
-    
+
     private String sortGenomicRow() {
         for (GenomicDataResultRow genomicDataResultRow : getGenomicDataQueryResult().getRowCollection()) {
             genomicDataResultRow.setSortedValue(
@@ -1048,7 +1045,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
                 new GenomicDataResultComparator(getQueryForm().getGenomicSortingOrder()));
         return SUCCESS;
     }
-    
+
     /**
      * @return Return the StudyConfiguration for jUnit test.
      */
@@ -1069,12 +1066,13 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setServletContext(ServletContext servletContext) {
         this.context = servletContext;
-        
+
     }
 }

@@ -106,7 +106,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("PMD")
 public class QueryManagementServiceStub implements QueryManagementService {
     public final Set<String> platformsForStudy = new HashSet<String>();
 

@@ -156,7 +156,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Entry point to the StudyManagementService subsystem.
  */
 @Transactional(propagation = Propagation.REQUIRED)
-@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" })   // see configure study
 public class StudyManagementServiceImpl extends CaIntegrator2BaseService implements StudyManagementService {
 
     @SuppressWarnings("unused")
@@ -1229,7 +1228,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         return annotationDefinition;
     }
 
-    @SuppressWarnings({ "PMD.ExcessiveMethodLength" }) // Switch Statement and null checks
     private void addDefinitionToStudy(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType,
             AnnotationDefinition annotationDefinition) throws ValidationException {
         AnnotationDefinition annotationDefinitionToRemove = null;

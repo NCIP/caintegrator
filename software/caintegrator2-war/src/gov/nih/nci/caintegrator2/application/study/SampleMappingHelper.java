@@ -103,7 +103,6 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Helper class used to map samples to subjects.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
 class SampleMappingHelper {
 
     private final StudyConfiguration studyConfiguration;

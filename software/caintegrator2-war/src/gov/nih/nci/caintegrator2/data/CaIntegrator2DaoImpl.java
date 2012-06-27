@@ -159,7 +159,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Implementation of the DAO.
  */
 @Transactional
-@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // Until we refactor into multiple DAOs
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
 
     private static final String UNCHECKED = "unchecked";

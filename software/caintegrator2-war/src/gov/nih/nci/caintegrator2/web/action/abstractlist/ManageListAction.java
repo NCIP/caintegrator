@@ -109,7 +109,6 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Provides functionality to list and add array designs.
  */
-@SuppressWarnings("PMD")// See createPlatform method
 public class ManageListAction extends AbstractDeployedStudyAction {
 
     private static final long serialVersionUID = 1L;
@@ -125,7 +124,7 @@ public class ManageListAction extends AbstractDeployedStudyAction {
     private String geneInputElements;
     private String selectedAction;
     private String listId;
-    private Set<String> elementList = new HashSet<String>();
+    private final Set<String> elementList = new HashSet<String>();
 
     private static final String CREATE_LIST_ACTION = "createList";
     private static final String CANCEL_ACTION = "cancel";
@@ -223,17 +222,23 @@ public class ManageListAction extends AbstractDeployedStudyAction {
 
     private boolean duplicateListName() {
         if (ListTypeEnum.GENE.equals(listType)) {
-            if ((!isVisibleToOther() && getStudySubscription().getGeneList(getListName()) != null)
-                || (isVisibleToOther() && getStudy().getStudyConfiguration().getGeneList(getListName()) != null)) {
+            if (isDuplicateGeneListName()) {
                 return true;
             }
-        } else {
-            if ((!isVisibleToOther() && getStudySubscription().getSubjectList(getListName()) != null)
-                || (isVisibleToOther() && getStudy().getStudyConfiguration().getSubjectList(getListName()) != null)) {
-                return true;
-            }
+        } else if (isDuplicateSubjectListName()) {
+            return true;
         }
         return false;
+    }
+
+    private boolean isDuplicateSubjectListName() {
+        return (!isVisibleToOther() && getStudySubscription().getSubjectList(getListName()) != null)
+            || (isVisibleToOther() && getStudy().getStudyConfiguration().getSubjectList(getListName()) != null);
+    }
+
+    private boolean isDuplicateGeneListName() {
+        return (!isVisibleToOther() && getStudySubscription().getGeneList(getListName()) != null)
+            || (isVisibleToOther() && getStudy().getStudyConfiguration().getGeneList(getListName()) != null);
     }
 
     private void validateListData() {
@@ -283,28 +288,28 @@ public class ManageListAction extends AbstractDeployedStudyAction {
         }
     }
 
-    /**
-     * @return SUCCESS
-     * @throws ValidationException
-     */
     private String createList() throws ValidationException {
         AbstractList newList = (ListTypeEnum.GENE.equals(listType)) ? new GeneList() : new SubjectList();
         newList.setName(getListName());
         newList.setDescription(getDescription());
         newList.setLastModifiedDate(new Date());
-        if (isVisibleToOther()) {
-            newList.setVisibility(Visibility.GLOBAL);
-            newList.setStudyConfiguration(getSubscription().getStudy().getStudyConfiguration());
-        } else {
-            newList.setVisibility(Visibility.PRIVATE);
-            newList.setSubscription(getSubscription());
-        }
+        setNewListVisibility(newList);
         if (ListTypeEnum.GENE.equals(listType)) {
             getWorkspaceService().createGeneList((GeneList) newList, elementList);
             return (isVisibleToOther()) ? EDIT_GLOBAL_GENE_PAGE : EDIT_GENE_PAGE;
         } else {
             getWorkspaceService().createSubjectList((SubjectList) newList, elementList);
             return (isVisibleToOther()) ? EDIT_GLOBAL_SUBJECT_PAGE : EDIT_SUBJECT_PAGE;
+        }
+    }
+
+    private void setNewListVisibility(AbstractList newList) {
+        if (isVisibleToOther()) {
+            newList.setVisibility(Visibility.GLOBAL);
+            newList.setStudyConfiguration(getSubscription().getStudy().getStudyConfiguration());
+        } else {
+            newList.setVisibility(Visibility.PRIVATE);
+            newList.setSubscription(getSubscription());
         }
     }
 

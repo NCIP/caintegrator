@@ -101,7 +101,6 @@ import org.apache.commons.lang.StringUtils;
 /**
  * This is a static utility class used by the UI to update the permissibleValue collection.
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking for type and null.
 public final class PermissibleValueUtil {
 
     private PermissibleValueUtil() {

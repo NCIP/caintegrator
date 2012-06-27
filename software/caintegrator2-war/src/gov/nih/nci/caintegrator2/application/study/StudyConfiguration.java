@@ -116,7 +116,7 @@ import org.apache.commons.lang.xwork.StringUtils;
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
-@SuppressWarnings({"PMD.ExcessiveClassLength", "PMD.TooManyFields", "PMD.AvoidDuplicateLiterals" })
+@SuppressWarnings("PMD.AvoidDuplicateLiterals") // for "unused"
 public class StudyConfiguration extends AbstractCaIntegrator2StudyObject implements TimeStampable {
 
     private static final long serialVersionUID = 1L;
@@ -539,6 +539,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     /**
      * @return the lastModifiedDate
      */
+    @Override
     public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
@@ -546,6 +547,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     /**
      * @param lastModifiedDate the lastModifiedDate to set
      */
+    @Override
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
@@ -553,6 +555,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2StudyObject impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDisplayableLastModifiedDate() {
         return DateUtil.getDisplayableTimeStamp(lastModifiedDate);
     }

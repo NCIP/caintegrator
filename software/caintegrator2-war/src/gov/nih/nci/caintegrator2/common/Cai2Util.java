@@ -130,7 +130,6 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * This is a static utility class used by different caIntegrator2 objects.
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // See method retrieveValueFromRowColumn
 public final class Cai2Util {
     private static final Integer BUFFER_SIZE = 4096;
     private static final String ZIP_FILE_SUFFIX = ".zip";

@@ -115,7 +115,6 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Records sample and array data retrieval information.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.ExcessiveClassLength" })
 public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object implements TimeStampable {
 
     private static final long serialVersionUID = 1L;
@@ -497,7 +496,6 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @param sampleName name to search for.
      * @return the matching sample.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")   // best way to do check
     public Sample getSample(String sampleName) {
         for (Sample sample : getSamples()) {
             if (sampleName == null && sample.getName() == null) {
@@ -654,6 +652,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     /**
      * @return the lastModifiedDate
      */
+    @Override
     public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
@@ -661,6 +660,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     /**
      * @param lastModifiedDate the lastModifiedDate to set
      */
+    @Override
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
@@ -668,6 +668,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDisplayableLastModifiedDate() {
         return DateUtil.getDisplayableTimeStamp(lastModifiedDate);
     }

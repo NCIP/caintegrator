@@ -9,29 +9,28 @@ import java.util.Map;
 /**
  * Possible data types for platform.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // Checking for all different types
 public enum ArrayDataLoadingTypeEnum {
 
     /**
      * Parsed data.
      */
     PARSED_DATA("Parsed Data", false, false),
-    
+
     /**
      * Supplemental CHP file.
      */
     CHP("Supplemental CHP file", true, false),
-    
+
     /**
      * Supplemental CN CHP file.
      */
     CNCHP("Supplemental CNCHP file", true, false),
-    
+
     /**
      * Supplemental single sample per file.
      */
     SINGLE_SAMPLE_PER_FILE("Supplemental Single Sample Per File", true, false),
-    
+
     /**
      * Supplemental multiple samples per file.
      */
@@ -40,7 +39,7 @@ public enum ArrayDataLoadingTypeEnum {
     private String value;
     private boolean useSupplementalFiles;
     private boolean multiSamplesPerFile;
-    
+
     private ArrayDataLoadingTypeEnum(String value, boolean useSupplementalFiles, boolean multiSamplesPerFile) {
         this.value = value;
         this.useSupplementalFiles = useSupplementalFiles;
@@ -60,8 +59,8 @@ public enum ArrayDataLoadingTypeEnum {
     public void setValue(String value) {
         this.value = value;
     }
-    
-    private static Map<String, ArrayDataLoadingTypeEnum> valueToTypeMap = 
+
+    private static Map<String, ArrayDataLoadingTypeEnum> valueToTypeMap =
         new HashMap<String, ArrayDataLoadingTypeEnum>();
 
     private static Map<String, ArrayDataLoadingTypeEnum> getValueToTypeMap() {
@@ -72,14 +71,13 @@ public enum ArrayDataLoadingTypeEnum {
         }
         return valueToTypeMap;
     }
-    
+
     /**
      * Used to retrieve all string values (by the JSP for display purposes).
      * @param vendor the platform vendor
      * @param type the platform data type
      * @return List of all string values which represent the ENUM values.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Checking for all different types
     public static List<String> getLoadingTypes(PlatformVendorEnum vendor, PlatformDataTypeEnum type) {
         List<String> list = new ArrayList<String>();
         if (PlatformVendorEnum.AFFYMETRIX.equals(vendor)) {
@@ -97,11 +95,11 @@ public enum ArrayDataLoadingTypeEnum {
         list.add(MULTI_SAMPLE_PER_FILE.value);
         return list;
     }
-    
+
     /**
      * Returns the <code>ArrayDataLoadingTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
-     * 
+     *
      * @param value the value to match
      * @return the matching type.
      */
@@ -112,7 +110,7 @@ public enum ArrayDataLoadingTypeEnum {
 
     /**
      * Checks to see that the value given is a legal <code>ArrayDataLoadingTypeEnum</code> value.
-     * 
+     *
      * @param value the value to check;
      */
     public static void checkType(String value) {

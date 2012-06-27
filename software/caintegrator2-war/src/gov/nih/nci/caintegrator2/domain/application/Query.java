@@ -15,13 +15,12 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * 
+ *
  */
-@SuppressWarnings("PMD.TooManyFields") // Necessary fields for this object.
 public class Query extends AbstractCaIntegrator2Object implements Cloneable, TimeStampable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private String description;
     private String name;
     private ReporterTypeEnum reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
@@ -42,7 +41,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     private transient Platform geneExpressionPlatform;
     private transient Platform copyNumberPlatform;
     private CopyNumberCriterionTypeEnum copyNumberCriterionType = CopyNumberCriterionTypeEnum.SEGMENT_VALUE;
-    
+
 
     /**
      * @return the description
@@ -50,45 +49,46 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     public String getDescription() {
         return description;
     }
-    
+
     /**
      * @param description the description to set
      */
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     /**
      * @return the name
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * @return the visibility
      */
     public String getVisibility() {
         return visibility;
     }
-    
+
     /**
      * @param visibility the visibility to set
      */
     public void setVisibility(String visibility) {
         this.visibility = visibility;
     }
-    
+
     /**
      * @return the lastModifiedDate
      */
+    @Override
     public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
@@ -96,15 +96,17 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     /**
      * @param lastModifiedDate the lastModifiedDate to set
      */
+    @Override
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDisplayableLastModifiedDate() {
-        return DateUtil.getDisplayableTimeStamp(lastModifiedDate); 
+        return DateUtil.getDisplayableTimeStamp(lastModifiedDate);
     }
 
     /**
@@ -113,35 +115,35 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     public StudySubscription getSubscription() {
         return subscription;
     }
-    
+
     /**
      * @param subscription the subscription to set
      */
     public void setSubscription(StudySubscription subscription) {
         this.subscription = subscription;
     }
-    
+
     /**
      * @return the compoundCriterion
      */
     public CompoundCriterion getCompoundCriterion() {
         return compoundCriterion;
     }
-    
+
     /**
      * @param compoundCriterion the compoundCriterion to set
      */
     public void setCompoundCriterion(CompoundCriterion compoundCriterion) {
         this.compoundCriterion = compoundCriterion;
     }
-    
+
     /**
      * @return the columnCollection
      */
     public Collection<ResultColumn> getColumnCollection() {
         return columnCollection;
     }
-    
+
     /**
      * @param columnCollection the columnCollection to set
      */
@@ -187,14 +189,15 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     /**
      * {@inheritDoc}
      */
+    @Override
     public Query clone() throws CloneNotSupportedException {
         Query clone = (Query) super.clone();
-        clone.setCompoundCriterion((CompoundCriterion) compoundCriterion.clone());
+        clone.setCompoundCriterion(compoundCriterion.clone());
         clone.setColumnCollection(cloneColumnCollection());
         clone.setLastModifiedDate(new Date());
         return clone;
     }
-    
+
     private Collection<ResultColumn> cloneColumnCollection() throws CloneNotSupportedException {
         Collection<ResultColumn> clone = new HashSet<ResultColumn>();
         for (ResultColumn resultColumn : columnCollection) {
@@ -238,7 +241,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
     public Collection<ResultColumn> retrieveVisibleColumns() {
         List<ResultColumn> columns = new ArrayList<ResultColumn>();
         for (ResultColumn column : getColumnCollection()) {
-            if (column.getAnnotationFieldDescriptor() != null 
+            if (column.getAnnotationFieldDescriptor() != null
                  && column.getAnnotationFieldDescriptor().isShownInBrowse()) {
                 columns.add(column);
             }
@@ -246,7 +249,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
         reindexColumns(columns);
         return columns;
     }
-    
+
     private void reindexColumns(List<ResultColumn> columns) {
         Collections.sort(columns);
         for (int i = 0; i < columns.size(); i++) {
@@ -310,7 +313,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
         this.subjectListVisibility = subjectListVisibility;
     }
 
-    
+
     /**
      * @return the geneExpressionPlatform
      */
@@ -346,7 +349,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
         return PlatformChannelTypeEnum.TWO_COLOR.equals(
                 geneExpressionPlatform.getPlatformConfiguration().getPlatformChannelType());
     }
-    
+
     /**
      * If the query has both copy number and fold change platforms.
      * @return T/F value.
@@ -383,7 +386,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable, Tim
         this.needsGenomicHighlighting = needsGenomicHighlighting;
     }
 
-    
+
     /**
      * @return the copyNumberCriterionType
      */
