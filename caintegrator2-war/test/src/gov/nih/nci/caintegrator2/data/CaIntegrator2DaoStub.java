@@ -424,23 +424,23 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return new StudyLogo();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    @SuppressWarnings({"PMD", "unchecked"})
     public <T> List<T> retrieveUniqueValuesForStudyAnnotation(Study study, AnnotationDefinition definition,
             EntityTypeEnum entityType, Class<T> objectClass) {
-        List values = new ArrayList();
-       for (AbstractAnnotationValue value : definition.getAnnotationValueCollection()) {
-           if (value instanceof StringAnnotationValue) {
-               StringAnnotationValue stringVal = (StringAnnotationValue) value;
-               values.add(stringVal.getStringValue());
-           } else if (value instanceof NumericAnnotationValue) {
-               NumericAnnotationValue numericVal = (NumericAnnotationValue) value;
-               values.add(numericVal.getNumericValue());
-           } else if (value instanceof DateAnnotationValue) {
-               DateAnnotationValue dateVal = (DateAnnotationValue) value;
-               values.add(dateVal.getDateValue());
-       }
-       }
+        List<T> values = new ArrayList<T>();
+        for (AbstractAnnotationValue value : definition.getAnnotationValueCollection()) {
+            if (value instanceof StringAnnotationValue) {
+                StringAnnotationValue stringVal = (StringAnnotationValue) value;
+                values.add((T) stringVal.getStringValue());
+            } else if (value instanceof NumericAnnotationValue) {
+                NumericAnnotationValue numericVal = (NumericAnnotationValue) value;
+                values.add((T) numericVal.getNumericValue());
+            } else if (value instanceof DateAnnotationValue) {
+                DateAnnotationValue dateVal = (DateAnnotationValue) value;
+                values.add((T) dateVal.getDateValue());
+            }
+        }
         return values;
     }
 

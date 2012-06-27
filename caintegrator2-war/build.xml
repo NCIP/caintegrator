@@ -27,6 +27,7 @@
 
     <property name="cobertura.linecoverage" value="80"/>
     <property name="cobertura.branchcoverage" value="70"/>
+    <property name="pmd.maxRuleViolations" value="189"/>
 
     <tstamp>
       <format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
@@ -249,10 +250,7 @@
         static-analysis:findbugs
         ">
             <fail if="checkstyle.failure" message="There were Checkstyle failures." />
-            <fail if="pmd.failure" message="There were PMD failures." />
     </target>
-
-
 
     <target name="svn:getinfo" description="obtain subversion revision info" unless="nosvn">
 
@@ -1398,15 +1396,14 @@
 			<taskdef name="pmd"
 				classname="net.sourceforge.pmd.ant.PMDTask"
 				classpathref="project.test.pmd.classpath"/>
-			<pmd
-				rulesetfiles="@{pmd.rule-set.file}"
-				shortFilenames="true"
-				failonerror="false"
-				failurespropertyname="pmd.failure"
-				targetjdk="1.5"
-				>
-				<formatter type="xml"
-					toFile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" />
+			<pmd rulesetfiles="@{pmd.rule-set.file}"
+				 shortFilenames="true"
+				 failonerror="true"
+			     failOnRuleViolation="true"
+				 targetjdk="1.5"
+			     maxRuleViolations="${pmd.maxRuleViolations}">
+				<formatter type="xml" toFile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" />
+				<formatter type="html" toFile="${pmd.sub-project.rpt.dir}/@{pmd.html.name}" />
 				<fileset dir="@{pmd.src.dir}">
 					<include name="**/*.java"/>
 				</fileset>
@@ -1423,6 +1420,7 @@
 				in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
 				out="${pmd.sub-project.rpt.dir}/@{pmd.html.name}"
 				style="@{pmd.report-xsl.file}"/>
+		    
 		</sequential>
 	</macrodef>
 

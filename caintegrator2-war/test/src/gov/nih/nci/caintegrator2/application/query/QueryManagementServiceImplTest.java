@@ -308,7 +308,6 @@ public class QueryManagementServiceImplTest {
     }
 
     @Test
-    @SuppressWarnings("PMD")
     public void testExecuteGenomicDataQuery() throws InvalidCriterionException {
         Platform platform = dao.getPlatform("platformName");
         Study study = query.getSubscription().getStudy();

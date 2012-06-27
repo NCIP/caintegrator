@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.common;
@@ -121,22 +121,21 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 /**
- * This is a static utility class used by different caIntegrator2 query objects. 
+ * This is a static utility class used by different caIntegrator2 query objects.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
-public final class QueryUtil {    
-    
+public final class QueryUtil {
+
     private QueryUtil() { }
-    
+
     /**
      * Used to see if a Set of ResultRow's contains a specific ResultRow (based on SubjectAssignments matching).
-     * This needs to be tweaked, not sure if the algorithm is correct.  
+     * This needs to be tweaked, not sure if the algorithm is correct.
      * @param rowSet - set of rows.
      * @param rowToTest - ResultRow item to test if it exists in set.
      * @param isMultiplePlatformQuery - if multiple platforms in query then we don't need to match sample acquisitions.
      * @return true/false value.
      */
-    public static ResultRow resultRowSetContainsResultRow(Set<ResultRow> rowSet, 
+    public static ResultRow resultRowSetContainsResultRow(Set<ResultRow> rowSet,
                                                         ResultRow rowToTest,
                                                         boolean isMultiplePlatformQuery) {
         for (ResultRow curRow : rowSet) {
@@ -152,7 +151,7 @@ public final class QueryUtil {
     private static boolean checkSampleMatch(boolean isMultiplePlatformQuery, ResultRow rowToTest, ResultRow curRow) {
         if (isMultiplePlatformQuery) {
             return true;
-        } 
+        }
         if (curRow.getSampleAcquisition() == null && rowToTest.getSampleAcquisition() == null) { // both null
             return true;
         }
@@ -160,7 +159,7 @@ public final class QueryUtil {
             return false;
         }
         return curRow.getSampleAcquisition() == rowToTest.getSampleAcquisition();
-        
+
     }
     private static boolean checkImageSeriesMatch(ResultRow rowToTest, ResultRow curRow) {
         if (curRow.getImageSeries() == null && rowToTest.getImageSeries() == null) { // both null
@@ -188,7 +187,7 @@ public final class QueryUtil {
      * @param permissibleValue object that the value uses to validate against.
      * @return true or false value.
      */
-    public static boolean annotationValueBelongToPermissibleValue(AbstractAnnotationValue value, 
+    public static boolean annotationValueBelongToPermissibleValue(AbstractAnnotationValue value,
                                                                   PermissibleValue permissibleValue) {
         if (value instanceof StringAnnotationValue) {
             return handleStringValues(value, permissibleValue);
@@ -197,10 +196,10 @@ public final class QueryUtil {
         } else if (value instanceof DateAnnotationValue) {
             return handleDateValues(value, permissibleValue);
         }
-        return false; 
+        return false;
     }
-    
-    private static boolean handleStringValues(AbstractAnnotationValue value, 
+
+    private static boolean handleStringValues(AbstractAnnotationValue value,
                                               PermissibleValue permissibleValue) {
         StringAnnotationValue stringValue = (StringAnnotationValue) value;
         if (stringValue.getStringValue() != null
@@ -209,14 +208,14 @@ public final class QueryUtil {
         }
         return false;
     }
-    
-    private static boolean handleNumericValues(AbstractAnnotationValue value, 
+
+    private static boolean handleNumericValues(AbstractAnnotationValue value,
                                                PermissibleValue permissibleValue) {
         if (!NumberUtils.isNumber(permissibleValue.getValue())) {
-            throw new IllegalArgumentException("value is of type Numeric, but permissibleValue is not.");    
+            throw new IllegalArgumentException("value is of type Numeric, but permissibleValue is not.");
         }
         NumericAnnotationValue numericValue = (NumericAnnotationValue) value;
-        if (numericValue.getNumericValue() != null 
+        if (numericValue.getNumericValue() != null
              && numericValue.getNumericValue().equals(Double.valueOf(permissibleValue.getValue()))) {
             return true;
         }
@@ -225,13 +224,13 @@ public final class QueryUtil {
 
     private static boolean handleDateValues(AbstractAnnotationValue value, PermissibleValue permissibleValue) {
         DateAnnotationValue dateValue = (DateAnnotationValue) value;
-        if (dateValue.getDateValue() != null && permissibleValue.getValue() != null 
+        if (dateValue.getDateValue() != null && permissibleValue.getValue() != null
             && permissibleValue.getValue().equals(DateUtil.toString(dateValue.getDateValue()))) {
             return true;
         }
         return false;
     }
-    
+
     /**
      * Determines if a query has any genomic data associated.
      * @param query to check if it is genomic.
@@ -240,27 +239,27 @@ public final class QueryUtil {
     public static boolean isQueryGenomic(Query query) {
         return isQueryGeneExpression(query) || isQueryCopyNumber(query);
     }
-    
+
     /**
      * Determines if a query is gene expression (gene expression results type or if it has gene expression criterion).
      * @param query to check to see if it is gene expression.
      * @return T/F if it is gene expression type or not.
      */
     public static boolean isQueryGeneExpression(Query query) {
-        return (ResultTypeEnum.GENE_EXPRESSION.equals(query.getResultType()) 
+        return (ResultTypeEnum.GENE_EXPRESSION.equals(query.getResultType())
                 || QueryUtil.isCompoundCriterionGeneExpression(query.getCompoundCriterion())) ? true : false;
     }
-    
+
     /**
      * Determines if a query is copy number (copy number results type or if it has copy number criterion).
      * @param query to check to see if it is copy number.
      * @return T/F if it is copy number type or not.
      */
     public static boolean isQueryCopyNumber(Query query) {
-        return (ResultTypeEnum.COPY_NUMBER.equals(query.getResultType()) 
+        return (ResultTypeEnum.COPY_NUMBER.equals(query.getResultType())
                 || QueryUtil.isCompoundCriterionCopyNumber(query.getCompoundCriterion())) ? true : false;
     }
-    
+
     /**
      * Recursive function that goes through all criterion in a CompoundCriterion to determine
      * if any of them are copy number based criterion.
@@ -308,7 +307,7 @@ public final class QueryUtil {
         }
         return false;
     }
-    
+
     /**
      * Determines if a query has fold change criterion.
      * @param query check to see if this query has fold change criterion.
@@ -345,7 +344,7 @@ public final class QueryUtil {
             foldChangeCriterionResults.addAll(getFoldChangeCriterionFromCompoundCriterion(compoundCriterion));
         }
     }
-    
+
     /**
      * Creates a query for all gene expression or copy number data in the study based on the input result type,
      *   and limits it to the given queries (if any are given).
@@ -419,7 +418,7 @@ public final class QueryUtil {
      * @param abstractCriterionType must be a subclass of AbstractCriterion.
      * @return Set of all criterion matching the given class type.
      */
-    public static <T> Set <T> getCriterionTypeFromQuery(Query query, 
+    public static <T> Set <T> getCriterionTypeFromQuery(Query query,
             Class<T> abstractCriterionType) {
         Set<T> criterionSet = new HashSet<T>();
         CompoundCriterion compoundCriterion = query.getCompoundCriterion();
@@ -436,18 +435,18 @@ public final class QueryUtil {
             } else if (criterion instanceof CompoundCriterion) {
                 getCriterionFromCompoundCriterion(type, criterionSet, (CompoundCriterion) criterion);
             }
-            
+
         }
     }
-   
+
    /**
-    * Converts a query result into a hashmap of Sample -> Column -> Value.  Used for the 
+    * Converts a query result into a hashmap of Sample -> Column -> Value.  Used for the
     * <code>IGVSampleInfoFileWriter</code>.
     * @param result query result to convert.
     * @return the hashmap.
     */
    public static Map<Sample, Map<String, String>> retrieveSampleValuesMap(QueryResult result) {
-       Map<Sample, Map<String, String>> sampleValuesMap 
+       Map<Sample, Map<String, String>> sampleValuesMap
            = new HashMap<Sample, Map<String, String>>();
        for (ResultRow row : result.getRowCollection()) {
            for (SampleAcquisition sampleAcquisition : row.getSubjectAssignment().getSampleAcquisitionCollection()) {

@@ -128,7 +128,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
+    @Override
     public void prepareForDeployment(StudyConfiguration studyConfiguration) {
         try {
             studyConfiguration = getDao().get(studyConfiguration.getId(), StudyConfiguration.class);
@@ -141,7 +141,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
+    @Override
     public StudyConfiguration performDeployment(StudyConfiguration studyConfiguration,
             HeatmapParameters heatmapParameters) {
         try {
@@ -161,6 +161,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void handleDeploymentFailure(StudyConfiguration studyConfiguration, Throwable e) {
         LOGGER.error("Deployment of study " + studyConfiguration.getStudy().getShortTitleText()
                 + " failed.", e);

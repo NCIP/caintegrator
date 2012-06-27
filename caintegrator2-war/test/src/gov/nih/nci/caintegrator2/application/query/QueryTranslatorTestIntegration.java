@@ -111,7 +111,6 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 /**
  * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion.
  */
-@SuppressWarnings("PMD")
 public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringContextTests {
 
     private CaIntegrator2DaoImpl dao;
@@ -124,7 +123,6 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
     }
 
     @Test
-    @SuppressWarnings({"PMD"})
     public void testExecute() throws InvalidCriterionException {
         StudyHelper studyHelper = new StudyHelper();
         dao.save(studyHelper.getPlatform());

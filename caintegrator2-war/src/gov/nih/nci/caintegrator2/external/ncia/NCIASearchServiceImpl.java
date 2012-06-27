@@ -42,7 +42,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
      * @throws MalformedURIException - exception.
      * @throws RemoteException - exception.
      */
-    public NCIASearchServiceImpl(ServerConnectionProfile conn, NBIAVersionEnum nbiaVersion) 
+    public NCIASearchServiceImpl(ServerConnectionProfile conn, NBIAVersionEnum nbiaVersion)
         throws MalformedURIException, RemoteException {
         this(conn, nbiaVersion, null);
     }
@@ -61,10 +61,11 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         serverConnection = conn;
         this.nbiaVersion = nbiaVersion;
     }
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> retrieveAllCollectionNameProjects() throws ConnectionException {
         List<String> collectionNameProjectsCollection = new ArrayList<String>();
         final CQLQuery query = new CQLQuery();
@@ -85,14 +86,15 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
                 //LOGGER.info(obj[0].getValue());
                 collectionNameProjectsCollection.add(obj[0].getValue());
             }
-        } 
+        }
         return collectionNameProjectsCollection;
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public List<Patient> retrievePatientCollectionFromCollectionNameProject(String collectionNameProject) 
+    @Override
+    public List<Patient> retrievePatientCollectionFromCollectionNameProject(String collectionNameProject)
     throws ConnectionException {
         CQLQuery fcqlq = retrieveQueryForPatients(collectionNameProject);
         CQLQueryResults result = connectAndExecuteQuery(fcqlq);
@@ -102,7 +104,8 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
     /**
      * {@inheritDoc}
      */
-    public List<String> retrievePatientCollectionIdsFromCollectionNameProject(String collectionNameProject) 
+    @Override
+    public List<String> retrievePatientCollectionIdsFromCollectionNameProject(String collectionNameProject)
     throws ConnectionException {
         CQLQuery fcqlq = retrieveQueryForPatients(collectionNameProject);
         fcqlq.setQueryModifier(retrieveQueryModifierForProperty("patientId"));
@@ -110,27 +113,29 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         return iterateAndRetrieveResults(result, String.class);
     }
 
-    
+
     private CQLQuery retrieveQueryForPatients(String collectionNameProject) {
         Attribute att = retrieveAttribute("project", Predicate.EQUAL_TO, collectionNameProject);
         Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.TrialDataProvenance", "dataProvenance", att);
         return retrieveQuery("gov.nih.nci.ncia.domain.Patient", assoc);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public List<Study> retrieveStudyCollectionFromPatient(String patientId) 
+    @Override
+    public List<Study> retrieveStudyCollectionFromPatient(String patientId)
     throws ConnectionException {
         CQLQuery fcqlq = retrieveQueryForStudies(patientId);
         CQLQueryResults result = connectAndExecuteQuery(fcqlq);
         return iterateAndRetrieveResults(result, Study.class);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public List<String> retrieveStudyCollectionIdsFromPatient(String patientId) 
+    @Override
+    public List<String> retrieveStudyCollectionIdsFromPatient(String patientId)
     throws ConnectionException {
         CQLQuery fcqlq = retrieveQueryForStudies(patientId);
         fcqlq.setQueryModifier(retrieveQueryModifierForProperty("studyInstanceUID"));
@@ -147,17 +152,19 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
     /**
      * {@inheritDoc}
      */
-    public List<Series> retrieveImageSeriesCollectionFromStudy(String studyInstanceUID) 
+    @Override
+    public List<Series> retrieveImageSeriesCollectionFromStudy(String studyInstanceUID)
     throws ConnectionException {
         CQLQuery fcqlq = retrieveQueryForImageSeries(studyInstanceUID);
         CQLQueryResults result = connectAndExecuteQuery(fcqlq);
         return iterateAndRetrieveResults(result, Series.class);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public List<String> retrieveImageSeriesCollectionIdsFromStudy(String studyInstanceUID) 
+    @Override
+    public List<String> retrieveImageSeriesCollectionIdsFromStudy(String studyInstanceUID)
     throws ConnectionException {
         CQLQuery fcqlq = retrieveQueryForImageSeries(studyInstanceUID);
         fcqlq.setQueryModifier(retrieveQueryModifierForProperty(nbiaVersion.getSeriesIdAtt()));
@@ -175,17 +182,19 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
     /**
      * {@inheritDoc}
      */
-    public List<Image> retrieveImageCollectionFromSeries(String seriesInstanceUID) 
+    @Override
+    public List<Image> retrieveImageCollectionFromSeries(String seriesInstanceUID)
     throws ConnectionException {
         CQLQuery fcqlq = retrieveQueryForImages(seriesInstanceUID);
         CQLQueryResults result = connectAndExecuteQuery(fcqlq);
         return iterateAndRetrieveResults(result, Image.class);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public List<String> retrieveImageCollectionIdsFromSeries(String seriesInstanceUID) 
+    @Override
+    public List<String> retrieveImageCollectionIdsFromSeries(String seriesInstanceUID)
     throws ConnectionException {
         CQLQuery fcqlq = retrieveQueryForImages(seriesInstanceUID);
         fcqlq.setQueryModifier(retrieveQueryModifierForProperty("sopInstanceUID"));
@@ -202,6 +211,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
     /**
      * {@inheritDoc}
      */
+    @Override
     public Image retrieveRepresentativeImageBySeries(String seriesInstanceUID)
     throws ConnectionException {
         try {
@@ -222,11 +232,12 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
           throw new ConnectionException("Malformed URI.", e);
         }
     }
-       
+
     /**
      * {@inheritDoc}
      */
-    
+
+    @Override
     public boolean validate(String seriesInstanceUID) throws ConnectionException {
         CQLQuery query = new CQLQuery();
         Object target = new Object();
@@ -237,8 +248,8 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         CQLQueryResults result = connectAndExecuteQuery(query);
         return !iterateAndRetrieveResults(result, Series.class).isEmpty();
     }
-    
-      
+
+
     private CQLQuery retrieveQuery(String targetName, Association assoc) {
         final CQLQuery fcqlq = new CQLQuery();
         Object target = new Object();
@@ -247,7 +258,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         target.setAssociation(assoc);
         return fcqlq;
     }
-    
+
     private Attribute retrieveAttribute(String name, Predicate predicate, String value) {
         Attribute att = new Attribute();
         att.setName(name);
@@ -255,7 +266,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         att.setValue(value);
         return att;
     }
-    
+
     private Association retrieveAssociation(String name, String roleName, Attribute att) {
         Association assoc = new Association();
         assoc.setName(name);
@@ -263,7 +274,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         assoc.setAttribute(att);
         return assoc;
     }
-    
+
     private CQLQueryResults connectAndExecuteQuery(CQLQuery cqlQuery) throws ConnectionException {
         try {
             return getClient().query(cqlQuery);
@@ -276,14 +287,14 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         }
     }
 
-    @SuppressWarnings({"unchecked", "PMD.UnusedFormalParameter" }) // Generic type.
+    @SuppressWarnings("unchecked")
     private <T> List<T> iterateAndRetrieveResults(CQLQueryResults result, Class<T> clazz) {
         // Iterate Results
         List<T> resultsCollection = new ArrayList<T>();
-        
+
         if (result != null) {
             CQLQueryResultsIterator iter2 = new CQLQueryResultsIterator(result);
-            
+
             while (iter2.hasNext()) {
                 T obj = (T) iter2.next();
                 if (String.class.equals(clazz)) {
@@ -292,10 +303,10 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
                 }
                 resultsCollection.add(obj);
             }
-        } 
+        }
         return resultsCollection;
     }
-    
+
     private QueryModifier retrieveQueryModifierForProperty(String property) {
         QueryModifier queryModifier = new QueryModifier();
         queryModifier.setAttributeNames(new String[]{property});

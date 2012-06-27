@@ -8,7 +8,6 @@ import org.junit.Test;
 public class AbstractCaIntegrator2ObjectTest {
 
     @Test
-    @SuppressWarnings("PMD")
     public void testEqualsAbstractCaIntegrator2ObjectObject() {
         AbstractCaIntegrator2Object id1 = create(1L);
         AbstractCaIntegrator2Object anotherId1 = create(1L);
@@ -33,7 +32,7 @@ public class AbstractCaIntegrator2ObjectTest {
         assertEquals(1, id1.hashCode());
         assertEquals(System.identityHashCode(nullId), nullId.hashCode());
     }
-    
+
     private AbstractCaIntegrator2Object create(final Long id) {
         AbstractCaIntegrator2Object object =  new AbstractCaIntegrator2Object() {
             private static final long serialVersionUID = 1L;

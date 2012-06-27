@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.data;
@@ -141,7 +141,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 
+ *
  */
 public class StudyHelper {
 
@@ -158,51 +158,51 @@ public class StudyHelper {
     private DelimitedTextClinicalSourceConfiguration clinicalConf;
     private UserWorkspace userWorkspace;
     private String USER_NAME = "ncimanager";
-    
-    @SuppressWarnings({"PMD", "deprecation"}) // This is a long method for setting up test data
+
+    @SuppressWarnings("deprecation")
     public StudySubscription populateAndRetrieveStudy() {
         userWorkspace = new UserWorkspace();
         userWorkspace.setUsername(USER_NAME);
         Study myStudy = new Study();
         myStudy.setShortTitleText("Test Study");
-        
+
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(myStudy);
         studySubscription.setUserWorkspace(userWorkspace);
-        
+
         myStudy.setStudyConfiguration(new StudyConfiguration());
-        
+
         sampleAnnotationDefinition = new AnnotationDefinition();
         sampleAnnotationDefinition.getCommonDataElement().setLongName("SampleAnnotation");
         sampleAnnotationDefinition.setDataType(AnnotationTypeEnum.NUMERIC);
-        
+
         imageSeriesAnnotationDefinition = new AnnotationDefinition();
         imageSeriesAnnotationDefinition.getCommonDataElement().setLongName("ImageSeriesAnnotation");
         imageSeriesAnnotationDefinition.setDataType(AnnotationTypeEnum.STRING);
-        
+
         subjectAnnotationDefinition = new AnnotationDefinition();
         subjectAnnotationDefinition.getCommonDataElement().setLongName("SubjectAnnotation");
         subjectAnnotationDefinition.setDataType(AnnotationTypeEnum.NUMERIC);
-        
+
         subjectAnnotationDefinition2 = new AnnotationDefinition();
         subjectAnnotationDefinition2.getCommonDataElement().setLongName("Gender");
         subjectAnnotationDefinition2.setDataType(AnnotationTypeEnum.STRING);
-        
+
         defaultTimepoint = new Timepoint();
         defaultTimepoint.setDescription("This is the default timepoint assuming none is given.");
         defaultTimepoint.setName("Default Timepoint");
         myStudy.setDefaultTimepoint(defaultTimepoint);
-        
+
         Collection<AnnotationDefinition> sampleDefinitions = new HashSet<AnnotationDefinition>();
         sampleDefinitions.add(sampleAnnotationDefinition);
-        
+
         Collection<AnnotationDefinition> imageSeriesDefinitions = new HashSet<AnnotationDefinition>();
         imageSeriesDefinitions.add(imageSeriesAnnotationDefinition);
-        
+
         Collection<AnnotationDefinition> subjectDefinitions = new HashSet<AnnotationDefinition>();
         subjectDefinitions.add(subjectAnnotationDefinition);
         subjectDefinitions.add(subjectAnnotationDefinition2);
-        
+
         // Setup everything to use the same definition collection for simplicity.
         AnnotationGroup defaultAnnotationGroup = new AnnotationGroup();
         defaultAnnotationGroup.setName("default");
@@ -216,7 +216,7 @@ public class StudyHelper {
         myStudy.getStudyConfiguration().getClinicalConfigurationCollection().add(clinicalConf);
         AnnotationFile annotationFile = new AnnotationFileStub();
         clinicalConf.setAnnotationFile(annotationFile);
-        
+
         addColumn(annotationFile, subjectAnnotationDefinition);
         addColumn(annotationFile, subjectAnnotationDefinition2);
 
@@ -229,21 +229,21 @@ public class StudyHelper {
         imageConf.setAnnotationFile(imageAnnotationFile);
 
         addColumn(imageAnnotationFile, imageSeriesAnnotationDefinition);
-        
+
         Subject subject1 = new Subject();
         Subject subject2 = new Subject();
         Subject subject3 = new Subject();
         Subject subject4 = new Subject();
         Subject subject5 = new Subject();
         Subject subject6 = new Subject();
-        
+
         Collection<Subject> subjectCollection = new HashSet<Subject>();
         subjectCollection.add(subject1);
         subjectCollection.add(subject2);
         subjectCollection.add(subject3);
         subjectCollection.add(subject4);
         subjectCollection.add(subject5);
-        
+
         StudySubjectAssignment studySubjectAssignment1 = new StudySubjectAssignment();
         StudySubjectAssignment studySubjectAssignment2 = new StudySubjectAssignment();
         StudySubjectAssignment studySubjectAssignment3 = new StudySubjectAssignment();
@@ -256,7 +256,7 @@ public class StudyHelper {
         studySubjects.add(studySubjectAssignment4);
         studySubjects.add(studySubjectAssignment5);
         studySubjects.add(studySubjectAssignment6);
-        
+
         NumericAnnotationValue numval1 = new NumericAnnotationValue();
         NumericAnnotationValue numval1_2 = new NumericAnnotationValue();
         NumericAnnotationValue numval1_3 = new NumericAnnotationValue();
@@ -264,23 +264,23 @@ public class StudyHelper {
         NumericAnnotationValue numval3 = new NumericAnnotationValue();
         NumericAnnotationValue numval4 = new NumericAnnotationValue();
         NumericAnnotationValue numval5 = new NumericAnnotationValue();
-        
+
         StringAnnotationValue stringval1 = new StringAnnotationValue();
         StringAnnotationValue stringval2 = new StringAnnotationValue();
         StringAnnotationValue stringval3 = new StringAnnotationValue();
         StringAnnotationValue stringval4 = new StringAnnotationValue();
         StringAnnotationValue stringval5 = new StringAnnotationValue();
         StringAnnotationValue stringval6 = new StringAnnotationValue();
-        
+
         NumericAnnotationValue subjnumval1 = new NumericAnnotationValue();
         NumericAnnotationValue subjnumval2 = new NumericAnnotationValue();
         NumericAnnotationValue subjnumval3 = new NumericAnnotationValue();
         NumericAnnotationValue subjnumval4 = new NumericAnnotationValue();
         NumericAnnotationValue subjnumval5 = new NumericAnnotationValue();
-        
+
         permval1 = new PermissibleValue();
         permval2 = new PermissibleValue();
-        
+
         Collection<PermissibleValue> permissibleValueCollection = new HashSet<PermissibleValue>();
         permissibleValueCollection.add(permval1);
         permissibleValueCollection.add(permval2);
@@ -299,15 +299,15 @@ public class StudyHelper {
         ImageSeries imageSeries3 = new ImageSeries();
         ImageSeries imageSeries4 = new ImageSeries();
         ImageSeries imageSeries5 = new ImageSeries();
-        
+
         Image image1 = new Image();
         image1.setSeries(imageSeries1);
         imageSeries1.getImageCollection().add(image1);
-        
+
         Image image2 = new Image();
         image2.setSeries(imageSeries2);
         imageSeries2.getImageCollection().add(image2);
-        
+
         /**
          * Add the 5 SubjectAnnotations
          */
@@ -317,35 +317,35 @@ public class StudyHelper {
         subjnumval1.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation1.setStudySubjectAssignment(studySubjectAssignment1);
         studySubjectAssignment1.setSubject(subject1);
-        
+
         SubjectAnnotation subjectAnnotation2 = new SubjectAnnotation();
         subjnumval2.setNumericValue(2.0);
         subjectAnnotation2.setAnnotationValue(subjnumval2);
         subjnumval2.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation2.setStudySubjectAssignment(studySubjectAssignment2);
         studySubjectAssignment2.setSubject(subject2);
-        
+
         SubjectAnnotation subjectAnnotation3 = new SubjectAnnotation();
         subjnumval3.setNumericValue(3.0);
         subjectAnnotation3.setAnnotationValue(subjnumval3);
         subjnumval3.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation3.setStudySubjectAssignment(studySubjectAssignment3);
         studySubjectAssignment3.setSubject(subject3);
-        
+
         SubjectAnnotation subjectAnnotation4 = new SubjectAnnotation();
         subjnumval4.setNumericValue(4.0);
         subjectAnnotation4.setAnnotationValue(subjnumval4);
         subjnumval4.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation4.setStudySubjectAssignment(studySubjectAssignment4);
         studySubjectAssignment4.setSubject(subject4);
-        
+
         SubjectAnnotation subjectAnnotation5 = new SubjectAnnotation();
         subjnumval5.setNumericValue(5.0);
         subjectAnnotation5.setAnnotationValue(subjnumval5);
         subjnumval5.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation5.setStudySubjectAssignment(studySubjectAssignment5);
         studySubjectAssignment5.setSubject(subject5);
-        
+
         SubjectAnnotation subjectAnnotation6 = new SubjectAnnotation();
         stringval6.setStringValue("F");
         subjectAnnotation6.setAnnotationValue(stringval6);
@@ -359,14 +359,14 @@ public class StudyHelper {
         Collection<SubjectAnnotation> subjectAnnotationCollection4 = studySubjectAssignment4.getSubjectAnnotationCollection();
         Collection<SubjectAnnotation> subjectAnnotationCollection5 = studySubjectAssignment5.getSubjectAnnotationCollection();
         Collection<SubjectAnnotation> subjectAnnotationCollection6 = studySubjectAssignment6.getSubjectAnnotationCollection();
-        
+
         subjectAnnotationCollection1.add(subjectAnnotation1);
         subjectAnnotationCollection2.add(subjectAnnotation2);
         subjectAnnotationCollection3.add(subjectAnnotation3);
         subjectAnnotationCollection4.add(subjectAnnotation4);
         subjectAnnotationCollection5.add(subjectAnnotation5);
         subjectAnnotationCollection6.add(subjectAnnotation6);
-        
+
 
         /**
          * Add the 5 SampleAcquisitions
@@ -375,44 +375,44 @@ public class StudyHelper {
         sampleAnnotationDefinition.getPermissibleValueCollection().addAll(permissibleValueCollection);
         permval1.setValue("100.0");
         permval2.setValue("15.0");
-        
+
         numval1.setAnnotationDefinition(sampleAnnotationDefinition);
         numval1.setNumericValue(10.0);
         sampleAcquisition1.getAnnotationCollection().add(numval1);
         sampleAcquisition1.setAssignment(studySubjectAssignment1);
 //        sampleAcquisition1.setTimepoint(defaultTimepoint);
-        
+
         // Add 2 more samples to Study Subject Assignment 1
         numval1_2.setAnnotationDefinition(sampleAnnotationDefinition);
         numval1_2.setNumericValue(100.0);
         sampleAcquisition1_2.getAnnotationCollection().add(numval1_2);
         sampleAcquisition1_2.setAssignment(studySubjectAssignment1);
 //        sampleAcquisition1_2.setTimepoint(defaultTimepoint);
-        
+
         numval1_3.setAnnotationDefinition(sampleAnnotationDefinition);
         numval1_3.setNumericValue(1.0);
         sampleAcquisition1_3.getAnnotationCollection().add(numval1_3);
         sampleAcquisition1_3.setAssignment(studySubjectAssignment1);
 //        sampleAcquisition1_3.setTimepoint(defaultTimepoint);
-        
+
         numval2.setAnnotationDefinition(sampleAnnotationDefinition);
         numval2.setNumericValue(11.0);
         sampleAcquisition2.getAnnotationCollection().add(numval2);
         sampleAcquisition2.setAssignment(studySubjectAssignment2);
 //        sampleAcquisition2.setTimepoint(defaultTimepoint);
-        
+
         numval3.setAnnotationDefinition(sampleAnnotationDefinition);
         numval3.setNumericValue(12.0);
         sampleAcquisition3.getAnnotationCollection().add(numval3);
         sampleAcquisition3.setAssignment(studySubjectAssignment3);
 //        sampleAcquisition3.setTimepoint(defaultTimepoint);
-        
+
         numval4.setAnnotationDefinition(sampleAnnotationDefinition);
         numval4.setNumericValue(13.0);
         sampleAcquisition4.getAnnotationCollection().add(numval4);
         sampleAcquisition4.setAssignment(studySubjectAssignment4);
 //        sampleAcquisition4.setTimepoint(defaultTimepoint);
-        
+
         numval5.setAnnotationDefinition(sampleAnnotationDefinition);
         numval5.setNumericValue(14.0);
         sampleAcquisition5.getAnnotationCollection().add(numval5);
@@ -424,7 +424,7 @@ public class StudyHelper {
         Collection<SampleAcquisition> saCollection3 = studySubjectAssignment3.getSampleAcquisitionCollection();
         Collection<SampleAcquisition> saCollection4 = studySubjectAssignment4.getSampleAcquisitionCollection();
         Collection<SampleAcquisition> saCollection5 = studySubjectAssignment5.getSampleAcquisitionCollection();
-        
+
         Array array = new Array();
         array.setPlatform(platform);
         saCollection1.add(sampleAcquisition1);
@@ -448,35 +448,35 @@ public class StudyHelper {
         stringval1.setAnnotationDefinition(imageSeriesAnnotationDefinition);
         stringval1.setStringValue("string1");
         imageSeries1.getAnnotationCollection().add(stringval1);
-        
+
         stringval2.setAnnotationDefinition(imageSeriesAnnotationDefinition);
         stringval2.setStringValue("string2");
         imageSeries2.getAnnotationCollection().add(stringval2);
-        
+
         stringval3.setAnnotationDefinition(imageSeriesAnnotationDefinition);
         stringval3.setStringValue("string3");
         imageSeries3.getAnnotationCollection().add(stringval3);
-        
+
         stringval4.setAnnotationDefinition(imageSeriesAnnotationDefinition);
         stringval4.setStringValue("string4");
         imageSeries4.getAnnotationCollection().add(stringval4);
-        
+
         stringval5.setAnnotationDefinition(imageSeriesAnnotationDefinition);
         stringval5.setStringValue("string5");
         imageSeries5.getAnnotationCollection().add(stringval5);
-        
+
         Collection<ImageSeries> isCollection1 = new HashSet<ImageSeries>();
         Collection<ImageSeries> isCollection2 = new HashSet<ImageSeries>();
         Collection<ImageSeries> isCollection3 = new HashSet<ImageSeries>();
         Collection<ImageSeries> isCollection4 = new HashSet<ImageSeries>();
         Collection<ImageSeries> isCollection5 = new HashSet<ImageSeries>();
-        
+
         isCollection1.add(imageSeries1);
         isCollection2.add(imageSeries2);
         isCollection3.add(imageSeries3);
         isCollection4.add(imageSeries4);
         isCollection5.add(imageSeries5);
-        
+
         ImageSeriesAcquisition isAcquisition1 = new ImageSeriesAcquisition();
         isAcquisition1.setSeriesCollection(isCollection1);
         isAcquisition1.setAssignment(studySubjectAssignment1);
@@ -502,19 +502,19 @@ public class StudyHelper {
         isAcquisition5.setAssignment(studySubjectAssignment5);
         imageSeries5.setImageStudy(isAcquisition5);
 //        isAcquisition5.setTimepoint(defaultTimepoint);
-        
+
         Collection<ImageSeriesAcquisition> isaCollection1 = studySubjectAssignment1.getImageStudyCollection();
         Collection<ImageSeriesAcquisition> isaCollection2 = studySubjectAssignment2.getImageStudyCollection();
         Collection<ImageSeriesAcquisition> isaCollection3 = studySubjectAssignment3.getImageStudyCollection();
         Collection<ImageSeriesAcquisition> isaCollection4 = studySubjectAssignment4.getImageStudyCollection();
         Collection<ImageSeriesAcquisition> isaCollection5 = studySubjectAssignment5.getImageStudyCollection();
-        
+
         isaCollection1.add(isAcquisition1);
         isaCollection2.add(isAcquisition2);
         isaCollection3.add(isAcquisition3);
         isaCollection4.add(isAcquisition4);
         isaCollection5.add(isAcquisition5);
-        
+
         Collection<StudySubjectAssignment> ssaCollection = myStudy.getAssignmentCollection();
         ssaCollection.add(studySubjectAssignment1);
         ssaCollection.add(studySubjectAssignment2);
@@ -522,10 +522,10 @@ public class StudyHelper {
         ssaCollection.add(studySubjectAssignment4);
         ssaCollection.add(studySubjectAssignment5);
         ssaCollection.add(studySubjectAssignment6);
-        
+
         return studySubscription;
     }
-    
+
     private void addColumn(AnnotationFile annotationFile, AnnotationDefinition subjectDef) {
         FileColumn column = new FileColumn();
         AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
@@ -534,7 +534,7 @@ public class StudyHelper {
         column.setFieldDescriptor(fieldDescriptor);
         annotationFile.getColumns().add(column);
     }
-    
+
     /**
      * @param sampleAcquisition1
      */
@@ -543,7 +543,7 @@ public class StudyHelper {
         sample.setSampleAcquisition(sampleAcquisition);
         sampleAcquisition.setSample(sample);
         sample.setName("SAMPLE_" + sampleNum);
-        ArrayData arrayData = createArrayData(sampleNum); 
+        ArrayData arrayData = createArrayData(sampleNum);
         arrayData.setSample(sample);
         sample.getArrayDataCollection().add(arrayData);
         arrayData.setStudy(study);
@@ -555,7 +555,7 @@ public class StudyHelper {
         ReporterList reporterList = null;
         if (ArrayDataType.COPY_NUMBER.equals(arrayDataType)) {
             reporterList = platform.addReporterList("reporterList" + sampleNum, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-            createDnaReporter(sampleNum, reporterList); 
+            createDnaReporter(sampleNum, reporterList);
             addSegmentationData(arrayData, sampleNum);
         } else {
             reporterList = platform.addReporterList("reporterList" + sampleNum, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
@@ -565,7 +565,7 @@ public class StudyHelper {
         arrayData.getReporterLists().add(reporterList);
         return arrayData;
     }
-    
+
     private void addSegmentationData(ArrayData arrayData, int sampleNum) {
         SegmentData segmentData = new SegmentData();
         segmentData.setArrayData(arrayData);
@@ -578,7 +578,7 @@ public class StudyHelper {
         location.setEndPosition(20000 * sampleNum);
         segmentData.setLocation(location);
         arrayData.getSegmentDatas().add(segmentData);
-        
+
     }
 
     private void createGeneExpressionReporter(int sampleNum, ReporterList reporterList) {
@@ -591,7 +591,7 @@ public class StudyHelper {
         reporter.setName("REPORTER_" + sampleNum);
         reporterList.getReporters().add(reporter);
     }
-    
+
     private void createDnaReporter(int sampleNum, ReporterList reporterList) {
         DnaAnalysisReporter reporter = new DnaAnalysisReporter();
         Gene gene = new Gene();
@@ -651,21 +651,21 @@ public class StudyHelper {
         clinicalConf.setStudyConfiguration(studyConfiguration);
         return study;
     }
-    
-    public CompoundCriterion createCompoundCriterion1() {    
+
+    public CompoundCriterion createCompoundCriterion1() {
         // Sample criterion (will return 3 Subjects: #1,#2,#3), but it will return #1 twice.
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setNumericValue(12.0);
         criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL);
         criterion.setAnnotationFieldDescriptor(getSampleAnnotationFieldDescriptor());
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
-        
+
         // Image Series criterion (Will return 1 subject: #3)
         StringComparisonCriterion criterion1 = new StringComparisonCriterion();
         criterion1.setStringValue("string3");
         criterion1.setEntityType(EntityTypeEnum.IMAGESERIES);
         criterion1.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
-        
+
         // Clinical criterion (Will return 4 subjects: #2, #3, #4, #5)
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
         criterion2.setNumericValue(2.0);
@@ -681,8 +681,8 @@ public class StudyHelper {
         compoundCriterion.getCriterionCollection().add(criterion2);
         return compoundCriterion;
     }
-    
-    
+
+
     public CompoundCriterion createCompoundCriterion2() {
         // Sample criterion (will return 2 Subjects: #1, #5)
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
@@ -690,20 +690,20 @@ public class StudyHelper {
         criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER);
         criterion.setAnnotationFieldDescriptor(getSampleAnnotationFieldDescriptor());
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
-        
+
         // Image Series criterion (Will return 1 subject: #3)
         StringComparisonCriterion criterion1 = new StringComparisonCriterion();
         criterion1.setStringValue("string3");
         criterion1.setEntityType(EntityTypeEnum.IMAGESERIES);
         criterion1.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
-        
+
         // Clinical criterion (Will return 3 subjects: #1, #2, #3)
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
         criterion2.setNumericValue(4.0);
         criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS);
         criterion2.setEntityType(EntityTypeEnum.SUBJECT);
         criterion2.setAnnotationFieldDescriptor(getSubjectAnnotationFieldDescriptor());
-        
+
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
@@ -712,7 +712,7 @@ public class StudyHelper {
         compoundCriterion.getCriterionCollection().add(criterion2);
         return compoundCriterion;
     }
-    
+
     public CompoundCriterion createCompoundCriterion3() {
         // Sample criterion (will return 3 Subjects: #1, #2, #3)
         SelectedValueCriterion criterion = new SelectedValueCriterion();
@@ -720,15 +720,15 @@ public class StudyHelper {
         criterion.getValueCollection().add(permval1);
         criterion.setAnnotationFieldDescriptor(getSampleAnnotationFieldDescriptor());
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
-        
-        
+
+
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion.getCriterionCollection().add(criterion);
         return compoundCriterion;
     }
-    
+
     public CompoundCriterion createCompoundCriterion4() {
         // Clinical criterion (Will return 3 subjects: #1, #2, #3)
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
@@ -736,26 +736,26 @@ public class StudyHelper {
         criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS);
         criterion.setEntityType(EntityTypeEnum.SUBJECT);
         criterion.setAnnotationFieldDescriptor(getSubjectAnnotationFieldDescriptor());
-        
+
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion.getCriterionCollection().add(criterion);
         return compoundCriterion;
     }
-    
+
     public CompoundCriterion createCompoundCriterion5() {
         // Image Series criterion (Will return 2 subject: #3, #4)
         StringComparisonCriterion criterion = new StringComparisonCriterion();
         criterion.setStringValue("string4");
         criterion.setEntityType(EntityTypeEnum.IMAGESERIES);
         criterion.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
-        
+
         StringComparisonCriterion criterion2 = new StringComparisonCriterion();
         criterion2.setStringValue("string3");
         criterion2.setEntityType(EntityTypeEnum.IMAGESERIES);
         criterion2.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
-        
+
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR);
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
@@ -763,9 +763,9 @@ public class StudyHelper {
         compoundCriterion.getCriterionCollection().add(criterion2);
         return compoundCriterion;
     }
-    
-    public Query createQuery(CompoundCriterion compoundCriterion, 
-                             Collection<ResultColumn> columnCollection, 
+
+    public Query createQuery(CompoundCriterion compoundCriterion,
+                             Collection<ResultColumn> columnCollection,
                              StudySubscription subscription) {
         Query query = new Query();
         query.setName("Test Query");
@@ -774,7 +774,7 @@ public class StudyHelper {
         query.setColumnCollection(columnCollection);
         return query;
     }
-    
+
     public AnnotationDefinition getSampleAnnotationDefinition() {
         return sampleAnnotationDefinition;
     }
@@ -793,21 +793,21 @@ public class StudyHelper {
         descriptor.setAnnotationEntityType(EntityTypeEnum.SAMPLE);
         return descriptor;
     }
-    
+
     public AnnotationFieldDescriptor getSubjectAnnotationFieldDescriptor() {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
         descriptor.setDefinition(getSubjectAnnotationDefinition());
         descriptor.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         return descriptor;
     }
-    
+
     public AnnotationFieldDescriptor getSubjectAnnotationFieldDescriptor2() {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
         descriptor.setDefinition(getSubjectAnnotationDefinition2());
         descriptor.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         return descriptor;
-    }    
-    
+    }
+
     public AnnotationFieldDescriptor getImageSeriesAnnotationFieldDescriptor() {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
         descriptor.setDefinition(getImageSeriesAnnotationDefinition());

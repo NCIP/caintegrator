@@ -111,7 +111,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
-@SuppressWarnings("PMD")
 public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
 
     private EditGenomicSourceAction action;

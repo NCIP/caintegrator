@@ -112,7 +112,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("PMD")
 public class StudyManagementServiceStub implements StudyManagementService {
 
     public boolean saveCalled;

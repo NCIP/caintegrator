@@ -109,7 +109,6 @@ import java.util.Set;
 /**
  * Action used to edit the type and annotation of a field descriptor by a Study Manager.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // See selectDataElement()
 public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
@@ -276,7 +275,6 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
      *
      * @return the Struts result.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Null Checks and Try/Catch
     public String selectDataElement() {
         AnnotationFieldDescriptor originalFieldDescriptor = getFieldDescriptor();
         try {
@@ -436,7 +434,6 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
     /**
      * @return the columnTypes
      */
-    @SuppressWarnings("PMD")    // Prevent internal array exposure warning
     public String[] getFieldDescriptorTypes() {
         return FIELD_DESCRIPTOR_TYPES;
     }
