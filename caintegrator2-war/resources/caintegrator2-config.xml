@@ -510,6 +510,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
     </bean>
     
     <bean id="viewAllHeatmapAction"
@@ -526,6 +529,9 @@
         </property>
         <property name="workspaceService">
             <ref local="workspaceService"/>
+        </property>
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
         </property>
     </bean>
     

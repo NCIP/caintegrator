@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.GenomeBuildVersionEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -106,6 +107,7 @@ public class ViewAllIGVAction extends AbstractViewAllAction {
     private static final String VIEW_IGV = "viewIGV";
     private Set<String> expressionPlatformsInStudy;
     private String expressionPlatformName;
+    private StudyManagementService studyManagementService;
 
     /**
      * {@inheritDoc}
@@ -138,6 +140,7 @@ public class ViewAllIGVAction extends AbstractViewAllAction {
      */
     @Override
     void init() {
+        getQueryForm().setStudyManagementService(getStudyManagementService());
         getQueryForm().createQuery(getStudySubscription(), expressionPlatformsInStudy, getCopyNumberPlatformsInStudy(),
                 null);
         if (!expressionPlatformsInStudy.isEmpty()) {
@@ -202,5 +205,19 @@ public class ViewAllIGVAction extends AbstractViewAllAction {
      */
     public void setExpressionPlatformName(String expressionPlatformName) {
         this.expressionPlatformName = expressionPlatformName;
+    }
+
+    /**
+     * @return the studyManagementService
+     */
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+
+    /**
+     * @param studyManagementService the studyManagementService to set
+     */
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
     }
 }
