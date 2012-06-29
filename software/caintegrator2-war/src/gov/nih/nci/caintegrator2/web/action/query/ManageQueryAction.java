@@ -242,6 +242,9 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         } else {
             displayTab = CRITERIA_TAB;
         }
+        if (getQueryForm() != null) {
+            getQueryForm().setStudyManagementService(getStudyManagementService());
+        }
     }
 
     /**
@@ -716,6 +719,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
 
     private void ensureQueryIsLoaded() {
         if (getQueryForm().getQuery() == null) {
+            getQueryForm().setStudyManagementService(getStudyManagementService());
             getQueryForm().setQuery(getQueryById(), geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
                     copyNumberPlatformsWithCghCallInStudy);
             getQueryForm().setOrgQueryName(getQueryForm().getQuery().getName());

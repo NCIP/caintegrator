@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -139,7 +140,7 @@ import org.junit.Test;
 import com.opensymphony.xwork2.ValidationAwareSupport;
 
 public class QueryFormTest {
-    
+
     private long nextId = 0;
     private AnnotationGroup subjectGroup;
     private AnnotationGroup imagingGroup;
@@ -157,6 +158,8 @@ public class QueryFormTest {
 
     @Before
     public void setUp() {
+        queryForm.setStudyManagementService(new StudyManagementServiceStub());
+
         subscription = new StudySubscription();
         subscription.setId(1L);
         Study study = new Study();
@@ -166,13 +169,13 @@ public class QueryFormTest {
         imagingGroup.setName("images");
         study.getAnnotationGroups().add(subjectGroup);
         study.getAnnotationGroups().add(imagingGroup);
-        
+
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         studyConfiguration.getGenomicDataSources().add(genomicSource);
-        
+
         subscription.setStudy(study);
         stringClinicalAnnotation1 = createDefinition("stringClinicalAnnotation1", AnnotationTypeEnum.STRING);
         stringClinicalAnnotation2 = createDefinition("stringClinicalAnnotation2", AnnotationTypeEnum.STRING);
@@ -190,7 +193,7 @@ public class QueryFormTest {
         value2_1.setValue("value2_1");
         selectClinicalAnnotation2.getPermissibleValueCollection().add(value2_1);
         testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
-        
+
         createAfd(stringClinicalAnnotation1, subjectGroup);
         createAfd(stringClinicalAnnotation2, subjectGroup);
         createAfd(numericClinicalAnnotation, subjectGroup);
@@ -198,7 +201,7 @@ public class QueryFormTest {
         createAfd(selectClinicalAnnotation2, subjectGroup);
 
         createAfd(testImageSeriesAnnotation, imagingGroup);
-        
+
         SubjectList subjectList = new SubjectList();
         SubjectIdentifier identifier1 = new SubjectIdentifier();
         identifier1.setIdentifier("subject1");
@@ -212,7 +215,7 @@ public class QueryFormTest {
         subjectList.setName("subjectList");
         subscription.getListCollection().add(subjectList);
     }
-    
+
     private void createAfd(AnnotationDefinition subjectDef, AnnotationGroup group) {
         AnnotationFieldDescriptor fieldDescriptor = new AnnotationFieldDescriptor();
         fieldDescriptor.setShownInBrowse(true);
@@ -242,14 +245,14 @@ public class QueryFormTest {
         assertEquals(5, queryForm.getCriteriaTypeOptions().size());
         queryForm.getQuery().getSubscription().getStudy().getStudyConfiguration().getGenomicDataSources().clear();
         assertEquals(4, queryForm.getCriteriaTypeOptions().size());
-        
+
         testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
 
         queryForm.getQuery().setId(1L);
         assertTrue(queryForm.isSavedQuery());
         queryForm.getQuery().setId(null);
         assertFalse(queryForm.isSavedQuery());
-        
+
         queryForm.getResultConfiguration().setOrientation(null);
         assertEquals("", queryForm.getResultConfiguration().getOrientation());
         assertEquals(null, queryForm.getQuery().getOrientation());
@@ -276,7 +279,7 @@ public class QueryFormTest {
         queryForm.validate(validationAware);
         assertTrue(validationAware.hasActionErrors());
     }
-    
+
     @Test
     public void testCriteriaGroup() {
         queryForm.createQuery(subscription, null, null, null);
@@ -292,7 +295,7 @@ public class QueryFormTest {
         group.addCriterion(subscription.getStudy());
         assertEquals(1, group.getRows().size());
     }
-    
+
     @Test
     public void testCriterionRow() {
         SampleSet sampleSet1 = new SampleSet();
@@ -318,9 +321,9 @@ public class QueryFormTest {
         checkAddGeneExpressionCriterion(group);
         checkAddCopyNumberCriterion(group);
         checkRemoveRow(group);
-        
+
     }
-    
+
     @Test
     public void testSubjectListRow() {
         queryForm.createQuery(subscription, null, null, null);
@@ -330,8 +333,8 @@ public class QueryFormTest {
         SavedListCriterionRow criterionRow = (SavedListCriterionRow) group.getRows().get(0);
         checkChangeToSubjectListField(criterionRow);
     }
-    
-    
+
+
     @Test
     public void testIdentifierRow() {
         queryForm.createQuery(subscription, null, null, null);
@@ -353,9 +356,9 @@ public class QueryFormTest {
         assertEquals(WildCardTypeEnum.WILDCARD_OFF, criterion.getWildCardType());
         setOperator(parameter, CriterionOperatorEnum.CONTAINS.getValue());
         assertEquals(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING, criterion.getWildCardType());
-        
+
     }
-    
+
     @Test
     public void testCriterionRowNoSubjectLists() {
         subscription.getListCollection().clear();
@@ -366,11 +369,11 @@ public class QueryFormTest {
         AnnotationCriterionRow criterionRow = (AnnotationCriterionRow) group.getRows().get(0);
         checkNewCriterionNoSubjectLists(group, criterionRow);
     }
-    
+
     private GenomicDataSourceConfiguration getFirstGenomicSource(StudySubscription subscription) {
         return subscription.getStudy().getStudyConfiguration().getGenomicDataSources().get(0);
     }
-    
+
     @Test
     public void testCriterionRowNoControlSamples() {
         getFirstGenomicSource(subscription).getControlSampleSetCollection().clear();
@@ -452,7 +455,7 @@ public class QueryFormTest {
         multiSelect.setValues(new String[] {"invalid value"});
         assertEquals(0, multiSelect.getValues().length);
     }
-    
+
     @SuppressWarnings("unchecked")
     private void checkChangeToSubjectListField(SavedListCriterionRow criterionRow) {
         setFieldName(criterionRow, SubjectListCriterionWrapper.SUBJECT_LIST_FIELD_NAME);
@@ -477,7 +480,7 @@ public class QueryFormTest {
         setOperator(parameter, CriterionOperatorEnum.EQUALS.getValue());
         assertEquals(NumericComparisonOperatorEnum.EQUAL, criterion.getNumericComparisonOperator());
     }
-    
+
     @SuppressWarnings("unchecked")
     private void checkAddCopyNumberCriterion(CriteriaGroup group) {
         group.setCriterionTypeName(CriterionRowTypeEnum.COPY_NUMBER.getValue());
@@ -485,19 +488,19 @@ public class QueryFormTest {
         assertEquals(4, group.getRows().size());
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
         CopyNumberCriterionRow criterionRow = (CopyNumberCriterionRow) group.getRows().get(3);
-        
+
         assertEquals(2, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
         assertTrue(criterionRow.getAvailableFieldNames().contains("Segmentation"));
-        
+
         getFirstGenomicSource(subscription).setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         getFirstGenomicSource(subscription).setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         getFirstGenomicSource(subscription).getDnaAnalysisDataConfiguration().setUseCghCall(true);
-        
+
         assertEquals(3, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
         assertTrue(criterionRow.getAvailableFieldNames().contains("Calls"));
-        
+
         assertEquals(group, criterionRow.getGroup());
         setFieldName(criterionRow, "Gene Name");
         assertEquals(4, group.getCompoundCriterion().getCriterionCollection().size());
@@ -541,7 +544,7 @@ public class QueryFormTest {
         assertEquals("1", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeNumber().toString());
         ((TextFieldParameter) criterionRow.getParameters().get(4)).setValue("2");
         assertEquals("2", ((CopyNumberAlterationCriterion) criterionRow.getCriterion()).getChromosomeCoordinateHigh().toString());
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -551,11 +554,11 @@ public class QueryFormTest {
         assertEquals(3, group.getRows().size());
         assertEquals(2, group.getCompoundCriterion().getCriterionCollection().size());
         GeneExpressionCriterionRow criterionRow = (GeneExpressionCriterionRow) group.getRows().get(2);
-        
+
         assertEquals(3, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
         assertTrue(criterionRow.getAvailableFieldNames().contains("Fold Change"));
-        
+
         assertEquals(group, criterionRow.getGroup());
         setFieldName(criterionRow, "Gene Name");
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
@@ -582,7 +585,7 @@ public class QueryFormTest {
         assertEquals(RegulationTypeEnum.UP, foldChangeCriterion.getRegulationType());
         assertEquals(2.0, foldChangeCriterion.getFoldsUp(), 0.0);
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
-        
+
         regulationParameter.setValue(RegulationTypeEnum.UP_OR_DOWN.getValue());
         TextFieldParameter foldsDownParameter = ((TextFieldParameter) criterionRow.getParameters().get(3));
         foldsUpParameter = ((TextFieldParameter) criterionRow.getParameters().get(4));
@@ -597,7 +600,7 @@ public class QueryFormTest {
         assertEquals(2.0, foldChangeCriterion.getFoldsDown(), 0.0);
         queryForm.validate(validationAware);
         assertTrue(validationAware.hasActionErrors());
-        
+
         regulationParameter.setValue(RegulationTypeEnum.UP.getValue());
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
         regulationParameter.setValue(RegulationTypeEnum.UP_OR_DOWN.getValue());
@@ -608,7 +611,7 @@ public class QueryFormTest {
         assertEquals(5, criterionRow.getParameters().size());
     }
 
-    
+
     private void checkAddImageSeriesCriterion(CriteriaGroup group) {
         group.setCriterionTypeName("images");
         group.addCriterion(subscription.getStudy());
@@ -660,12 +663,12 @@ public class QueryFormTest {
         assertEquals("value", ((TextFieldParameter) criterionRow.getParameters().get(0)).getValue());
         assertEquals("value", criterion.getStringValue());
     }
-    
+
     private void setOperator(AbstractCriterionParameter parameter, String value) {
         parameter.setOperator(value);
         queryForm.processCriteriaChanges();
     }
-    
+
     private void setFieldName(AbstractCriterionRow row, String name) {
         row.setFieldName(name);
         queryForm.processCriteriaChanges();
@@ -686,7 +689,7 @@ public class QueryFormTest {
         assertEquals(0 , criterionRow.getParameters().size());
         assertEquals("", criterionRow.getFieldName());
     }
-    
+
     private void checkNewCriterionNoSubjectLists(CriteriaGroup group, AnnotationCriterionRow criterionRow) {
         assertEquals(5, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
@@ -725,7 +728,7 @@ public class QueryFormTest {
         query.setCompoundCriterion(compoundCriterion);
         compoundCriterion.setCriterionCollection(new ArrayList<AbstractCriterion>());
         query.setColumnCollection(new HashSet<ResultColumn>());
-        
+
         StringComparisonCriterion stringCriterion = new StringComparisonCriterion();
         stringCriterion.setId(1L);
         stringCriterion.setAnnotationFieldDescriptor(createAFDForDefinition(stringClinicalAnnotation1, subjectGroup));
@@ -741,7 +744,7 @@ public class QueryFormTest {
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.DOWN);
         foldChangeCriterion.setId(2L);
         compoundCriterion.getCriterionCollection().add(foldChangeCriterion);
-        
+
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
         geneNameCriterion.setGeneSymbol("EGFR");
         geneNameCriterion.setId(3L);
@@ -764,7 +767,7 @@ public class QueryFormTest {
         imageSeriesColumn.setAnnotationFieldDescriptor(createAFDForDefinition(testImageSeriesAnnotation, imagingGroup));
         imageSeriesColumn.setColumnIndex(0);
         query.getColumnCollection().add(imageSeriesColumn);
-        
+
         queryForm.setQuery(query, null, null, null);
         assertNotNull(queryForm.getQuery());
         CriteriaGroup group = queryForm.getCriteriaGroup();
@@ -772,7 +775,7 @@ public class QueryFormTest {
         assertEquals(compoundCriterion, group.getCompoundCriterion());
         assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperator());
         assertEquals(3, group.getRows().size());
-        
+
         AnnotationCriterionRow criterionRow = (AnnotationCriterionRow) group.getRows().get(0);
         assertEquals(stringCriterion, criterionRow.getCriterion());
         assertEquals(stringClinicalAnnotation1.getDisplayName(), criterionRow.getFieldName());
@@ -780,7 +783,7 @@ public class QueryFormTest {
         assertEquals(CriterionOperatorEnum.CONTAINS.getValue(), parameter.getOperator());
         assertEquals("value", parameter.getValue());
         assertEquals("queryForm.criteriaGroup.rows[0].parameters[0]", parameter.getFormFieldName());
-        
+
         GeneExpressionCriterionRow foldChangeRow = (GeneExpressionCriterionRow) group.getRows().get(1);
         assertEquals(foldChangeCriterion, foldChangeRow.getCriterion());
         assertEquals(FoldChangeCriterionWrapper.FOLD_CHANGE, foldChangeRow.getFieldName());
@@ -792,18 +795,18 @@ public class QueryFormTest {
         assertEquals(null, controlSampleSetNameParameter.getValue());
         assertEquals("Down", regulationParameter.getValue());
         assertEquals("3.0", foldsParameter.getValue());
-        
+
         GeneExpressionCriterionRow geneNameRow = (GeneExpressionCriterionRow) group.getRows().get(2);
         assertEquals(geneNameCriterion, geneNameRow.getCriterion());
         assertEquals(GeneNameCriterionWrapper.FIELD_NAME, geneNameRow.getFieldName());
         geneNameParameter = (TextFieldParameter) geneNameRow.getParameters().get(0);
         assertEquals("EGFR", geneNameParameter.getValue());
-        
+
         assertEquals(3, queryForm.getResultConfiguration().getSelectedColumns().size());
         assertEquals(testImageSeriesAnnotation, queryForm.getResultConfiguration().getSelectedColumns().get(0).getAnnotationDefinition());
         assertEquals(numericClinicalAnnotation, queryForm.getResultConfiguration().getSelectedColumns().get(1).getAnnotationDefinition());
         assertEquals(stringClinicalAnnotation1, queryForm.getResultConfiguration().getSelectedColumns().get(2).getAnnotationDefinition());
-        
+
         assertEquals(8, queryForm.getResultConfiguration().getColumnSelectionLists().get(1).getColumnList().getOptions().size());
         List<String> columnNames = Arrays.asList(queryForm.getResultConfiguration().getColumnSelectionLists().get(1).getValues());
         assertEquals(2, columnNames.size());
@@ -826,16 +829,16 @@ public class QueryFormTest {
         ValidationAwareSupport validationAware = new ValidationAwareSupport();
         queryForm.validate(validationAware);
         assertFalse(validationAware.hasFieldErrors());
-        
+
         queryForm.getResultConfiguration().setSortType("invalidColumn", SortTypeEnum.ASCENDING.getValue());
         assertEquals("", queryForm.getResultConfiguration().getSortType("invalidColumn"));
         queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", SortTypeEnum.ASCENDING.getValue());
         assertEquals(SortTypeEnum.ASCENDING.getValue(), queryForm.getResultConfiguration().getSortType("stringClinicalAnnotation2"));
         queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", "");
         assertEquals("", queryForm.getResultConfiguration().getSortType("stringClinicalAnnotation2"));
-        
+
     }
-    
+
     private AnnotationFieldDescriptor createAFDForDefinition(AnnotationDefinition ad, AnnotationGroup ag) {
         AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
         afd.setDefinition(ad);
@@ -858,7 +861,7 @@ public class QueryFormTest {
         queryForm.getCriteriaGroup().getRows().get(0).setCriterion(new FoldChangeCriterion());
         assertFalse(queryForm.isPotentiallyLargeQuery());
     }
-    
+
     @Test
     public void testResultTypes() {
         queryForm.createQuery(subscription, null, null, null);
@@ -875,7 +878,7 @@ public class QueryFormTest {
         subscription.getStudy().getStudyConfiguration().getGenomicDataSources().clear();
         assertEquals(1, queryForm.getResultTypes().size());
     }
-    
+
     @Test
     public void testHasGenomicDataSource() {
         queryForm.createQuery(subscription, null, null, null);

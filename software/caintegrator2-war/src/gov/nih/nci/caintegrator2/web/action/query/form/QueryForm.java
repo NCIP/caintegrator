@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -94,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.security.SecurityHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,6 +115,7 @@ import com.opensymphony.xwork2.ValidationAware;
  */
 public class QueryForm {
 
+    private StudyManagementService studyManagementService;
     private Query query;
     private final List<AnnotationGroup> sortedAnnotationGroups = new ArrayList<AnnotationGroup>();
     private final List<String> annotationGroupNames = new ArrayList<String>();
@@ -214,11 +218,13 @@ public class QueryForm {
 
     private void initializeAnnotationGroups(Study study) {
         annotationGroupNames.clear();
+        String username = SecurityHelper.getCurrentUsername();
         Set<AnnotationGroup> groupsWithNoVisibleFieldDescriptors = new HashSet<AnnotationGroup>();
         for (AnnotationGroup group : study.getAnnotationGroups()) {
-            if (!group.getVisibleAnnotationFieldDescriptors().isEmpty()) {
-                annotationGroupMap.put(group.getName(), new AnnotationFieldDescriptorList(group
-                        .getVisibleAnnotationFieldDescriptors()));
+            Set<AnnotationFieldDescriptor> userAnnotationFields = studyManagementService
+                .getVisibleAnnotationFieldDescriptorsForUser(group, username);
+            if (!userAnnotationFields.isEmpty()) {
+                annotationGroupMap.put(group.getName(), new AnnotationFieldDescriptorList(userAnnotationFields));
                 annotationGroupNames.add(group.getName());
             } else {
                 groupsWithNoVisibleFieldDescriptors.add(group);
@@ -249,8 +255,7 @@ public class QueryForm {
     public void setQuery(Query q, Set<String> geneExpressionPlatformsInStudy,
             Set<String> copyNumberPlatformsInStudy, Set<String> copyNumberPlatformsWithCghCallInStudy) {
         this.query = q;
-        initialize(geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy,
-                copyNumberPlatformsWithCghCallInStudy);
+        initialize(geneExpressionPlatformsInStudy, copyNumberPlatformsInStudy, copyNumberPlatformsWithCghCallInStudy);
     }
 
     AnnotationFieldDescriptorList getAnnotations(String groupName) {
@@ -526,5 +531,19 @@ public class QueryForm {
         if (query.getSubscription().getStudy().hasCghCalls()) {
             resultTypes.remove(ResultTypeEnum.HEATMAP_VIEWER.getValue());
         }
+    }
+
+    /**
+     * @return the studyManagementService
+     */
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+
+    /**
+     * @param studyManagementService the studyManagementService to set
+     */
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
     }
 }

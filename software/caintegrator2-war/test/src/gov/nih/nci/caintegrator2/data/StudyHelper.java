@@ -205,6 +205,7 @@ public class StudyHelper {
 
         // Setup everything to use the same definition collection for simplicity.
         AnnotationGroup defaultAnnotationGroup = new AnnotationGroup();
+        defaultAnnotationGroup.setStudy(myStudy);
         defaultAnnotationGroup.setName("default");
         defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getSubjectAnnotationFieldDescriptor());
         defaultAnnotationGroup.getAnnotationFieldDescriptors().add(getImageSeriesAnnotationFieldDescriptor());
