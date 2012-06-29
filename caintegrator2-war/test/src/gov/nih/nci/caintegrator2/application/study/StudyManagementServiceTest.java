@@ -135,6 +135,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -1036,6 +1037,46 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
         studyManagementService.updateImageDataSourceStatus(studyConfiguration);
         assertTrue(Status.LOADED.equals(imageDataSourceConfiguration.getStatus()));
     }
+
+    /**
+     * Tests retrieving visible field descriptors for a given user when no auth group restrictions exist
+     */
+    @Test
+    public void getVisibleAnnotationFieldDescriptorsForUserUnrestricted() {
+        StudyHelper helper = new StudyHelper();
+        Study study = helper.populateAndRetrieveStudy().getStudy();
+        AnnotationGroup annotationGroup = study.getAnnotationGroup("default");
+
+        Set<AnnotationFieldDescriptor> visibleFields =
+                studyManagementService.getVisibleAnnotationFieldDescriptorsForUser(annotationGroup, "valid");
+        assertFalse(visibleFields.isEmpty());
+        for (AnnotationFieldDescriptor adf : visibleFields) {
+            assertNotNull(adf.getDefinition());
+            assertTrue(adf.isShownInBrowse());
+        }
+    }
+
+    /**
+     * Tests retrieving visible field descriptors for a given user when auth group restrictions exist
+     */
+    @Test
+    public void getVisibleAnnotationFieldDescriptorsForUser() {
+        StudyHelper helper = new StudyHelper();
+        Study study = helper.populateAndRetrieveStudy().getStudy();
+        AuthorizedStudyElementsGroup authGroup = new AuthorizedStudyElementsGroup();
+        study.getStudyConfiguration().getAuthorizedStudyElementsGroups().add(authGroup);
+
+        AnnotationGroup annotationGroup = study.getAnnotationGroup("default");
+
+        Set<AnnotationFieldDescriptor> visibleFields =
+                studyManagementService.getVisibleAnnotationFieldDescriptorsForUser(annotationGroup, "valid");
+        assertFalse(visibleFields.isEmpty());
+        for (AnnotationFieldDescriptor adf : visibleFields) {
+            assertNotNull(adf.getDefinition());
+            assertTrue(adf.isShownInBrowse());
+        }
+    }
+
 
     private static class SecureDaoStub extends CaIntegrator2DaoStub {
         StudyConfiguration studyConfiguration = new StudyConfiguration();

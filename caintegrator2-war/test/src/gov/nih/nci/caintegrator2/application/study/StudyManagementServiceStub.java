@@ -690,4 +690,14 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException {
         checkForSampleUpdates = false;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<AnnotationFieldDescriptor> getVisibleAnnotationFieldDescriptorsForUser(AnnotationGroup annotationGroup,
+            String username) {
+        return annotationGroup != null ? annotationGroup.getVisibleAnnotationFieldDescriptors()
+                : new HashSet<AnnotationFieldDescriptor>();
+    }
 }

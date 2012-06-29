@@ -662,4 +662,13 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      * @throws ExperimentNotFoundException experiment not found.
      */
     void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException;
+
+    /**
+     * Gets all visible AnnotationFieldDescriptors from group that the user is authorized to see.
+     * @param annotationGroup annotation group from which to retrieve authorized field descriptors
+     * @param username user for whom to retrieve authorized field descriptors
+     * @return authorized, visible field descriptors
+     */
+    Set<AnnotationFieldDescriptor> getVisibleAnnotationFieldDescriptorsForUser(AnnotationGroup annotationGroup,
+            String username);
 }

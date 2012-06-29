@@ -143,9 +143,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.xwork.StringUtils;
-import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.springframework.transaction.annotation.Propagation;
@@ -158,8 +158,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class StudyManagementServiceImpl extends CaIntegrator2BaseService implements StudyManagementService {
 
-    @SuppressWarnings("unused")
-    private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);
     private static final int DEFINITION_LENGTH = 1000;
     private static final int MAX_ERROR_MESSAGE_LENGTH = 500;
     private FileManager fileManager;
@@ -1609,4 +1607,28 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         this.analysisService = analysisService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<AnnotationFieldDescriptor> getVisibleAnnotationFieldDescriptorsForUser(AnnotationGroup annotationGroup,
+            String username) {
+        Set<AnnotationFieldDescriptor> fields = new HashSet<AnnotationFieldDescriptor>();
+        StudyConfiguration studyConfiguration = annotationGroup.getStudy().getStudyConfiguration();
+        boolean isStudyRestricted = CollectionUtils.isNotEmpty(studyConfiguration.getAuthorizedStudyElementsGroups());
+        if (isStudyRestricted) {
+            Long configId = studyConfiguration.getId();
+            List<AuthorizedStudyElementsGroup> authorizedGroups = getDao().getAuthorizedStudyElementGroups(username,
+                                                                                                           configId);
+            for (AuthorizedStudyElementsGroup authGroup : authorizedGroups) {
+                for (AuthorizedAnnotationFieldDescriptor authField : authGroup
+                    .getAuthorizedAnnotationFieldDescriptors()) {
+                    fields.add(authField.getAnnotationFieldDescriptor());
+                }
+            }
+        } else {
+            fields = annotationGroup.getVisibleAnnotationFieldDescriptors();
+        }
+        return fields;
+    }
 }
