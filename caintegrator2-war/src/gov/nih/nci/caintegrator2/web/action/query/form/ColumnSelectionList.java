@@ -98,6 +98,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+
 /**
  * Allows a user to select columns to be shown in query results.
  */
@@ -110,7 +113,14 @@ public class ColumnSelectionList implements Comparable<ColumnSelectionList> {
             Set<AnnotationFieldDescriptor> fieldDescriptors) {
         this.resultConfiguration = resultConfiguration;
         this.annotationGroup = annotationGroup;
-        columnList = createColumnList(fieldDescriptors);
+        Collection<AnnotationFieldDescriptor> filterDescriptors = Collections2.filter(fieldDescriptors,
+                new Predicate<AnnotationFieldDescriptor>() {
+                    @Override
+                    public boolean apply(AnnotationFieldDescriptor adf) {
+                        return adf.getDefinition() != null;
+                    }
+        });
+        columnList = createColumnList(filterDescriptors);
     }
 
     private OptionList<AnnotationFieldDescriptor> createColumnList(
