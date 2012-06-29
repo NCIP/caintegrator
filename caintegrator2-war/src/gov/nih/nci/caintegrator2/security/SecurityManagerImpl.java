@@ -370,7 +370,11 @@ public class SecurityManagerImpl implements SecurityManager {
                 Set<User> owners = new HashSet<User>();
                 owners.add(user);
                 element.setOwners(owners);
-                element.setProtectionGroups(retrieveProtectionGroups(authorizedGroup, STUDY_INVESTIGATOR_ROLE));
+
+                Set<ProtectionGroup> protectionGroups = new HashSet<ProtectionGroup>();
+                protectionGroups.addAll(retrieveProtectionGroups(authorizedGroup, STUDY_INVESTIGATOR_ROLE));
+                protectionGroups.addAll(retrieveProtectionGroups(authorizedGroup, STUDY_MANAGER_ROLE));
+                element.setProtectionGroups(protectionGroups);
                 getAuthorizationManager().createProtectionElement(element);
             }
         }
