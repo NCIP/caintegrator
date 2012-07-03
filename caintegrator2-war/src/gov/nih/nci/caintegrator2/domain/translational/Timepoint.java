@@ -5,18 +5,19 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
- * 
+ *
  */
 public class Timepoint extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
 
     private String description;
-    private java.util.Date endDate;
+    private Date endDate;
     private String name;
-    private java.util.Date startDate;
+    private Date startDate;
     private Collection<SampleAcquisition> sampleAcquisitionCollection;
     private Collection<ImageSeriesAcquisition> imageSeriesAcquisitionCollection;
 
@@ -38,7 +39,7 @@ public class Timepoint extends AbstractCaIntegrator2Object {
     /**
      * @return the endDate
      */
-    public java.util.Date getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
@@ -46,7 +47,7 @@ public class Timepoint extends AbstractCaIntegrator2Object {
      * @param endDate
      *            the endDate to set
      */
-    public void setEndDate(java.util.Date endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -68,7 +69,7 @@ public class Timepoint extends AbstractCaIntegrator2Object {
     /**
      * @return the startDate
      */
-    public java.util.Date getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
@@ -76,7 +77,7 @@ public class Timepoint extends AbstractCaIntegrator2Object {
      * @param startDate
      *            the startDate to set
      */
-    public void setStartDate(java.util.Date startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 

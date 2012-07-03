@@ -152,7 +152,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
      */
     static CompoundCriterionHandler create(CompoundCriterion compoundCriterion, ResultTypeEnum resultType) {
         Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
-        if (compoundCriterion.getCriterionCollection() != null) {
+        if (compoundCriterion != null && compoundCriterion.getCriterionCollection() != null) {
             for (AbstractCriterion abstractCriterion : compoundCriterion.getCriterionCollection()) {
                 if (abstractCriterion instanceof AbstractAnnotationCriterion) {
                     handlers.add(new AnnotationCriterionHandler((AbstractAnnotationCriterion) abstractCriterion));
@@ -191,7 +191,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
     @Override
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query,
             Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException {
-        if (compoundCriterion == null || compoundCriterion.getCriterionCollection().isEmpty()) {
+        if (compoundCriterion == null || CollectionUtils.isEmpty(compoundCriterion.getCriterionCollection())) {
             return getAllRows(query.getSubscription().getStudy(), entityTypes);
         } else {
             return getMatchingRows(dao, arrayDataService, entityTypes, query);
@@ -555,4 +555,5 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         }
         return GenomicCriteriaMatchTypeEnum.NO_MATCH;
     }
+
 }

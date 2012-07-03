@@ -164,7 +164,9 @@ public final class Cai2Util {
      * @param string to possibly trim.
      * @param maxCharacters of the string.
      * @return trimmed string if too long, or full string if it isn't too long.
+     * @deprecated use {@link StringUtils#abbreviate(String, int)}
      */
+    @Deprecated
     public static String trimStringIfTooLong(String string, int maxCharacters) {
         if (maxCharacters <= 3) {
             throw new IllegalArgumentException("maxCharacters has to be at least 4 characters.");
