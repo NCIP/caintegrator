@@ -571,27 +571,19 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         }
     }
 
-    /**
-     * @throws ConnectionException
-     * @throws DataRetrievalException
-     * @throws ValidationException
-     * @throws IOException
-     * @throws InvalidCriterionException
-     * @throws CSException
-     */
-    private void authorizeStudyElements()
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {
+    private void authorizeStudyElements() throws ConnectionException, DataRetrievalException, ValidationException,
+            IOException, InvalidCriterionException, CSException {
         if (getAuthorizeStudy()) {
             logStart();
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
             authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,
                     "Group 1 for " + getStudyName(), getQueryFieldDescriptorName(), getQueryAnnotationValue());
-            service.addAuthorizedStudyElementsGroup(studyConfiguration,authorizedStudyElementsGroup1);
+            service.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup1);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
             authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,
                     "Group 2 for " + getStudyName(), "Age", StringUtils.EMPTY);
-            service.addAuthorizedStudyElementsGroup(studyConfiguration,authorizedStudyElementsGroup2);
+            service.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup2);
 
             service.deleteAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup2);
             logEnd();
@@ -599,13 +591,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     /**
-     * This method creates and returns an AuthorizedStudyElementsGroup that
-     * consists of elements from the current studyConfiguration.
-     * @param studyConfiguration
-     * @param authorizedStudyElementsGroupName
-     * @param fieldDescriptorName
-     * @param annotationValue
-     * @return authorizedStudyElementsGroup
+     * This method creates and returns an AuthorizedStudyElementsGroup that consists of elements from the current
+     * studyConfiguration.
      */
     protected AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
             String authorizedStudyElementsGroupName, String fieldDescriptorName,
@@ -617,9 +604,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         Group group = new Group();
         group.setGroupName(authorizedStudyElementsGroupName);
         group.setGroupDesc(desc);
-
         getAuthorizationManager().createGroup(group);
-
 
         authorizedStudyElementsGroup.setAuthorizedGroup(group);
         // add AuthorizedAnnotationFieldDescriptor

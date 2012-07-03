@@ -128,15 +128,11 @@ class ResultRowFactory {
         return rows;
     }
 
-    private void addSampleRows(Set<ResultRow> resultRows,
-                               ResultRow row,
-                               StudySubjectAssignment studySubjectAssignment,
-                               Timepoint timepoint) {
+    private void addSampleRows(Set<ResultRow> resultRows, ResultRow row, StudySubjectAssignment studySubjectAssignment,
+            Timepoint timepoint) {
         boolean samplesFound = false;
-        for (SampleAcquisition sampleAcquisition
-                : studySubjectAssignment.getSampleAcquisitionCollection()) {
-            if (timepoint == null
-                || timepoint == sampleAcquisition.getTimepoint()) {
+        for (SampleAcquisition sampleAcquisition : studySubjectAssignment.getSampleAcquisitionCollection()) {
+            if (timepoint == null || timepoint == sampleAcquisition.getTimepoint()) {
                 ResultRow newRow = cloneResultRow(row);
                 newRow.setSampleAcquisition(sampleAcquisition);
                 resultRows.add(newRow);

@@ -85,13 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
@@ -99,101 +102,187 @@ import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class CompoundCriterionHandlerTest {
 
-    private static final String USER_EXISTS = "studyManager";
+    private CaIntegrator2DaoStub daoStub;
+    private ArrayDataServiceStub arrayDataServiceStub;
+    Query query = null;
+    StudySubscription subscription = null;
+
+    @Before
+    public void setup() {
+        setupStubs();
+        setupStudy();
+    }
+
+    private void setupStubs() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", CompoundCriterionHandlerTest.class);
+        daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
+        arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");
+        daoStub.clear();
+    }
+
+    private void setupStudy() {
+        StudyHelper studyHelper = new StudyHelper();
+        subscription = studyHelper.populateAndRetrieveStudy();
+        query = new Query();
+        query.setSubscription(subscription);
+    }
+
+    @Test
+    public void testNullCompoundCriterionNoReturnEntityTypes() throws Exception {
+        CompoundCriterionHandler handler = CompoundCriterionHandler.create(null,
+                                                                           ResultTypeEnum.GENE_EXPRESSION);
+        assertEmptyHandlerCriteria(handler);
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        assertTrue(matches.isEmpty());
+    }
+
+    @Test
+    public void testNullCriterionCollectionNoReturnEntityTypes() throws Exception {
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setCriterionCollection(null);
+        CompoundCriterionHandler handler = CompoundCriterionHandler.create(compoundCriterion,
+                                                                           ResultTypeEnum.GENE_EXPRESSION);
+        assertEmptyHandlerCriteria(handler);
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        assertTrue(matches.isEmpty());
+    }
+
+    @Test
+    public void testEmptyCriterionCollectionNoReturnEntityTypes() throws Exception {
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
+        CompoundCriterionHandler handler = CompoundCriterionHandler.create(compoundCriterion,
+                                                                           ResultTypeEnum.GENE_EXPRESSION);
+        assertEmptyHandlerCriteria(handler);
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        assertTrue(matches.isEmpty());
+    }
+
+    @Test
+    public void testEmptyCriterionCollectionReturnSubjects() throws Exception {
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
+        CompoundCriterionHandler handler = CompoundCriterionHandler.create(compoundCriterion,
+                                                                           ResultTypeEnum.GENE_EXPRESSION);
+        assertEmptyHandlerCriteria(handler);
+
+        Set<EntityTypeEnum> entityTypeSet = new HashSet<EntityTypeEnum>();
+        entityTypeSet.add(EntityTypeEnum.SUBJECT);
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        assertEquals(6, matches.size());
+    }
+
+    @Test
+    public void testEmptyCriterionCollectionReturnSamples() throws Exception {
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
+        CompoundCriterionHandler handler = CompoundCriterionHandler.create(compoundCriterion,
+                                                                           ResultTypeEnum.GENE_EXPRESSION);
+        assertEmptyHandlerCriteria(handler);
+        Set<EntityTypeEnum> entityTypeSet = new HashSet<EntityTypeEnum>();
+        entityTypeSet.add(EntityTypeEnum.SAMPLE);
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        assertEquals(7, matches.size());
+        List<String> validSampleNames = Arrays.asList("SAMPLE_1", "SAMPLE_12", "SAMPLE_13", "SAMPLE_2", "SAMPLE_3",
+                                                      "SAMPLE_4", "SAMPLE_5");
+        for (ResultRow resultRow : matches) {
+            SampleAcquisition sampleAcquisition = resultRow.getSampleAcquisition();
+            assertTrue(validSampleNames.contains(sampleAcquisition.getSample().getName()));
+        }
+    }
+
+    @Test
+    public void testEmptyCriterionCollectionReturnImages() throws Exception {
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
+        CompoundCriterionHandler handler = CompoundCriterionHandler.create(compoundCriterion,
+                                                                           ResultTypeEnum.GENE_EXPRESSION);
+        assertEmptyHandlerCriteria(handler);
+        Set<EntityTypeEnum> entityTypeSet = new HashSet<EntityTypeEnum>();
+        entityTypeSet.add(EntityTypeEnum.IMAGESERIES);
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        assertEquals(5, matches.size());
+        for (ResultRow resultRow : matches) {
+            ImageSeries imageSeries = resultRow.getImageSeries();
+            StringAnnotationValue sav = (StringAnnotationValue) imageSeries.getAnnotationCollection().iterator().next();
+            assertTrue(Pattern.matches("string[1-5]", sav.getStringValue()));
+        }
+    }
 
     @Test
     public void testGetMatches() throws InvalidCriterionException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", CompoundCriterionHandlerTest.class);
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        ArrayDataServiceStub arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");
-        daoStub.clear();
-
-        Study study = new Study();
-        AnnotationGroup group = new AnnotationGroup();
-        group.setName("name");
-        study.getAnnotationGroups().add(group);
-        Query query = new Query();
-        study.setDefaultTimepoint(new Timepoint());
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        study.setStudyConfiguration(studyConfiguration);
-        UserWorkspace userWorkspace = new UserWorkspace();
-        userWorkspace.setUsername(USER_EXISTS);
-        StudySubscription studySubscription = new StudySubscription();
-        studySubscription.setUserWorkspace(userWorkspace);
-        studySubscription.setStudy(study);
-        query.setSubscription(studySubscription);
-
+        AnnotationGroup group = subscription.getStudy().getAnnotationGroups().iterator().next();
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         annotationDefinition.setId(1L);
         annotationDefinition.setDisplayName("Testing");
-        AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
-        afd1.setDefinition(annotationDefinition);
-        afd1.setAnnotationEntityType(EntityTypeEnum.IMAGESERIES);
 
-        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
-        afd2.setDefinition(annotationDefinition);
-        afd2.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
-        group.getAnnotationFieldDescriptors().add(afd1);
-        group.getAnnotationFieldDescriptors().add(afd2);
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
-        AbstractAnnotationCriterion abstractAnnotationCriterion = new StringComparisonCriterion();
-        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE);
-        AbstractAnnotationCriterion abstractAnnotationCriterion2 = new StringComparisonCriterion();
-        abstractAnnotationCriterion2.setEntityType(EntityTypeEnum.IMAGESERIES);
-        abstractAnnotationCriterion2.setAnnotationFieldDescriptor(afd1);
-        AbstractAnnotationCriterion abstractAnnotationCriterion3 = new StringComparisonCriterion();
-        abstractAnnotationCriterion3.setEntityType(EntityTypeEnum.SUBJECT);
-        abstractAnnotationCriterion3.setAnnotationFieldDescriptor(afd2);
-        ExpressionLevelCriterion expressionLevelCriterion1 = new ExpressionLevelCriterion();
-        expressionLevelCriterion1.setGeneSymbol("EGFR");
-        compoundCriterion.getCriterionCollection().add(abstractAnnotationCriterion);
+        AnnotationFieldDescriptor imageSeriesAFD = new AnnotationFieldDescriptor();
+        imageSeriesAFD.setDefinition(annotationDefinition);
+        imageSeriesAFD.setAnnotationEntityType(EntityTypeEnum.IMAGESERIES);
+        group.getAnnotationFieldDescriptors().add(imageSeriesAFD);
 
-        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
-        compoundCriterion2.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion2);
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion3);
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.AND);
+        AnnotationFieldDescriptor subjectAFD = new AnnotationFieldDescriptor();
+        subjectAFD.setDefinition(annotationDefinition);
+        subjectAFD.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        group.getAnnotationFieldDescriptors().add(subjectAFD);
 
-        CompoundCriterion compoundCriterion3 = new CompoundCriterion();
-        compoundCriterion3.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion);
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion2);
-        CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3,
-                ResultTypeEnum.GENE_EXPRESSION);
-        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR);
+        CompoundCriterion sampleCompoundCriterion = new CompoundCriterion();
+        sampleCompoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
 
-        // test creating handler if CompoundCriterion criterionCollection is null.
-        CompoundCriterion compoundCriterion4 = new CompoundCriterion();
-        compoundCriterion4.setCriterionCollection(null);
-        CompoundCriterionHandler compoundCriterionHandler2=CompoundCriterionHandler.create(compoundCriterion4,
-                ResultTypeEnum.GENE_EXPRESSION);
-        // test creating handler if CompoundCriterion criterionCollection is not null but is empty.
-        compoundCriterion4.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion4.setBooleanOperator(BooleanOperatorEnum.OR);
-        compoundCriterionHandler2=CompoundCriterionHandler.create(compoundCriterion4,
-                ResultTypeEnum.GENE_EXPRESSION);
-        compoundCriterionHandler2.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        AbstractAnnotationCriterion sampleStringCriterion = new StringComparisonCriterion();
+        sampleStringCriterion.setEntityType(EntityTypeEnum.SAMPLE);
+        sampleCompoundCriterion.getCriterionCollection().add(sampleStringCriterion);
+
+        AbstractAnnotationCriterion imageSeriesStringCriterion = new StringComparisonCriterion();
+        imageSeriesStringCriterion.setEntityType(EntityTypeEnum.IMAGESERIES);
+        imageSeriesStringCriterion.setAnnotationFieldDescriptor(imageSeriesAFD);
+
+        AbstractAnnotationCriterion subjectStringCriterion = new StringComparisonCriterion();
+        subjectStringCriterion.setEntityType(EntityTypeEnum.SUBJECT);
+        subjectStringCriterion.setAnnotationFieldDescriptor(subjectAFD);
+
+        ExpressionLevelCriterion expressionLevelCriterion = new ExpressionLevelCriterion();
+        expressionLevelCriterion.setGeneSymbol("EGFR");
+
+        CompoundCriterion imageAndSubjectCriteria = new CompoundCriterion();
+        imageAndSubjectCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
+        imageAndSubjectCriteria.getCriterionCollection().add(imageSeriesStringCriterion);
+        imageAndSubjectCriteria.getCriterionCollection().add(subjectStringCriterion);
+        imageAndSubjectCriteria.setBooleanOperator(BooleanOperatorEnum.AND);
+
+        CompoundCriterion sampleOrImageAndSubjectCriteria = new CompoundCriterion();
+        sampleOrImageAndSubjectCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
+        sampleOrImageAndSubjectCriteria.getCriterionCollection().add(sampleCompoundCriterion);
+        sampleOrImageAndSubjectCriteria.getCriterionCollection().add(imageAndSubjectCriteria);
+        sampleOrImageAndSubjectCriteria.setBooleanOperator(BooleanOperatorEnum.OR);
+
+        CompoundCriterionHandler compoundCriterionHandler = CompoundCriterionHandler
+            .create(sampleOrImageAndSubjectCriteria, ResultTypeEnum.GENE_EXPRESSION);
+
         // test creating handler with ExpressionLevelCriterion
         CompoundCriterion compoundCriterion5 = new CompoundCriterion();
         compoundCriterion5.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion5.getCriterionCollection().add(expressionLevelCriterion1);
+        compoundCriterion5.getCriterionCollection().add(expressionLevelCriterion);
         compoundCriterion5.setBooleanOperator(BooleanOperatorEnum.OR);
         CompoundCriterionHandler compoundCriterionHandler3=CompoundCriterionHandler.create(compoundCriterion5,
                 ResultTypeEnum.GENE_EXPRESSION);
@@ -215,13 +304,12 @@ public class CompoundCriterionHandlerTest {
         entityTypeSet.add(EntityTypeEnum.SAMPLE);
         compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
 
-
         // compound criterion with multiple criteria
         CompoundCriterion compoundCriterion6 = new CompoundCriterion();
         compoundCriterion6.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion6.getCriterionCollection().add(expressionLevelCriterion1);
-        compoundCriterion6.getCriterionCollection().add(abstractAnnotationCriterion2);
-        compoundCriterion6.getCriterionCollection().add(abstractAnnotationCriterion3);
+        compoundCriterion6.getCriterionCollection().add(expressionLevelCriterion);
+        compoundCriterion6.getCriterionCollection().add(imageSeriesStringCriterion);
+        compoundCriterion6.getCriterionCollection().add(subjectStringCriterion);
         compoundCriterion6.setBooleanOperator(BooleanOperatorEnum.AND);
         CompoundCriterionHandler compoundCriterionHandler4=CompoundCriterionHandler.create(compoundCriterion6,
                 ResultTypeEnum.CLINICAL);
@@ -238,5 +326,12 @@ public class CompoundCriterionHandlerTest {
 
     }
 
+    private void assertEmptyHandlerCriteria(CompoundCriterionHandler handler) {
+        assertFalse(handler.hasCriterionSpecifiedReporterValues());
+        assertFalse(handler.hasCriterionSpecifiedSegmentCallsValues());
+        assertFalse(handler.hasCriterionSpecifiedSegmentValues());
+        assertFalse(handler.hasReporterCriterion());
+        assertFalse(handler.hasSegmentDataCriterion());
+    }
 
 }
