@@ -245,24 +245,21 @@ public class Study extends AbstractCaIntegrator2Object {
      * @return the boolean of whether the study has Copy Number data
      */
     public boolean hasCopyNumberData() {
-        return studyConfiguration != null
-            && studyConfiguration.hasCopyNumberData();
+        return studyConfiguration != null && studyConfiguration.hasCopyNumberData();
     }
 
     /**
      * @return the boolean of whether the study has Copy Number data
      */
     public boolean hasCghCalls() {
-        return studyConfiguration != null
-            && studyConfiguration.hasCghCalls();
+        return studyConfiguration != null && studyConfiguration.hasCghCalls();
     }
 
     /**
      * @return the boolean of whether the study has SNP data
      */
     public boolean hasSnpData() {
-        return studyConfiguration != null
-            && studyConfiguration.hasSnpData();
+        return studyConfiguration != null && studyConfiguration.hasSnpData();
     }
 
     /**
