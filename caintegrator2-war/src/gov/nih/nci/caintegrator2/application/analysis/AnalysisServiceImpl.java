@@ -459,7 +459,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         if (igvParameters.isViewAllData()) {
             runIGVForAllData(igvParameters, igvResult);
         } else {
-            igvResult =  runIGVForQueryResult(igvParameters);
+            igvResult = runIGVForQueryResult(igvParameters);
         }
         if (igvResult.getGeneExpressionFile() == null && igvResult.getSegmentationFile() == null) {
             throw new InvalidCriterionException("Unable to create IGV viewer: No data found from selection.");
@@ -513,8 +513,9 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         Query queryToExecute = queryManagementService.retrieveQueryToExecute(igvParameters.getQuery());
         if (igvParameters.getStudySubscription().getStudy().getStudyConfiguration().hasExpressionData()) {
             try {
+                String genePlatformName = getGenePlatformName(queryToExecute);
                 igvResult.setGeneExpressionFile(analysisFileManager.createIGVGctFile(
-                    createGctDataset(igvParameters.getStudySubscription(), queries, null, null, false),
+                    createGctDataset(igvParameters.getStudySubscription(), queries, genePlatformName, null, false),
                     igvParameters.getSessionId()));
                 igvParameters.addPlatform(queryToExecute.getGeneExpressionPlatform());
             } catch (InvalidCriterionException e) {
@@ -532,6 +533,10 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
             }
         }
         return igvResult;
+    }
+
+    private String getGenePlatformName(Query query) {
+        return query.getGeneExpressionPlatform() != null ? query.getGeneExpressionPlatform().getName() : null;
     }
 
     /**
