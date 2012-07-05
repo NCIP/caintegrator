@@ -127,10 +127,13 @@ public class ViewAllIGVAction extends AbstractViewAllAction {
         igvParameters.setStudySubscription(getStudySubscription());
         igvParameters.setSessionId(ServletActionContext.getRequest().getRequestedSessionId());
         igvParameters.setUrlPrefix(SessionHelper.getIgvSessionUrl());
-        igvParameters.setQuery(getQuery());
         igvParameters.setPlatforms(getPlatforms());
         igvParameters.setViewAllData(false);
         igvParameters.setUseCGHCall(CopyNumberCriterionTypeEnum.CALLS_VALUE.equals(getCopyNumberType()));
+        igvParameters.setQuery(getQuery());
+        igvParameters.getQuery().setCopyNumberPlatform(getArrayDataService().getPlatform(getCopyNumberPlatformName()));
+        igvParameters.getQuery()
+            .setGeneExpressionPlatform(getArrayDataService().getPlatform(getExpressionPlatformName()));
         getDisplayableWorkspace().setIgvParameters(igvParameters);
         return VIEW_IGV;
     }
