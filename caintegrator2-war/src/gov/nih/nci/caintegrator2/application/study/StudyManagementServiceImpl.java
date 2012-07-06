@@ -144,6 +144,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.xwork.StringUtils;
 import org.hibernate.Hibernate;
@@ -1623,7 +1624,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             for (AuthorizedStudyElementsGroup authGroup : authorizedGroups) {
                 for (AuthorizedAnnotationFieldDescriptor authField : authGroup
                     .getAuthorizedAnnotationFieldDescriptors()) {
-                    fields.add(authField.getAnnotationFieldDescriptor());
+                    AnnotationFieldDescriptor afd = authField.getAnnotationFieldDescriptor();
+                    if (ObjectUtils.equals(afd.getAnnotationGroup(), annotationGroup)) {
+                        fields.add(afd);
+                    }
                 }
             }
         } else {

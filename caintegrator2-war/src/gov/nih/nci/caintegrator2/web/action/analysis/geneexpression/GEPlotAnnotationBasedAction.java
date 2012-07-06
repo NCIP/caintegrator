@@ -92,14 +92,17 @@ import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGr
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.security.SecurityHelper;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -114,7 +117,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     private static final String ANNOTATION_LOG2_PLOT_URL = "retrieveAnnotationGEPlot_log2.action?";
     private static final String ANNOTATION_BW_PLOT_URL = "retrieveAnnotationGEPlot_bw.action?";
     private GEPlotAnnotationBasedParameters plotParameters = new GEPlotAnnotationBasedParameters();
-
+    private StudyManagementService studyManagementService;
 
     /**
      * {@inheritDoc}
@@ -246,21 +249,30 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
             addActionError(getText("struts.messages.error.must.select.annotation.group"));
             return false;
         }
-        AnnotationGroup annotationGroup =
-            getStudy().getAnnotationGroup(getForm().getAnnotationGroupSelection());
-        getForm().setAnnotationFieldDescriptors(new HashMap<String, AnnotationFieldDescriptor>());
-        loadValidAnnotationFieldDescriptors(annotationGroup.getVisibleAnnotationFieldDescriptors());
+        loadValidAnnotationFieldDescriptors();
         return true;
     }
 
-    private void loadValidAnnotationFieldDescriptors(
-            Collection<AnnotationFieldDescriptor> annotationFieldDescriptors) {
+    private void loadValidAnnotationFieldDescriptors() {
+        Set<AnnotationFieldDescriptor> annotationFieldDescriptors = getAnnotationFieldsForUser();
+        getForm().setAnnotationFieldDescriptors(new HashMap<String, AnnotationFieldDescriptor>());
         for (AnnotationFieldDescriptor annotationFieldDescriptor : annotationFieldDescriptors) {
-            if (!annotationFieldDescriptor.getDefinition().getPermissibleValueCollection().isEmpty()) {
+            if (hasFieldValues(annotationFieldDescriptor)) {
                 getForm().getAnnotationFieldDescriptors().put(annotationFieldDescriptor.getId().toString(),
-                        annotationFieldDescriptor);
+                                                              annotationFieldDescriptor);
             }
         }
+    }
+
+    private boolean hasFieldValues(AnnotationFieldDescriptor annotationFieldDescriptor) {
+        return annotationFieldDescriptor.getDefinition() != null
+                && !annotationFieldDescriptor.getDefinition().getPermissibleValueCollection().isEmpty();
+    }
+
+    private Set<AnnotationFieldDescriptor> getAnnotationFieldsForUser() {
+        AnnotationGroup annotationGroup = getStudy().getAnnotationGroup(getForm().getAnnotationGroupSelection());
+        String username = SecurityHelper.getCurrentUsername();
+        return studyManagementService.getVisibleAnnotationFieldDescriptorsForUser(annotationGroup, username);
     }
 
     /**
@@ -353,12 +365,8 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
      */
     @Override
     public boolean isCreatable() {
-        if (getForm().getSelectedAnnotationId() != null
-            && !"-1".equals(getForm().getSelectedAnnotationId())
-            && getForm().getAnnotationGroupSelection() != null) {
-            return true;
-        }
-        return false;
+        return !StringUtils.equals("-1", getForm().getSelectedAnnotationId())
+                && getForm().getAnnotationGroupSelection() != null;
     }
 
     /**
@@ -425,6 +433,20 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     public List<String> getControlSampleSets() {
         return isStudyHasMultiplePlatforms() ? getForm().getControlSampleSets()
                 : super.getControlSampleSets();
+    }
+
+    /**
+     * @return the studyManagementService
+     */
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+
+    /**
+     * @param studyManagementService the studyManagementService to set
+     */
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
     }
 
 }
