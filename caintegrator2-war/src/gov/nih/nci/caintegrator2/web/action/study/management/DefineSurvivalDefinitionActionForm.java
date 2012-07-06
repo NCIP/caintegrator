@@ -104,7 +104,6 @@ public class DefineSurvivalDefinitionActionForm {
     private String survivalStatusId;
     private String valueForCensored;
 
-
     /**
      * @return the survivalValueDefinitionId
      */
