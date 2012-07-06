@@ -105,7 +105,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-
 /**
  * Action used to modify/create/delete SurvivalValueDefinitions for a Study.
  */

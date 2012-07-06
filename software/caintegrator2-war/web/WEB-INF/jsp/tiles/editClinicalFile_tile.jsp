@@ -1,18 +1,18 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-            
+
 <div id="content">
-                   
-    <h1 style="color: #FFFFFF; background: #263D6B; padding: 5px;">editing: <strong><s:property value="studyConfiguration.study.shortTitleText" /></strong></h1>    
-   
+
+    <h1 style="color: #FFFFFF; background: #263D6B; padding: 5px;">editing: <strong><s:property value="studyConfiguration.study.shortTitleText" /></strong></h1>
+
     <!--Page Help-->
 
     <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-DefineFieldsPageforEditingAnnotations')" class="help">
    &nbsp;</a>
     </div>
 
-    <!--/Page Help-->          
-    
+    <!--/Page Help-->
+
     <h1><s:property value="#subTitleText" /></h1>
     <p>Assign annotation definitions to data fields.</p>
     <s:if test = "'Error'.equals(clinicalSource.status.value)" >
@@ -25,15 +25,15 @@
             <tr>
                 <td colspan="2" style="padding: 5px;">
 
-                <s:form id="subjectAnnotationsForm" name="subjectAnnotationsForm" 
+                <s:form id="subjectAnnotationsForm" name="subjectAnnotationsForm"
                 action="saveClinicalSource" method="post" enctype="multipart/form-data">
                 <s:hidden name="studyConfiguration.id" />
                 <s:hidden name="clinicalSource.id" />
                 <table class="data">
                     <tr>
                         <th>Annotation Group</th>
-                        <th>Visible</th>
-                        <th>Authorized</th>
+                        <th>Visible <input type="checkbox" id="selectAll_shownInBrowseCheckBox" onclick="toggleAll('shownInBrowseCheckBox');"/></th>
+                        <th>Authorized <input type="checkbox" id="selectAll_showInAuthorizationCheckBox" onclick="toggleAll('showInAuthorizationCheckBox');"/></th>
                         <th>Annotation Definition</th>
                         <th>Annotation Header from File</th>
                         <th colspan="3" />Data from File</th>
@@ -44,10 +44,10 @@
                         </s:if>
                         <s:else>
                           <tr class="even">
-                        </s:else>         
+                        </s:else>
                             <td>
                                 <s:if test="%{fieldDescriptor != null}">
-                                    <s:select name="displayableFields[%{#columnIterator.count - 1}].annotationGroupName" 
+                                    <s:select name="displayableFields[%{#columnIterator.count - 1}].annotationGroupName"
                                               list="selectableAnnotationGroups"
                                               listKey="name"
                                               listValue="name"
@@ -57,13 +57,13 @@
                             <td>
                                 <s:if test="%{fieldDescriptor != null}">
                                     <s:checkbox name="displayableFields[%{#columnIterator.count - 1}].fieldDescriptor.shownInBrowse"
-                                        theme="simple" disabled="false"/>
+                                        id="shownInBrowseCheckBox%{#columnIterator.count - 1}" theme="simple" disabled="false"/>
                                 </s:if>
                             </td>
                             <td>
                                 <s:if test="%{fieldDescriptor != null && !identifierType}">
                                     <s:checkbox name="displayableFields[%{#columnIterator.count - 1}].fieldDescriptor.showInAuthorization"
-                                        theme="simple" disabled="false"/>
+                                        id="showInAuthorizationCheckBox%{#columnIterator.count - 1}" theme="simple" disabled="false"/>
                                 </s:if>
                             </td>
                             <td>
@@ -80,7 +80,7 @@
                                     Timepoint
                                 </s:elseif>
                                 <s:elseif test="%{fieldDescriptor != null && fieldDescriptor.definition != null}">
-                                    <s:property value="fieldDescriptor.definition.displayName"/> 
+                                    <s:property value="fieldDescriptor.definition.displayName"/>
                                 </s:elseif>
                                 <s:url id="editClinicalFieldDescriptor" action="editClinicalFieldDescriptor" includeParams="none">
                                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
@@ -96,7 +96,7 @@
                                     <s:else>
                                         Assign Annotation Definition
                                     </s:else>
-                                </s:a> 
+                                </s:a>
                             </td>
                             <td><s:property value="fieldDescriptor.name" /></td>
                             <td><s:if test="%{dataValues.size > 0}"><s:property value="dataValues[0]" /></s:if></td>
@@ -108,11 +108,11 @@
                 <tr>
                     <td colspan="2"><div align="center">
                     <button type="button" onclick="document.subjectAnnotationsForm.action = 'cancelClinicalSource.action';
-                    	document.subjectAnnotationsForm.submit();">Cancel</button>
-                    
+                        document.subjectAnnotationsForm.submit();">Cancel</button>
+
                     <button type="button" onclick="document.subjectAnnotationsForm.submit();">Save</button>
-				    </div></td>
-				</tr>
+                    </div></td>
+                </tr>
                 </s:form>
                 </td>
             </tr>
@@ -121,3 +121,32 @@
 </div>
 
 <div class="clear"><br /></div>
+
+<script type="text/javascript" >
+    var authAllSelected = {};
+    function toggleAll(idPrefix) {
+        var form = $("subjectAnnotationsForm");
+        var inputs = form.getInputs("checkbox");
+        authAllSelected[idPrefix] = !authAllSelected[idPrefix];
+        inputs.each(function (elem) {
+            if (elem.id.indexOf(idPrefix) == 0) {
+                elem.checked = authAllSelected[idPrefix];
+            }
+        });
+    }
+
+    function initToggleAll(idPrefix) {
+        authAllSelected[idPrefix] = true;
+        var form = $("subjectAnnotationsForm");
+        var inputs = form.getInputs("checkbox");
+        inputs.each(function (elem) {
+            if (elem.id.indexOf(idPrefix) == 0) {
+                authAllSelected[idPrefix] &= elem.checked;
+            }
+        });
+        $("selectAll_" + idPrefix).checked = authAllSelected[idPrefix];
+    }
+
+    initToggleAll("shownInBrowseCheckBox");
+    initToggleAll("showInAuthorizationCheckBox");
+</script>

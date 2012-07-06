@@ -3,10 +3,10 @@
 <!-- *********************************************************************** -->
 
 <project name="caintegrator2" default="continuous-integration" basedir="."
-	xmlns:ivy="antlib:org.apache.ivy.ant"
-	xmlns="antlib:org.apache.tools.ant"
-	xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
-	>
+    xmlns:ivy="antlib:org.apache.ivy.ant"
+    xmlns="antlib:org.apache.tools.ant"
+    xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
+    >
 
     <!-- ******************************************************************* -->
     <!-- ** PROPERTIES / PATHS                                            ** -->
@@ -27,7 +27,7 @@
 
     <property name="cobertura.linecoverage" value="80"/>
     <property name="cobertura.branchcoverage" value="70"/>
-    <property name="pmd.maxRuleViolations" value="189"/>
+    <property name="pmd.maxRuleViolations" value="187"/>
 
     <tstamp>
       <format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
@@ -68,13 +68,12 @@
     <property name="database.driver.file" value="${bda-utils.dir}/mysql-connector-java-5.1.13.jar"/>
 
     <mkdir dir="${build.lib.dir}" />
-    <ant inheritAll="false" inheritRefs="false" dir="${software.dir}/common/bda-download"
-	    antfile="bda-ivy-build.xml" target="retrieve-bda">
+    <ant inheritAll="false" inheritRefs="false" dir="${software.dir}/common/bda-download" antfile="bda-ivy-build.xml" target="retrieve-bda">
         <property name="bda-utils.dir" location="${bda-utils.dir}" />
         <property name="lib.dir" location="${build.lib.dir}" />
         <property name="software.dir" location="${software.dir}" />
-	<property name="bda.local.repo.dir" location="${software.dir}/../../bda-local-ivy-repo" />
-	<property name="bda.version" value="${bda.version}"/>
+        <property name="bda.local.repo.dir" location="${software.dir}/../../bda-local-ivy-repo" />
+        <property name="bda.version" value="${bda.version}"/>
     </ant>
     <import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
 
@@ -438,7 +437,7 @@
 
     <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy,struts.properties.deploy">
 
-    	<copy todir="${caintegrator2.xml.dir}" file="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml" overwrite="true"/>
+        <copy todir="${caintegrator2.xml.dir}" file="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml" overwrite="true"/>
         <copy todir="${web-inf.working.dir}" file="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="caintegrator2.version" value="${caintegrator2.version}" />
@@ -451,7 +450,7 @@
             </filterset>
         </copy>
 
-    	<if>
+        <if>
             <equals arg1="${jboss.ssl.enable}" arg2="true"/>
             <then>
                 <property name="jboss.protocol" value="https"/>
@@ -461,10 +460,10 @@
             </else>
         </if>
 
-    	<copy todir="${caintegrator2.xml.dir}" file="${caintegrator2.war.resources.src.dir}/application-config-cas-security.xml" overwrite="true"/>
+        <copy todir="${caintegrator2.xml.dir}" file="${caintegrator2.war.resources.src.dir}/application-config-cas-security.xml" overwrite="true"/>
 
-    	<copy file="${caintegrator2.war.resources.src.dir}/application-config-cas-security.xml"
-    		todir="${caintegrator2.war.resources.target.dir}" filtering="true" overwrite="true">
+        <copy file="${caintegrator2.war.resources.src.dir}/application-config-cas-security.xml"
+            todir="${caintegrator2.war.resources.target.dir}" filtering="true" overwrite="true">
             <filterset>
                 <filter token="cas.server.hostname" value="${cas.server.hostname}" />
                 <filter token="cas.server.port" value="${cas.server.port}"/>
@@ -474,7 +473,7 @@
                 <filter token="jboss.server.port" value="${jboss.server.port}"/>
             </filterset>
         </copy>
-        
+
         <copy file="${caintegrator2.war.resources.src.dir}/caintegrator2-config.xml"
             todir="${caintegrator2.war.resources.target.dir}" filtering="true" overwrite="true">
             <filterset>
@@ -482,7 +481,7 @@
             </filterset>
         </copy>
 
-    	<!-- Uncomment the correct context configuration for CAS SSO or not-->
+        <!-- Uncomment the correct context configuration for CAS SSO or not-->
         <if>
             <equals arg1="${single.sign.on.install}" arg2="true" />
             <then>
@@ -490,13 +489,13 @@
                     <uncomment path="//:context-param[:param-name/text()='contextConfigLocation']/:param-value/comment()[2]"/>
                 </xmltask>
             </then>
-        	<else>
-        		<xmltask source="${web-inf.working.dir}/web.xml" dest="${web-inf.working.dir}/web.xml">
+            <else>
+                <xmltask source="${web-inf.working.dir}/web.xml" dest="${web-inf.working.dir}/web.xml">
                     <uncomment path="//:context-param[:param-name/text()='contextConfigLocation']/:param-value/comment()[4]"/>
-        			<remove path="//:context-param[:param-name/text()='ssoEnabled']"/>
-        		    <remove path="//:context-param[:param-name/text()='casServerLogoutUrl']"/>
+                    <remove path="//:context-param[:param-name/text()='ssoEnabled']"/>
+                    <remove path="//:context-param[:param-name/text()='casServerLogoutUrl']"/>
                 </xmltask>
-    		</else>
+            </else>
         </if>
 
         <war destfile="${caintegrator2.war}" webxml="${web-inf.working.dir}/web.xml" duplicate="preserve">
@@ -529,12 +528,12 @@
                 <exclude name="web.xml"/>
             </webinf>
             <webinf dir="${caintegrator2.war.target.dir}">
-            	   <include name="xml/*"/>
+                   <include name="xml/*"/>
             </webinf>
         </war>
     </target>
 
-	<!-- I believe this target is no longer necessary. -->
+    <!-- I believe this target is no longer necessary. -->
     <target name="caintegrator2.jar" depends="compile:caintegrator2.war,hibernate.cfg.xml.test">
         <delete file="${caintegrator2.jar}"/>
         <copy file="${hibernate.cfg.xml.test}" tofile="${hibernate.cfg.xml.deploy}" overwrite="true" />
@@ -694,13 +693,13 @@
 
     <target name="database:drop-tables" depends="database:init-sql" description="Drop caIntegrator 2 schema">
         <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-tables.sql" />
-	    <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-csm-tables.sql" />
+        <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-csm-tables.sql" />
     </target>
 
     <target name="database:create-tables" depends="database:init-sql" description="Create caIntegrator 2 schema">
         <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-tables.sql" />
-	    <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-csm-tables.sql" />
-	    <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/prime-csm-tables.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-csm-tables.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/prime-csm-tables.sql" />
     </target>
 
     <target name="database:create-tables-generated" depends="database:generate-sql">
@@ -809,19 +808,19 @@
     <target name="database:generate-sql" depends="compile:caintegrator2.war, database:init-sql">
         <!-- Hibernate tool-->
         <path id="hibernatetool.classpath">
-	        <fileset dir="${caintegrator2.war.compile.lib.dir}">
-	        	<include name="commons-logging-1.1.1.jar"/>
-	            <include name="ejb3-persistence-1.0.1.GA.jar" />
-	            <include name="hibernate-annotations-3.2.0.ga.jar" />
-	            <include name="hibernate-commons-annotations-3.0.0.GA.jar" />
-	            <include name="mysql-connector-java-5.1.13.jar" />
-	            <include name="commons-collections-3.2.jar" />
-	            <include name="hibernate-3.2.0.ga.jar" />
-	            <include name="dom4j-1.6.jar" />
-	        </fileset>
-	        <fileset dir="${lib.dir}/hibernatetool">
-	        	<include name="hibernate-tools-3.2.2.beta1.jar" />
-	        </fileset>
+            <fileset dir="${caintegrator2.war.compile.lib.dir}">
+                <include name="commons-logging-1.1.1.jar"/>
+                <include name="ejb3-persistence-1.0.1.GA.jar" />
+                <include name="hibernate-annotations-3.2.0.ga.jar" />
+                <include name="hibernate-commons-annotations-3.0.0.GA.jar" />
+                <include name="mysql-connector-java-5.1.13.jar" />
+                <include name="commons-collections-3.2.jar" />
+                <include name="hibernate-3.2.0.ga.jar" />
+                <include name="dom4j-1.6.jar" />
+            </fileset>
+            <fileset dir="${lib.dir}/hibernatetool">
+                <include name="hibernate-tools-3.2.2.beta1.jar" />
+            </fileset>
         </path>
         <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.classpath" />
         <hibernatetool destdir="${caintegrator2db.sql.target.dir}">
@@ -1112,7 +1111,7 @@
     <target name="deploy:jsp" description="Copies all current JSP code to the deployed application for quick update">
         <for param="toDir">
             <path>
-                <dirset dir="${jboss.deploy.dir}/../tmp/deploy" includes="tmp*caintegrator-exp.war" />
+                <dirset dir="${jboss.deploy.dir}/../tmp" includes="**/caintegrator.war" />
             </path>
             <sequential>
                 <copy todir="@{toDir}">
@@ -1380,146 +1379,146 @@
         </sequential>
     </macrodef>
 
-	<macrodef name="static-analysis-pmd">
-		<attribute name="pmd.src.dir"/>
-		<attribute name="pmd.rpt.dir"/>
-		<attribute name="pmd.root-dir.name"/>
-		<attribute name="pmd.sub-project.name"/>
-		<attribute name="pmd.report-preprocessor.file"/>
-		<attribute name="pmd.report-xsl.file"/>
-		<attribute name="pmd.rule-set.file"/>
-		<attribute name="pmd.xml.name" default="pmd.xml"/>
-		<attribute name="pmd.html.name" default="pmd.html"/>
-		<sequential>
-			<property name="pmd.sub-project.rpt.dir" value="@{pmd.rpt.dir}/@{pmd.sub-project.name}/target"/>
-			<mkdir dir="${pmd.sub-project.rpt.dir}"/>
-			<taskdef name="pmd"
-				classname="net.sourceforge.pmd.ant.PMDTask"
-				classpathref="project.test.pmd.classpath"/>
-			<pmd rulesetfiles="@{pmd.rule-set.file}"
-				 shortFilenames="true"
-				 failonerror="true"
-			     failOnRuleViolation="true"
-				 targetjdk="1.5"
-			     maxRuleViolations="${pmd.maxRuleViolations}">
-				<formatter type="xml" toFile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" />
-				<formatter type="html" toFile="${pmd.sub-project.rpt.dir}/@{pmd.html.name}" />
-				<fileset dir="@{pmd.src.dir}">
-					<include name="**/*.java"/>
-				</fileset>
-			</pmd>
-			<move file="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" tofile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"/>
-			<xslt taskname="pmd"
-				in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
-				out="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}"
-				style="@{pmd.report-preprocessor.file}">
-				<param name="relative.path" expression="@{pmd.root-dir.name}/@{pmd.sub-project.name}"/>
-			</xslt>
+    <macrodef name="static-analysis-pmd">
+        <attribute name="pmd.src.dir"/>
+        <attribute name="pmd.rpt.dir"/>
+        <attribute name="pmd.root-dir.name"/>
+        <attribute name="pmd.sub-project.name"/>
+        <attribute name="pmd.report-preprocessor.file"/>
+        <attribute name="pmd.report-xsl.file"/>
+        <attribute name="pmd.rule-set.file"/>
+        <attribute name="pmd.xml.name" default="pmd.xml"/>
+        <attribute name="pmd.html.name" default="pmd.html"/>
+        <sequential>
+            <property name="pmd.sub-project.rpt.dir" value="@{pmd.rpt.dir}/@{pmd.sub-project.name}/target"/>
+            <mkdir dir="${pmd.sub-project.rpt.dir}"/>
+            <taskdef name="pmd"
+                classname="net.sourceforge.pmd.ant.PMDTask"
+                classpathref="project.test.pmd.classpath"/>
+            <pmd rulesetfiles="@{pmd.rule-set.file}"
+                 shortFilenames="true"
+                 failonerror="true"
+                 failOnRuleViolation="true"
+                 targetjdk="1.5"
+                 maxRuleViolations="${pmd.maxRuleViolations}">
+                <formatter type="xml" toFile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" />
+                <formatter type="html" toFile="${pmd.sub-project.rpt.dir}/@{pmd.html.name}" />
+                <fileset dir="@{pmd.src.dir}">
+                    <include name="**/*.java"/>
+                </fileset>
+            </pmd>
+            <move file="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" tofile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"/>
+            <xslt taskname="pmd"
+                in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
+                out="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}"
+                style="@{pmd.report-preprocessor.file}">
+                <param name="relative.path" expression="@{pmd.root-dir.name}/@{pmd.sub-project.name}"/>
+            </xslt>
 
-			<xslt taskname="pmd"
-				in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
-				out="${pmd.sub-project.rpt.dir}/@{pmd.html.name}"
-				style="@{pmd.report-xsl.file}"/>
-		    
-		</sequential>
-	</macrodef>
+            <xslt taskname="pmd"
+                in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
+                out="${pmd.sub-project.rpt.dir}/@{pmd.html.name}"
+                style="@{pmd.report-xsl.file}"/>
 
-	<macrodef name="static-analysis-javancss">
-		<attribute name="javancss.src.dir"/>
-		<attribute name="javancss.rpt.dir"/>
-		<attribute name="javancss.report-xsl.file"/>
-		<attribute name="javancss.xml.name" default="javancss.xml"/>
-		<attribute name="javancss.html.name" default="javancss.html"/>
-		<sequential>
-			<taskdef name="javancss" classpathref="javancss.classpath" classname="javancss.JavancssAntTask" />
-			<javancss
-				srcdir="@{javancss.src.dir}"
-				includes="**/*.java"
-				excludes="**/*test*/*"
-				generatereport="true"
-				outputfile="@{javancss.rpt.dir}/@{javancss.xml.name}"
-				ccnPerFuncMax="10"
-				format="xml">
-			</javancss>
-			<xslt taskname="javancss"
-				in="@{javancss.rpt.dir}/@{javancss.xml.name}"
-				out="@{javancss.rpt.dir}/@{javancss.html.name}"
-				style="@{javancss.report-xsl.file}"/>
-		</sequential>
-	</macrodef>
+        </sequential>
+    </macrodef>
 
-	<macrodef name="static-analysis-findbugs">
-		<attribute name="findbugs.home.dir"/>
-		<attribute name="findbugs.src.dir"/>
-		<attribute name="findbugs.rpt.dir"/>
-		<attribute name="findbugs.classes.dir"/>
-		<attribute name="findbugs.report-xsl.file"/>
-		<attribute name="findbugs.app.classpath.ref"/>
-		<attribute name="findbugs.xml.name" default="findbugs.xml"/>
-		<attribute name="findbugs.html.name" default="findbugs.html"/>
-		<sequential>
-			<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="project.test.findbugs.classpath"/>
+    <macrodef name="static-analysis-javancss">
+        <attribute name="javancss.src.dir"/>
+        <attribute name="javancss.rpt.dir"/>
+        <attribute name="javancss.report-xsl.file"/>
+        <attribute name="javancss.xml.name" default="javancss.xml"/>
+        <attribute name="javancss.html.name" default="javancss.html"/>
+        <sequential>
+            <taskdef name="javancss" classpathref="javancss.classpath" classname="javancss.JavancssAntTask" />
+            <javancss
+                srcdir="@{javancss.src.dir}"
+                includes="**/*.java"
+                excludes="**/*test*/*"
+                generatereport="true"
+                outputfile="@{javancss.rpt.dir}/@{javancss.xml.name}"
+                ccnPerFuncMax="10"
+                format="xml">
+            </javancss>
+            <xslt taskname="javancss"
+                in="@{javancss.rpt.dir}/@{javancss.xml.name}"
+                out="@{javancss.rpt.dir}/@{javancss.html.name}"
+                style="@{javancss.report-xsl.file}"/>
+        </sequential>
+    </macrodef>
 
-			<findbugs home="@{findbugs.home.dir}"
-				output="xml:withMessages"
-				outputFile="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
-				jvmargs="-Xms128m -Xmx512m"
-				>
-				<auxClasspath>
-					<!--
-					<fileset dir="@{findbugs.app.classpath.dir}">
-						<include name="**/*.jar" />
-					</fileset>
-					-->
-					<fileset refid="@{findbugs.app.classpath.ref}"/>
-				</auxClasspath>
+    <macrodef name="static-analysis-findbugs">
+        <attribute name="findbugs.home.dir"/>
+        <attribute name="findbugs.src.dir"/>
+        <attribute name="findbugs.rpt.dir"/>
+        <attribute name="findbugs.classes.dir"/>
+        <attribute name="findbugs.report-xsl.file"/>
+        <attribute name="findbugs.app.classpath.ref"/>
+        <attribute name="findbugs.xml.name" default="findbugs.xml"/>
+        <attribute name="findbugs.html.name" default="findbugs.html"/>
+        <sequential>
+            <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="project.test.findbugs.classpath"/>
 
-				<sourcePath path="@{findbugs.src.dir}" />
-				<class location="@{findbugs.classes.dir}" />
-			</findbugs>
-			<xslt taskname="findbugs"
-				in="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
-				out="@{findbugs.rpt.dir}/@{findbugs.html.name}"
-				style="@{findbugs.report-xsl.file}"
-				/>
-		</sequential>
-	</macrodef>
+            <findbugs home="@{findbugs.home.dir}"
+                output="xml:withMessages"
+                outputFile="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
+                jvmargs="-Xms128m -Xmx512m"
+                >
+                <auxClasspath>
+                    <!--
+                    <fileset dir="@{findbugs.app.classpath.dir}">
+                        <include name="**/*.jar" />
+                    </fileset>
+                    -->
+                    <fileset refid="@{findbugs.app.classpath.ref}"/>
+                </auxClasspath>
 
-	<macrodef name="static-analysis-checkstyle">
-		<attribute name="checkstyle.src.dir"/>
-		<attribute name="checkstyle.rpt.dir"/>
-		<attribute name="checkstyle.report-xsl.file"/>
-		<attribute name="checkstyle.config.file"/>
-		<attribute name="checkstyle.xml.name" default="checkstyle.xml"/>
-		<attribute name="checkstyle.html.name" default="checkstyle.html"/>
-		<attribute name="checkstyle.classpath.ref.name" />
-		<sequential>
-			<taskdef resource="checkstyletask.properties"
-				uri="antlib:com.puppycrawl.tools.checkstyle"
-				classpathref="project.test.checkstyle.classpath"/>
-			<cs:checkstyle config="@{checkstyle.config.file}"
-				failureProperty="checkstyle.failure"
-				failOnViolation="false"
-				maxerrors="0"
-				maxwarnings="0"
-				classpathref="@{checkstyle.classpath.ref.name}"
-				>
-				<formatter type="xml"
-					tofile="@{checkstyle.rpt.dir}/@{checkstyle.xml.name}"/>
-				<fileset dir="@{checkstyle.src.dir}">
-					<include name="**/*.java"/>
-				</fileset>
-			</cs:checkstyle>
-			<xslt taskname="checkstyle"
-				in="@{checkstyle.rpt.dir}/@{checkstyle.xml.name}"
-				out="@{checkstyle.rpt.dir}/@{checkstyle.html.name}"
-				style="@{checkstyle.report-xsl.file}"
-				>
-				<param name="output.dir" expression="@{checkstyle.rpt.dir}" />
-			</xslt>
+                <sourcePath path="@{findbugs.src.dir}" />
+                <class location="@{findbugs.classes.dir}" />
+            </findbugs>
+            <xslt taskname="findbugs"
+                in="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
+                out="@{findbugs.rpt.dir}/@{findbugs.html.name}"
+                style="@{findbugs.report-xsl.file}"
+                />
+        </sequential>
+    </macrodef>
 
-		</sequential>
-	</macrodef>
+    <macrodef name="static-analysis-checkstyle">
+        <attribute name="checkstyle.src.dir"/>
+        <attribute name="checkstyle.rpt.dir"/>
+        <attribute name="checkstyle.report-xsl.file"/>
+        <attribute name="checkstyle.config.file"/>
+        <attribute name="checkstyle.xml.name" default="checkstyle.xml"/>
+        <attribute name="checkstyle.html.name" default="checkstyle.html"/>
+        <attribute name="checkstyle.classpath.ref.name" />
+        <sequential>
+            <taskdef resource="checkstyletask.properties"
+                uri="antlib:com.puppycrawl.tools.checkstyle"
+                classpathref="project.test.checkstyle.classpath"/>
+            <cs:checkstyle config="@{checkstyle.config.file}"
+                failureProperty="checkstyle.failure"
+                failOnViolation="false"
+                maxerrors="0"
+                maxwarnings="0"
+                classpathref="@{checkstyle.classpath.ref.name}"
+                >
+                <formatter type="xml"
+                    tofile="@{checkstyle.rpt.dir}/@{checkstyle.xml.name}"/>
+                <fileset dir="@{checkstyle.src.dir}">
+                    <include name="**/*.java"/>
+                </fileset>
+            </cs:checkstyle>
+            <xslt taskname="checkstyle"
+                in="@{checkstyle.rpt.dir}/@{checkstyle.xml.name}"
+                out="@{checkstyle.rpt.dir}/@{checkstyle.html.name}"
+                style="@{checkstyle.report-xsl.file}"
+                >
+                <param name="output.dir" expression="@{checkstyle.rpt.dir}" />
+            </xslt>
+
+        </sequential>
+    </macrodef>
 
 
 

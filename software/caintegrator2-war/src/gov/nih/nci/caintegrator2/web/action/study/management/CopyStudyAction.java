@@ -153,11 +153,7 @@ public class CopyStudyAction extends AbstractStudyAction {
         StudyConfiguration original = getStudyConfiguration();
         doValidateCopy(original);
         if (this.hasFieldErrors()) {
-            for (List<String> errorList : this.getFieldErrors().values()) {
-                for (String error : errorList) {
-                    addActionError(error);
-                }
-            }
+            addCopyErrors();
         } else {
             try {
                 getStudyConfiguration().setUserWorkspace(getWorkspace());
@@ -165,13 +161,20 @@ public class CopyStudyAction extends AbstractStudyAction {
                 setStudyConfiguration(getStudyManagementService().copy(original, getStudyConfiguration()));
                 doLoadCopiedSubjects();
                 createStudy();
-                setStudyLastModifiedByCurrentUser(null,
-                        LogEntry.getSystemLogCopy(original.getStudy()));
+                setStudyLastModifiedByCurrentUser(null, LogEntry.getSystemLogCopy(original.getStudy()));
             } catch (ValidationException vale) {
                 addActionError(vale.getResult().getInvalidMessage());
             } catch (Exception e) {
                 addActionError(getText("struts.messages.error.study.copy"));
                 setStudyConfiguration(original);
+            }
+        }
+    }
+
+    private void addCopyErrors() {
+        for (List<String> errorList : this.getFieldErrors().values()) {
+            for (String error : errorList) {
+                addActionError(error);
             }
         }
     }
