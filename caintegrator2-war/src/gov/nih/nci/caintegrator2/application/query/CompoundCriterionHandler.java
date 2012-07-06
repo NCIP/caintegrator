@@ -308,8 +308,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         String expId = StringUtils.EMPTY;
         for (ResultRow resultRow2 : rowsBeforeRestriction) {
             if (areQueryResultsGenomic(queryResultType)) {
-                expId = resultRow2.getSampleAcquisition().getSample().getGenomicDataSource()
-                                                                                .getExperimentIdentifier();
+                expId = resultRow2.getSampleAcquisition().getSample().getGenomicDataSource().getExperimentIdentifier();
                 if (listOfRestrictedStudySubjectAssignments.contains(resultRow2.getSubjectAssignment())
                         && listOfAllowedExperimentIdentifiers.contains(expId)) {
                     rowsAfterRestriction.add(resultRow2);
