@@ -10,8 +10,8 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
        http://www.directwebremoting.org/schema/spring-dwr
        http://www.directwebremoting.org/schema/spring-dwr-2.0.xsd"
-    default-lazy-init="false" 
-    default-dependency-check="none" 
+    default-lazy-init="false"
+    default-dependency-check="none"
     default-autowire="no">
 
     <!-- ******************************************************************* -->
@@ -25,7 +25,7 @@
         class="gov.nih.nci.caintegrator2.web.filter.SessionTimeoutFilter">
         <property name="fileManager">
             <ref local="analysisFileManager"/>
-        </property>  
+        </property>
     </bean>
 
     <bean id="emptyAction"
@@ -43,7 +43,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
    <bean id="studySummaryAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.StudySummaryAction">
@@ -51,7 +51,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="browseStudyAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.BrowseStudyAction">
@@ -59,7 +59,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="workspaceAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.WorkspaceAction">
@@ -67,17 +67,17 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="dataRefreshRunner" scope="prototype" class="gov.nih.nci.caintegrator2.application.quartz.DataRefreshJob">
         <property name="dao" ref="caIntegrator2Dao"/>
         <property name="caArrayFacade" ref="caArrayFacade"/>
     </bean>
-        
+
     <bean id="loginAction" scope="prototype" class="gov.nih.nci.caintegrator2.web.action.LoginAction">
         <property name="dataRefreshRunner" ref="dataRefreshRunner"/>
     </bean>
-    
-    
+
+
     <bean id="registrationAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.registration.RegistrationAction">
@@ -91,7 +91,7 @@
             <ref local="configurationHelper" />
         </property>
     </bean>
-    
+
     <!-- Study Management -->
 
     <bean id="deployStudyAction"
@@ -132,7 +132,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="copyStudyAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.CopyStudyAction">
@@ -146,7 +146,7 @@
             <ref local="subjectDataSourceAjaxUpdater"/>
         </property>
     </bean>
-    
+
     <bean id="editStudyLogAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyLogAction">
@@ -168,7 +168,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
    <bean id="addExternalLinksAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.AddExternalLinksAction">
@@ -179,7 +179,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="deleteExternalLinksAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.DeleteExternalLinksAction">
@@ -190,7 +190,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="viewExternalLinksAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.ViewExternalLinksAction">
@@ -198,7 +198,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="viewDataDictionaryAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.ViewDataDictionaryAction">
@@ -206,7 +206,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="viewControlSamplesAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.investigation.ViewControlSamplesAction">
@@ -214,7 +214,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="viewStudyLogAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.ViewStudyLogAction">
@@ -222,7 +222,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="addStudyLogoAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.AddStudyLogoAction">
@@ -233,7 +233,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="editAnnotationGroupAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditAnnotationGroupAction">
@@ -244,7 +244,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="editImagingSourceAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditImagingSourceAction">
@@ -261,7 +261,7 @@
             <ref local="nciaFacade" />
         </property>
     </bean>
-    
+
     <bean id="editImagingSourceAnnotationsAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditImagingSourceAnnotationsAction">
@@ -278,7 +278,7 @@
             <ref local="aimFacade" />
         </property>
     </bean>
-    
+
     <bean id="editClinicalSourceAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditClinicalSourceAction">
@@ -289,7 +289,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="loadClinicalSourceAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.LoadClinicalSourceAction">
@@ -303,7 +303,7 @@
             <ref local="subjectDataSourceAjaxUpdater"/>
         </property>
     </bean>
-    
+
     <bean id="defineClinicalFieldDescriptorAction"
         scope="session"
         class="gov.nih.nci.caintegrator2.web.action.study.management.DefineClinicalFieldDescriptorAction">
@@ -325,7 +325,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="defineGroupFieldDescriptorAction"
         scope="session"
         class="gov.nih.nci.caintegrator2.web.action.study.management.DefineGroupFieldDescriptorAction">
@@ -336,7 +336,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="defineSurvivalDefinitionAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.DefineSurvivalDefinitionAction">
@@ -347,7 +347,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="editGenomicSourceAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditGenomicSourceAction">
@@ -422,7 +422,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="searchGeneListAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.abstractlist.SearchGeneListAction">
@@ -438,7 +438,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="editGisticAnalysisAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.copynumber.EditGisticAnalysisAction">
@@ -451,15 +451,15 @@
     </bean>
 
     <!-- Query Management actions -->
-    
+
     <bean id="newQueryAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.query.NewQueryAction">
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
-    </bean>   
-    
+    </bean>
+
     <bean id="manageQueryAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.query.ManageQueryAction">
@@ -476,7 +476,7 @@
             <ref local="analysisService"/>
         </property>
     </bean>
-    
+
     <bean id="nciaDicomRetrievalAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.query.NCIADicomRetrievalAction">
@@ -484,7 +484,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="selectQueryTabAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.query.SelectQueryTabAction">
@@ -492,9 +492,9 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <!-- Analysis actions -->
-    
+
     <bean id="viewAllIGVAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.ViewAllIGVAction">
@@ -514,7 +514,7 @@
             <ref local="studyManagementService"/>
         </property>
     </bean>
-    
+
     <bean id="viewAllHeatmapAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.ViewAllHeatmapAction">
@@ -534,7 +534,7 @@
             <ref local="studyManagementService"/>
         </property>
     </bean>
-    
+
     <bean id="selectAnalysisAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.SelectAnalysisAction">
@@ -542,7 +542,7 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-    
+
     <bean id="genePatternAnalysisAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.GenePatternAnalysisAction">
@@ -561,8 +561,8 @@
         <property name="ajaxUpdater">
             <ref local="persistedAnalysisJobAjaxUpdater"/>
         </property>
-    </bean>   
-    
+    </bean>
+
     <bean id="comparativeMarkerSelectionAnalysisAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisAction">
@@ -579,7 +579,7 @@
             <ref local="persistedAnalysisJobAjaxUpdater"/>
         </property>
     </bean>
-    
+
     <bean id="principalComponentAnalysisAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisAction">
@@ -619,7 +619,7 @@
             <ref local="persistedAnalysisJobAjaxUpdater"/>
         </property>
     </bean>
-    
+
     <bean id="downloadAnalysisResultsAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.DownloadAnalysisResultsAction">
@@ -630,7 +630,7 @@
             <ref local="studyManagementService"/>
         </property>
     </bean>
-    
+
    <bean id="kmPlotAnnotationBasedAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotAnnotationBasedAction">
@@ -643,8 +643,11 @@
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
         </property>
-    </bean>   
-    
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
     <bean id="gePlotAnnotationBasedAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotAnnotationBasedAction">
@@ -657,8 +660,11 @@
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
         </property>
-    </bean>   
-    
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
     <bean id="gePlotGenomicQueryBasedAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotGenomicQueryBasedAction">
@@ -671,8 +677,8 @@
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
         </property>
-    </bean>   
-    
+    </bean>
+
     <bean id="gePlotClinicalQueryBasedAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotClinicalQueryBasedAction">
@@ -685,8 +691,8 @@
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
         </property>
-    </bean>   
-    
+    </bean>
+
     <bean id="kmPlotGeneExpressionBasedAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotGeneExpressionBasedAction">
@@ -699,8 +705,8 @@
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
         </property>
-    </bean>   
-    
+    </bean>
+
     <bean id="kmPlotQueryBasedAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotQueryBasedAction">
@@ -714,7 +720,7 @@
             <ref local="queryManagementService"/>
         </property>
     </bean>
-    
+
    <bean id="managePlatformsAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.platform.ManagePlatformsAction">
@@ -726,12 +732,12 @@
         </property>
         <property name="fileManager">
             <ref local="fileManager"/>
-        </property>  
+        </property>
         <property name="ajaxUpdater">
             <ref local="platformDeploymentAjaxUpdater" />
         </property>
-    </bean>   
-    
+    </bean>
+
     <bean id="caBioSearchAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.cabio.CaBioSearchAction">
@@ -746,9 +752,9 @@
     <!-- ******************************************************************* -->
     <!-- ** DWR AJAX Beans                                                ** -->
     <!-- ******************************************************************* -->
-    
+
     <dwr:controller id="dwrController" debug="true" />
- 
+
     <bean id="dicomRetrievalAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.DicomRetrievalAjaxUpdater">
         <dwr:remote javascript="DicomRetrievalAjaxUpdater" />
         <property name="nciaFacade">
@@ -756,7 +762,7 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="igvAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.IGVAjaxUpdater">
         <dwr:remote javascript="IGVAjaxUpdater" />
         <property name="analysisService">
@@ -764,7 +770,7 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="heatmapAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.HeatmapAjaxUpdater">
         <dwr:remote javascript="HeatmapAjaxUpdater" />
         <property name="analysisService">
@@ -772,7 +778,7 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="dataElementSearchAjaxUpdater" scope="session" class="gov.nih.nci.caintegrator2.web.ajax.DataElementSearchAjaxUpdater">
         <dwr:remote javascript="DataElementSearchAjaxUpdater" />
         <property name="studyManagementService">
@@ -780,7 +786,7 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="persistedAnalysisJobAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater">
         <dwr:remote javascript="PersistedAnalysisJobAjaxUpdater" />
         <property name="workspaceService">
@@ -797,7 +803,7 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="studyDeploymentAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.StudyDeploymentAjaxUpdater">
         <dwr:remote javascript="StudyDeploymentAjaxUpdater" />
         <property name="workspaceService">
@@ -811,7 +817,7 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="subjectDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.SubjectDataSourceAjaxUpdater">
         <dwr:remote javascript="SubjectDataSourceAjaxUpdater" />
         <property name="workspaceService">
@@ -825,7 +831,7 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="genomicDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.GenomicDataSourceAjaxUpdater">
         <dwr:remote javascript="GenomicDataSourceAjaxUpdater" />
         <property name="workspaceService">
@@ -839,7 +845,7 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="imagingDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.ImagingDataSourceAjaxUpdater">
         <dwr:remote javascript="ImagingDataSourceAjaxUpdater" />
         <property name="workspaceService">
@@ -853,7 +859,7 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="platformDeploymentAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.PlatformDeploymentAjaxUpdater">
         <dwr:remote javascript="PlatformDeploymentAjaxUpdater" />
         <property name="workspaceService">
@@ -867,21 +873,21 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
-    
+
     <bean id="dwrUtilFactory" scope="singleton" class="gov.nih.nci.caintegrator2.web.ajax.DwrUtilFactory" />
 
     <!-- ******************************************************************* -->
     <!-- ** SUBSYSTEMS                                                    ** -->
     <!-- ******************************************************************* -->
-    
-    <bean id="registrationService" 
+
+    <bean id="registrationService"
         class="gov.nih.nci.caintegrator2.application.registration.RegistrationServiceImpl">
         <property name="configurationHelper">
-            <ref local="configurationHelper" /> 
+            <ref local="configurationHelper" />
         </property>
-    </bean> 
+    </bean>
 
-    <bean id="studyManagementService" 
+    <bean id="studyManagementService"
         class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl">
         <property name="dao">
             <ref local="caIntegrator2Dao"/>
@@ -912,7 +918,7 @@
         </property>
     </bean>
 
-    <bean id="deploymentService" 
+    <bean id="deploymentService"
         class="gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceImpl">
         <property name="dao">
             <ref local="caIntegrator2Dao"/>
@@ -937,10 +943,10 @@
         </property>
     </bean>
 
-    <bean id="dnaAnalysisHandlerFactory" 
+    <bean id="dnaAnalysisHandlerFactory"
         class="gov.nih.nci.caintegrator2.application.study.deployment.DnaAnalysisHandlerFactoryImpl" />
 
-    <bean id="workspaceService" 
+    <bean id="workspaceService"
         class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceImpl">
         <property name="dao">
             <ref local="caIntegrator2Dao"/>
@@ -949,8 +955,8 @@
             <ref local="securityManager" />
         </property>
     </bean>
-    
-    <bean id="queryManagementService" 
+
+    <bean id="queryManagementService"
             class="gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl">
         <property name="dao">
             <ref local="caIntegrator2Dao"/>
@@ -966,7 +972,7 @@
         </property>
     </bean>
 
-    <bean id="analysisService" 
+    <bean id="analysisService"
         class="gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceImpl">
         <property name="genePatternClientFactory">
             <ref local="genePatternClientFactory"/>
@@ -1019,7 +1025,7 @@
 
     <bean id="caDSRSearch"
         class="gov.nih.nci.cadsr.freestylesearch.util.Search" />
-        
+
     <bean id="caDsrApplicationServiceFactoryImpl" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRApplicationServiceFactoryImpl"/>
 
     <bean id="caBioFacade" class="gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeImpl">
@@ -1031,10 +1037,10 @@
             <ref local="caIntegrator2Dao"/>
         </property>
     </bean>
-    
-    <bean id="caBioApplicationServiceFactory" class="gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryImpl"/>    
-    
-    
+
+    <bean id="caBioApplicationServiceFactory" class="gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryImpl"/>
+
+
     <bean id="caIntegrator2Dao"
         class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
         <property name="sessionFactory">
@@ -1045,7 +1051,7 @@
         </property>
     </bean>
 
-    <bean id="caArrayFacade" 
+    <bean id="caArrayFacade"
         class="gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeImpl">
         <property name="serviceFactory">
             <ref local="caArrayServiceFactory"/>
@@ -1055,7 +1061,7 @@
         </property>
     </bean>
 
-    <bean id="arrayDataService" 
+    <bean id="arrayDataService"
 
         class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceImpl">
         <property name="dao">
@@ -1065,8 +1071,8 @@
             <ref local="fileManager"/>
         </property>
     </bean>
-    
-    <bean id="nciaFacade" 
+
+    <bean id="nciaFacade"
          class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeImpl">
          <property name="nciaServiceFactory">
             <ref local="nciaServiceFactory"/>
@@ -1076,50 +1082,50 @@
         </property>
         <property name="nciaDicomJobFactory">
             <ref local="nciaDicomJobFactory"/>
-        </property>    
+        </property>
     </bean>
-    
-    <bean id="aimFacade" 
+
+    <bean id="aimFacade"
          class="gov.nih.nci.caintegrator2.external.aim.AIMFacadeImpl">
          <property name="aimServiceFactory">
             <ref local="aimServiceFactory"/>
         </property>
     </bean>
-    
-    <bean id="kmPlotService" 
+
+    <bean id="kmPlotService"
          class="gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl">
          <property name="caIntegratorPlotService">
             <ref local="caIntegratorPlotService"/>
         </property>
     </bean>
-    
-    <bean id="gePlotService" 
+
+    <bean id="gePlotService"
          class="gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl">
     </bean>
-    
-    <bean id="caIntegratorPlotService" 
+
+    <bean id="caIntegratorPlotService"
          class="gov.nih.nci.caintegrator.plots.services.KMPlotServiceImpl">
     </bean>
-    
+
     <bean id="nciaServiceFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
-    
+
     <bean id="nciaDicomJobFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIADicomJobFactoryImpl" />
-    
+
     <bean id="aimServiceFactory" class="gov.nih.nci.caintegrator2.external.aim.AIMServiceFactoryImpl" />
-        
+
     <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
        <!--  <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?" /> -->
        <!--  Note, the dev url below can only be used when behind NCI's VPN  -->
        <property name="url" value="http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
-       
+
     </bean>
-    
-    <bean id="caArrayServiceFactory" 
+
+    <bean id="caArrayServiceFactory"
         class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
-    
-    <bean id="bioconductorService" 
+
+    <bean id="bioconductorService"
         class="gov.nih.nci.caintegrator2.external.bioconductor.BioconductorServiceImpl" />
-    
+
     <bean id="genePatternClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactoryImpl" >
         <property name="fileManager">
             <ref local="fileManager" />
@@ -1135,38 +1141,38 @@
             <ref local="fileManager" />
         </property>
     </bean>
-    
+
     <bean id="genePatternGridClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />
-    
+
     <bean id="analysisFileManager"
         class="gov.nih.nci.caintegrator2.file.AnalysisFileManagerImpl">
         <property name="fileManager">
             <ref local="fileManager" />
         </property>
     </bean>
-    
+
     <bean id="fileManager"
         class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
         <property name="configurationHelper">
             <ref local="configurationHelper" />
         </property>
     </bean>
-    
-    <bean id="viewerServlet" 
+
+    <bean id="viewerServlet"
         class="gov.nih.nci.caintegrator2.web.AnalysisViewerFileServlet">
         <property name="sessionAnalysisResultsManager">
             <ref local="sessionAnalysisResultsManager" />
         </property>
     </bean>
-    
-    <bean id="securityManager" class="gov.nih.nci.caintegrator2.security.SecurityManagerImpl"> 
+
+    <bean id="securityManager" class="gov.nih.nci.caintegrator2.security.SecurityManagerImpl">
         <property name="authorizationManagerFactory">
             <ref local="authorizationManagerFactory" />
         </property>
     </bean>
-    
+
     <bean id="authorizationManagerFactory" class="gov.nih.nci.caintegrator2.security.AuthorizationManagerFactoryImpl"/>
-    
+
     <bean id="sessionAnalysisResultsManager" scope="singleton" class="gov.nih.nci.caintegrator2.application.analysis.SessionAnalysisResultsManager" />
 
     <!-- ******************************************************************* -->
@@ -1174,22 +1180,22 @@
     <!-- ******************************************************************* -->
 
     <bean id="cbsToHeatmapFactory" class="gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactoryImpl" />
-    
+
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">
             <ref local="sessionFactory"/>
         </property>
     </bean>
-        
+
     <bean id="configurationHelper" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperImpl">
         <property name="dataSource">
             <ref local="dataSource"/>
         </property>
     </bean>
-    
+
     <tx:annotation-driven transaction-manager="transactionManager" />
-    
-    <bean id="sessionFactory" 
+
+    <bean id="sessionFactory"
         class="gov.nih.nci.caintegrator2.data.SecureSessionFactory">
         <property name="dataSource">
             <ref local="dataSource"/>
@@ -1202,17 +1208,17 @@
         </property>
         <property name="securityType" value="group" />
     </bean>
-    
+
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="java:jdbc/CaIntegrator2DataSource" />
     </bean>
-    
+
     <bean id="gridDiscoveryClient" class="gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryClientImpl">
         <property name="configurationHelper">
             <ref local="configurationHelper" />
         </property>
     </bean>
-    
+
     <bean id="gridDiscoveryServiceTask" class="org.springframework.scheduling.quartz.JobDetailBean">
         <property name="jobClass"
             value="gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob" />
@@ -1223,7 +1229,7 @@
             </map>
         </property>
     </bean>
-    
+
     <bean id="dataRefreshJob" class="org.springframework.scheduling.quartz.JobDetailBean">
         <property name="jobClass" value="gov.nih.nci.caintegrator2.application.quartz.DataRefreshJob"/>
         <property name="jobDataAsMap">
@@ -1234,7 +1240,7 @@
             </map>
         </property>
     </bean>
-    
+
     <bean id="dataRefreshJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="dataRefreshJob"/>
         <!-- Once every day at 11pm for starter.
@@ -1243,13 +1249,13 @@
          <!-- Run once an hour until QA is finished. -->
          <property name="cronExpression" value="0 0/60 * * * ?"/>
     </bean>
-    
+
     <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
         <property name="jobDetail" ref="gridDiscoveryServiceTask"/>
         <!-- repeat every 3600 seconds (1 hour) -->
         <property name="repeatInterval" value="3600000"/>
     </bean>
-    
+
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
