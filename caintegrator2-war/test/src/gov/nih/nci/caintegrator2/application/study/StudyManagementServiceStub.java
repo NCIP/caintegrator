@@ -106,6 +106,7 @@ import gov.nih.nci.security.exceptions.CSSecurityException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -699,5 +700,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
             String username) {
         return annotationGroup != null ? annotationGroup.getVisibleAnnotationFieldDescriptors()
                 : new HashSet<AnnotationFieldDescriptor>();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementsGroups(String username, Long studyConfigId) {
+        return new ArrayList<AuthorizedStudyElementsGroup>();
     }
 }

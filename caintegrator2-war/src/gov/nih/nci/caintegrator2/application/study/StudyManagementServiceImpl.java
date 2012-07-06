@@ -364,8 +364,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * {@inheritDoc}
      */
-    public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementsGroups(String username, Long id)
-    throws CSSecurityException {
+    @Override
+    public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementsGroups(String username, Long id) {
         List<AuthorizedStudyElementsGroup> list = new ArrayList<AuthorizedStudyElementsGroup>();
         try {
             list = getDao().getAuthorizedStudyElementGroups(username, id);
