@@ -671,4 +671,12 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
      */
     Set<AnnotationFieldDescriptor> getVisibleAnnotationFieldDescriptorsForUser(AnnotationGroup annotationGroup,
             String username);
+
+    /**
+     * Gets all authorized study element groups that the given user is restricted by.
+     * @param username the user
+     * @param studyConfigId the id of the study configuration
+     * @return the authorized study element groups
+     */
+    List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementsGroups(String username, Long studyConfigId);
 }

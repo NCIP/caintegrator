@@ -561,8 +561,11 @@
         <property name="ajaxUpdater">
             <ref local="persistedAnalysisJobAjaxUpdater"/>
         </property>
-    </bean>
-
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>   
+    
     <bean id="comparativeMarkerSelectionAnalysisAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisAction">
