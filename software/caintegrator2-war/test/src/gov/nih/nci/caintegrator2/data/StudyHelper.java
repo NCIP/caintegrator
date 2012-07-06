@@ -158,6 +158,7 @@ public class StudyHelper {
     private DelimitedTextClinicalSourceConfiguration clinicalConf;
     private UserWorkspace userWorkspace;
     private String USER_NAME = "ncimanager";
+    StudySubscription studySubscription;
 
     @SuppressWarnings("deprecation")
     public StudySubscription populateAndRetrieveStudy() {
@@ -166,7 +167,7 @@ public class StudyHelper {
         Study myStudy = new Study();
         myStudy.setShortTitleText("Test Study");
 
-        StudySubscription studySubscription = new StudySubscription();
+        studySubscription = new StudySubscription();
         studySubscription.setStudy(myStudy);
         studySubscription.setUserWorkspace(userWorkspace);
 
@@ -869,6 +870,10 @@ public class StudyHelper {
      */
     public void setPlatform(Platform platform) {
         this.platform = platform;
+    }
+
+    public StudySubscription getStudySubscription() {
+        return studySubscription;
     }
 
 }

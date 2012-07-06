@@ -153,13 +153,14 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
     private SecurityManagerStub securityManagerStub;
     private AnalysisServiceStub analysisServiceStub;
     private static final String CONTROL_SAMPLE_SET_NAME = "Control Sample Set 1";
+    private StudyHelper studyHelper;
 
     @Before
     public void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class);
         studyManagementService = (StudyManagementServiceImpl) context.getBean("studyManagementService");
         studyManagementService.setCaArrayFacade(caArrayFacade);
-		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
+        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
         daoStub.clear();
         caDSRFacadeStub = (CaDSRFacadeStub) context.getBean("caDSRFacadeStub");
         caDSRFacadeStub.clear();
@@ -173,6 +174,7 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
         studyManagementService.setAnalysisService(analysisServiceStub);
         analysisServiceStub.clear();
         studyManagementService.setCopyHelper(new CopyStudyHelperStub(studyManagementService));
+        studyHelper = new StudyHelper();
     }
 
     public StudyManagementServiceImpl getStudyManagementServiceImpl() {
@@ -188,7 +190,6 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
 
     @Test
     public void testDelete() throws ValidationException, CSException {
-        StudyHelper studyHelper = new StudyHelper();
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
 
         StudyConfiguration configTest = study.getStudyConfiguration();
@@ -317,8 +318,6 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
     public void testCopyStudy() throws ValidationException, IOException, ConnectionException {
         StudyConfiguration copyTo = new StudyConfiguration();
         copyTo.setId(1L);
-        //studyManagementService.save(copyTo);
-        StudyHelper studyHelper = new StudyHelper();
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         String name = "Copy of ".concat(StringUtils.trimToEmpty(study
                 .getShortTitleText()));
@@ -1043,8 +1042,7 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
      */
     @Test
     public void getVisibleAnnotationFieldDescriptorsForUserUnrestricted() {
-        StudyHelper helper = new StudyHelper();
-        Study study = helper.populateAndRetrieveStudy().getStudy();
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         AnnotationGroup annotationGroup = study.getAnnotationGroup("default");
 
         Set<AnnotationFieldDescriptor> visibleFields =
@@ -1061,8 +1059,10 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
      */
     @Test
     public void getVisibleAnnotationFieldDescriptorsForUser() {
-        StudyHelper helper = new StudyHelper();
-        Study study = helper.populateAndRetrieveStudy().getStudy();
+        CaIntegrator2DaoForStudyManagementStub dao = new CaIntegrator2DaoForStudyManagementStub();
+        studyManagementService.setDao(dao);
+
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         AuthorizedStudyElementsGroup authGroup = new AuthorizedStudyElementsGroup();
         study.getStudyConfiguration().getAuthorizedStudyElementsGroups().add(authGroup);
 
@@ -1076,7 +1076,6 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
             assertTrue(adf.isShownInBrowse());
         }
     }
-
 
     private static class SecureDaoStub extends CaIntegrator2DaoStub {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -1126,6 +1125,25 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
             }
             return super.get(id, objectClass);
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username, Long id) {
+            List<AuthorizedStudyElementsGroup> authorizedStudyElementsGroup = new ArrayList<AuthorizedStudyElementsGroup>();
+            AuthorizedStudyElementsGroup authGroup = new AuthorizedStudyElementsGroup();
+
+            AuthorizedAnnotationFieldDescriptor aafd = new AuthorizedAnnotationFieldDescriptor();
+            aafd.setAnnotationFieldDescriptor(studyHelper.getSubjectAnnotationFieldDescriptor());
+            aafd.getAnnotationFieldDescriptor().setAnnotationGroup(studyHelper.getStudySubscription().getStudy()
+                                                                       .getAnnotationGroup("default"));
+            aafd.setAuthorizedStudyElementsGroup(authGroup);
+            authGroup.getAuthorizedAnnotationFieldDescriptors().add(aafd);
+            authorizedStudyElementsGroup.add(authGroup);
+            return authorizedStudyElementsGroup;
+        }
+
     }
 
     public CaIntegrator2DaoForStudyManagementStub getCaIntegrator2DaoForStudyManagementStub() {
