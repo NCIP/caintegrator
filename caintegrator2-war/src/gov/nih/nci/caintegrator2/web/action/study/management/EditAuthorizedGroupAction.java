@@ -92,16 +92,10 @@ import gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceCo
 import gov.nih.nci.caintegrator2.application.study.AuthorizedQuery;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.common.DateUtil;
+import gov.nih.nci.caintegrator2.common.QueryUtil;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
-import gov.nih.nci.caintegrator2.domain.application.DateComparisonOperatorEnum;
-import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
-import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
-import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.security.SecurityManager;
 import gov.nih.nci.caintegrator2.web.transfer.AuthorizationTrees;
 import gov.nih.nci.caintegrator2.web.transfer.QueryNode;
@@ -109,7 +103,6 @@ import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSException;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -304,48 +297,17 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
 
         for (String value : values) {
             if (descriptorType == AnnotationTypeEnum.NUMERIC) {
-                query.getCompoundCriterion().getCriterionCollection().add(createNumericComparisonCriterion(descriptor,
-                                                                                                           value));
+                query.getCompoundCriterion().getCriterionCollection()
+                    .add(QueryUtil.createNumericComparisonCriterion(descriptor, value));
             } else if (descriptorType == AnnotationTypeEnum.DATE) {
-                query.getCompoundCriterion().getCriterionCollection().add(createDateComparisonCriterion(descriptor,
-                                                                                                        value));
+                query.getCompoundCriterion().getCriterionCollection()
+                    .add(QueryUtil.createDateComparisonCriterion(descriptor, value));
             } else {
-                query.getCompoundCriterion().getCriterionCollection().add(createStringComparisonCriterion(descriptor,
-                                                                                                          value));
+                query.getCompoundCriterion().getCriterionCollection()
+                    .add(QueryUtil.createStringComparisonCriterion(descriptor, value));
             }
         }
         return query;
-    }
-
-    private NumericComparisonCriterion createNumericComparisonCriterion(AnnotationFieldDescriptor descriptor,
-            String value) {
-        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
-        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.EQUAL);
-        criterion.setNumericValue(Double.valueOf(value));
-        criterion.setAnnotationFieldDescriptor(descriptor);
-        return criterion;
-    }
-
-    private DateComparisonCriterion createDateComparisonCriterion(AnnotationFieldDescriptor descriptor,
-            String value) {
-        DateComparisonCriterion criterion = new DateComparisonCriterion();
-        criterion.setDateComparisonOperator(DateComparisonOperatorEnum.EQUAL);
-        try {
-            criterion.setDateValue(DateUtil.createDate(value));
-        } catch (ParseException e) {
-            throw new IllegalStateException("Invalid date format for date " + value, e);
-        }
-        criterion.setAnnotationFieldDescriptor(descriptor);
-        return criterion;
-    }
-
-    private StringComparisonCriterion createStringComparisonCriterion(AnnotationFieldDescriptor descriptor,
-            String value) {
-        StringComparisonCriterion criterion = new StringComparisonCriterion();
-        criterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
-        criterion.setStringValue(value);
-        criterion.setAnnotationFieldDescriptor(descriptor);
-        return criterion;
     }
 
     /**

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -95,21 +96,28 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -461,5 +469,54 @@ public final class QueryUtil {
            }
        }
        return sampleValuesMap;
+   }
+
+   /**
+    * Generates a numeric comparison criterion from the given annotation field descriptor.
+    * @param descriptor the annotation field descriptor
+    * @param value the value
+    * @return the created numeric comparison criterion
+    */
+   public static NumericComparisonCriterion createNumericComparisonCriterion(AnnotationFieldDescriptor descriptor,
+           String value) {
+       NumericComparisonCriterion criterion = new NumericComparisonCriterion();
+       criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.EQUAL);
+       criterion.setNumericValue(Double.valueOf(value));
+       criterion.setAnnotationFieldDescriptor(descriptor);
+       return criterion;
+   }
+
+   /**
+    * Generates a date comparison criterion from the given annotation field descriptor.
+    * @param descriptor the annotation field descriptor
+    * @param value the value
+    * @return the created date comparison criterion
+    */
+   public static DateComparisonCriterion createDateComparisonCriterion(AnnotationFieldDescriptor descriptor,
+           String value) {
+       DateComparisonCriterion criterion = new DateComparisonCriterion();
+       criterion.setDateComparisonOperator(DateComparisonOperatorEnum.EQUAL);
+       try {
+           criterion.setDateValue(DateUtil.createDate(value));
+       } catch (ParseException e) {
+           throw new IllegalStateException("Invalid date format for date " + value, e);
+       }
+       criterion.setAnnotationFieldDescriptor(descriptor);
+       return criterion;
+   }
+
+   /**
+    * Generates a string comparison criterion from the given annotation field descriptor.
+    * @param descriptor the annotation field descriptor
+    * @param value the value
+    * @return the string numeric comparison criterion
+    */
+   public static StringComparisonCriterion createStringComparisonCriterion(AnnotationFieldDescriptor descriptor,
+           String value) {
+       StringComparisonCriterion criterion = new StringComparisonCriterion();
+       criterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
+       criterion.setStringValue(value);
+       criterion.setAnnotationFieldDescriptor(descriptor);
+       return criterion;
    }
 }
