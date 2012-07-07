@@ -98,7 +98,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -107,6 +107,7 @@ import gov.nih.nci.caintegrator2.domain.application.RangeTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -139,7 +140,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
         InvalidSurvivalValueDefinitionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
-        Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
+        Collection<SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
         for (String geneSymbol : kmParameters.getGenesFoundInStudy()) {
             retrieveSubjectGroups(getStudySubscription(), subjectGroupCollection, geneSymbol);
         }
@@ -262,13 +263,16 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     private Collection<ResultRow> retrieveRows(StudySubscription subscription,
                                   Collection<AbstractCriterion> foldChangeCriterionCollection)
                                   throws InvalidCriterionException {
+
+        ResultColumn column = new ResultColumn();
+        column.setEntityType(EntityTypeEnum.SAMPLE);
+
         Query query = new Query();
+        query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        query.setColumnCollection(new HashSet<ResultColumn>());
-        query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
-        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.getCompoundCriterion().getCriterionCollection().addAll(foldChangeCriterionCollection);
+        query.getColumnCollection().add(column);
         query.setSubscription(subscription);
         QueryResult queryResult = getQueryManagementService().execute(query);
         return queryResult.getRowCollection();
