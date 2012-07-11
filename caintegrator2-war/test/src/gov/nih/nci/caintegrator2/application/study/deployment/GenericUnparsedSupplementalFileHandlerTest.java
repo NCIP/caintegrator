@@ -9,7 +9,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -25,6 +24,7 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.GenericMultiSamplePerFileParser;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import org.junit.Test;
 
 import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
 
-public class GenericUnparsedSupplementalFileHandlerTest {
+public class GenericUnparsedSupplementalFileHandlerTest extends AbstractMockitoTest {
     private CaArrayFacade caArrayFacade;
 
     /**
@@ -56,7 +56,6 @@ public class GenericUnparsedSupplementalFileHandlerTest {
 
     @Test
     public void testLoadCopyNumberData() throws ConnectionException, ValidationException {
-        ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
         CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
         GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
         StudyConfiguration studyConfiguration = new StudyConfiguration();

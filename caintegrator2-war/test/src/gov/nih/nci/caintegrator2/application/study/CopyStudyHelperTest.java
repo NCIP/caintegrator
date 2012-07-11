@@ -86,13 +86,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest.CaIntegrator2DaoForStudyManagementStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalLengthUnitsEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.io.IOException;
 
@@ -103,13 +103,12 @@ import org.junit.Test;
  * @author mshestopalov
  *
  */
-public class CopyStudyHelperTest {
+public class CopyStudyHelperTest extends AbstractMockitoTest {
 
     private CopyStudyHelper helper;
     private StudyConfiguration copyFrom = null;
     private final String NAME = "name";
     private StudyManagementServiceImpl smSvc= null;
-    private CaIntegrator2DaoForStudyManagementStub daoStub = null;
 
     @Before
     public void setUp() throws Exception {
@@ -143,7 +142,7 @@ public class CopyStudyHelperTest {
         StudyManagementServiceTest smsTest = new StudyManagementServiceTest();
         smsTest.setUp();
         smSvc = smsTest.getStudyManagementServiceImpl();
-        daoStub = smsTest.getCaIntegrator2DaoForStudyManagementStub();
+        smSvc.setWorkspaceService(workspaceService);
         helper = new CopyStudyHelper(smSvc);
     }
 

@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.application.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -108,6 +107,7 @@ import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -117,30 +117,18 @@ import java.util.regex.Pattern;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class CompoundCriterionHandlerTest {
+public class CompoundCriterionHandlerTest extends AbstractMockitoTest {
 
     private CaIntegrator2DaoStub daoStub;
-    private ArrayDataServiceStub arrayDataServiceStub;
-    Query query = null;
-    StudySubscription subscription = null;
+    private Query query;
+    private StudySubscription subscription;
 
     @Before
-    public void setup() {
-        setupStubs();
-        setupStudy();
-    }
-
-    private void setupStubs() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", CompoundCriterionHandlerTest.class);
-        daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");
+    public void setUp() throws Exception {
+        daoStub = new CaIntegrator2DaoStub();
         daoStub.clear();
-    }
 
-    private void setupStudy() {
         StudyHelper studyHelper = new StudyHelper();
         subscription = studyHelper.populateAndRetrieveStudy();
         query = new Query();
@@ -149,10 +137,9 @@ public class CompoundCriterionHandlerTest {
 
     @Test
     public void testNullCompoundCriterionNoReturnEntityTypes() throws Exception {
-        CompoundCriterionHandler handler = CompoundCriterionHandler.create(null,
-                                                                           ResultTypeEnum.GENE_EXPRESSION);
+        CompoundCriterionHandler handler = CompoundCriterionHandler.create(null, ResultTypeEnum.GENE_EXPRESSION);
         assertEmptyHandlerCriteria(handler);
-        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
         assertTrue(matches.isEmpty());
     }
 
@@ -163,7 +150,7 @@ public class CompoundCriterionHandlerTest {
         CompoundCriterionHandler handler = CompoundCriterionHandler.create(compoundCriterion,
                                                                            ResultTypeEnum.GENE_EXPRESSION);
         assertEmptyHandlerCriteria(handler);
-        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
         assertTrue(matches.isEmpty());
     }
 
@@ -174,7 +161,7 @@ public class CompoundCriterionHandlerTest {
         CompoundCriterionHandler handler = CompoundCriterionHandler.create(compoundCriterion,
                                                                            ResultTypeEnum.GENE_EXPRESSION);
         assertEmptyHandlerCriteria(handler);
-        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
         assertTrue(matches.isEmpty());
     }
 
@@ -188,7 +175,7 @@ public class CompoundCriterionHandlerTest {
 
         Set<EntityTypeEnum> entityTypeSet = new HashSet<EntityTypeEnum>();
         entityTypeSet.add(EntityTypeEnum.SUBJECT);
-        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataService, query, entityTypeSet);
         assertEquals(6, matches.size());
     }
 
@@ -201,7 +188,7 @@ public class CompoundCriterionHandlerTest {
         assertEmptyHandlerCriteria(handler);
         Set<EntityTypeEnum> entityTypeSet = new HashSet<EntityTypeEnum>();
         entityTypeSet.add(EntityTypeEnum.SAMPLE);
-        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataService, query, entityTypeSet);
         assertEquals(7, matches.size());
         List<String> validSampleNames = Arrays.asList("SAMPLE_1", "SAMPLE_12", "SAMPLE_13", "SAMPLE_2", "SAMPLE_3",
                                                       "SAMPLE_4", "SAMPLE_5");
@@ -220,7 +207,7 @@ public class CompoundCriterionHandlerTest {
         assertEmptyHandlerCriteria(handler);
         Set<EntityTypeEnum> entityTypeSet = new HashSet<EntityTypeEnum>();
         entityTypeSet.add(EntityTypeEnum.IMAGESERIES);
-        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        Set<ResultRow> matches = handler.getMatches(daoStub, arrayDataService, query, entityTypeSet);
         assertEquals(5, matches.size());
         for (ResultRow resultRow : matches) {
             ImageSeries imageSeries = resultRow.getImageSeries();
@@ -286,9 +273,9 @@ public class CompoundCriterionHandlerTest {
         compoundCriterion5.setBooleanOperator(BooleanOperatorEnum.OR);
         CompoundCriterionHandler compoundCriterionHandler3=CompoundCriterionHandler.create(compoundCriterion5,
                 ResultTypeEnum.GENE_EXPRESSION);
-        compoundCriterionHandler3.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        compoundCriterionHandler3.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
 
-        compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        compoundCriterionHandler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSamplesCalled);
         assertTrue(daoStub.findMatchingImageSeriesCalled);
         assertTrue(daoStub.findMatchingSubjectsCalled);
@@ -296,13 +283,13 @@ public class CompoundCriterionHandlerTest {
         //test for specific entity type
         Set<EntityTypeEnum> entityTypeSet = new HashSet<EntityTypeEnum>();
         entityTypeSet.add(EntityTypeEnum.SUBJECT);
-        compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        compoundCriterionHandler.getMatches(daoStub, arrayDataService, query, entityTypeSet);
         entityTypeSet = new HashSet<EntityTypeEnum>();
         entityTypeSet.add(EntityTypeEnum.IMAGESERIES);
-        compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        compoundCriterionHandler.getMatches(daoStub, arrayDataService, query, entityTypeSet);
         entityTypeSet = new HashSet<EntityTypeEnum>();
         entityTypeSet.add(EntityTypeEnum.SAMPLE);
-        compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        compoundCriterionHandler.getMatches(daoStub, arrayDataService, query, entityTypeSet);
 
         // compound criterion with multiple criteria
         CompoundCriterion compoundCriterion6 = new CompoundCriterion();
@@ -313,7 +300,7 @@ public class CompoundCriterionHandlerTest {
         compoundCriterion6.setBooleanOperator(BooleanOperatorEnum.AND);
         CompoundCriterionHandler compoundCriterionHandler4=CompoundCriterionHandler.create(compoundCriterion6,
                 ResultTypeEnum.CLINICAL);
-        compoundCriterionHandler4.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
+        compoundCriterionHandler4.getMatches(daoStub, arrayDataService, query, entityTypeSet);
 
         // Check if criterion somehow ends up being empty.
         entityTypeSet = new HashSet<EntityTypeEnum>();
@@ -322,8 +309,7 @@ public class CompoundCriterionHandlerTest {
         compoundCriterion7.setCriterionCollection(new HashSet<AbstractCriterion>());
         CompoundCriterionHandler compoundCriterionHandler5=CompoundCriterionHandler.create(compoundCriterion7,
                 ResultTypeEnum.CLINICAL);
-        compoundCriterionHandler5.getMatches(daoStub, arrayDataServiceStub, query, entityTypeSet);
-
+        compoundCriterionHandler5.getMatches(daoStub, arrayDataService, query, entityTypeSet);
     }
 
     private void assertEmptyHandlerCriteria(CompoundCriterionHandler handler) {
@@ -333,5 +319,4 @@ public class CompoundCriterionHandlerTest {
         assertFalse(handler.hasReporterCriterion());
         assertFalse(handler.hasSegmentDataCriterion());
     }
-
 }

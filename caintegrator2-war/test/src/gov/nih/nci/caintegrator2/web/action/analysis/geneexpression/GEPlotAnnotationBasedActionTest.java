@@ -88,7 +88,10 @@ package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
@@ -99,7 +102,6 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -119,14 +121,13 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
     private GEPlotAnnotationBasedAction action;
     private final QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private final StudyManagementServiceStub studyManagementService = new StudyManagementServiceStub();
-    private final AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
 
     private PermissibleValue val1 = new PermissibleValue();
     private PermissibleValue val2 = new PermissibleValue();
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         StudySubscription subscription = new StudySubscription();
         subscription.setId(Long.valueOf(1));
@@ -136,14 +137,11 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GEPlotAnnotationBasedAction();
         action.setStudyManagementService(studyManagementService);
-        action.setAnalysisService(analysisServiceStub);
-        WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
-        workspaceService.setSubscription(subscription);
+        action.setAnalysisService(analysisService);
         action.setWorkspaceService(workspaceService);
-
         action.setQueryManagementService(queryManagementServiceStub);
         queryManagementServiceStub.clear();
-        analysisServiceStub.clear();
+        setStudySubscription(subscription);
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
 
@@ -246,7 +244,7 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
     }
 
     @Test
-    public void testCreatePlot() throws InterruptedException {
+    public void testCreatePlot() throws Exception {
         setupActionVariables();
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
         action.setCreatePlotSelected(true);
@@ -257,7 +255,7 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         assertEquals(ActionSupport.INPUT, action.createPlot());
         action.getPlotParameters().setGeneSymbol("EGFR");
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
-        assertTrue(analysisServiceStub.createGEPlotCalled);
+        verify(analysisService, atLeastOnce()).createGeneExpressionPlot(any(StudySubscription.class), any(AbstractGEPlotParameters.class));
         assertFalse(action.isCreatable());
 
         action.getGePlotForm().getAnnotationBasedForm().setSelectedAnnotationId("1");

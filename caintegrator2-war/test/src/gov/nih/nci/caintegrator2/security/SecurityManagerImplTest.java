@@ -88,6 +88,11 @@ package gov.nih.nci.caintegrator2.security;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -100,6 +105,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -172,20 +178,20 @@ public class SecurityManagerImplTest {
 
     @Test
     public void testInitializeFiltersForUserGroups() throws CSException {
-        Session session = new HibernateSessionStub();
-        HibernateSessionStub hibernateSession = (HibernateSessionStub) session;
-        hibernateSession.sessionFactory.clear();
+        Session session = mock(Session.class);
+        SessionFactory sessionFactory = mock(SessionFactory.class);
+        when(session.getSessionFactory()).thenReturn(sessionFactory);
         securityManager.initializeFiltersForUserGroups(USERNAME, session);
-        assertTrue(hibernateSession.sessionFactory.getDefinedFilterNamesCalled);
+        verify(sessionFactory, times(1)).getDefinedFilterNames();
     }
 
     @Test
     public void testInitializeFiltersForUserGroupsUserDoesNotExist() throws CSException {
-        Session session = new HibernateSessionStub();
-        HibernateSessionStub hibernateSession = (HibernateSessionStub) session;
-        hibernateSession.sessionFactory.clear();
+        Session session = mock(Session.class);
+        SessionFactory sessionFactory = mock(SessionFactory.class);
+        when(session.getSessionFactory()).thenReturn(sessionFactory);
         securityManager.initializeFiltersForUserGroups(USER_DOES_NOT_EXIST, session);
-        assertFalse(hibernateSession.sessionFactory.getDefinedFilterNamesCalled);
+        verify(sessionFactory, never()).getDefinedFilterNames();
     }
 
     @Test

@@ -8,7 +8,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -23,6 +22,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,7 +39,7 @@ import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
 import affymetrix.fusion.chp.FusionCHPDataReg;
 import affymetrix.fusion.chp.FusionCHPMultiDataData;
 
-public class AffymetrixCopyNumberMappingFileHandlerTest {
+public class AffymetrixCopyNumberMappingFileHandlerTest extends AbstractMockitoTest {
 
     private CaArrayFacade caArrayFacade;
 
@@ -56,7 +56,6 @@ public class AffymetrixCopyNumberMappingFileHandlerTest {
 
     @Test
     public void testLoadCopyNumberData() throws DataRetrievalException, ConnectionException, ValidationException, FileNotFoundException {
-        ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
         CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
         GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -80,7 +79,6 @@ public class AffymetrixCopyNumberMappingFileHandlerTest {
 
     @Test(expected=FileNotFoundException.class)
     public void testLoadCopyNumberDataNoFile() throws DataRetrievalException, ConnectionException, ValidationException, FileNotFoundException {
-        ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
         CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
         GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
         StudyConfiguration studyConfiguration = new StudyConfiguration();

@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.application.analysis;
@@ -90,14 +90,27 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import edu.mit.broad.genepattern.gp.services.GenePatternClient;
+import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMCriteriaDTO;
+import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMSampleGroupCriteriaDTO;
+import gov.nih.nci.caintegrator.plots.services.KMPlotService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotClinicalQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
-import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunnerStub;
+import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
@@ -105,14 +118,12 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
-import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
@@ -121,7 +132,6 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPl
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
@@ -152,7 +162,9 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.AnalysisFileManagerStub;
 import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -168,38 +180,47 @@ import org.genepattern.webservice.TaskInfo;
 import org.genepattern.webservice.WebServiceException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
-public class AnalysisServiceTest {
+public class AnalysisServiceTest extends AbstractMockitoTest {
 
     private AnalysisService service;
-    private TestGenePatternClientStub genePatternClientStub = new TestGenePatternClientStub();
-    private GenePatternClientFactoryStub genePatternClientFactoryStub = new GenePatternClientFactoryStub();
+    private GenePatternClientFactory genePatternClientFactory;
     // KMPlot Items
-    private CaIntegratorKMPlotServiceStub caIntegratorPlotServiceStub = new CaIntegratorKMPlotServiceStub();
+    private KMPlotService caIntKMPlotService;
     private DaoForAnalysisServiceStub daoStub = new DaoForAnalysisServiceStub();
-    private QueryManagementServiceForKMPlotStub queryManagementServiceForKmPlotStub = 
+    private QueryManagementServiceForKMPlotStub queryManagementServiceForKmPlotStub =
                         new QueryManagementServiceForKMPlotStub();
-    private GenePatternGridRunnerStub genePatternGridRunnerStub = new GenePatternGridRunnerStub();
     private FileManagerStub fileManagerStub = new FileManagerStub();
     private AnalysisFileManagerStub analysisFileManagerStub = new AnalysisFileManagerStub();
-    private ArrayDataServiceStub arrayDataServiceStub;
     private SessionAnalysisResultsManager sessionAnalysisResultsManager = new SessionAnalysisResultsManager();
-    private ConfigurationHelperStub configurationHelperStub = new ConfigurationHelperStub();
-    
+
+    private GenePatternGridRunner genePatternGridRunner;
+    private GenePatternClient genePatternClient;
+
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        caIntKMPlotService = mock(KMPlotService.class);
+        when(caIntKMPlotService.computeLogRankPValueBetween(any(KMSampleGroupCriteriaDTO.class), any(KMSampleGroupCriteriaDTO.class))).thenReturn(1.1);
         AnalysisServiceImpl serviceImpl = new AnalysisServiceImpl();
         KMPlotServiceCaIntegratorImpl kmPlotService = new KMPlotServiceCaIntegratorImpl();
-        kmPlotService.setCaIntegratorPlotService(caIntegratorPlotServiceStub);
+        kmPlotService.setCaIntegratorPlotService(caIntKMPlotService);
         GeneExpressionPlotServiceImpl gePlotService = new GeneExpressionPlotServiceImpl();
-        caIntegratorPlotServiceStub.clear();
         FileManagerImpl fileManagerImpl = new FileManagerImpl();
         fileManagerStub.clear();
-        fileManagerImpl.setConfigurationHelper(configurationHelperStub);
+        fileManagerImpl.setConfigurationHelper(configurationHelper);
         analysisFileManagerStub.clear();
         analysisFileManagerStub.setFileManager(fileManagerImpl);
-        analysisFileManagerStub.setConfigurationHelper(configurationHelperStub);
-        serviceImpl.setGenePatternClientFactory(genePatternClientFactoryStub); 
+        analysisFileManagerStub.setConfigurationHelper(configurationHelper);
+
+
+        setUpGenePatternClient();
+        genePatternClientFactory = mock(GenePatternClientFactory.class);
+        when(genePatternClientFactory.retrieveClient(any(ServerConnectionProfile.class))).thenReturn(genePatternClient);
+        when(genePatternClientFactory.retrieveOldGenePatternClient(any(ServerConnectionProfile.class))).thenReturn(genePatternClient);
+
+        serviceImpl.setGenePatternClientFactory(genePatternClientFactory);
         serviceImpl.setDao(daoStub);
         serviceImpl.setKmPlotService(kmPlotService);
         serviceImpl.setGePlotService(gePlotService);
@@ -208,12 +229,100 @@ public class AnalysisServiceTest {
         serviceImpl.setFileManager(fileManagerStub);
         serviceImpl.setAnalysisFileManager(analysisFileManagerStub);
         service = serviceImpl;
-        genePatternGridRunnerStub.clear();
-        serviceImpl.setGenePatternGridRunner(genePatternGridRunnerStub);
-        arrayDataServiceStub = new ArrayDataServiceStub();
-        serviceImpl.setArrayDataService(arrayDataServiceStub);
-        arrayDataServiceStub.clear();
+
+        genePatternGridRunner = mock(GenePatternGridRunner.class);
+        serviceImpl.setGenePatternGridRunner(genePatternGridRunner);
+
+        serviceImpl.setArrayDataService(arrayDataService);
         serviceImpl.setSessionAnalysisResultsManager(sessionAnalysisResultsManager);
+
+    }
+
+    private void setUpGenePatternClient() throws Exception {
+        genePatternClient = mock(GenePatternClient.class);
+        when(genePatternClient.runAnalysis(anyString(), anyListOf(ParameterInfo.class))).thenReturn(new JobInfo());
+        when(genePatternClient.getStatus(any(JobInfo.class))).thenAnswer(new Answer<JobInfo>() {
+            @Override
+            public JobInfo answer(InvocationOnMock invocation) throws Throwable {
+                JobInfo jobInfo = (JobInfo) invocation.getArguments()[0];
+                jobInfo.setStatus("Completed");
+                return jobInfo;
+            }
+        });
+
+        TaskInfo[] tasks = new TaskInfo[4];
+        tasks[0] = new TaskInfo();
+        tasks[0].setName("task1");
+        tasks[0].setDescription("description1");
+        tasks[0].setTaskInfoAttributes(new HashMap<String, String>());
+        tasks[0].setParameterInfoArray(new ParameterInfo[3]);
+        tasks[0].getParameterInfoArray()[0] = new ParameterInfo();
+        tasks[0].getParameterInfoArray()[0].setName("parameter1");
+        tasks[0].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
+        tasks[0].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
+        tasks[0].getParameterInfoArray()[0].getAttributes().put("optional", "");
+        tasks[0].getParameterInfoArray()[0].getAttributes().put(TaskExecutor.PARAM_INFO_DEFAULT_VALUE[0], "default");
+
+
+        tasks[0].getParameterInfoArray()[1] = new ParameterInfo();
+        tasks[0].getParameterInfoArray()[1].setName("parameter2");
+        tasks[0].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
+        tasks[0].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
+        tasks[0].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
+        tasks[0].getParameterInfoArray()[1].getAttributes().put("optional", "on");
+
+        tasks[0].getParameterInfoArray()[2] = new ParameterInfo();
+        tasks[0].getParameterInfoArray()[2].setName("parameter3");
+        tasks[0].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
+        tasks[0].getParameterInfoArray()[2].getAttributes().put(TaskExecutor.PARAM_INFO_DEFAULT_VALUE[0], "2");
+        tasks[0].getParameterInfoArray()[2].getAttributes().put("type", "java.lang.Integer");
+        tasks[0].getParameterInfoArray()[2].setValue("1=choice1;2=choice2");
+
+        tasks[1] = new TaskInfo();
+        tasks[1].setName("task2");
+        tasks[1].setDescription("description2");
+        tasks[1].setParameterInfoArray(new ParameterInfo[2]);
+        tasks[1].setTaskInfoAttributes(new HashMap<String, String>());
+        tasks[1].getParameterInfoArray()[0] = new ParameterInfo();
+        tasks[1].getParameterInfoArray()[0].setName("parameter1");
+        tasks[1].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
+        tasks[1].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
+        tasks[1].getParameterInfoArray()[1] = new ParameterInfo();
+        tasks[1].getParameterInfoArray()[1].setName("parameter2");
+        tasks[1].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
+        tasks[1].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
+        tasks[1].getParameterInfoArray()[1].getAttributes().put("fileFormat", "cls");
+
+        tasks[2] = new TaskInfo();
+        tasks[2].setName("task3");
+        tasks[2].setDescription("description3");
+        tasks[2].setTaskInfoAttributes(new HashMap<String, String>());
+        tasks[2].setParameterInfoArray(new ParameterInfo[3]);
+        tasks[2].getParameterInfoArray()[0] = new ParameterInfo();
+        tasks[2].getParameterInfoArray()[0].setName("parameter1");
+        tasks[2].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
+        tasks[2].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.Float");
+
+        tasks[2].getParameterInfoArray()[1] = new ParameterInfo();
+        tasks[2].getParameterInfoArray()[1].setName("parameter2");
+        tasks[2].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
+        tasks[2].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
+        tasks[2].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
+
+        tasks[2].getParameterInfoArray()[2] = new ParameterInfo();
+        tasks[2].getParameterInfoArray()[2].setName("parameter3");
+        tasks[2].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
+        tasks[2].getParameterInfoArray()[2].getAttributes().put("type", "java.io.File");
+        tasks[2].getParameterInfoArray()[2].getAttributes().put("fileFormat", "cls");
+
+        tasks[3] = new TaskInfo();
+        tasks[3].setName("task3");
+        tasks[3].setDescription("description3");
+        Map<String, String> task4Attributes = new HashMap<String, String>();
+        task4Attributes.put("taskType", "Visualizer");
+        tasks[3].setTaskInfoAttributes(task4Attributes);
+        tasks[3].setParameterInfoArray(new ParameterInfo[3]);
+        when(genePatternClient.getTasks()).thenReturn(tasks);
     }
 
     @Test
@@ -237,7 +346,7 @@ public class AnalysisServiceTest {
         assertEquals(2, parameterWithChoices.getChoiceKeys().size());
         assertEquals(Integer.valueOf(1), ((IntegerParameterValue) parameterWithChoices.getChoice("choice1")).getValue());
     }
-    
+
     @Test
     public void testGisticWebService() throws ConnectionException, InvalidCriterionException, ParameterException, IOException, DataRetrievalException {
         StatusUpdateTestListener listener = new StatusUpdateTestListener();
@@ -256,12 +365,14 @@ public class AnalysisServiceTest {
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_REMOTELY));
         assertTrue(fileManagerStub.createMarkersFileCalled);
         assertTrue(fileManagerStub.createSamplesFileCalled);
-        
-        assertFalse(genePatternGridRunnerStub.runGisticCalled);
+
+        verify(genePatternGridRunner, never()).runGistic(any(StatusUpdateListener.class),
+                any(GisticAnalysisJob.class), any(File.class), any(File.class), any(File.class));
         parameters.setCnvSegmentsToIgnoreFile(fileManagerStub.retrieveTmpFile());
         parameters.getServer().setUrl("something/Gistic");
         service.executeGridGistic(listener, job);
-        assertTrue(genePatternGridRunnerStub.runGisticCalled);
+        verify(genePatternGridRunner, atLeastOnce()).runGistic(any(StatusUpdateListener.class),
+                any(GisticAnalysisJob.class), any(File.class), any(File.class), any(File.class));
         assertTrue(fileManagerStub.renameCnvFileCalled);
         Query clinicalQuery = new Query();
         clinicalQuery.setName("clinicalQueryName");
@@ -274,7 +385,7 @@ public class AnalysisServiceTest {
         assertTrue(job.toString().contains(sampleSet.getName()));
         assertTrue(job.toString().contains(parameters.getServer().getHostname()));
     }
-    
+
     private static class StatusUpdateTestListener implements StatusUpdateListener {
         private Set<AnalysisJobStatusEnum> statuses = new HashSet<AnalysisJobStatusEnum>();
 
@@ -282,16 +393,16 @@ public class AnalysisServiceTest {
             statuses.add(job.getStatus());
         }
     }
-    
+
     @Test
     public void testExecuteIGV() throws ConnectionException, InvalidCriterionException {
         Query query = new Query();
         query.setCompoundCriterion(new CompoundCriterion());
         query.setName("queryNameString");
-        
+
         StudySubscription subscription = new StudySubscription();
         subscription.setId(1L);
-        String IGVDownloadUrl = configurationHelperStub.getString(ConfigurationParameter.BROAD_HOSTED_IGV_URL);
+        String IGVDownloadUrl = ConfigurationParameter.BROAD_HOSTED_IGV_URL.getDefaultValue();
         IGVParameters igvParameters = new IGVParameters();
         igvParameters.setUrlPrefix("http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
         igvParameters.setSessionId("sessionId");
@@ -304,7 +415,7 @@ public class AnalysisServiceTest {
         }
         assertFalse(analysisFileManagerStub.createIGVGctFileCalled);
         analysisFileManagerStub.clear();
-        
+
         igvParameters.getStudySubscription().setId(2L);
         query.getColumnCollection().add(new ResultColumn());
         igvParameters.setQuery(query);
@@ -316,7 +427,7 @@ public class AnalysisServiceTest {
         assertEquals(
                 IGVDownloadUrl + "http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
                 resultURL);
-        
+
         // Now test the All Platforms way.
         Platform platform1 = new Platform();
         platform1.setId(1l);
@@ -324,7 +435,7 @@ public class AnalysisServiceTest {
         platform1.setPlatformConfiguration(platformConfiguration1);
         platformConfiguration1.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         platformConfiguration1.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
-        
+
         Platform platform2 = new Platform();
         platform2.setId(2l);
         PlatformConfiguration platformConfiguration2 = new PlatformConfiguration();
@@ -342,13 +453,13 @@ public class AnalysisServiceTest {
         assertTrue(analysisFileManagerStub.createIGVSampleClassificationFileCalled);
         assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
     }
-    
+
     @Test
     public void testExecuteHeatmap() throws ConnectionException, InvalidCriterionException, IOException {
         Query query = new Query();
         query.setCompoundCriterion(new CompoundCriterion());
         query.setName("queryNameString");
-        
+
         StudySubscription subscription = new StudySubscription();
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -363,7 +474,7 @@ public class AnalysisServiceTest {
         heatmapParameters.setViewAllData(true);
         heatmapParameters.setPlatform(new Platform());
         analysisFileManagerStub.clear();
-        
+
         GenomicDataSourceConfiguration genomicSource2 = new GenomicDataSourceConfiguration();
         genomicSource2.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         studyConfiguration.getGenomicDataSources().add(genomicSource2);
@@ -376,14 +487,14 @@ public class AnalysisServiceTest {
         assertEquals(
                 "http://localhost:8080/caintegrator2/viewer/runViewer.do?JSESSIONID=sessionId&file=heatmapLaunch.jnlp",
                 resultURL);
-        
+
         heatmapParameters.setUseCGHCall(true);
         resultURL = service.executeHeatmap(heatmapParameters);
         assertTrue(analysisFileManagerStub.createHeatmapGenomicFileCalled);
         assertTrue(analysisFileManagerStub.createHeatmapSampleClassificationFileCalled);
         assertTrue(analysisFileManagerStub.createHeatmapJnlpFileCalled);
     }
-    
+
     @Test
     public void testExecuteGridPCA() throws ConnectionException, InvalidCriterionException {
         StatusUpdateTestListener updater = new StatusUpdateTestListener();
@@ -402,13 +513,14 @@ public class AnalysisServiceTest {
         subscription.setStudy(new Study());
         job.setSubscription(subscription);
         service.executeGridPCA(updater, job);
-        assertTrue(genePatternGridRunnerStub.runPCACalled);
+        verify(genePatternGridRunner, atLeastOnce()).runPCA(any(StatusUpdateListener.class),
+                any(PrincipalComponentAnalysisJob.class), any(File.class));
         assertTrue(fileManagerStub.createGctFileCalled);
         assertTrue(fileManagerStub.createInputZipFileCalled);
         assertTrue(job.toString().contains(query.getName()));
         assertTrue(job.toString().contains(sampleSet.getName()));
     }
-    
+
     @Test
     public void testExecuteGridPreprocessComparativeMarker() throws ConnectionException, InvalidCriterionException {
         StatusUpdateTestListener updater = new StatusUpdateTestListener();
@@ -446,14 +558,12 @@ public class AnalysisServiceTest {
         assertTrue(fileManagerStub.createClassificationFileCalled);
         assertTrue(fileManagerStub.createGctFileCalled);
         assertTrue(fileManagerStub.createInputZipFileCalled);
-        assertTrue(genePatternGridRunnerStub.runPreprocessComparativeMarkerSelectionCalled);
+        verify(genePatternGridRunner, atLeastOnce()).runPreprocessComparativeMarkerSelection(any(StatusUpdateListener.class),
+                any(ComparativeMarkerSelectionAnalysisJob.class), any(File.class), any(File.class));
         assertTrue(job.toString().contains(query.getName()));
         assertTrue(job.toString().contains(sampleSet.getName()));
-        
     }
-    
-    
-    
+
     @Test
     public void testExecuteGenePatternJob() throws WebServiceException {
         AnalysisMethodInvocation invocation = new AnalysisMethodInvocation();
@@ -471,20 +581,16 @@ public class AnalysisServiceTest {
         parameterValue.setParameter(parameter);
         invocation.setParameterValue(parameter, parameterValue);
         service.executeGenePatternJob(server, invocation);
-        assertEquals("method", genePatternClientStub.taskName);
-        assertEquals(1, genePatternClientStub.parameters.size());
-        ParameterInfo genePatternParameter = genePatternClientStub.parameters.get(0);
-        assertEquals("parameter", genePatternParameter.getName());
-        assertEquals("value", genePatternParameter.getValue());
+        verify(genePatternClient, times(1)).runAnalysis(anyString(), anyListOf(ParameterInfo.class));
     }
-    
-    private void runKMPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractKMParameters annotationParameters) 
+
+    private void runKMPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractKMParameters annotationParameters)
     throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         KMPlot kmPlot = service.createKMPlot(subscription, annotationParameters);
-        
+
         assertNotNull(kmPlot);
-        assertTrue(caIntegratorPlotServiceStub.computeLogRankPValueBetweenCalled);
-        assertTrue(caIntegratorPlotServiceStub.getChartCalled);
+        verify(caIntKMPlotService, atLeastOnce()).computeLogRankPValueBetween(any(KMSampleGroupCriteriaDTO.class), any(KMSampleGroupCriteriaDTO.class));
+        verify(caIntKMPlotService, atLeastOnce()).getChart(any(KMCriteriaDTO.class));
         boolean exceptionCaught = false;
         try { // Try giving no survival value definition.
             annotationParameters.setSurvivalValueDefinition(null);
@@ -493,7 +599,7 @@ public class AnalysisServiceTest {
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
-        
+
         exceptionCaught = false;
         studyCreator.getSurvivalValueDefinition().setLastFollowupDate(null);
         try { // Try giving survivalValueDefinition without a followup date
@@ -504,7 +610,7 @@ public class AnalysisServiceTest {
         }
         assertTrue(exceptionCaught);
     }
-    
+
     @Test
     public void testCreateAnnotationBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
@@ -519,9 +625,9 @@ public class AnalysisServiceTest {
         annotationParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
         assertTrue(annotationParameters.validate());
         runKMPlotTest(studyCreator, subscription, annotationParameters);
-        
+
     }
-    
+
     @Test
     public void testCreateGeneExpressionBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
@@ -549,7 +655,7 @@ public class AnalysisServiceTest {
         assertTrue(geneExpressionParameters.validate());
         runKMPlotTest(studyCreator, subscription, geneExpressionParameters);
     }
-    
+
     @Test
     public void testCreateQueryBasedKMPlot() throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
@@ -575,8 +681,8 @@ public class AnalysisServiceTest {
         runKMPlotTest(studyCreator, subscription, queryBasedParameters);
         assertEquals(ResultTypeEnum.CLINICAL, query1.getResultType());
     }
-    
-    private void runGEPlotTest(StudySubscription subscription, AbstractGEPlotParameters parameters) 
+
+    private void runGEPlotTest(StudySubscription subscription, AbstractGEPlotParameters parameters)
     throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         try {
             queryManagementServiceForKmPlotStub.throwGenesNotFoundException = true;
@@ -588,13 +694,13 @@ public class AnalysisServiceTest {
             // expected result.
             queryManagementServiceForKmPlotStub.clear();
         }
-        
+
         GeneExpressionPlotGroup gePlot = service.createGeneExpressionPlot(subscription, parameters);
-        
+
         assertNotNull(gePlot.getPlot(PlotCalculationTypeEnum.MEAN));
 
     }
-    
+
     @Test
     public void testCreateAnnotationBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
@@ -612,9 +718,9 @@ public class AnalysisServiceTest {
 
         assertTrue(annotationParameters.validate());
         runGEPlotTest(subscription, annotationParameters);
-        
+
     }
-    
+
     @Test
     public void testCreateGenomicQueryBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
@@ -636,7 +742,7 @@ public class AnalysisServiceTest {
         runGEPlotTest(subscription, genomicQueryParameters);
         assertEquals(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, query1.getReporterType());
     }
-    
+
     @Test
     public void testCreateClinicalQueryBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
@@ -663,7 +769,7 @@ public class AnalysisServiceTest {
         assertTrue(genomicQueryParameters.validate());
         runGEPlotTest(subscription, genomicQueryParameters);
     }
-    
+
     @Test
     public void testDeleteGisticAnalysis() {
         GisticAnalysis gisticAnalysis = new GisticAnalysis();
@@ -673,133 +779,20 @@ public class AnalysisServiceTest {
         gisticAnalysis.setStudySubscription(subscription);
         service.deleteGisticAnalysis(gisticAnalysis);
         assertFalse(subscription.getCopyNumberAnalysisCollection().contains(gisticAnalysis));
-        assertFalse(arrayDataServiceStub.deleteGisticAnalysisNetCDFFileCalled);
+        verify(arrayDataService, never()).deleteGisticAnalysisNetCDFFile(any(Study.class), anyLong());
         subscription.getCopyNumberAnalysisCollection().add(gisticAnalysis);
         gisticAnalysis.setStudySubscription(subscription);
         ReporterList reporterList = new ReporterList("test", ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER);
         gisticAnalysis.setReporterList(reporterList);
         service.deleteGisticAnalysis(gisticAnalysis);
-        assertTrue(arrayDataServiceStub.deleteGisticAnalysisNetCDFFileCalled);
-    }
-    
-    private final class GenePatternClientFactoryStub implements GenePatternClientFactory {
-
-        public CaIntegrator2GPClient retrieveClient(ServerConnectionProfile server) {
-            return genePatternClientStub;
-        }
-
-        public CaIntegrator2GPClient retrieveOldGenePatternClient(ServerConnectionProfile server) {
-            return genePatternClientStub;
-        }
-        
-    }
-
-    private final class TestGenePatternClientStub extends GenePatternClientStub {
-
-        private String taskName;
-        private List<ParameterInfo> parameters;
-
-        @Override
-        public JobInfo getStatus(JobInfo jobInfo) {
-            jobInfo.setStatus("Completed");
-            return jobInfo;
-        }
-
-        @SuppressWarnings("unchecked")
-        public TaskInfo[] getTasks() throws WebServiceException {
-            TaskInfo[] tasks = new TaskInfo[4];
-            tasks[0] = new TaskInfo();
-            tasks[0].setName("task1");
-            tasks[0].setDescription("description1");
-            tasks[0].setTaskInfoAttributes(new HashMap<String, String>());
-            tasks[0].setParameterInfoArray(new ParameterInfo[3]);
-            tasks[0].getParameterInfoArray()[0] = new ParameterInfo();
-            tasks[0].getParameterInfoArray()[0].setName("parameter1");
-            tasks[0].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
-            tasks[0].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
-            tasks[0].getParameterInfoArray()[0].getAttributes().put("optional", "");
-            tasks[0].getParameterInfoArray()[0].getAttributes().put(TaskExecutor.PARAM_INFO_DEFAULT_VALUE[0], "default");
-            
-
-            tasks[0].getParameterInfoArray()[1] = new ParameterInfo();
-            tasks[0].getParameterInfoArray()[1].setName("parameter2");
-            tasks[0].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
-            tasks[0].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
-            tasks[0].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
-            tasks[0].getParameterInfoArray()[1].getAttributes().put("optional", "on");
-            
-            tasks[0].getParameterInfoArray()[2] = new ParameterInfo();
-            tasks[0].getParameterInfoArray()[2].setName("parameter3");
-            tasks[0].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
-            tasks[0].getParameterInfoArray()[2].getAttributes().put(TaskExecutor.PARAM_INFO_DEFAULT_VALUE[0], "2");
-            tasks[0].getParameterInfoArray()[2].getAttributes().put("type", "java.lang.Integer");
-            tasks[0].getParameterInfoArray()[2].setValue("1=choice1;2=choice2");
-            
-            tasks[1] = new TaskInfo();
-            tasks[1].setName("task2");
-            tasks[1].setDescription("description2");
-            tasks[1].setParameterInfoArray(new ParameterInfo[2]);
-            tasks[1].setTaskInfoAttributes(new HashMap<String, String>());
-            tasks[1].getParameterInfoArray()[0] = new ParameterInfo();
-            tasks[1].getParameterInfoArray()[0].setName("parameter1");
-            tasks[1].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
-            tasks[1].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
-            tasks[1].getParameterInfoArray()[1] = new ParameterInfo();
-            tasks[1].getParameterInfoArray()[1].setName("parameter2");
-            tasks[1].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
-            tasks[1].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
-            tasks[1].getParameterInfoArray()[1].getAttributes().put("fileFormat", "cls");
-            
-            tasks[2] = new TaskInfo();
-            tasks[2].setName("task3");
-            tasks[2].setDescription("description3");
-            tasks[2].setTaskInfoAttributes(new HashMap<String, String>());
-            tasks[2].setParameterInfoArray(new ParameterInfo[3]);
-            tasks[2].getParameterInfoArray()[0] = new ParameterInfo();
-            tasks[2].getParameterInfoArray()[0].setName("parameter1");
-            tasks[2].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
-            tasks[2].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.Float");
-
-            tasks[2].getParameterInfoArray()[1] = new ParameterInfo();
-            tasks[2].getParameterInfoArray()[1].setName("parameter2");
-            tasks[2].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
-            tasks[2].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
-            tasks[2].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
-
-            tasks[2].getParameterInfoArray()[2] = new ParameterInfo();
-            tasks[2].getParameterInfoArray()[2].setName("parameter3");
-            tasks[2].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
-            tasks[2].getParameterInfoArray()[2].getAttributes().put("type", "java.io.File");
-            tasks[2].getParameterInfoArray()[2].getAttributes().put("fileFormat", "cls");
-            
-            tasks[3] = new TaskInfo();
-            tasks[3].setName("task3");
-            tasks[3].setDescription("description3");
-            Map<String, String> task4Attributes = new HashMap<String, String>();
-            task4Attributes.put("taskType", "Visualizer");
-            tasks[3].setTaskInfoAttributes(task4Attributes);
-            tasks[3].setParameterInfoArray(new ParameterInfo[3]);
-            return tasks;
-        }
-        
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws WebServiceException {
-            this.taskName = taskName;
-            this.parameters = parameters;
-            return new JobInfo();
-        }
-
-
+        verify(arrayDataService, atLeastOnce()).deleteGisticAnalysisNetCDFFile(any(Study.class), anyLong());
     }
 
     private static class DaoForAnalysisServiceStub extends CaIntegrator2DaoStub {
-        
+
         public boolean returnNoGeneSymbols = false;
         public StudySubscription subscription;
-        
+
         /**
          * {@inheritDoc}
          */
@@ -827,18 +820,18 @@ public class AnalysisServiceTest {
                 return super.get(id, objectClass);
             }
         }
-        
+
         @Override
         public void clear() {
             super.clear();
             returnNoGeneSymbols = false;
         }
-        
+
         @Override
         public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
             Set<String> newSymbols = new HashSet<String>();
             for (String symbol : symbols) {
-               newSymbols.add(symbol); 
+               newSymbols.add(symbol);
             }
             return returnNoGeneSymbols ? new HashSet<String>() : newSymbols;
         }

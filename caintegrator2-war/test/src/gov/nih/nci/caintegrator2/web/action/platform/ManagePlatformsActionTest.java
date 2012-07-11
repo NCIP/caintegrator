@@ -89,9 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
@@ -107,22 +105,19 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
 
     ManagePlatformsAction action = new ManagePlatformsAction();
-    ArrayDataServiceStub arrayDataServiceStub = new ArrayDataServiceStub();
     FileManagerStub fileManagerStub = new FileManagerStub();
     PlatformDeploymentAjaxUpdaterStub ajaxUpdater = new PlatformDeploymentAjaxUpdaterStub();
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-        WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
-        DisplayableUserWorkspace displayableWorkspace =
-            SessionHelper.getInstance().getDisplayableUserWorkspace();
+        DisplayableUserWorkspace displayableWorkspace = SessionHelper.getInstance().getDisplayableUserWorkspace();
         displayableWorkspace.refresh(workspaceService, true);
 
         ajaxUpdater = new PlatformDeploymentAjaxUpdaterStub();
         action.setWorkspaceService(workspaceService);
-        action.setArrayDataService(arrayDataServiceStub);
+        action.setArrayDataService(arrayDataService);
         action.setFileManager(fileManagerStub);
         action.setAjaxUpdater(ajaxUpdater);
     }

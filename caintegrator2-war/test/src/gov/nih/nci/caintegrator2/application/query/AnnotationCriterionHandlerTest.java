@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.application.query;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -100,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.util.HashSet;
 
@@ -108,13 +108,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
-public class AnnotationCriterionHandlerTest {
+public class AnnotationCriterionHandlerTest extends AbstractMockitoTest {
 
     @Test
     public void testGetMatches() throws InvalidCriterionException {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", AnnotationCriterionHandlerTest.class);
         CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        ArrayDataServiceStub arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");
         daoStub.clear();
 
         Study study = new Study();
@@ -142,14 +141,14 @@ public class AnnotationCriterionHandlerTest {
         AbstractAnnotationCriterion abstractAnnotationCriterion = new StringComparisonCriterion();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE);
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(abstractAnnotationCriterion);
-        annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        annotationCriterionHandler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSamplesCalled);
 
         daoStub.clear();
         abstractAnnotationCriterion.setAnnotationFieldDescriptor(afd1);
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.IMAGESERIES);
         try {
-            annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+            annotationCriterionHandler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
             fail("Expecting invalid criterion becuase the study has no imageSeries data.");
         } catch (InvalidCriterionException e) { }
         AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
@@ -157,12 +156,12 @@ public class AnnotationCriterionHandlerTest {
         afd2.setAnnotationEntityType(EntityTypeEnum.IMAGESERIES);
         group.getAnnotationFieldDescriptors().add(afd2);
         abstractAnnotationCriterion.setAnnotationFieldDescriptor(afd2);
-        annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        annotationCriterionHandler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingImageSeriesCalled);
 
         daoStub.clear();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SUBJECT);
-        annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        annotationCriterionHandler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSubjectsCalled);
 
         // negative testing of copy number criterion

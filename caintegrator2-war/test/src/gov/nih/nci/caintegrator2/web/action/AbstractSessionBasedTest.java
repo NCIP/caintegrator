@@ -87,11 +87,13 @@ package gov.nih.nci.caintegrator2.web.action;
 
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.HashMap;
 
 import org.acegisecurity.context.SecurityContextHolder;
+import org.junit.Before;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.config.Configuration;
@@ -101,11 +103,12 @@ import com.opensymphony.xwork2.inject.Container;
 import com.opensymphony.xwork2.util.ValueStack;
 import com.opensymphony.xwork2.util.ValueStackFactory;
 
-public abstract class AbstractSessionBasedTest {
+public abstract class AbstractSessionBasedTest extends AbstractMockitoTest {
 
     private AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
 
-    public void setUp() {
+    @Before
+    public void setUp() throws Exception {
         authentication = new AcegiAuthenticationStub();
         authentication.setUsername("user");
         ConfigurationManager configurationManager = new ConfigurationManager();
@@ -119,8 +122,8 @@ public abstract class AbstractSessionBasedTest {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         ActionContext.getContext().setSession(new HashMap<String, Object>());
-        SessionHelper.getInstance().setStudyManager(true);
 
+        SessionHelper.getInstance().setStudyManager(true);
     }
 
     protected void setUserAnonymous() {
@@ -130,5 +133,4 @@ public abstract class AbstractSessionBasedTest {
     protected void setUsername(String username) {
         authentication.setUsername(username);
     }
-
 }

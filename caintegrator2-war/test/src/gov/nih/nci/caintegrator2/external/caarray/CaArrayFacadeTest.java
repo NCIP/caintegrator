@@ -119,7 +119,6 @@ import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
 import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
@@ -137,6 +136,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -159,7 +159,7 @@ import com.healthmarketscience.rmiio.DirectRemoteInputStream;
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class CaArrayFacadeTest {
+public class CaArrayFacadeTest extends AbstractMockitoTest {
     private GeneExpressionReporter reporter1 = createTestReporter("A_probeSet1");
     private GeneExpressionReporter reporter2 = createTestReporter("A_probeSet2");
     private DnaAnalysisReporter reporter3 = createDnaAnalysisTestReporter("A_probeSet1");
@@ -354,7 +354,7 @@ public class CaArrayFacadeTest {
         Sample sample = new Sample();
         sample.setName("sample");
         genomicSource.getSamples().add(sample);
-        List<ArrayDataValues> valuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource, new ArrayDataServiceStub());
+        List<ArrayDataValues> valuesList = caArrayFacade.retrieveDnaAnalysisData(genomicSource, arrayDataService);
         assertEquals(1, valuesList.size());
         ArrayDataValues arrayDataValues = valuesList.get(0);
         assertEquals(2, arrayDataValues.getReporters().size());

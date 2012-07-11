@@ -90,14 +90,21 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyCollectionOf;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -121,6 +128,8 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.external.aim.AIMFacade;
+import gov.nih.nci.caintegrator2.external.aim.ImageSeriesAnnotationsWrapper;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
@@ -133,13 +142,18 @@ import gov.nih.nci.security.exceptions.CSSecurityException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -149,9 +163,7 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
     private CaIntegrator2DaoStub daoStub;
     private CaDSRFacadeStub caDSRFacadeStub;
     private FileManagerStub fileManagerStub;
-    private WorkspaceServiceStub workspaceServiceStub;
     private SecurityManagerStub securityManagerStub;
-    private AnalysisServiceStub analysisServiceStub;
     private static final String CONTROL_SAMPLE_SET_NAME = "Control Sample Set 1";
     private StudyHelper studyHelper;
 
@@ -160,20 +172,33 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
         ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class);
         studyManagementService = (StudyManagementServiceImpl) context.getBean("studyManagementService");
         studyManagementService.setCaArrayFacade(caArrayFacade);
+        studyManagementService.setWorkspaceService(workspaceService);
         daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
         daoStub.clear();
         caDSRFacadeStub = (CaDSRFacadeStub) context.getBean("caDSRFacadeStub");
         caDSRFacadeStub.clear();
         fileManagerStub = (FileManagerStub) context.getBean("fileManagerStub");
         fileManagerStub.clear();
-        workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceServiceStub");
-        workspaceServiceStub.clear();
         securityManagerStub = (SecurityManagerStub) context.getBean("securityManagerStub");
         securityManagerStub.clear();
-        analysisServiceStub = new AnalysisServiceStub();
-        studyManagementService.setAnalysisService(analysisServiceStub);
-        analysisServiceStub.clear();
+        studyManagementService.setAnalysisService(analysisService);
         studyManagementService.setCopyHelper(new CopyStudyHelperStub(studyManagementService));
+        AIMFacade aimFacade = mock(AIMFacade.class);
+        when(aimFacade.retrieveImageSeriesAnnotations(any(ServerConnectionProfile.class),
+                anyCollectionOf(ImageSeries.class))).thenAnswer(new Answer<Map<ImageSeries, ImageSeriesAnnotationsWrapper>>() {
+                    @Override
+                    public Map<ImageSeries, ImageSeriesAnnotationsWrapper> answer(InvocationOnMock invocation) throws Throwable {
+                        Collection<ImageSeries> images = (Collection<ImageSeries>) invocation.getArguments()[1];
+                        Map<ImageSeries, ImageSeriesAnnotationsWrapper> results = new HashMap<ImageSeries, ImageSeriesAnnotationsWrapper>();
+                        for (ImageSeries imageSeries : images) {
+                            ImageSeriesAnnotationsWrapper annotations = new ImageSeriesAnnotationsWrapper();
+                            annotations.addDefinitionValueToGroup("Group", "Definition", "Value");
+                            results.put(imageSeries, annotations);
+                        }
+                        return results;
+                    }
+                });
+        studyManagementService.setAimFacade(aimFacade);
         studyHelper = new StudyHelper();
     }
 
@@ -203,20 +228,20 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
         GenomicDataSourceConfiguration genomicSource = configTest.getGenomicDataSources().get(0);
         studyManagementService.delete(configTest, genomicSource);
         assertTrue(daoStub.deleteCalled);
-        assertFalse(analysisServiceStub.deleteGisticAnalysisCalled);
+        verify(analysisService, never()).deleteGisticAnalysis(any(GisticAnalysis.class));
         daoStub.deleteCalled = false;
 
         genomicSource.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
         studyManagementService.delete(configTest, genomicSource);
         assertTrue(daoStub.deleteCalled);
-        assertTrue(analysisServiceStub.deleteGisticAnalysisCalled);
+        verify(analysisService, atLeastOnce()).deleteGisticAnalysis(any(GisticAnalysis.class));
         deleteImageDataSource(study, configTest);
         daoStub.deleteCalled = false;
 
         studyManagementService.delete(configTest);
         assertTrue(daoStub.deleteCalled);
         assertTrue(securityManagerStub.deleteProtectionElementCalled);
-        assertTrue(workspaceServiceStub.unSubscribeAllCalled);
+        verify(workspaceService, times(1)).unsubscribeAll(any(Study.class));
         assertTrue(fileManagerStub.deleteStudyDirectoryCalled);
     }
 

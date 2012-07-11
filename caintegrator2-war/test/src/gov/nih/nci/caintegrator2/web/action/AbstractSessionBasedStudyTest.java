@@ -96,10 +96,10 @@ import com.opensymphony.xwork2.ActionContext;
 /**
  *
  */
-public class AbstractSessionBasedStudyTest extends AbstractSessionBasedTest {
+public abstract class AbstractSessionBasedStudyTest extends AbstractSessionBasedTest {
 
     @Override
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         StudySubscription subscription = new StudySubscription();
         Study study = new Study();

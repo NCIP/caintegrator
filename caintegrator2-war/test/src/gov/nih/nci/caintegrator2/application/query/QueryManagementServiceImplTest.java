@@ -90,7 +90,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
@@ -152,6 +151,7 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregationTypeEnum;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResultTest;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSException;
@@ -170,7 +170,7 @@ import org.junit.Test;
 /**
  * Test class for QueryManagementServiceImpl
  */
-public class QueryManagementServiceImplTest {
+public class QueryManagementServiceImplTest extends AbstractMockitoTest {
 
 
     private static final String USER_EXISTS = "studyManager";
@@ -180,7 +180,6 @@ public class QueryManagementServiceImplTest {
     private CaIntegrator2DaoStub dao;
     private Query query;
     private GeneExpressionReporter reporter;
-    private ArrayDataServiceStub arrayDataService;
     private SegmentData segmentData;
     private SegmentData segmentData2;
     private UserWorkspace userWorkspace;
@@ -190,7 +189,6 @@ public class QueryManagementServiceImplTest {
         dao = new GenomicDataTestDaoStub();
         ResultHandler resultHandler = new ResultHandlerImpl();
         dao.clear();
-        arrayDataService = new ArrayDataServiceStub();
         queryManagementService = new QueryManagementServiceImpl();
         queryManagementService.setDao(dao);
         queryManagementService.setArrayDataService(arrayDataService);
@@ -379,13 +377,6 @@ public class QueryManagementServiceImplTest {
         reporterList2.getArrayDatas().add(arrayData2);
 
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        try {
-            arrayDataService.numberPlatformsInStudy = 2;
-            queryManagementService.executeGenomicDataQuery(query);
-            fail("Should have caught invalid criterion exception because no platforms selected.");
-        } catch (InvalidCriterionException e) {
-        }
-        arrayDataService.numberPlatformsInStudy = 1;
         geneNameCriterion.setPlatformName("platformName");
         query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
         GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);

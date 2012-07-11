@@ -100,7 +100,6 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.security.SecurityManager;
@@ -143,7 +142,7 @@ public class EditAuthorizedGroupActionTest extends AbstractSessionBasedTest {
     public void prepareTest() throws Exception {
         super.setUp();
         action = new EditAuthorizedGroupAction();
-        action.setWorkspaceService(new WorkspaceServiceStub());
+        action.setWorkspaceService(workspaceService);
 
         Group group = new Group();
         group.setGroupName("Test Group");

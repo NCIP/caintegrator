@@ -96,7 +96,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
@@ -107,8 +106,6 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
@@ -132,7 +129,7 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         StudySubscription subscription = new StudySubscription();
         Study study = new Study();
@@ -143,12 +140,12 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GenePatternAnalysisAction();
-        action.setAnalysisService(new AnalysisServiceStub());
+        action.setAnalysisService(analysisService);
         queryManagementService = new QueryManagementServiceStub();
         action.setQueryManagementService(queryManagementService);
-        action.setWorkspaceService(new WorkspaceServiceStub());
+        action.setWorkspaceService(workspaceService);
         action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
-        action.setConfigurationHelper(new ConfigurationHelperStub());
+        action.setConfigurationHelper(configurationHelper);
 
         studyManagementService = mock(StudyManagementService.class);
         action.setStudyManagementService(studyManagementService);

@@ -99,8 +99,6 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class EditDnaAnalysisDataConfigurationActionTest extends AbstractSessionBasedTest {
 
@@ -109,13 +107,13 @@ public class EditDnaAnalysisDataConfigurationActionTest extends AbstractSessionB
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditDnaAnalysisDataConfigurationActionTest.class);
-        action = (EditDnaAnalysisDataConfigurationAction) context.getBean("editDnaAnalysisDataConfigurationAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+        studyManagementServiceStub = new StudyManagementServiceStub();
+        action = new EditDnaAnalysisDataConfigurationAction();
+        action.setStudyManagementService(studyManagementServiceStub);
+        action.setWorkspaceService(workspaceService);
+        action.setConfigurationHelper(configurationHelper);
     }
 
     @Test
