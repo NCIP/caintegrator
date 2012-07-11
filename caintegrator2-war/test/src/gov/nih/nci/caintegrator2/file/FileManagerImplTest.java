@@ -4,15 +4,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactoryStub;
+import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactory;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
-import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -20,6 +23,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,22 +35,20 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class FileManagerImplTest {
+public class FileManagerImplTest extends AbstractMockitoTest {
 
     private static final String TEST_FILENAME = "testfile.csv";
 
-    private FileManager fileManager;
+    private FileManagerImpl fileManager;
     private AnalysisFileManagerImpl analysisFileManager;
-    private ConfigurationHelperStub configurationHelperStub;
 
     @Before
     public void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class);
-        fileManager = (FileManager) context.getBean("fileManager");
+        fileManager = (FileManagerImpl) context.getBean("fileManager");
+        fileManager.setConfigurationHelper(configurationHelper);
         analysisFileManager = new AnalysisFileManagerImpl();
-        configurationHelperStub = (ConfigurationHelperStub) context.getBean("configurationHelperStub");
         analysisFileManager.setFileManager(fileManager);
-        configurationHelperStub.clear();
     }
 
     @Test
@@ -57,8 +59,7 @@ public class FileManagerImplTest {
         storedFile.deleteOnExit();
         File expectedFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "1" + File.separator + TEST_FILENAME);
         assertEquals(expectedFile.getCanonicalPath(), storedFile.getCanonicalPath());
-        assertTrue(configurationHelperStub.getStringCalled);
-        assertEquals(ConfigurationParameter.STUDY_FILE_STORAGE_DIRECTORY, configurationHelperStub.parameterPassed);
+        verify(configurationHelper, atLeastOnce()).getString(any(ConfigurationParameter.class));
         assertEquals(TestDataFiles.VALID_FILE.length(), storedFile.length());
     }
 
@@ -84,7 +85,6 @@ public class FileManagerImplTest {
                                                     "tmpDownload" +
                                                     File.separator + "test" );
         assertEquals(expectedTemporaryDirectory, newTemporaryDirectory);
-        assertEquals(ConfigurationParameter.TEMP_DOWNLOAD_STORAGE_DIRECTORY, configurationHelperStub.parameterPassed);
 
         try {
             fileManager.getNewTemporaryDirectory(null);
@@ -166,7 +166,8 @@ public class FileManagerImplTest {
         HeatmapResult result = new HeatmapResult();
         Set<SegmentData> segmentDatas = new HashSet<SegmentData>();
         GeneLocationConfiguration geneLocationConfiguration = new GeneLocationConfiguration();
-        CBSToHeatmapFactoryStub cbsToHeatmapFactory = new CBSToHeatmapFactoryStub();
+
+        CBSToHeatmapFactory cbsToHeatmapFactory = mock(CBSToHeatmapFactory.class);
         analysisFileManager.createHeatmapGenomicFile(parameters, result, segmentDatas, geneLocationConfiguration, cbsToHeatmapFactory);
 
         assertEquals("heatmapGenomicData.txt", result.getGenomicDataFile().getName());

@@ -2,19 +2,13 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
-    <bean name="aimFacade" class="gov.nih.nci.caintegrator2.external.aim.AIMFacadeImpl" singleton="true">
-        <property name="aimServiceFactory">
-            <ref local="aimServiceStubFactory"/>
-        </property>
-    </bean>
+    <bean name="aimFacade" class="gov.nih.nci.caintegrator2.external.aim.AIMFacadeImpl" singleton="true"/>
     
     <bean name="aimFacadeIntegration" class="gov.nih.nci.caintegrator2.external.aim.AIMFacadeImpl" singleton="true">
         <property name="aimServiceFactory">
             <ref local="aimServiceFactoryIntegration"/>
         </property>
     </bean>
-
-    <bean id="aimServiceStubFactory" class="gov.nih.nci.caintegrator2.external.aim.AIMServiceFactoryStub" />
 
     <bean id="aimServiceFactoryIntegration" class="gov.nih.nci.caintegrator2.external.aim.AIMServiceFactoryImpl" />
 
@@ -25,5 +19,4 @@
     <bean id="aimDevServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
        <property name="url" value="http://node01.cci.emory.edu:8080/wsrf/services/cagrid/AIMTCGADataService" />
     </bean>
-    
 </beans>

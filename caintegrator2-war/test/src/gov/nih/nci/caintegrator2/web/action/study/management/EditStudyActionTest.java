@@ -89,12 +89,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
@@ -104,10 +103,11 @@ public class EditStudyActionTest extends AbstractSessionBasedTest {
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class);
-        editStudyAction = (EditStudyAction) context.getBean("editStudyAction");
+        editStudyAction = new EditStudyAction();
+        editStudyAction.setStudyManagementService(new StudyManagementServiceStub());
+        editStudyAction.setWorkspaceService(workspaceService);
     }
 
     @Test

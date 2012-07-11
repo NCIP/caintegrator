@@ -4,41 +4,42 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 
+ *
  */
 public class QueryResult extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
-    
+
     private Query query;
-    private Collection<ResultRow> rowCollection;
-    
+    private Collection<ResultRow> rowCollection = new ArrayList<ResultRow>();
+
     /**
      * @return the query
      */
     public Query getQuery() {
         return query;
     }
-    
+
     /**
      * @param query the query to set
      */
     public void setQuery(Query query) {
         this.query = query;
     }
-    
+
     /**
      * @return the rowCollection
      */
     public Collection<ResultRow> getRowCollection() {
         return rowCollection;
     }
-    
+
     /**
      * @param rowCollection the rowCollection to set
      */
@@ -48,7 +49,7 @@ public class QueryResult extends AbstractCaIntegrator2Object {
 
     /**
      * Returns all samples in this query result.
-     * 
+     *
      * @return all samples.
      */
     public Set<Sample> getAllSamples() {

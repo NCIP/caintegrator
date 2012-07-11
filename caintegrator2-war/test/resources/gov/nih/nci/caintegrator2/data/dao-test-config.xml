@@ -20,8 +20,6 @@
         </property>
     </bean>
     
-    <bean id="arrayDataService" class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub" />
-    
     <bean id="generator" class="gov.nih.nci.caintegrator2.data.DataGenerator">
         <property name="dao">
             <ref bean="caIntegrator2Dao" />

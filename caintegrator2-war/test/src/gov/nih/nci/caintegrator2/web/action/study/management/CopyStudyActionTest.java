@@ -91,7 +91,6 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
@@ -100,8 +99,6 @@ import java.util.HashMap;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -110,19 +107,16 @@ public class CopyStudyActionTest extends AbstractSessionBasedTest {
 
     private CopyStudyAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
-    private WorkspaceServiceStub workspaceServiceStub;
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class);
-        action = (CopyStudyAction) context.getBean("copyStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceService");
-        workspaceServiceStub.clear();
-        studyManagementServiceStub.clear();
-        SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceServiceStub, true);
+        studyManagementServiceStub = new StudyManagementServiceStub();
+        action = new CopyStudyAction();
+        action.setStudyManagementService(studyManagementServiceStub);
+        action.setWorkspaceService(workspaceService);
+        SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
 
     @Test

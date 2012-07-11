@@ -6,10 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
@@ -24,8 +22,8 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.GenericMultiSamplePerFileParser;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,8 +39,7 @@ import org.junit.Test;
 
 import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
 
-public class GenericUnparsedSupplementalFileSingleSampleHandlerTest {
-    private CaArrayFacade caArrayFacade;
+public class GenericUnparsedSupplementalFileSingleSampleHandlerTest extends AbstractMockitoTest {
 
     /**
      * Sets up the test.
@@ -50,14 +47,12 @@ public class GenericUnparsedSupplementalFileSingleSampleHandlerTest {
      */
     @Before
     public void setUp() throws Exception {
-        caArrayFacade = mock(CaArrayFacade.class);
         when(caArrayFacade.retrieveFile(any(GenomicDataSourceConfiguration.class), anyString()))
             .thenReturn(FileUtils.readFileToByteArray(TestDataFiles.TCGA_LEVEL_2_DATA_SINGLE_SAMPLE_FILE));
     }
 
     @Test
     public void testLoadCopyNumberDataSingleSample() throws ConnectionException, ValidationException {
-        ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
         CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
         GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
         StudyConfiguration studyConfiguration = new StudyConfiguration();

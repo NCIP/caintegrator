@@ -89,7 +89,6 @@ import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -111,14 +110,14 @@ public class DisplayableUserWorkspaceTest extends AbstractSessionBasedTest {
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
         authentication.setUsername("user");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         ActionContext.getContext().setSession(new HashMap<String, Object>());
 
-        SessionHelper.getInstance().refresh(new WorkspaceServiceStub(), true);
+        SessionHelper.getInstance().refresh(workspaceService, true);
         userWorkspace = SessionHelper.getInstance().getDisplayableUserWorkspace().getUserWorkspace();
     }
 

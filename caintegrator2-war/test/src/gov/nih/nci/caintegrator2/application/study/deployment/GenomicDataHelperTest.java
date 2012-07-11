@@ -1,13 +1,12 @@
 package gov.nih.nci.caintegrator2.application.study.deployment;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataLoadingTypeEnum;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -28,7 +27,6 @@ import org.junit.Test;
 
 public class GenomicDataHelperTest extends AbstractMockitoTest {
     private GenomicDataHelper helper;
-    private ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
     private CaIntegrator2Dao dao = new CaIntegrator2DaoStub();
     private BioconductorService biocondutor;
     private DnaAnalysisHandlerFactory dnaAnalysisHandlerFactory = new LocalDnaAnalysisHandlerFactoryImpl();
@@ -36,7 +34,6 @@ public class GenomicDataHelperTest extends AbstractMockitoTest {
 
     @Before
     public void setUp() {
-        arrayDataService.reset();
         helper = new GenomicDataHelper(caArrayFacade, arrayDataService, dao, biocondutor, dnaAnalysisHandlerFactory );
         helper.setExpressionHandlerFactory(expressionHandlerFactory);
     }
@@ -54,7 +51,7 @@ public class GenomicDataHelperTest extends AbstractMockitoTest {
         genomicDataConfiguration.setLoadingType(ArrayDataLoadingTypeEnum.PARSED_DATA);
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         helper.loadData(studyConfiguration);
-        assertTrue(arrayDataService.saveCalled);
+        verify(arrayDataService, atLeastOnce()).save(any(ArrayDataValues.class));
         verify(caArrayFacade, atLeastOnce()).retrieveData(any(GenomicDataSourceConfiguration.class));
         assertEquals(1, sample.getArrayCollection().size());
         assertEquals(2, sample.getArrayDataCollection().size());
@@ -75,7 +72,7 @@ public class GenomicDataHelperTest extends AbstractMockitoTest {
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         genomicDataConfiguration.setStudyConfiguration(studyConfiguration);
         helper.loadData(studyConfiguration);
-        assertTrue(arrayDataService.saveCalled);
+        verify(arrayDataService, atLeastOnce()).save(any(ArrayDataValues.class));
         assertEquals(2, sample.getArrayCollection().size());
         assertEquals(3, sample.getArrayDataCollection().size());
     }
@@ -95,7 +92,7 @@ public class GenomicDataHelperTest extends AbstractMockitoTest {
         studyConfiguration.getGenomicDataSources().add(genomicDataConfiguration);
         genomicDataConfiguration.setStudyConfiguration(studyConfiguration);
         helper.loadData(studyConfiguration);
-        assertTrue(arrayDataService.saveCalled);
+        verify(arrayDataService, atLeastOnce()).save(any(ArrayDataValues.class));
         assertEquals(2, sample.getArrayCollection().size());
         assertEquals(3, sample.getArrayDataCollection().size());
     }

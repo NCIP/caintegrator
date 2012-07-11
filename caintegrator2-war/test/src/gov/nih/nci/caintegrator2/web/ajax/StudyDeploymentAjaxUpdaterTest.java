@@ -86,11 +86,12 @@
 package gov.nih.nci.caintegrator2.web.ajax;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
@@ -108,26 +109,27 @@ public class StudyDeploymentAjaxUpdaterTest extends AbstractSessionBasedTest {
 
     private StudyDeploymentAjaxUpdater updater;
     private DwrUtilFactory dwrUtilFactory;
-    private WorkspaceServiceStudyDeploymentJobStub workspaceService;
-    private DeploymentServiceStub deploymentServiceStub;
     private StudyConfiguration studyConfiguration;
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         updater = new StudyDeploymentAjaxUpdater();
         dwrUtilFactory = new DwrUtilFactory();
-        workspaceService = new WorkspaceServiceStudyDeploymentJobStub();
-        deploymentServiceStub = new DeploymentServiceStub();
-        workspaceService.clear();
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
-        updater.setDeploymentService(deploymentServiceStub);
+        updater.setDeploymentService(deploymentService);
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
         StudyHelper studyHelper = new StudyHelper();
         studyConfiguration = studyHelper.populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();
         studyConfiguration.setId(Long.valueOf(1));
+
+        UserWorkspace workspace = new UserWorkspace();
+        workspace.setUsername("Test");
+        workspace.getSubscriptionCollection().add(getStudySubscription());
+        studyConfiguration.setUserWorkspace(workspace);
+        when(workspaceService.getWorkspace()).thenReturn(workspace);
     }
 
     @Test
@@ -140,22 +142,8 @@ public class StudyDeploymentAjaxUpdaterTest extends AbstractSessionBasedTest {
     public void testRunJob() throws InterruptedException {
         studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
         studyConfiguration.setLastModifiedBy(workspaceService.getWorkspace());
-        deploymentServiceStub.refreshedStudyConfiguration = studyConfiguration;
         updater.runJob(studyConfiguration, new HeatmapParameters());
         Thread.sleep(500);
-        assertTrue(deploymentServiceStub.performDeploymentCalled);
+        verify(deploymentService, times(1)).performDeployment(any(StudyConfiguration.class), any(HeatmapParameters.class));
     }
-
-    private final class WorkspaceServiceStudyDeploymentJobStub extends WorkspaceServiceStub {
-        @Override
-        public UserWorkspace getWorkspace() {
-            UserWorkspace workspace = new UserWorkspace();
-            workspace.setUsername("Test");
-            workspace.getSubscriptionCollection().add(getSubscription());
-            studyConfiguration.setUserWorkspace(workspace);
-
-            return workspace;
-        }
-    }
-
 }

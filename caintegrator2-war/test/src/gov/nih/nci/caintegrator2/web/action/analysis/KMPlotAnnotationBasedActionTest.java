@@ -88,7 +88,10 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+import gov.nih.nci.caintegrator2.application.analysis.AbstractKMParameters;
 import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
@@ -104,7 +107,6 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -126,7 +128,6 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
     private KMPlotAnnotationBasedAction action;
     private final QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private final StudyManagementServiceStub studyManagementService = new StudyManagementServiceStub();
-    private final AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     private final KMPlotServiceCaIntegratorImpl plotService = new KMPlotServiceCaIntegratorImpl();
 
     private PermissibleValue val1 = new PermissibleValue();
@@ -135,7 +136,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         StudySubscription subscription = new StudySubscription();
         subscription.setId(Long.valueOf(1));
@@ -145,14 +146,12 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new KMPlotAnnotationBasedAction();
         action.setStudyManagementService(studyManagementService);
-        action.setAnalysisService(analysisServiceStub);
-        WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
-        workspaceService.setSubscription(subscription);
+        action.setAnalysisService(analysisService);
         action.setWorkspaceService(workspaceService);
-
         action.setQueryManagementService(queryManagementServiceStub);
         queryManagementServiceStub.clear();
-        analysisServiceStub.clear();
+
+        setStudySubscription(subscription);
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
 
@@ -256,7 +255,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
     }
 
     @Test
-    public void testCreatePlot() throws InterruptedException {
+    public void testCreatePlot() throws Exception {
         setupActionVariables();
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
         action.setCreatePlotSelected(true);
@@ -274,7 +273,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().getLastFollowupDate().setDataType(AnnotationTypeEnum.DATE);
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
-        assertTrue(analysisServiceStub.createKMPlotCalled);
+        verify(analysisService, atLeastOnce()).createKMPlot(any(StudySubscription.class), any(AbstractKMParameters.class));
         assertFalse(action.isCreatable());
 
         action.getKmPlotForm().getAnnotationBasedForm().setSelectedAnnotationId("1");

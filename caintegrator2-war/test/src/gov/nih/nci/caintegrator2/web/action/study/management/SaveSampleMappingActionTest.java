@@ -98,8 +98,6 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -111,13 +109,12 @@ public class SaveSampleMappingActionTest extends AbstractSessionBasedTest {
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", SaveSampleMappingActionTest.class);
-        action = (SaveSampleMappingAction) context.getBean("saveSampleMappingAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+        studyManagementServiceStub = new StudyManagementServiceStub();
+        action = new SaveSampleMappingAction();
+        action.setStudyManagementService(studyManagementServiceStub);
+        action.setWorkspaceService(workspaceService);
     }
 
     @Test

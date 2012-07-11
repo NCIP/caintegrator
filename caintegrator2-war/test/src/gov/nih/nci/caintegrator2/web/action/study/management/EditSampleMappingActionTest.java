@@ -87,25 +87,24 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
-public class EditSampleMappingActionTest {
+public class EditSampleMappingActionTest extends AbstractMockitoTest {
 
     private EditSampleMappingAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditSampleMappingActionTest.class);
-        action = (EditSampleMappingAction) context.getBean("editSampleMappingAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+        studyManagementServiceStub = new StudyManagementServiceStub();
+        action = new EditSampleMappingAction();
+        action.setStudyManagementService(studyManagementServiceStub);
+        action.setWorkspaceService(workspaceService);
     }
 
     @Test

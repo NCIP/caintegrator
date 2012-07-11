@@ -87,13 +87,15 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
@@ -107,8 +109,6 @@ import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
 import org.apache.struts2.ServletActionContext;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockServletContext;
@@ -118,26 +118,24 @@ import com.opensymphony.xwork2.Action;
 public class DeployStudyActionTest extends AbstractSessionBasedTest {
 
     private DeployStudyAction action;
-    private DeploymentServiceStub deploymentServiceStub;
     private DeployStudyAjaxUpdaterStub ajaxUpdaterStub;
-    private final WorkspaceServiceStub workspaceSerivce = new WorkspaceServiceStub();
     private SessionHelper sessionHelper;
     private MockHttpSession session;
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class);
-        action = (DeployStudyAction) context.getBean("deployStudyAction");
-        deploymentServiceStub = (DeploymentServiceStub) context.getBean("deploymentService");
+        action = new DeployStudyAction();
         ajaxUpdaterStub = new DeployStudyAjaxUpdaterStub();
         action.setAjaxUpdater(ajaxUpdaterStub);
+        action.setDeploymentService(deploymentService);
+        action.setWorkspaceService(workspaceService);
+        action.setStudyManagementService(new StudyManagementServiceStub());
         setupSession();
     }
 
     private void setupSession() {
-        super.setUp();
         sessionHelper = SessionHelper.getInstance();
         action.prepare();
 
@@ -165,7 +163,7 @@ public class DeployStudyActionTest extends AbstractSessionBasedTest {
         studySubscription.setStudy(study);
         studySubscription.setId(id);
         sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
-        workspaceSerivce.setSubscription(studySubscription);
+        setStudySubscription(studySubscription);
         return studySubscription;
     }
 
@@ -191,7 +189,7 @@ public class DeployStudyActionTest extends AbstractSessionBasedTest {
         action.setServletContext(new ServletContextStub());
         assertEquals(Action.SUCCESS, action.execute());
         assertTrue(ajaxUpdaterStub.runJobCalled);
-        assertTrue(deploymentServiceStub.prepareForDeploymentCalled);
+        verify(deploymentService, times(1)).prepareForDeployment(any(StudyConfiguration.class));
     }
 
     private static class DeployStudyAjaxUpdaterStub implements IStudyDeploymentAjaxUpdater {

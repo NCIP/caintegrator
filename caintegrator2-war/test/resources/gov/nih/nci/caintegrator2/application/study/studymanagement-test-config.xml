@@ -16,14 +16,8 @@
         <property name="nciaFacade">
             <ref local="nciaFacadeStub"/>
         </property>
-        <property name="workspaceService">
-            <ref local="workspaceServiceStub"/>
-        </property>
         <property name="securityManager">
             <ref local="securityManagerStub" />
-        </property>
-        <property name="aimFacade">
-            <ref local="aimFacadeStub" />
         </property>
     </bean>
 
@@ -31,12 +25,6 @@
         class="gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceImpl">
         <property name="dao">
             <ref local="dao"/>
-        </property>
-        <property name="arrayDataService">
-            <ref local="arrayDataServiceStub"/>
-        </property>
-        <property name="analysisService">
-            <ref local="analysisServiceStub"/>
         </property>
         <property name="dnaAnalysisHandlerFactory">
             <ref local="dnaAnalysisHandlerFactory" />
@@ -66,17 +54,5 @@
     <bean id="nciaFacadeStub"
         class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeStub" />
 
-    <bean id="arrayDataServiceStub"
-        class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub" />
-
-    <bean id="analysisServiceStub"
-        class="gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub" />
-        
-    <bean id="workspaceServiceStub"
-        class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub" />
-        
     <bean id="securityManagerStub" class="gov.nih.nci.caintegrator2.security.SecurityManagerStub"/>
-    
-    <bean id="aimFacadeStub" class="gov.nih.nci.caintegrator2.external.aim.AIMFacadeStub" />
-
 </beans>

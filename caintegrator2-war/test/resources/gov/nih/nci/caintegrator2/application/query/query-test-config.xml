@@ -9,10 +9,5 @@
         </property>
     </bean>
        
-    <bean id="resultHandlerStub" class="gov.nih.nci.caintegrator2.application.query.ResultHandlerStub"/>
-    
     <bean id="daoStub" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
-
-    <bean id="arrayDataServiceStub" class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub" />
-
 </beans>

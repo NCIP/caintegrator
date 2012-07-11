@@ -22,7 +22,6 @@ public class NCIADicomFileResultTest extends AbstractSessionBasedTest {
 
     @Test
     public void testExecute() throws IOException {
-        setUp();
         MockHttpServletResponse response = new MockHttpServletResponse();
         ServletActionContext.setResponse(response);
         NCIADicomJob dicomJob = new NCIADicomJob();
@@ -32,10 +31,10 @@ public class NCIADicomFileResultTest extends AbstractSessionBasedTest {
         dicomJob.setCompleted(true);
         SessionHelper.getInstance().getDisplayableUserWorkspace().setDicomJob(dicomJob);
         assertTrue(destFile.exists());
-        
+
         NCIADicomFileResult result = new NCIADicomFileResult();
         result.execute(new MockActionInvocation());
-        
+
         assertFalse(destFile.exists());
         assertFalse(dicomJob.isCompleted());
         assertEquals("application/zip", response.getContentType());

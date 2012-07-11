@@ -23,8 +23,6 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
@@ -41,13 +39,14 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", DefineSurvivalDefinitionActionTest.class);
-        action = (DefineSurvivalDefinitionAction) context.getBean("defineSurvivalDefinitionAction");
+
         studyManagementServiceStub = new LocalStudyManagementServiceStub();
         studyManagementServiceStub.clear();
+        action = new DefineSurvivalDefinitionAction();
         action.setStudyManagementService(studyManagementServiceStub);
+        action.setWorkspaceService(workspaceService);
 
         StudyConfiguration studyConfiguration = StudyConfigurationFactory.createNewStudyConfiguration();
         action.setStudyConfiguration(studyConfiguration);

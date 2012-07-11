@@ -96,7 +96,6 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
@@ -112,8 +111,6 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import org.apache.struts2.ServletActionContext;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockServletContext;
@@ -129,20 +126,18 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
     // Study objects
     private final QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
     private final StudyManagementServiceStub studyManagementService = new StudyManagementServiceStub();
-    private final WorkspaceServiceStub workspaceSerivce = new WorkspaceServiceStub();
 
     @Override
     @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", ManageQueryActionTest.class);
-        manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
+    public void setUp() throws Exception {
+        manageQueryAction = new ManageQueryAction();
         manageQueryAction.setQueryManagementService(queryManagementService);
         manageQueryAction.setStudyManagementService(studyManagementService);
-        manageQueryAction.setWorkspaceService(workspaceSerivce);
+        manageQueryAction.setWorkspaceService(workspaceService);
         setupSession();
     }
 
-    private void setupSession() {
+    private void setupSession() throws Exception {
         super.setUp();
         sessionHelper = SessionHelper.getInstance();
         manageQueryAction.prepare();
@@ -172,7 +167,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         studySubscription.setStudy(study);
         studySubscription.setId(id);
         sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
-        workspaceSerivce.setSubscription(studySubscription);
+        setStudySubscription(studySubscription);
         return studySubscription;
     }
 

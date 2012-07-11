@@ -87,8 +87,10 @@ package gov.nih.nci.caintegrator2.web;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -112,9 +114,8 @@ public class SessionHelperTest extends AbstractSessionBasedTest {
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-
         authentication.setUsername("user");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         ActionContext.getContext().setSession(new HashMap<String, Object>());
@@ -135,13 +136,18 @@ public class SessionHelperTest extends AbstractSessionBasedTest {
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace#refreshUserWorkspace(gov.nih.nci.caintegrator2.domain.application.UserWorkspace)}.
+     * Test refresh.
      */
     @Test
     public void testRefresh() {
-        WorkspaceServiceStub workspaceServiceStub = new WorkspaceServiceStub();
-        workspaceServiceStub.setSubscription(studySubscription);
-        sessionHelper.refresh(workspaceServiceStub, true);
+        UserWorkspace workspace = new UserWorkspace();
+        workspace.setDefaultSubscription(studySubscription);
+        workspace.getSubscriptionCollection().add(workspace.getDefaultSubscription());
+        workspace.getSubscriptionCollection().add(studySubscription);
+        workspace.setUsername("username");
+        when(workspaceService.getWorkspace()).thenReturn(workspace);
+
+        sessionHelper.refresh(workspaceService, true);
         assertTrue(sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().size() == 1);
         assertEquals(SessionHelper.getUsername(), "user");
         assertTrue(sessionHelper.isAuthenticated());
@@ -152,12 +158,11 @@ public class SessionHelperTest extends AbstractSessionBasedTest {
     public void testRefreshAnonymousUser() {
         assertTrue(SessionHelper.getAnonymousUserWorkspace() == null);
         authentication.setUsername(UserWorkspace.ANONYMOUS_USER_NAME);
-        WorkspaceServiceStub workspaceServiceStub = new WorkspaceServiceStub();
-        sessionHelper.refresh(workspaceServiceStub, true);
+        sessionHelper.refresh(workspaceService, true);
         assertTrue(sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().size() == 1);
         assertEquals(SessionHelper.getUsername(), UserWorkspace.ANONYMOUS_USER_NAME);
         assertTrue(sessionHelper.isAuthenticated());
-        assertTrue(workspaceServiceStub.getWorkspaceReadOnlyCalled);
+        verify(workspaceService, times(1)).getWorkspaceReadOnly();
         assertTrue(SessionHelper.getAnonymousUserWorkspace() != null);
     }
 

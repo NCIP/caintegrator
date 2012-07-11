@@ -88,11 +88,16 @@ package gov.nih.nci.caintegrator2.web.action.abstractlist;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anySetOf;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
@@ -103,22 +108,21 @@ import org.junit.Test;
 
 public class ManageListActionTest extends AbstractSessionBasedTest {
 
-    ManageListAction action = new ManageListAction();
-    WorkspaceServiceStub workspaceServiceStub = new WorkspaceServiceStub();
+    private ManageListAction action;
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-        SessionHelper.getInstance().getDisplayableUserWorkspace().
-            setCurrentStudySubscription(new StudySubscription());
-        action.setWorkspaceService(workspaceServiceStub);
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(new StudySubscription());
+        action = new ManageListAction();
         action.setFileManager(new FileManagerStub());
+        action.setWorkspaceService(workspaceService);
         action.prepare();
     }
 
     @Test
-    public void testAll() {
+    public void testAll() throws Exception {
         action.setVisibleToOther(false);
         // Test Validate
         action.validate();
@@ -164,18 +168,18 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         action.setSelectedAction("createList");
         action.setListType(ListTypeEnum.GENE.getValue());
         assertEquals("editGenePage", action.execute());
-        assertTrue(workspaceServiceStub.createGeneListCalled);
+        verify(workspaceService, times(1)).createGeneList(any(GeneList.class), anySetOf(String.class));
         // Subject List
         action.setListType(ListTypeEnum.SUBJECT.getValue());
         assertEquals("editSubjectPage", action.execute());
-        assertTrue(workspaceServiceStub.createSubjectListCalled);
+        verify(workspaceService, times(1)).createSubjectList(any(SubjectList.class), anySetOf(String.class));
 
         action.setSelectedAction("cancel");
         assertEquals("homePage", action.execute());
     }
 
     @Test
-    public void testAllGlobal() {
+    public void testAllGlobal() throws Exception {
         action.setVisibleToOther(true);
         // Test Validate
         action.validate();
@@ -217,11 +221,11 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         action.setSelectedAction("createList");
         action.setListType(ListTypeEnum.GENE.getValue());
         assertEquals("editGlobalGenePage", action.execute());
-        assertTrue(workspaceServiceStub.createGeneListCalled);
+        verify(workspaceService, times(1)).createGeneList(any(GeneList.class), anySetOf(String.class));
         // Subject List
         action.setListType(ListTypeEnum.SUBJECT.getValue());
         assertEquals("editGlobalSubjectPage", action.execute());
-        assertTrue(workspaceServiceStub.createSubjectListCalled);
+        verify(workspaceService, times(1)).createSubjectList(any(SubjectList.class), anySetOf(String.class));
     }
 
     /**

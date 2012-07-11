@@ -91,12 +91,13 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
@@ -106,8 +107,6 @@ import gov.nih.nci.caintegrator2.web.ajax.IGenomicDataSourceAjaxUpdater;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
@@ -116,22 +115,20 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     private EditGenomicSourceAction action;
     private StudyManagmentServiceStubForGenomicSource studyManagementServiceStub;
     private CaArrayFacade caArrayFacade;
-    private WorkspaceServiceStub workspaceServiceStub;
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditGenomicSourceActionTest.class);
-        action = (EditGenomicSourceAction) context.getBean("editGenomicSourceAction");
+        action = new EditGenomicSourceAction();
+        action.setConfigurationHelper(configurationHelper);
+        action.setWorkspaceService(workspaceService);
         studyManagementServiceStub = new StudyManagmentServiceStubForGenomicSource();
-        studyManagementServiceStub.clear();
-        workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceService");
-        workspaceServiceStub.clear();
         action.setStudyManagementService(studyManagementServiceStub);
         action.setUpdater(new GenomicDataSourceAjaxUpdaterStub());
         caArrayFacade = mock(CaArrayFacade.class);
         action.setCaArrayFacade(caArrayFacade);
+        action.setArrayDataService(arrayDataService);
     }
 
     @Test
@@ -179,7 +176,7 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         action.setTempGenomicSource(action.getGenomicSource());
         action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         assertEquals(Action.INPUT, action.save());
-        assertTrue(workspaceServiceStub.clearSessionCalled);
+        verify(workspaceService, times(1)).clearSession();
         action.getGenomicSource().setPlatformName("Platform name");
         assertEquals(Action.SUCCESS, action.save());
         GenomicDataSourceAjaxUpdaterStub updaterStub = (GenomicDataSourceAjaxUpdaterStub) action.getUpdater();
