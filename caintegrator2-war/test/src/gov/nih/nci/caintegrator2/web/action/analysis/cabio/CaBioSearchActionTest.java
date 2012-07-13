@@ -95,8 +95,6 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 public class CaBioSearchActionTest extends AbstractSessionBasedTest {
@@ -108,9 +106,11 @@ public class CaBioSearchActionTest extends AbstractSessionBasedTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        ApplicationContext context = new ClassPathXmlApplicationContext("cabio-test-config.xml", CaBioFacadeStub.class);
-        action = (CaBioSearchAction) context.getBean("caBioSearchAction");
-        caBioFacade = (CaBioFacadeStub) context.getBean("caBioFacadeStub");
+        caBioFacade = new CaBioFacadeStub();
+
+        action = new CaBioSearchAction();
+        action.setWorkspaceService(workspaceService);
+        action.setCaBioFacade(caBioFacade);
     }
 
 

@@ -1,8 +1,8 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -23,7 +23,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.file.FileManagerStub;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,25 +34,24 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class ArrayDataServiceTest {
+public class ArrayDataServiceTest extends AbstractMockitoTest {
 
     private CaIntegrator2DaoStub daoStub;
     private ArrayDataService service;
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("arraydata-test-config.xml", ArrayDataServiceTest.class); 
-        service = (ArrayDataService) context.getBean("arrayDataService"); 
-        daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        daoStub.clear();                
+        daoStub = new CaIntegrator2DaoStub();
+
+        ArrayDataServiceImpl arrayDataService = new ArrayDataServiceImpl();
+        arrayDataService.setDao(daoStub);
+        service = arrayDataService;
     }
 
     @After
     public void tearDown() {
-        File testFile = new File(new FileManagerStub().getStudyDirectory(null), "data1.nc");
+        File testFile = new File(fileManager.getStudyDirectory(null), "data1.nc");
         if (testFile.exists()) {
             testFile.delete();
         }
@@ -62,8 +61,8 @@ public class ArrayDataServiceTest {
     public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
         checkLoadAffymetrixExpressionArrayDesign(TestArrayDesignFiles.YEAST_2_CDF_FILE, TestArrayDesignFiles.YEAST_2_ANNOTATION_FILE);
         checkLoadAgilentExpressionArrayDesign(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
-        checkLoadAgilentExpressionArrayDesign(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE); 
-        checkLoadAgilentCopyNumberArrayDesign(TestArrayDesignFiles.AGILENT_014693_XML_ANNOTATION_FILE);        
+        checkLoadAgilentExpressionArrayDesign(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE);
+        checkLoadAgilentCopyNumberArrayDesign(TestArrayDesignFiles.AGILENT_014693_XML_ANNOTATION_FILE);
         List<File> files = new ArrayList<File>();
         files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
@@ -83,14 +82,14 @@ public class ArrayDataServiceTest {
         ArrayDesignChecker.checkLoadAffymetrixSnpArrayDesign(cdfs, source, service);
         assertTrue(daoStub.saveCalled);
     }
-    
+
     private void checkLoadAgilentExpressionArrayDesign(File annotationFile) throws PlatformLoadingException {
         Platform platform = ArrayDesignChecker.checkLoadAgilentExpressionArrayDesign(
                 "Agilent Expression Platform", annotationFile, service);
         checkGenesForReporters(platform);
         assertTrue(daoStub.saveCalled);
     }
-    
+
     private void checkLoadAgilentCopyNumberArrayDesign(File annotationFile) throws PlatformLoadingException {
         Platform platform = ArrayDesignChecker.checkLoadAgilentCopyNumberArrayDesign(
                 "Agilent CN Platform", annotationFile, service);
@@ -120,7 +119,7 @@ public class ArrayDataServiceTest {
         platform.setPlatformConfiguration(platformConfiguration);
         platformConfiguration.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         platformConfiguration.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
-        ((ArrayDataServiceImpl) service).setFileManager(new FileManagerStub());
+        ((ArrayDataServiceImpl) service).setFileManager(fileManager);
         ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList.setId(1L);
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
@@ -146,7 +145,7 @@ public class ArrayDataServiceTest {
         ArrayData controlData1 = createArrayData(3L, study, reporterList, platform);
         ArrayData controlData2 = createArrayData(4L, study, reporterList, platform);
         ArrayData controlData3 = createArrayData(5L, study, reporterList, platform);
-        
+
         data1.setArray(new Array());
         data1.getArray().setName("data1");
         data2.setArray(new Array());
@@ -157,7 +156,7 @@ public class ArrayDataServiceTest {
         controlData2.getArray().setName("controlData2");
         controlData3.setArray(new Array());
         controlData3.getArray().setName("controlData3");
-        
+
         List<ArrayData> arrayDatas = new ArrayList<ArrayData>();
         List<ArrayData> controlArrayDatas = new ArrayList<ArrayData>();
         arrayDatas.add(data1);
@@ -168,7 +167,7 @@ public class ArrayDataServiceTest {
         ArrayDataValues controlValues = new ArrayDataValues(reporters);
         controlValues.setFloatValue(controlData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
         controlValues.setFloatValue(controlData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
-        controlValues.setFloatValue(controlData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 9.9);        
+        controlValues.setFloatValue(controlData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 9.9);
         controlValues.setFloatValue(controlData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
         controlValues.setFloatValue(controlData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
         controlValues.setFloatValue(controlData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 1.1);
@@ -179,11 +178,11 @@ public class ArrayDataServiceTest {
         values.setFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 4.4);
         values.setFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 6.6);
         values.setFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 8.8);
-        
+
         values.setFloatValue(controlData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
         values.setFloatValue(controlData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
         values.setFloatValue(controlData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 9.9);
-        
+
         values.setFloatValue(controlData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
         values.setFloatValue(controlData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
         values.setFloatValue(controlData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 1.1);
@@ -196,11 +195,11 @@ public class ArrayDataServiceTest {
         ArrayDataValues foldChangeValues = service.getFoldChangeValues(request, controlValuesList, null);
         assertEquals(2, foldChangeValues.getArrayDatas().size());
         assertEquals(2, foldChangeValues.getReporters().size());
-        assertEquals(-1.8182, (float) foldChangeValues.getFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(1.65, (float) foldChangeValues.getFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(4.125, (float) foldChangeValues.getFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(8.25, (float) foldChangeValues.getFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        
+        assertEquals(-1.8182, foldChangeValues.getFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(1.65, foldChangeValues.getFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(4.125, foldChangeValues.getFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(8.25, foldChangeValues.getFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+
         // Test getFoldChangeValues by query
         Query query = new Query();
         query.setGeneExpressionPlatform(platform);
@@ -215,7 +214,7 @@ public class ArrayDataServiceTest {
         foldChangeValues = service.getFoldChangeValues(request, query);
         assertEquals(2, foldChangeValues.getArrayDatas().size());
         assertEquals(2, foldChangeValues.getReporters().size());
-        
+
     }
 
     private ArrayData createArrayData(Long id, Study study, ReporterList reporterList, Platform platform) {

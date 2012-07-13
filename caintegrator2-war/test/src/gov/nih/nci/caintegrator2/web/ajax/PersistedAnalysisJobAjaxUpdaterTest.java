@@ -133,7 +133,7 @@ public class PersistedAnalysisJobAjaxUpdaterTest extends AbstractSessionBasedTes
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
         updater.setAnalysisService(analysisService);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        WebContextFactory.setWebContextBuilder(webContextBuilder);
         setupJobs();
 
         UserWorkspace workspace = new UserWorkspace();

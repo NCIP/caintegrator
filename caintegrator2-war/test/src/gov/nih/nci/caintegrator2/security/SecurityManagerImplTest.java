@@ -88,6 +88,9 @@ package gov.nih.nci.caintegrator2.security;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -97,7 +100,9 @@ import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.mockito.AbstractSecurityEnabledMockitoTest;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.Collection;
@@ -109,22 +114,17 @@ import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SecurityManagerImplTest {
-
+public class SecurityManagerImplTest extends AbstractSecurityEnabledMockitoTest {
     private SecurityManagerImpl securityManager;
-    private AuthorizationManagerFactoryStub authorizationManagerFactoryStub;
     private StudyConfiguration studyConfiguration;
     private AuthorizedStudyElementsGroup authorizedStudyElementsGroup;
     private static final String USER_DOES_NOT_EXIST = "userDoesNotExist";
-    private static final String USER_EXISTS = "userExists";
-    private static final String USERNAME = "username";
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         securityManager = new SecurityManagerImpl();
-        authorizationManagerFactoryStub = new AuthorizationManagerFactoryStub();
-        securityManager.setAuthorizationManagerFactory(authorizationManagerFactoryStub);
-        authorizationManagerFactoryStub.authorizationManager.clear();
+        securityManager.setAuthorizationManagerFactory(authManagerFactory);
+
         authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
         authorizedStudyElementsGroup.setId(Long.valueOf(1));
         authorizedStudyElementsGroup.setAuthorizedGroup(new Group());
@@ -132,7 +132,6 @@ public class SecurityManagerImplTest {
         UserWorkspace workspace = new UserWorkspace();
         studyConfiguration.setUserWorkspace(workspace);
         workspace.setUsername("user");
-
 
         Group group = new Group();
         group.setGroupName("Authorized Group");;
@@ -148,7 +147,7 @@ public class SecurityManagerImplTest {
         userWorkspace.setUsername(USER_EXISTS);
         studyConfiguration.setUserWorkspace(userWorkspace);
         securityManager.createProtectionElement(studyConfiguration);
-        assertTrue(authorizationManagerFactoryStub.authorizationManager.createProtectionElementCalled);
+        verify(authManager, times(1)).createProtectionElement(any(ProtectionElement.class));
     }
 
     @Test
@@ -157,13 +156,13 @@ public class SecurityManagerImplTest {
         userWorkspace.setUsername(USER_DOES_NOT_EXIST);
         studyConfiguration.setUserWorkspace(userWorkspace);
         securityManager.createProtectionElement(studyConfiguration);
-        assertFalse(authorizationManagerFactoryStub.authorizationManager.createProtectionElementCalled);
+        verify(authManager, never()).createProtectionElement(any(ProtectionElement.class));
     }
 
     @Test
     public void testDeleteProtectionElement() throws CSException {
         securityManager.deleteProtectionElement(studyConfiguration);
-        assertTrue(authorizationManagerFactoryStub.authorizationManager.removeProtectionElementCalled);
+        verify(authManager, atLeastOnce()).removeProtectionElement(anyString());
     }
 
     @Test
@@ -173,7 +172,7 @@ public class SecurityManagerImplTest {
         studyConfiguration.getAuthorizedStudyElementsGroups().add(authorizedStudyElementsGroup1);
         studyConfiguration.getAuthorizedStudyElementsGroups().add(authorizedStudyElementsGroup2);
         securityManager.deleteProtectionElement(studyConfiguration);
-        assertTrue(authorizationManagerFactoryStub.authorizationManager.removeProtectionElementCalled);
+        verify(authManager, atLeastOnce()).removeProtectionElement(anyString());
     }
 
     @Test
@@ -224,21 +223,18 @@ public class SecurityManagerImplTest {
         userWorkspace.setUsername(USER_EXISTS);
         studyConfiguration.setUserWorkspace(userWorkspace);
         securityManager.createProtectionElement(studyConfiguration, authorizedStudyElementsGroup);
-        assertTrue(authorizationManagerFactoryStub.authorizationManager.createProtectionElementCalled);
+        verify(authManager, times(1)).createProtectionElement(any(ProtectionElement.class));
 
         // test with invalid user
-        authorizationManagerFactoryStub.authorizationManager.clear();
         securityManager.deleteProtectionElement(authorizedStudyElementsGroup);
 
-        //assertTrue(securityManager.doesUserExist(USER_EXISTS));
         userWorkspace = new UserWorkspace();
         userWorkspace.setUsername("NAMENOTFOUND");
         studyConfiguration.setUserWorkspace(userWorkspace);
         securityManager.createProtectionElement(studyConfiguration, authorizedStudyElementsGroup);
-        assertFalse(authorizationManagerFactoryStub.authorizationManager.createProtectionElementCalled);
+        verify(authManager, times(1)).createProtectionElement(any(ProtectionElement.class));
 
         // test if authorizedStudyElementsGroup ID column is null in database
-        authorizationManagerFactoryStub.authorizationManager.clear();
         securityManager.deleteProtectionElement(authorizedStudyElementsGroup);
         authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
         authorizedStudyElementsGroup.setId(null); // simulate null id
@@ -257,14 +253,13 @@ public class SecurityManagerImplTest {
           thrown = true;
         }
         assertTrue(thrown);
-        assertFalse(authorizationManagerFactoryStub.authorizationManager.createProtectionElementCalled);
-
+        verify(authManager, times(1)).createProtectionElement(any(ProtectionElement.class));
     }
 
     @Test
     public void testDeleteProtectionElementForAuthorizedStudyElementsGroup() throws CSException {
         securityManager.deleteProtectionElement(authorizedStudyElementsGroup);
-        assertTrue(authorizationManagerFactoryStub.authorizationManager.removeProtectionElementCalled);
+        verify(authManager, times(1)).removeProtectionElement(anyString());
     }
 
     /**

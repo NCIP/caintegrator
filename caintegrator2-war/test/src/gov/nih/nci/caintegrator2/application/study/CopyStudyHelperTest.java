@@ -106,9 +106,9 @@ import org.junit.Test;
 public class CopyStudyHelperTest extends AbstractMockitoTest {
 
     private CopyStudyHelper helper;
-    private StudyConfiguration copyFrom = null;
+    private StudyConfiguration copyFrom;
     private final String NAME = "name";
-    private StudyManagementServiceImpl smSvc= null;
+    private StudyManagementServiceImpl smSvc;
 
     @Before
     public void setUp() throws Exception {
@@ -143,6 +143,7 @@ public class CopyStudyHelperTest extends AbstractMockitoTest {
         smsTest.setUp();
         smSvc = smsTest.getStudyManagementServiceImpl();
         smSvc.setWorkspaceService(workspaceService);
+        smSvc.setFileManager(fileManager);
         helper = new CopyStudyHelper(smSvc);
     }
 

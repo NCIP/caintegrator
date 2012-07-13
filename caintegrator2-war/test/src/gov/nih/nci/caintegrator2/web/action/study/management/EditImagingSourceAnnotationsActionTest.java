@@ -100,7 +100,6 @@ import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceCo
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationUploadType;
-import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -111,7 +110,6 @@ import gov.nih.nci.caintegrator2.external.aim.ImageSeriesAnnotationsWrapper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,17 +125,18 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
 
     private EditImagingSourceAnnotationsAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
-    private ImagingDataSourceAjaxUpdaterStub updaterStub;
+    private IImagingDataSourceAjaxUpdater updater;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        updater = mock(IImagingDataSourceAjaxUpdater.class);
+
         studyManagementServiceStub = new StudyManagementServiceStub();
         action = new EditImagingSourceAnnotationsAction();
         action.setStudyManagementService(studyManagementServiceStub);
         action.setWorkspaceService(workspaceService);
-        updaterStub = new ImagingDataSourceAjaxUpdaterStub();
 
         AIMFacade aimFacade = mock(AIMFacade.class);
         when(aimFacade.retrieveImageSeriesAnnotations(any(ServerConnectionProfile.class),
@@ -155,7 +154,7 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
                     }
                 });
 
-        action.setUpdater(updaterStub);
+        action.setUpdater(updater);
         action.setAimFacade(aimFacade);
         setupActionVariables();
     }
@@ -277,19 +276,5 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
         column.setFieldDescriptor(fieldDescriptor);
         column.setAnnotationFile(annotationFile);
         annotationFile.getColumns().add(column);
-    }
-
-    private static class ImagingDataSourceAjaxUpdaterStub implements IImagingDataSourceAjaxUpdater {
-
-        public void initializeJsp() {
-
-        }
-
-        public void runJob(Long imagingSourceId, File imageClinicalMappingFile,
-                ImageDataSourceMappingTypeEnum mappingType, boolean mapOnly,
-                boolean loadAimAnnotation) {
-        }
-
-
     }
 }

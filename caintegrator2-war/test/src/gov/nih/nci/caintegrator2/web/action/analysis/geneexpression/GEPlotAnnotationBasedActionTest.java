@@ -94,7 +94,6 @@ import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
@@ -119,7 +118,6 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
     private GEPlotAnnotationBasedAction action;
-    private final QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private final StudyManagementServiceStub studyManagementService = new StudyManagementServiceStub();
 
     private PermissibleValue val1 = new PermissibleValue();
@@ -139,8 +137,7 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         action.setStudyManagementService(studyManagementService);
         action.setAnalysisService(analysisService);
         action.setWorkspaceService(workspaceService);
-        action.setQueryManagementService(queryManagementServiceStub);
-        queryManagementServiceStub.clear();
+        action.setQueryManagementService(queryManagementService);
         setStudySubscription(subscription);
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }

@@ -15,7 +15,6 @@ import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -32,8 +31,6 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class FileManagerImplTest extends AbstractMockitoTest {
 
@@ -44,8 +41,7 @@ public class FileManagerImplTest extends AbstractMockitoTest {
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class);
-        fileManager = (FileManagerImpl) context.getBean("fileManager");
+        fileManager = new FileManagerImpl();
         fileManager.setConfigurationHelper(configurationHelper);
         analysisFileManager = new AnalysisFileManagerImpl();
         analysisFileManager.setFileManager(fileManager);

@@ -1,7 +1,7 @@
 package gov.nih.nci.caintegrator2.domain;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
@@ -40,5 +40,4 @@ public class AbstractCaIntegrator2ObjectTest {
         object.setId(id);
         return object;
     }
-
 }

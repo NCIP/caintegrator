@@ -117,23 +117,22 @@ import java.util.Set;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class WorkspaceServiceTest {
 
     private WorkspaceService workspaceService;
     private CaIntegrator2DaoStub daoStub;
-    AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
+    private AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("workspaceservice-test-config.xml", WorkspaceServiceTest.class);
-        workspaceService = (WorkspaceService) context.getBean("WorkspaceService");
-        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
-        daoStub.clear();
+        daoStub = new CaIntegrator2DaoStub();
+        WorkspaceServiceImpl workspaceSvc = new WorkspaceServiceImpl();
+        workspaceSvc.setDao(daoStub);
         authentication.setUsername("validUserName");
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        workspaceService = workspaceSvc;
     }
 
     @Test

@@ -88,7 +88,9 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -110,9 +112,8 @@ import com.opensymphony.xwork2.ActionContext;
  */
 public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
 
-    ViewAllIGVAction viewAllIGVAction = new ViewAllIGVAction();
+    private ViewAllIGVAction viewAllIGVAction = new ViewAllIGVAction();
     private StudySubscription subscription;
-    private QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
 
     @Override
     @Before
@@ -143,8 +144,8 @@ public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
 
         // Test Prepare
         viewAllIGVAction.prepare();
-        assertTrue(queryManagementService.retrieveCopyNumberPlatformsForStudyCalled);
-        assertTrue(queryManagementService.retrieveGeneExpressionPlatformsForStudyCalled);
+        verify(queryManagementService, times(1)).retrieveCopyNumberPlatformsForStudy(any(Study.class));
+        verify(queryManagementService, times(1)).retrieveGeneExpressionPlatformsForStudy(any(Study.class));
 
         // Test validate
         viewAllIGVAction.validate();
@@ -163,8 +164,8 @@ public class ViewAllIGVActionTest extends AbstractSessionBasedTest {
 
         // Test Prepare
         viewAllIGVAction.prepare();
-        assertTrue(queryManagementService.retrieveCopyNumberPlatformsForStudyCalled);
-        assertTrue(queryManagementService.retrieveGeneExpressionPlatformsForStudyCalled);
+        verify(queryManagementService, times(1)).retrieveCopyNumberPlatformsForStudy(any(Study.class));
+        verify(queryManagementService, times(1)).retrieveGeneExpressionPlatformsForStudy(any(Study.class));
 
         // Test execute
         assertEquals("success", viewAllIGVAction.execute());

@@ -89,8 +89,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
@@ -98,6 +103,8 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectIdentifier;
@@ -108,12 +115,13 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
+import javax.servlet.ServletContext;
+
 import org.apache.struts2.ServletActionContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.mock.web.MockServletContext;
 
 import com.opensymphony.xwork2.Action;
 
@@ -122,14 +130,17 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
     private ManageQueryAction manageQueryAction;
     private SessionHelper sessionHelper;
     private MockHttpSession session;
+    private ServletContext servletContext;
 
     // Study objects
-    private final QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
     private final StudyManagementServiceStub studyManagementService = new StudyManagementServiceStub();
 
     @Override
     @Before
     public void setUp() throws Exception {
+        servletContext = mock(ServletContext.class);
+        when(servletContext.getRealPath(anyString())).thenReturn(TestDataFiles.VALID_FILE.getAbsolutePath());
+
         manageQueryAction = new ManageQueryAction();
         manageQueryAction.setQueryManagementService(queryManagementService);
         manageQueryAction.setStudyManagementService(studyManagementService);
@@ -189,7 +200,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
     }
 
     @Test
-    public void testExecute() {
+    public void testExecute() throws Exception {
 
         // test create new query
         manageQueryAction.setSelectedAction("createNewQuery");
@@ -204,23 +215,22 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.executeCalled);
+        verify(queryManagementService, times(1)).execute(any(Query.class));
         manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENE_EXPRESSION.getValue());
         manageQueryAction.getQueryForm().getResultConfiguration().setCopyNumberType(CopyNumberCriterionTypeEnum.SEGMENT_VALUE.getValue());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
+        verify(queryManagementService, times(1)).executeGenomicDataQuery(any(Query.class));
 
         // test load & execute my gene list
-        queryManagementService.executeGenomicDataQueryCalled = false;
         manageQueryAction.setSelectedAction("loadGeneListExecute");
         manageQueryAction.setGeneListName("GeneList1");
         assertEquals(Action.ERROR, manageQueryAction.execute());
-        assertFalse(queryManagementService.executeGenomicDataQueryCalled);
+        verify(queryManagementService, times(1)).executeGenomicDataQuery(any(Query.class));
         assertEquals("criteria", manageQueryAction.getDisplayTab());
 
         manageQueryAction.getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
+        verify(queryManagementService, times(2)).executeGenomicDataQuery(any(Query.class));
         assertEquals("searchResults", manageQueryAction.getDisplayTab());
         manageQueryAction.getStudyConfiguration().getGenomicDataSources().clear();
         // Clean up after testing
@@ -233,7 +243,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setSelectedAction("loadSubjectListExecute");
         manageQueryAction.setSubjectListName("SubjectList1");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.executeCalled);
+        verify(queryManagementService, times(2)).execute(any(Query.class));
         assertEquals("searchResults", manageQueryAction.getDisplayTab());
 
         // test selectAll
@@ -274,8 +284,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertFalse(manageQueryAction.hasErrors());
         manageQueryAction.setSelectedAction("saveQuery");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.saveCalled);
-        queryManagementService.saveCalled = false;
+        verify(queryManagementService, times(1)).save(any(Query.class));
 
         // test save as query
         manageQueryAction.setSelectedAction("saveAsQuery");
@@ -284,7 +293,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.saveCalled);
+        verify(queryManagementService, times(2)).save(any(Query.class));
 
         // test save subject
         manageQueryAction.setSelectedAction("saveSubjectList");
@@ -310,11 +319,11 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.executeCalled);
+        verify(queryManagementService, times(3)).execute(any(Query.class));
         manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENE_EXPRESSION.getValue());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertEquals("criteria", manageQueryAction.getDisplayTab());
-        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
+        verify(queryManagementService, times(3)).executeGenomicDataQuery(any(Query.class));
 
         // test load & execute query
         manageQueryAction.setSelectedAction("loadExecute");
@@ -322,11 +331,11 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.executeCalled);
+        verify(queryManagementService, times(3)).execute(any(Query.class));
         manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENE_EXPRESSION.getValue());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertEquals("searchResults", manageQueryAction.getDisplayTab());
-        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
+        verify(queryManagementService, times(5)).executeGenomicDataQuery(any(Query.class));
 
         // test - addition of criteria rows
         manageQueryAction.setSelectedAction("addCriterionRow");
@@ -351,8 +360,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertTrue(queryManagementService.deleteCalled);
-
+        verify(queryManagementService, times(1)).delete(any(Query.class));
 
         // test for invalid action
         manageQueryAction.setSelectedAction("invalid");
@@ -367,7 +375,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setSelectedAction("viewIGV");
         assertEquals("viewIGV", manageQueryAction.execute());
         manageQueryAction.setSelectedAction("viewHeatmap");
-        manageQueryAction.setServletContext(new ServletContextStub());
+        manageQueryAction.setServletContext(servletContext);
         assertEquals("viewHeatmap", manageQueryAction.execute());
 
     }
@@ -423,7 +431,7 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         // Test exporting genomic results.
         manageQueryAction.setSelectedAction("exportGenomicResults");
         assertEquals("exportGenomicResults", manageQueryAction.execute());
-        assertTrue(queryManagementService.createCsvFileFromGenomicResultCalled);
+        verify(queryManagementService, times(1)).createCsvFileFromGenomicResults(any(GenomicDataQueryResult.class));
         assertNotNull(sessionHelper.getDisplayableUserWorkspace().getTemporaryDownloadFile());
     }
 
@@ -434,13 +442,4 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertFalse(manageQueryAction.acceptableParameterName("123"));
         assertFalse(manageQueryAction.acceptableParameterName("d-123-e"));
     }
-
-    private class ServletContextStub extends MockServletContext {
-
-        @Override
-        public String getRealPath(String path) {
-            return TestDataFiles.VALID_FILE.getAbsolutePath();
-        }
-    }
-
 }

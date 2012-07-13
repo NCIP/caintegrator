@@ -120,7 +120,7 @@ public class StudyDeploymentAjaxUpdaterTest extends AbstractSessionBasedTest {
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
         updater.setDeploymentService(deploymentService);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        WebContextFactory.setWebContextBuilder(webContextBuilder);
         StudyHelper studyHelper = new StudyHelper();
         studyConfiguration = studyHelper.populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();
         studyConfiguration.setId(Long.valueOf(1));

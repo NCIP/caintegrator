@@ -87,10 +87,12 @@ package gov.nih.nci.caintegrator2.web.action.registration;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.application.registration.RegistrationRequest;
 import gov.nih.nci.caintegrator2.application.registration.RegistrationService;
-import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
-import gov.nih.nci.caintegrator2.security.SecurityManagerStub;
+import gov.nih.nci.caintegrator2.mockito.AbstractSecurityEnabledMockitoTest;
 import gov.nih.nci.security.exceptions.internal.CSInternalConfigurationException;
 import gov.nih.nci.security.exceptions.internal.CSInternalInsufficientAttributesException;
 
@@ -102,20 +104,17 @@ import javax.mail.MessagingException;
 import org.junit.Before;
 import org.junit.Test;
 
-public class RegistrationActionTest extends AbstractMockitoTest {
-    RegistrationAction action;
-    RegistrationServiceStub registrationService;
-    SecurityManagerStub securityManager;
+public class RegistrationActionTest extends AbstractSecurityEnabledMockitoTest {
+    private RegistrationAction action;
+    private RegistrationServiceStub registrationService;
 
     @Before
     public void setUp() throws Exception {
         action = new RegistrationAction();
         registrationService = new RegistrationServiceStub();
-        securityManager = new SecurityManagerStub();
         action.setRegistrationService(registrationService);
-        action.setSecurityManager(securityManager);
+        action.setSecurityManager(secManager);
     }
-
 
     @Test
     public void testValidate() {
@@ -129,7 +128,7 @@ public class RegistrationActionTest extends AbstractMockitoTest {
         registrationRequest.setLoginName("userExists");
         action.setRegistrationRequest(registrationRequest);
         action.validate();
-        assertTrue(securityManager.doesUserExistCalled);
+        verify(secManager, times(1)).doesUserExist(anyString());
         assertTrue(action.hasFieldErrors());
 
         // Create a user that doesn't exist. but given no password

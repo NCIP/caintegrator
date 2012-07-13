@@ -98,7 +98,6 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
-import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
@@ -116,7 +115,7 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         super.setUp();
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(new StudySubscription());
         action = new ManageListAction();
-        action.setFileManager(new FileManagerStub());
+        action.setFileManager(fileManager);
         action.setWorkspaceService(workspaceService);
         action.prepare();
     }

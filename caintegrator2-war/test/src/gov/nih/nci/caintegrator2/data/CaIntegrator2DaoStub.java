@@ -101,7 +101,6 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -115,12 +114,10 @@ import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
@@ -141,12 +138,8 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.security.authorization.domainobjects.Group;
-import gov.nih.nci.security.exceptions.CSException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -157,8 +150,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
@@ -216,14 +207,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         deleteCalled = true;
     }
 
-    public void deleteGeneLists(List<GeneList> geneLists) {
-        deleteGeneListCalled = true;
-    }
-
-    public void deleteSubjectLists(List<SubjectList> subjectLists) {
-        deleteSubjectListCalled = true;
-    }
-
     public void clear() {
         getCalled = false;
         saveCalled = false;
@@ -279,11 +262,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         definition.getCommonDataElement().setLongName("definitionName");
         definitions.add(definition);
         return definitions;
-    }
-
-    public List<StudyConfiguration> getManagedStudies(String username) {
-        getManagedStudiesCalled = true;
-        return Collections.emptyList();
     }
 
     /**
@@ -459,11 +437,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     @Override
     public List<Platform> getPlatforms() {
         getPlatformsCalled = true;
-        return Collections.emptyList();
-    }
-
-    public List<StudyConfiguration> getStudyConfigurations(String username) {
-        getStudyConfigurationsCalled = true;
         return Collections.emptyList();
     }
 
@@ -709,22 +682,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
             }
         }
         return listAfd;
-    }
-
-    private void authorizeStudyElements(StudyConfiguration studyConfiguration)
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {
-
-            AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender","F");
-            List<AuthorizedStudyElementsGroup> list = new ArrayList<AuthorizedStudyElementsGroup>();
-            list.add(authorizedStudyElementsGroup1);
-            studyConfiguration.setAuthorizedStudyElementsGroups(list);
-
-            AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age", StringUtils.EMPTY);
-
-            list.add(authorizedStudyElementsGroup2);
-            studyConfiguration.setAuthorizedStudyElementsGroups(list);
     }
 
     /**

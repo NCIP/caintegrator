@@ -88,7 +88,9 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -109,9 +111,8 @@ import com.opensymphony.xwork2.ActionContext;
  *
  */
 public class ViewAllHeatmapActionTest extends AbstractSessionBasedTest {
-    ViewAllHeatmapAction viewAllHeatmapAction = new ViewAllHeatmapAction();
+    private ViewAllHeatmapAction viewAllHeatmapAction = new ViewAllHeatmapAction();
     private StudySubscription subscription;
-    private QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
 
     @Override
     @Before
@@ -142,7 +143,7 @@ public class ViewAllHeatmapActionTest extends AbstractSessionBasedTest {
 
         // Test Prepare
         viewAllHeatmapAction.prepare();
-        assertTrue(queryManagementService.retrieveCopyNumberPlatformsForStudyCalled);
+        verify(queryManagementService, times(1)).retrieveCopyNumberPlatformsForStudy(any(Study.class));
 
         // Test validate
         viewAllHeatmapAction.validate();
@@ -161,7 +162,7 @@ public class ViewAllHeatmapActionTest extends AbstractSessionBasedTest {
 
         // Test Prepare
         viewAllHeatmapAction.prepare();
-        assertTrue(queryManagementService.retrieveCopyNumberPlatformsForStudyCalled);
+        verify(queryManagementService, times(1)).retrieveCopyNumberPlatformsForStudy(any(Study.class));
 
         // Test execute
         assertEquals("success", viewAllHeatmapAction.execute());

@@ -106,8 +106,6 @@ import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 import java.util.HashSet;
 
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Test case.
@@ -116,9 +114,7 @@ public class QueryTranslatorTest extends AbstractMockitoTest {
 
     @Test
     public void testExecute() throws InvalidCriterionException {
-        ApplicationContext context =
-            new ClassPathXmlApplicationContext("query-test-config.xml", QueryTranslatorTest.class);
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
+        CaIntegrator2DaoStub daoStub = new CaIntegrator2DaoStub();
         ResultHandler resultHandler = mock(ResultHandler.class);
         when(resultHandler.createResults(any(Query.class), anySetOf(ResultRow.class), any(CaIntegrator2Dao.class))).thenReturn(new QueryResult());
         daoStub.clear();

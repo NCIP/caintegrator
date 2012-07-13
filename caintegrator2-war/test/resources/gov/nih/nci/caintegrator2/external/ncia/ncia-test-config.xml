@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
-
-    <bean name="nciaFacade" class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeImpl" singleton="true">
-        <property name="nciaServiceFactory">
-            <ref local="nciaServiceStubFactory"/>
-        </property>
-        <property name="fileManager">
-            <ref local="fileManagerStub"/>
-        </property>
-        <property name="nciaDicomJobFactory">
-            <ref local="nciaDicomJobFactoryStub"/>
-        </property>    
-    </bean>
-    
     <bean name="nciaFacadeIntegration" class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeImpl" singleton="true">
         <property name="nciaServiceFactory">
             <ref local="nciaServiceFactoryIntegration"/>
@@ -26,11 +13,7 @@
         </property>    
     </bean>
     
-    
-    <bean id="fileManagerStub" class="gov.nih.nci.caintegrator2.file.FileManagerStub" />
-    
-    <bean id="fileManager"
-        class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
+    <bean id="fileManager" class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
         <property name="configurationHelper">
             <ref local="configurationHelperStub" />
         </property>
@@ -38,12 +21,8 @@
         
     <bean id="configurationHelperStub" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperStub" />
     
-    <bean id="nciaServiceStubFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceStubFactory" />
-
     <bean id="nciaServiceFactoryIntegration" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
         
-    <bean id="nciaDicomJobFactoryStub" class="gov.nih.nci.caintegrator2.external.ncia.NCIADicomJobFactoryStub" />
-
     <bean id="nciaDicomJobFactoryIntegration" class="gov.nih.nci.caintegrator2.external.ncia.NCIADicomJobFactoryImpl" />
 
     <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >

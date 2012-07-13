@@ -89,8 +89,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -101,6 +102,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import edu.mit.broad.genepattern.gp.services.GenePatternClient;
+import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMCriteriaDTO;
 import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMSampleGroupCriteriaDTO;
 import gov.nih.nci.caintegrator.plots.services.KMPlotService;
@@ -117,7 +119,9 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneF
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
 import gov.nih.nci.caintegrator2.application.analysis.igv.IGVParameters;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVResult;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformChannelTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
@@ -128,7 +132,6 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -142,26 +145,38 @@ import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneLocationConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator2.file.AnalysisFileManagerStub;
 import gov.nih.nci.caintegrator2.file.FileManagerImpl;
-import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.io.File;
@@ -173,6 +188,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.genepattern.gistic.Marker;
 import org.genepattern.webservice.JobInfo;
 import org.genepattern.webservice.ParameterInfo;
 import org.genepattern.webservice.TaskExecutor;
@@ -190,17 +206,68 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
     // KMPlot Items
     private KMPlotService caIntKMPlotService;
     private DaoForAnalysisServiceStub daoStub = new DaoForAnalysisServiceStub();
-    private QueryManagementServiceForKMPlotStub queryManagementServiceForKmPlotStub =
-                        new QueryManagementServiceForKMPlotStub();
-    private FileManagerStub fileManagerStub = new FileManagerStub();
-    private AnalysisFileManagerStub analysisFileManagerStub = new AnalysisFileManagerStub();
     private SessionAnalysisResultsManager sessionAnalysisResultsManager = new SessionAnalysisResultsManager();
 
     private GenePatternGridRunner genePatternGridRunner;
     private GenePatternClient genePatternClient;
 
+    private PlotTypeEnum kmPlotType;
+
     @Before
     public void setUp() throws Exception {
+        when(queryManagementService.execute(any(Query.class))).then(new Answer<QueryResult>() {
+            @Override
+            public QueryResult answer(InvocationOnMock invocation) throws Throwable {
+                Query q = (Query) invocation.getArguments()[0];
+                KMPlotStudyCreator creator = new KMPlotStudyCreator();
+                QueryResult qr = creator.retrieveFakeQueryResults(q);
+                if (kmPlotType == PlotTypeEnum.ANNOTATION_BASED) {
+                    qr = creator.retrieveQueryResultForAnnotationBased(q);
+                }
+                return qr;
+            }
+        });
+        when(queryManagementService.executeGenomicDataQuery(any(Query.class))).then(new Answer<GenomicDataQueryResult>() {
+            @Override
+            public GenomicDataQueryResult answer(InvocationOnMock invocation) throws Throwable {
+                Query q = (Query) invocation.getArguments()[0];
+                GenomicDataQueryResult result = new GenomicDataQueryResult();
+                q.setGeneExpressionPlatform(daoStub.getPlatform("platformName"));
+                result.setQuery(q);
+                GenomicDataResultRow row = new GenomicDataResultRow();
+                GenomicDataResultValue value = new GenomicDataResultValue();
+                GenomicDataResultColumn column = result.addColumn();
+                SampleAcquisition sampleAcquisition = new SampleAcquisition();
+                StudySubjectAssignment assignment = new StudySubjectAssignment();
+                assignment.setId(Long.valueOf(1));
+                sampleAcquisition.setAssignment(assignment);
+                column.setSampleAcquisition(sampleAcquisition);
+                Sample sample = new Sample();
+                sample.setName("sample");
+                sampleAcquisition.setSample(sample);
+                value.setColumn(column);
+                value.setValue(1f);
+                GeneExpressionReporter reporter = new GeneExpressionReporter();
+                Gene gene = new Gene();
+                gene.setSymbol("EGFR");
+                reporter.getGenes().add(gene);
+                row.setReporter(reporter);
+                row.getValues().add(value);
+                result.getRowCollection().add(row);
+                return result;
+            }
+        });
+
+        when(queryManagementService.retrieveSegmentDataQuery(any(Query.class))).then(new Answer<Collection<SegmentData>>() {
+            @Override
+            public Collection<SegmentData> answer(InvocationOnMock invocation) throws Throwable {
+                Set<SegmentData> data = new HashSet<SegmentData>();
+                SegmentData sd = new SegmentData();
+                sd.setArrayData(new ArrayData());
+                data.add(sd);
+                return data;
+            }
+        });
         caIntKMPlotService = mock(KMPlotService.class);
         when(caIntKMPlotService.computeLogRankPValueBetween(any(KMSampleGroupCriteriaDTO.class), any(KMSampleGroupCriteriaDTO.class))).thenReturn(1.1);
         AnalysisServiceImpl serviceImpl = new AnalysisServiceImpl();
@@ -208,26 +275,22 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         kmPlotService.setCaIntegratorPlotService(caIntKMPlotService);
         GeneExpressionPlotServiceImpl gePlotService = new GeneExpressionPlotServiceImpl();
         FileManagerImpl fileManagerImpl = new FileManagerImpl();
-        fileManagerStub.clear();
         fileManagerImpl.setConfigurationHelper(configurationHelper);
-        analysisFileManagerStub.clear();
-        analysisFileManagerStub.setFileManager(fileManagerImpl);
-        analysisFileManagerStub.setConfigurationHelper(configurationHelper);
-
 
         setUpGenePatternClient();
         genePatternClientFactory = mock(GenePatternClientFactory.class);
         when(genePatternClientFactory.retrieveClient(any(ServerConnectionProfile.class))).thenReturn(genePatternClient);
         when(genePatternClientFactory.retrieveOldGenePatternClient(any(ServerConnectionProfile.class))).thenReturn(genePatternClient);
 
+        when(analysisFileManager.getFileManager()).thenReturn(fileManagerImpl);
+
         serviceImpl.setGenePatternClientFactory(genePatternClientFactory);
         serviceImpl.setDao(daoStub);
         serviceImpl.setKmPlotService(kmPlotService);
         serviceImpl.setGePlotService(gePlotService);
-        queryManagementServiceForKmPlotStub.setDao(daoStub);
-        serviceImpl.setQueryManagementService(queryManagementServiceForKmPlotStub);
-        serviceImpl.setFileManager(fileManagerStub);
-        serviceImpl.setAnalysisFileManager(analysisFileManagerStub);
+        serviceImpl.setQueryManagementService(queryManagementService);
+        serviceImpl.setFileManager(fileManager);
+        serviceImpl.setAnalysisFileManager(analysisFileManager);
         service = serviceImpl;
 
         genePatternGridRunner = mock(GenePatternGridRunner.class);
@@ -363,17 +426,17 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         assertEquals(1, subscription.getCopyNumberAnalysisCollection().size());
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_LOCALLY));
         assertTrue(listener.statuses.contains(AnalysisJobStatusEnum.PROCESSING_REMOTELY));
-        assertTrue(fileManagerStub.createMarkersFileCalled);
-        assertTrue(fileManagerStub.createSamplesFileCalled);
+        verify(fileManager, times(1)).createMarkersFile(any(StudySubscription.class), any(Marker[].class));
+        verify(fileManager, times(1)).createSamplesFile(any(StudySubscription.class), any(SampleWithChromosomalSegmentSet[].class));
 
         verify(genePatternGridRunner, never()).runGistic(any(StatusUpdateListener.class),
                 any(GisticAnalysisJob.class), any(File.class), any(File.class), any(File.class));
-        parameters.setCnvSegmentsToIgnoreFile(fileManagerStub.retrieveTmpFile());
+        parameters.setCnvSegmentsToIgnoreFile(new File(System.getProperty("java.io.tmpdir") + File.separator + "tmpFile"));
         parameters.getServer().setUrl("something/Gistic");
         service.executeGridGistic(listener, job);
         verify(genePatternGridRunner, atLeastOnce()).runGistic(any(StatusUpdateListener.class),
                 any(GisticAnalysisJob.class), any(File.class), any(File.class), any(File.class));
-        assertTrue(fileManagerStub.renameCnvFileCalled);
+        verify(fileManager, times(1)).renameCnvFile(any(File.class));
         Query clinicalQuery = new Query();
         clinicalQuery.setName("clinicalQueryName");
         SampleSet sampleSet = new SampleSet();
@@ -413,17 +476,19 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         } catch (Exception e) {
             assertEquals("Unable to create IGV viewer: No data found from selection.", e.getMessage());
         }
-        assertFalse(analysisFileManagerStub.createIGVGctFileCalled);
-        analysisFileManagerStub.clear();
+        verify(analysisFileManager, times(0)).createIGVGctFile(any(GctDataset.class), anyString());
+        verify(analysisFileManager, times(0)).createIGVGctFile(any(GctDataset.class), any(Study.class), anyString());
 
         igvParameters.getStudySubscription().setId(2L);
         query.getColumnCollection().add(new ResultColumn());
         igvParameters.setQuery(query);
         String resultURL = service.executeIGV(igvParameters);
-        assertTrue(analysisFileManagerStub.createIGVGctFileCalled);
-        assertTrue(analysisFileManagerStub.createIGVSegFileCalled);
-        assertTrue(analysisFileManagerStub.createIGVSampleClassificationFileCalled);
-        assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
+
+        verify(analysisFileManager, times(1)).createIGVGctFile(any(GctDataset.class), anyString());
+        verify(analysisFileManager, times(1)).createIGVSegFile(anyCollectionOf(SegmentData.class), anyString(), anyBoolean());
+        verify(analysisFileManager, times(1)).createIGVSampleClassificationFile(any(QueryResult.class), anyString(),
+                anyCollectionOf(ResultColumn.class), any(CopyNumberCriterionTypeEnum.class));
+        verify(analysisFileManager, times(1)).createIGVSessionFile(any(IGVParameters.class), any(IGVResult.class));
         assertEquals(
                 IGVDownloadUrl + "http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
                 resultURL);
@@ -442,16 +507,16 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         platform2.setPlatformConfiguration(platformConfiguration2);
         platformConfiguration2.setPlatformType(PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER);
         platformConfiguration2.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
-        analysisFileManagerStub.clear();
         igvParameters.setViewAllData(true);
         igvParameters.setUseCGHCall(true);
         igvParameters.getPlatforms().add(platform1);
         igvParameters.getPlatforms().add(platform2);
         resultURL = service.executeIGV(igvParameters);
-        assertTrue(analysisFileManagerStub.createIGVGctFileCalled);
-        assertTrue(analysisFileManagerStub.createIGVSegFileCalled);
-        assertTrue(analysisFileManagerStub.createIGVSampleClassificationFileCalled);
-        assertTrue(analysisFileManagerStub.createIGVSessionFileCalled);
+        verify(analysisFileManager, times(1)).createIGVGctFile(any(GctDataset.class), anyString());
+        verify(analysisFileManager, times(1)).createIGVSegFile(anyCollectionOf(SegmentData.class), anyString(), anyBoolean());
+        verify(analysisFileManager, times(2)).createIGVSampleClassificationFile(any(QueryResult.class), anyString(),
+                anyCollectionOf(ResultColumn.class), any(CopyNumberCriterionTypeEnum.class));
+        verify(analysisFileManager, times(2)).createIGVSessionFile(any(IGVParameters.class), any(IGVResult.class));
     }
 
     @Test
@@ -473,7 +538,6 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         heatmapParameters.setStudySubscription(subscription);
         heatmapParameters.setViewAllData(true);
         heatmapParameters.setPlatform(new Platform());
-        analysisFileManagerStub.clear();
 
         GenomicDataSourceConfiguration genomicSource2 = new GenomicDataSourceConfiguration();
         genomicSource2.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
@@ -481,18 +545,22 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         query.getColumnCollection().add(new ResultColumn());
         heatmapParameters.setQuery(query);
         String resultURL = service.executeHeatmap(heatmapParameters);
-        assertTrue(analysisFileManagerStub.createHeatmapGenomicFileCalled);
-        assertTrue(analysisFileManagerStub.createHeatmapSampleClassificationFileCalled);
-        assertTrue(analysisFileManagerStub.createHeatmapJnlpFileCalled);
+        verify(analysisFileManager, times(1)).createHeatmapGenomicFile(any(HeatmapParameters.class), any(HeatmapResult.class),
+                anyCollectionOf(SegmentData.class), any(GeneLocationConfiguration.class), any(CBSToHeatmapFactory.class));
+        verify(analysisFileManager, times(1)).createHeatmapSampleClassificationFile(any(QueryResult.class),
+                anyString(), anyCollectionOf(ResultColumn.class));
+        verify(analysisFileManager, times(1)).createHeatmapJnlpFile(any(HeatmapParameters.class), any(HeatmapResult.class));
         assertEquals(
                 "http://localhost:8080/caintegrator2/viewer/runViewer.do?JSESSIONID=sessionId&file=heatmapLaunch.jnlp",
                 resultURL);
 
         heatmapParameters.setUseCGHCall(true);
         resultURL = service.executeHeatmap(heatmapParameters);
-        assertTrue(analysisFileManagerStub.createHeatmapGenomicFileCalled);
-        assertTrue(analysisFileManagerStub.createHeatmapSampleClassificationFileCalled);
-        assertTrue(analysisFileManagerStub.createHeatmapJnlpFileCalled);
+        verify(analysisFileManager, times(2)).createHeatmapGenomicFile(any(HeatmapParameters.class), any(HeatmapResult.class),
+                anyCollectionOf(SegmentData.class), any(GeneLocationConfiguration.class), any(CBSToHeatmapFactory.class));
+        verify(analysisFileManager, times(2)).createHeatmapSampleClassificationFile(any(QueryResult.class),
+                anyString(), anyCollectionOf(ResultColumn.class));
+        verify(analysisFileManager, times(2)).createHeatmapJnlpFile(any(HeatmapParameters.class), any(HeatmapResult.class));
     }
 
     @Test
@@ -515,8 +583,9 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         service.executeGridPCA(updater, job);
         verify(genePatternGridRunner, atLeastOnce()).runPCA(any(StatusUpdateListener.class),
                 any(PrincipalComponentAnalysisJob.class), any(File.class));
-        assertTrue(fileManagerStub.createGctFileCalled);
-        assertTrue(fileManagerStub.createInputZipFileCalled);
+        verify(fileManager, times(1)).createGctFile(any(StudySubscription.class), any(GctDataset.class), anyString());
+        verify(fileManager, times(1)).createInputZipFile(any(StudySubscription.class),
+                any(AbstractPersistedAnalysisJob.class), anyString(), any(File[].class));
         assertTrue(job.toString().contains(query.getName()));
         assertTrue(job.toString().contains(sampleSet.getName()));
     }
@@ -553,11 +622,11 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         query.setSubscription(subscription);
         subscription.setStudy(study);
         job.setSubscription(subscription);
-        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
+		kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
         service.executeGridPreprocessComparativeMarker(updater, job);
-        assertTrue(fileManagerStub.createClassificationFileCalled);
-        assertTrue(fileManagerStub.createGctFileCalled);
-        assertTrue(fileManagerStub.createInputZipFileCalled);
+        verify(fileManager, times(1)).createClassificationFile(any(StudySubscription.class),
+                any(SampleClassificationParameterValue.class), anyString());
+        verify(fileManager, times(1)).createGctFile(any(StudySubscription.class), any(GctDataset.class), anyString());
         verify(genePatternGridRunner, atLeastOnce()).runPreprocessComparativeMarkerSelection(any(StatusUpdateListener.class),
                 any(ComparativeMarkerSelectionAnalysisJob.class), any(File.class), any(File.class));
         assertTrue(job.toString().contains(query.getName()));
@@ -617,7 +686,8 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
+        kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
+
         KMAnnotationBasedParameters annotationParameters = new KMAnnotationBasedParameters();
         assertFalse(annotationParameters.validate());
         annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationFieldDescriptor());
@@ -634,7 +704,7 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.GENE_EXPRESSION;
+
         KMGeneExpressionBasedParameters geneExpressionParameters = new KMGeneExpressionBasedParameters();
         geneExpressionParameters.setExpressionType(ExpressionTypeEnum.FOLD_CHANGE);
         assertFalse(geneExpressionParameters.validate());
@@ -662,7 +732,6 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.QUERY_BASED;
         KMQueryBasedParameters queryBasedParameters = new KMQueryBasedParameters();
         assertFalse(queryBasedParameters.validate());
         queryBasedParameters.setExclusiveGroups(true);
@@ -684,21 +753,8 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
 
     private void runGEPlotTest(StudySubscription subscription, AbstractGEPlotParameters parameters)
     throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
-        try {
-            queryManagementServiceForKmPlotStub.throwGenesNotFoundException = true;
-            service.createGeneExpressionPlot(subscription, parameters);
-            if (!(parameters instanceof GEPlotGenomicQueryBasedParameters)) { // Genomic Query doesn't have gene input.
-                fail();
-            }
-        } catch (GenesNotFoundInStudyException e) {
-            // expected result.
-            queryManagementServiceForKmPlotStub.clear();
-        }
-
         GeneExpressionPlotGroup gePlot = service.createGeneExpressionPlot(subscription, parameters);
-
         assertNotNull(gePlot.getPlot(PlotCalculationTypeEnum.MEAN));
-
     }
 
     @Test
@@ -707,7 +763,8 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
+        kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
+
         GEPlotAnnotationBasedParameters annotationParameters = new GEPlotAnnotationBasedParameters();
         annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationFieldDescriptor());
         annotationParameters.getSelectedValues().addAll(studyCreator.getPlotGroupValues());
@@ -727,7 +784,7 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.QUERY_BASED;
+        kmPlotType = PlotTypeEnum.QUERY_BASED;
         GEPlotGenomicQueryBasedParameters genomicQueryParameters = new GEPlotGenomicQueryBasedParameters();
         Query query1 = new Query();
         query1.setName("Query1");
@@ -749,7 +806,7 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.QUERY_BASED;
+        kmPlotType = PlotTypeEnum.QUERY_BASED;
         GEPlotClinicalQueryBasedParameters genomicQueryParameters = new GEPlotClinicalQueryBasedParameters();
         genomicQueryParameters.setAddPatientsNotInQueriesGroup(true);
         genomicQueryParameters.setExclusiveGroups(true);

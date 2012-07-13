@@ -22,25 +22,8 @@
         </property>
     </bean>
     
-    <bean id="caDSRFacadeUnit" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeImpl">
-        <property name="search">
-            <ref bean="searchStub" />
-        </property>
-        <property name="caDsrApplicationServiceFactory">
-            <ref bean="caDsrApplicationServiceFactoryStub"/>
-        </property>
-    </bean>
-    
-
     <!-- Services -->
-        
     <bean id="search" class="gov.nih.nci.cadsr.freestylesearch.util.Search" />
     
-    <bean id="searchStub" class="gov.nih.nci.caintegrator2.external.cadsr.SearchStub" />
-    
     <bean id="caDsrApplicationServiceFactoryImpl" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRApplicationServiceFactoryImpl"/>
-    
-    <bean id="caDsrApplicationServiceFactoryStub" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRApplicationServiceFactoryStub"/>
-    
-
 </beans>
