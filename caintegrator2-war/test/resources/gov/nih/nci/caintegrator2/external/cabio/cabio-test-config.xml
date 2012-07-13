@@ -11,15 +11,6 @@
     default-dependency-check="none" 
     default-autowire="no">
     
-    <bean id="caBioSearchAction" class="gov.nih.nci.caintegrator2.web.action.analysis.cabio.CaBioSearchAction">
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
-        <property name="caBioFacade">
-            <ref local="caBioFacadeStub"/>
-        </property>
-    </bean>
-    
     <bean id="caBioFacade" class="gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeImpl">
         <property name="caBioUrl" value="http://cabioapi.nci.nih.gov/cabio43/"/>
         <property name="caBioApplicationServiceFactory">
@@ -27,24 +18,7 @@
         </property>
     </bean>
     
-    <bean id="caBioFacadeUnit" class="gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeImpl">
-        <property name="caBioApplicationServiceFactory">
-            <ref bean="caBioApplicationServiceFactoryStub"/>
-        </property>
-        <property name="dao">
-            <ref bean="caIntegrator2DaoStub" />
-        </property>
-    </bean>
-    
-    <bean id="caBioFacadeStub" class="gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeStub" />
-
     <!-- Services -->
             
     <bean id="caBioApplicationServiceFactoryImpl" class="gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryImpl"/>    
-
-    <bean id="caBioApplicationServiceFactoryStub" class="gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryStub"/>    
-
-    <bean id="workspaceService" class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub"/>
-    
-    <bean id="caIntegrator2DaoStub" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
 </beans>

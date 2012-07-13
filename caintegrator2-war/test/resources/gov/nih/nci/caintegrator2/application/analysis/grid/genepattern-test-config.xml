@@ -20,11 +20,7 @@
         </property>        
     </bean>
     
-    
-    <bean id="fileManagerStub" class="gov.nih.nci.caintegrator2.file.FileManagerStub" />
-    
-    <bean id="fileManager"
-        class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
+    <bean id="fileManager" class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
         <property name="configurationHelper">
             <ref local="configurationHelperStub" />
         </property>
@@ -33,6 +29,4 @@
     <bean id="configurationHelperStub" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperStub" />
 
     <bean id="genePatternGridClientFactoryIntegration" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />    
-    
-    
 </beans>

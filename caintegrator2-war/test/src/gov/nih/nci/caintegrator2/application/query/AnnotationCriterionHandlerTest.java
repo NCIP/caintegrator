@@ -103,66 +103,72 @@ import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.util.HashSet;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 public class AnnotationCriterionHandlerTest extends AbstractMockitoTest {
+    private Query query;
+    private AnnotationFieldDescriptor afd1;
+    private AnnotationDefinition annotationDefinition;
+    private AnnotationGroup group;
+    private CaIntegrator2DaoStub dao;
 
-    @Test
-    public void testGetMatches() throws InvalidCriterionException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", AnnotationCriterionHandlerTest.class);
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        daoStub.clear();
-
+    @Before
+    public void setUp() {
+        dao = new CaIntegrator2DaoStub();
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         study.setStudyConfiguration(studyConfiguration);
 
-
-        AnnotationGroup group = new AnnotationGroup();
+        group = new AnnotationGroup();
         group.setName("Group");
         study.getAnnotationGroups().add(group);
-        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+
+        annotationDefinition = new AnnotationDefinition();
         annotationDefinition.setId(1L);
         annotationDefinition.setDisplayName("Testing");
 
-        AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
+        afd1 = new AnnotationFieldDescriptor();
         afd1.setDefinition(annotationDefinition);
         afd1.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         group.getAnnotationFieldDescriptors().add(afd1);
 
-        Query query = new Query();
+        query = new Query();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
         query.setSubscription(subscription);
+    }
 
+    @Test
+    public void testGetMatches() throws InvalidCriterionException {
         AbstractAnnotationCriterion abstractAnnotationCriterion = new StringComparisonCriterion();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE);
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(abstractAnnotationCriterion);
-        annotationCriterionHandler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
-        assertTrue(daoStub.findMatchingSamplesCalled);
+        annotationCriterionHandler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
+        assertTrue(dao.findMatchingSamplesCalled);
 
-        daoStub.clear();
+        dao.clear();
         abstractAnnotationCriterion.setAnnotationFieldDescriptor(afd1);
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.IMAGESERIES);
         try {
-            annotationCriterionHandler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
-            fail("Expecting invalid criterion becuase the study has no imageSeries data.");
-        } catch (InvalidCriterionException e) { }
+            annotationCriterionHandler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
+            fail("Expecting invalid criterion because the study has no imageSeries data.");
+        } catch (InvalidCriterionException e) {
+
+        }
         AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
         afd2.setDefinition(annotationDefinition);
         afd2.setAnnotationEntityType(EntityTypeEnum.IMAGESERIES);
         group.getAnnotationFieldDescriptors().add(afd2);
         abstractAnnotationCriterion.setAnnotationFieldDescriptor(afd2);
-        annotationCriterionHandler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
-        assertTrue(daoStub.findMatchingImageSeriesCalled);
+        annotationCriterionHandler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
+        assertTrue(dao.findMatchingImageSeriesCalled);
 
-        daoStub.clear();
+        dao.clear();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SUBJECT);
-        annotationCriterionHandler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
-        assertTrue(daoStub.findMatchingSubjectsCalled);
+        annotationCriterionHandler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
+        assertTrue(dao.findMatchingSubjectsCalled);
 
         // negative testing of copy number criterion
         assertFalse(annotationCriterionHandler.hasCriterionSpecifiedSegmentValues());
@@ -170,5 +176,4 @@ public class AnnotationCriterionHandlerTest extends AbstractMockitoTest {
         assertTrue(GenomicCriteriaMatchTypeEnum.NO_MATCH.equals(annotationCriterionHandler.getSegmentValueMatchCriterionType(1F)));
         assertTrue(GenomicCriteriaMatchTypeEnum.NO_MATCH.equals(annotationCriterionHandler.getSegmentCallsValueMatchCriterionType(1)));
     }
-
 }

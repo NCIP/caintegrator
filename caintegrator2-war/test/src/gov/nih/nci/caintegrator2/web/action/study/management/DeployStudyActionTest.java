@@ -86,10 +86,12 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
 import gov.nih.nci.caintegrator2.application.study.AnnotationGroup;
@@ -106,19 +108,20 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
 
+import javax.servlet.ServletContext;
+
 import org.apache.struts2.ServletActionContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.mock.web.MockServletContext;
 
 import com.opensymphony.xwork2.Action;
 
 public class DeployStudyActionTest extends AbstractSessionBasedTest {
 
     private DeployStudyAction action;
-    private DeployStudyAjaxUpdaterStub ajaxUpdaterStub;
+    private IStudyDeploymentAjaxUpdater ajaxUpdater;
     private SessionHelper sessionHelper;
     private MockHttpSession session;
 
@@ -126,9 +129,10 @@ public class DeployStudyActionTest extends AbstractSessionBasedTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        ajaxUpdater = mock(IStudyDeploymentAjaxUpdater.class);
+
         action = new DeployStudyAction();
-        ajaxUpdaterStub = new DeployStudyAjaxUpdaterStub();
-        action.setAjaxUpdater(ajaxUpdaterStub);
+        action.setAjaxUpdater(ajaxUpdater);
         action.setDeploymentService(deploymentService);
         action.setWorkspaceService(workspaceService);
         action.setStudyManagementService(new StudyManagementServiceStub());
@@ -186,33 +190,12 @@ public class DeployStudyActionTest extends AbstractSessionBasedTest {
 
     @Test
     public void testExecute() {
-        action.setServletContext(new ServletContextStub());
+        ServletContext context = mock(ServletContext.class);
+        when(context.getRealPath(anyString())).thenReturn(TestDataFiles.VALID_FILE.getAbsolutePath());
+
+        action.setServletContext(context);
         assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(ajaxUpdaterStub.runJobCalled);
+        verify(ajaxUpdater, times(1)).runJob(any(StudyConfiguration.class), any(HeatmapParameters.class));
         verify(deploymentService, times(1)).prepareForDeployment(any(StudyConfiguration.class));
     }
-
-    private static class DeployStudyAjaxUpdaterStub implements IStudyDeploymentAjaxUpdater {
-
-        public boolean runJobCalled = false;
-
-        @Override
-        public void initializeJsp() {
-        }
-
-        @Override
-        public void runJob(StudyConfiguration configuration, HeatmapParameters heatmapParameters) {
-            runJobCalled = true;
-        }
-
-    }
-
-    private class ServletContextStub extends MockServletContext {
-
-        @Override
-        public String getRealPath(String path) {
-            return TestDataFiles.VALID_FILE.getAbsolutePath();
-        }
-    }
-
 }

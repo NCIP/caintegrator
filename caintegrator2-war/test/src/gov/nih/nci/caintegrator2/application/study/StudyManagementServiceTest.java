@@ -92,6 +92,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyCollectionOf;
+import static org.mockito.Matchers.anyFloat;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -131,14 +135,13 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.aim.AIMFacade;
 import gov.nih.nci.caintegrator2.external.aim.ImageSeriesAnnotationsWrapper;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
-import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
-import gov.nih.nci.caintegrator2.file.FileManagerStub;
-import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
-import gov.nih.nci.caintegrator2.security.SecurityManagerStub;
+import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
+import gov.nih.nci.caintegrator2.mockito.AbstractSecurityEnabledMockitoTest;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSSecurityException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -154,34 +157,47 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class StudyManagementServiceTest extends AbstractMockitoTest {
-
+public class StudyManagementServiceTest extends AbstractSecurityEnabledMockitoTest {
+    private static final String CONTROL_SAMPLE_SET_NAME = "Control Sample Set 1";
     private StudyManagementServiceImpl studyManagementService;
     private CaIntegrator2DaoStub daoStub;
-    private CaDSRFacadeStub caDSRFacadeStub;
-    private FileManagerStub fileManagerStub;
-    private SecurityManagerStub securityManagerStub;
-    private static final String CONTROL_SAMPLE_SET_NAME = "Control Sample Set 1";
+    private CaDSRFacade caDSRFacade;
     private StudyHelper studyHelper;
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class);
-        studyManagementService = (StudyManagementServiceImpl) context.getBean("studyManagementService");
+        daoStub = new CaIntegrator2DaoStub();
+
+        caDSRFacade = mock(CaDSRFacade.class);
+        when(caDSRFacade.retreiveCandidateDataElements(anyListOf(String.class))).thenReturn(new ArrayList<CommonDataElement>());
+        when(caDSRFacade.retrieveDataElement(anyLong(), anyFloat())).then(new Answer<CommonDataElement>() {
+            @Override
+            public CommonDataElement answer(InvocationOnMock invocation) throws Throwable {
+                Long id = (Long) invocation.getArguments()[0];
+                CommonDataElement cde = new CommonDataElement();
+                cde.setId(id);
+                return cde;
+            }
+        });
+        when(caDSRFacade.retrieveValueDomainForDataElement(anyLong(), anyFloat())).then(new Answer<ValueDomain>() {
+            @Override
+            public ValueDomain answer(InvocationOnMock invocation) throws Throwable {
+                ValueDomain vd = new ValueDomain();
+                vd.setDataType(AnnotationTypeEnum.STRING);
+                return vd;
+            }
+        });
+
+        studyManagementService = new StudyManagementServiceImpl();
+        studyManagementService.setDao(daoStub);
+        studyManagementService.setFileManager(fileManager);
+        studyManagementService.setCaDSRFacade(caDSRFacade);
         studyManagementService.setCaArrayFacade(caArrayFacade);
         studyManagementService.setWorkspaceService(workspaceService);
-        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
-        daoStub.clear();
-        caDSRFacadeStub = (CaDSRFacadeStub) context.getBean("caDSRFacadeStub");
-        caDSRFacadeStub.clear();
-        fileManagerStub = (FileManagerStub) context.getBean("fileManagerStub");
-        fileManagerStub.clear();
-        securityManagerStub = (SecurityManagerStub) context.getBean("securityManagerStub");
-        securityManagerStub.clear();
+        studyManagementService.setSecurityManager(secManager);
         studyManagementService.setAnalysisService(analysisService);
+        studyManagementService.setNciaFacade(nciaFacade);
         studyManagementService.setCopyHelper(new CopyStudyHelperStub(studyManagementService));
         AIMFacade aimFacade = mock(AIMFacade.class);
         when(aimFacade.retrieveImageSeriesAnnotations(any(ServerConnectionProfile.class),
@@ -240,9 +256,9 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
 
         studyManagementService.delete(configTest);
         assertTrue(daoStub.deleteCalled);
-        assertTrue(securityManagerStub.deleteProtectionElementCalled);
+        verify(secManager, times(1)).deleteProtectionElement(any(StudyConfiguration.class));
         verify(workspaceService, times(1)).unsubscribeAll(any(Study.class));
-        assertTrue(fileManagerStub.deleteStudyDirectoryCalled);
+        verify(fileManager, times(1)).deleteStudyDirectory(any(StudyConfiguration.class));
     }
 
     @SuppressWarnings("deprecation")
@@ -286,7 +302,7 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
         studyManagementService.save(studyConfiguration);
         studyConfiguration.setStudyLogo(null);
         studyManagementService.addStudyLogo(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(), "image/jpeg");
-        assertTrue(fileManagerStub.storeStudyFileCalled);
+        verify(fileManager, times(1)).storeStudyFile(any(File.class), anyString(), any(StudyConfiguration.class));
         assertTrue(daoStub.saveCalled);
     }
 
@@ -471,7 +487,7 @@ public class StudyManagementServiceTest extends AbstractMockitoTest {
     @Test
     public void testGetMatchingDataElements() {
         studyManagementService.getMatchingDataElements(Arrays.asList(StringUtils.split("random String")));
-        assertTrue(caDSRFacadeStub.retreiveCandidateDataElementsCalled);
+        verify(caDSRFacade, times(1)).retreiveCandidateDataElements(anyListOf(String.class));
     }
 
     @SuppressWarnings("deprecation")

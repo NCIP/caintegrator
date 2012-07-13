@@ -31,21 +31,31 @@
 package gov.nih.nci.caintegrator2.mockito;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractKMParameters;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.application.analysis.CBSToHeatmapFactory;
+import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.JobInfoWrapper;
+import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.StringParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
+import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapResult;
+import gov.nih.nci.caintegrator2.application.analysis.igv.IGVFileTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -55,6 +65,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotImpl;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -64,8 +75,15 @@ import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.CopyNumberCriterionTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -79,10 +97,18 @@ import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
+import gov.nih.nci.caintegrator2.file.AnalysisFileManager;
+import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
 import java.net.URL;
@@ -96,8 +122,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.xwork.time.DateUtils;
+import org.genepattern.gistic.Marker;
 import org.genepattern.webservice.JobInfo;
 import org.junit.Before;
 import org.mockito.invocation.InvocationOnMock;
@@ -115,6 +143,10 @@ public abstract class AbstractMockitoTest {
     protected DeploymentService deploymentService;
     protected WorkspaceService workspaceService;
     protected ConfigurationHelper configurationHelper;
+    protected NCIAFacade nciaFacade;
+    protected AnalysisFileManager analysisFileManager;
+    protected FileManager fileManager;
+    protected QueryManagementService queryManagementService;
     private StudySubscription studySubscription;
 
     /**
@@ -130,12 +162,16 @@ public abstract class AbstractMockitoTest {
         setUpDeploymentService();
         setUpConfigurationHelper();
         setUpWorkspaceService();
+        setUpNCIAFacade();
+        setUpAnalysisFileManager();
+        setUpFileManager();
+        setUpQueryManagementService();
     }
 
     /**
      * Sets up the caIntegrator dao mock objects.
      */
-    protected void setUpDao() throws Exception {
+    private void setUpDao() throws Exception {
         Study study = new Study();
         study.setStudyConfiguration(new StudyConfiguration());
 
@@ -152,7 +188,7 @@ public abstract class AbstractMockitoTest {
     /**
      * Sets up the caArray facade mock objects.
      */
-    protected void setUpCaArrayFacade() throws Exception {
+    private void setUpCaArrayFacade() throws Exception {
         caArrayFacade = mock(CaArrayFacade.class);
         Sample sample = new Sample();
         sample.setName("testSample");
@@ -173,7 +209,7 @@ public abstract class AbstractMockitoTest {
     /**
      * Sets up the Array Data Service mock object
      */
-    protected void setUpArrayDataService() throws Exception {
+    private void setUpArrayDataService() throws Exception {
         arrayDataService = mock(ArrayDataService.class);
         when(arrayDataService.getData(any(DataRetrievalRequest.class))).thenAnswer(new Answer<ArrayDataValues>() {
             @Override
@@ -260,7 +296,7 @@ public abstract class AbstractMockitoTest {
         });
     }
 
-    protected void setUpAnalysisService() throws Exception {
+    private void setUpAnalysisService() throws Exception {
         analysisService = mock(AnalysisService.class);
 
         List<AnalysisMethod> methods = new ArrayList<AnalysisMethod>();
@@ -286,7 +322,7 @@ public abstract class AbstractMockitoTest {
         when(analysisService.createKMPlot(any(StudySubscription.class), any(AbstractKMParameters.class))).thenReturn(new KMPlotImpl());
     }
 
-    protected void setUpDeploymentService() {
+    private void setUpDeploymentService() {
         deploymentService = mock(DeploymentService.class);
         when(deploymentService.performDeployment(any(StudyConfiguration.class), any(HeatmapParameters.class))).thenAnswer(new Answer<StudyConfiguration>() {
             @Override
@@ -306,7 +342,7 @@ public abstract class AbstractMockitoTest {
         }).when(deploymentService).prepareForDeployment(any(StudyConfiguration.class));
     }
 
-    protected void setUpConfigurationHelper() {
+    private void setUpConfigurationHelper() {
         configurationHelper = mock(ConfigurationHelper.class);
         when(configurationHelper.getString(any(ConfigurationParameter.class))).thenAnswer(new Answer<String>() {
             @Override
@@ -317,7 +353,7 @@ public abstract class AbstractMockitoTest {
         });
     }
 
-    protected void setUpWorkspaceService() throws Exception {
+    private void setUpWorkspaceService() throws Exception {
         workspaceService = mock(WorkspaceService.class);
         when(workspaceService.getWorkspace()).thenAnswer(new Answer<UserWorkspace>() {
             @Override
@@ -374,6 +410,152 @@ public abstract class AbstractMockitoTest {
             }
         });
         when(workspaceService.retrievePlatformsInStudy(any(Study.class))).thenReturn(new HashSet<Platform>());
+    }
+
+    private void setUpNCIAFacade() throws Exception {
+        nciaFacade = mock(NCIAFacade.class);
+
+        final File validFile = FileUtils.toFile(this.getClass().getResource(TestDataFiles.VALID_FILE_RESOURCE_PATH));
+
+        when(nciaFacade.getAllCollectionNameProjects(any(ServerConnectionProfile.class))).thenReturn(new ArrayList<String>());
+        when(nciaFacade.getImageSeriesAcquisitions(anyString(), any(ServerConnectionProfile.class))).thenReturn(Arrays.asList(new ImageSeriesAcquisition()));
+        when(nciaFacade.retrieveDicomFiles(any(NCIADicomJob.class))).thenReturn(validFile);
+    }
+
+    private void setUpAnalysisFileManager() throws Exception {
+        analysisFileManager = mock(AnalysisFileManager.class);
+        when(analysisFileManager.getIGVDirectory(anyString())).thenReturn(getTmpFile());
+        when(analysisFileManager.createIGVGctFile(any(GctDataset.class), anyString())).thenReturn(getTmpFile());
+        when(analysisFileManager.createIGVSegFile(anyCollectionOf(SegmentData.class), anyString(),
+                anyBoolean())).thenReturn(getTmpFile());
+        when(analysisFileManager.createIGVSampleClassificationFile(any(QueryResult.class), anyString(),
+                anyCollectionOf(ResultColumn.class), any(CopyNumberCriterionTypeEnum.class))).thenReturn(getTmpFile());
+        when(analysisFileManager.createIGVGctFile(any(GctDataset.class), any(Study.class), anyString())).thenReturn(getTmpFile());
+        when(analysisFileManager.createIGVSegFile(anyCollectionOf(SegmentData.class), any(Study.class), anyString(),
+                anyBoolean())).thenReturn(getTmpFile());
+        when(analysisFileManager.retrieveIGVFile(any(Study.class), any(IGVFileTypeEnum.class), anyString())).thenReturn(getTmpFile());
+        when(analysisFileManager.createHeatmapSampleClassificationFile(any(QueryResult.class), anyString(),
+                anyCollectionOf(ResultColumn.class))).thenReturn(getTmpFile());
+        when(analysisFileManager.retrieveHeatmapFile(any(Study.class), any(HeatmapFileTypeEnum.class), anyString())).thenReturn(getTmpFile());
+        doAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                HeatmapResult result = (HeatmapResult) invocation.getArguments()[1];
+                result.setGenomicDataFile(new File("Dummy"));
+                return null;
+            }
+        }).when(analysisFileManager).createHeatmapGenomicFile(any(HeatmapParameters.class), any(HeatmapResult.class),
+                anyCollectionOf(SegmentData.class), any(GeneLocationConfiguration.class), any(CBSToHeatmapFactory.class));
+    }
+
+    private void setUpFileManager() throws Exception {
+        fileManager = mock(FileManager.class);
+        when(fileManager.storeStudyFile(any(File.class), anyString(), any(StudyConfiguration.class))).thenAnswer(new Answer<File>() {
+            @Override
+            public File answer(InvocationOnMock invocation) throws Throwable {
+                return (File) invocation.getArguments()[0];
+            }
+        });
+        when(fileManager.getStudyDirectory(any(Study.class))).thenReturn(new File(System.getProperty("java.io.tmpdir")));
+        when(fileManager.getNewTemporaryDirectory(anyString())).thenReturn(new File(System.getProperty("java.io.tmpdir")));
+        when(fileManager.getUserDirectory(any(StudySubscription.class))).thenReturn(new File(System.getProperty("java.io.tmpdir")));
+        when(fileManager.createNewStudySubscriptionFile(any(StudySubscription.class), anyString())).thenReturn(getTmpFile());
+        when(fileManager.createClassificationFile(any(StudySubscription.class),
+                any(SampleClassificationParameterValue.class), anyString())).thenReturn(getTmpFile());
+        when(fileManager.renameCnvFile(any(File.class))).thenAnswer(new Answer<File>() {
+            @Override
+            public File answer(InvocationOnMock invocation) throws Throwable {
+                return (File) invocation.getArguments()[0];
+            }
+        });
+        when(fileManager.createGctFile(any(StudySubscription.class), any(GctDataset.class), anyString())).thenReturn(getTmpFile());
+        when(fileManager.createMarkersFile(any(StudySubscription.class), any(Marker[].class))).thenReturn(getTmpFile());
+        when(fileManager.createSamplesFile(any(StudySubscription.class), any(SampleWithChromosomalSegmentSet[].class))).thenReturn(getTmpFile());
+        when(fileManager.getTempDirectory()).thenReturn(getTmpFile().getAbsolutePath());
+        when(fileManager.createInputZipFile(any(StudySubscription.class), any(AbstractPersistedAnalysisJob.class),
+                anyString(), any(File[].class))).thenAnswer(new Answer<ResultsZipFile>() {
+            @Override
+            public ResultsZipFile answer(InvocationOnMock invocation) throws Throwable {
+                ResultsZipFile zipFile = new ResultsZipFile();
+                zipFile.setPath(getTmpFile().getAbsolutePath());
+                return zipFile;
+            }
+        });
+    }
+
+    private final File getTmpFile() {
+        File tmpFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "tmpFile");
+        tmpFile.deleteOnExit();
+        return tmpFile;
+    }
+
+
+    private void setUpQueryManagementService() throws Exception {
+        queryManagementService = mock(QueryManagementService.class);
+        doAnswer(new Answer<Query>() {
+            @Override
+            public Query answer(InvocationOnMock invocation) throws Throwable {
+                Query query = (Query) invocation.getArguments()[0];
+                query.setId(1L);
+                return query;
+            }
+        }).when(queryManagementService).save(any(Query.class));
+        when(queryManagementService.execute(any(Query.class))).then(new Answer<QueryResult>() {
+            @Override
+            public QueryResult answer(InvocationOnMock invocation) throws Throwable {
+                Query query = (Query) invocation.getArguments()[0];
+                QueryResult qr = new QueryResult();
+                qr.setQuery(query);
+                return qr;
+            }
+        });
+        when(queryManagementService.executeGenomicDataQuery(any(Query.class))).thenReturn(new GenomicDataQueryResult());
+        when(queryManagementService.retrieveSegmentDataQuery(any(Query.class))).thenReturn(new ArrayList<SegmentData>());
+        when(queryManagementService.createDicomJob(anyListOf(DisplayableResultRow.class))).thenReturn(new NCIADicomJob());
+        when(queryManagementService.createNciaBasket(anyListOf(DisplayableResultRow.class))).thenReturn(new NCIABasket());
+        when(queryManagementService.createCsvFileFromGenomicResults(any(GenomicDataQueryResult.class))).thenReturn(getTmpFile());
+        when(queryManagementService.createQueryFromSubjectList(any(StudySubscription.class), any(SubjectList.class))).then(new Answer<Query>() {
+            @Override
+            public Query answer(InvocationOnMock invocation) throws Throwable {
+                SubjectList sl = (SubjectList) invocation.getArguments()[1];
+                Query query = new Query();
+                query.setName(sl.getName());
+                query.setSubjectListQuery(true);
+                query.setSubjectListVisibility(sl.getVisibility());
+                return query;
+            }
+        });
+        when(queryManagementService.createQueriesFromSubjectLists(any(StudySubscription.class))).then(new Answer<List<Query>>() {
+            @Override
+            public List<Query> answer(InvocationOnMock invocation) throws Throwable {
+                StudySubscription subscription = (StudySubscription) invocation.getArguments()[0];
+                List<Query> results = new ArrayList<Query>();
+                for (SubjectList subjectList : subscription.getStudy().getStudyConfiguration().getSubjectLists()) {
+                    results.add(queryManagementService.createQueryFromSubjectList(subscription, subjectList));
+                }
+                for (SubjectList subjectList : subscription.getSubjectLists()) {
+                    results.add(queryManagementService.createQueryFromSubjectList(subscription, subjectList));
+                }
+                return results;
+            }
+        });
+        when(queryManagementService.getRefreshedEntity(any(AbstractCaIntegrator2Object.class))).then(new Answer<AbstractCaIntegrator2Object>() {
+            @Override
+            public AbstractCaIntegrator2Object answer(InvocationOnMock invocation) throws Throwable {
+                AbstractCaIntegrator2Object obj = (AbstractCaIntegrator2Object) invocation.getArguments()[0];
+                return obj;
+            }
+        });
+        when(queryManagementService.validateGeneSymbols(any(StudySubscription.class), anyListOf(String.class))).thenReturn(new ArrayList<String>());
+        when(queryManagementService.retrieveCopyNumberPlatformsForStudy(any(Study.class))).thenReturn(new HashSet<String>());
+        when(queryManagementService.getAllSubjectsNotFoundInCriteria(any(Query.class))).thenReturn(new HashSet<String>());
+        when(queryManagementService.retrieveCopyNumberPlatformsWithCghCallForStudy(any(Study.class))).thenReturn(new HashSet<String>());
+        when(queryManagementService.retrieveQueryToExecute(any(Query.class))).then(new Answer<Query>() {
+            @Override
+            public Query answer(InvocationOnMock invocation) throws Throwable {
+                return (Query) invocation.getArguments()[0];
+            }
+        });
     }
 
     private void setUpCaArrayFacadeRetrieveData() throws Exception {

@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -98,7 +99,6 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedGenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.AuthorizedStudyElementsGroup;
 import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
@@ -113,6 +113,8 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -124,7 +126,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
 
     private GenePatternAnalysisAction action;
-    private QueryManagementServiceStub queryManagementService;
     private StudyManagementService studyManagementService;
 
     @Override
@@ -141,7 +142,6 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GenePatternAnalysisAction();
         action.setAnalysisService(analysisService);
-        queryManagementService = new QueryManagementServiceStub();
         action.setQueryManagementService(queryManagementService);
         action.setWorkspaceService(workspaceService);
         action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
@@ -153,10 +153,12 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
 
     @Test
     public void testPrepare() {
-        queryManagementService.platformsForStudy.add("platform1");
+        Set<String> platforms = new HashSet<String>();
+        platforms.add("platform1");
+        when(queryManagementService.retrieveGeneExpressionPlatformsForStudy(any(Study.class))).thenReturn(platforms);
         action.prepare();
         assertFalse(action.getGenePatternAnalysisForm().isMultiplePlatformsInStudy());
-        queryManagementService.platformsForStudy.add("platform2");
+        platforms.add("platform2");
         action.prepare();
         assertTrue(action.getGenePatternAnalysisForm().isMultiplePlatformsInStudy());
     }

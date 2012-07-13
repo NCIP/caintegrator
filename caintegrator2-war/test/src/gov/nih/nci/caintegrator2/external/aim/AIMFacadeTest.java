@@ -99,8 +99,6 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import edu.northwestern.radiology.aim.jaxb.ImageAnnotation;
 import edu.northwestern.radiology.aim.jaxb.ImagingObservationCharacteristic;
@@ -144,8 +142,7 @@ public class AIMFacadeTest {
         AIMServiceFactory aimServiceFactory = mock(AIMServiceFactory.class);
         when(aimServiceFactory.createAIMSearchService(any(ServerConnectionProfile.class))).thenReturn(aimService);
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("aim-test-config.xml", AIMFacadeTest.class);
-        aimFacade = (AIMFacadeImpl) context.getBean("aimFacade");
+        aimFacade = new AIMFacadeImpl();
         aimFacade.setAimServiceFactory(aimServiceFactory);
     }
 

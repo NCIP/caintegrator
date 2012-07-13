@@ -123,8 +123,7 @@ public class EditGisticAnalysisActionTest extends AbstractSessionBasedTest {
         subscription.setId(1L);
         subscription.setStudy(new Study());
         subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
-        SessionHelper.getInstance().getDisplayableUserWorkspace().
-            setCurrentStudySubscription(subscription);
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action.setWorkspaceService(workspaceService);

@@ -94,10 +94,10 @@ import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -115,7 +115,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class GEPlotClinicalQueryBasedActionTest extends AbstractSessionBasedTest {
 
     private GEPlotClinicalQueryBasedAction action;
-    private QueryManagementServiceStub queryManagementServiceStub = new QueryManagementServiceStub();
     private StudySubscription subscription;
 
     @Override
@@ -131,8 +130,7 @@ public class GEPlotClinicalQueryBasedActionTest extends AbstractSessionBasedTest
         action = new GEPlotClinicalQueryBasedAction();
         action.setAnalysisService(analysisService);
         action.setWorkspaceService(workspaceService);
-        action.setQueryManagementService(queryManagementServiceStub);
-        queryManagementServiceStub.clear();
+        action.setQueryManagementService(queryManagementService);
         setStudySubscription(subscription);
         SessionHelper.getInstance().getDisplayableUserWorkspace().refresh(workspaceService, true);
     }
@@ -150,7 +148,7 @@ public class GEPlotClinicalQueryBasedActionTest extends AbstractSessionBasedTest
         setupActionVariables();
         action.getGePlotForm().getClinicalQueryBasedForm().setGeneSymbol("EGFR");
         action.prepare();
-        assertTrue(queryManagementServiceStub.getRefreshedEntityCalled);
+        verify(queryManagementService, atLeastOnce()).getRefreshedEntity(any(AbstractCaIntegrator2Object.class));
         action.prepare();
         assertEquals("EGFR", action.getPlotParameters().getGeneSymbol());
     }

@@ -88,10 +88,14 @@ package gov.nih.nci.caintegrator2.web.action.platform;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
-import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
@@ -103,23 +107,22 @@ import org.junit.Test;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
-
-    ManagePlatformsAction action = new ManagePlatformsAction();
-    FileManagerStub fileManagerStub = new FileManagerStub();
-    PlatformDeploymentAjaxUpdaterStub ajaxUpdater = new PlatformDeploymentAjaxUpdaterStub();
+    private ManagePlatformsAction action = new ManagePlatformsAction();
+    private IPlatformDeploymentAjaxUpdater updater;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        updater = mock(IPlatformDeploymentAjaxUpdater.class);
+
         DisplayableUserWorkspace displayableWorkspace = SessionHelper.getInstance().getDisplayableUserWorkspace();
         displayableWorkspace.refresh(workspaceService, true);
 
-        ajaxUpdater = new PlatformDeploymentAjaxUpdaterStub();
         action.setWorkspaceService(workspaceService);
         action.setArrayDataService(arrayDataService);
-        action.setFileManager(fileManagerStub);
-        action.setAjaxUpdater(ajaxUpdater);
+        action.setFileManager(fileManager);
+        action.setAjaxUpdater(updater);
     }
 
     @Test
@@ -153,33 +156,29 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
-        assertTrue(ajaxUpdater.runJobCalled);
-        ajaxUpdater.runJobCalled = false;
+        verify(updater, times(1)).runJob(any(PlatformConfiguration.class), anyString());
 
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_SNP.getValue());
         action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
         assertEquals(ActionSupport.ERROR, action.createPlatform());
-        assertFalse(ajaxUpdater.runJobCalled);
+        verify(updater, times(1)).runJob(any(PlatformConfiguration.class), anyString());
 
         action.setPlatformName("Mapping_50K");
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
-        assertTrue(ajaxUpdater.runJobCalled);
-        ajaxUpdater.runJobCalled = false;
+        verify(updater, times(2)).runJob(any(PlatformConfiguration.class), anyString());
 
         action.setPlatformType(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
         action.setPlatformName("CGH244A");
         action.setPlatformFileFileName(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_PATH);
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
-        assertTrue(ajaxUpdater.runJobCalled);
-        ajaxUpdater.runJobCalled = false;
+        verify(updater, times(3)).runJob(any(PlatformConfiguration.class), anyString());
 
         action.setPlatformType(PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue());
         action.setPlatformFile(TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_FILE);
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
-        assertTrue(ajaxUpdater.runJobCalled);
-        ajaxUpdater.runJobCalled = false;
+        verify(updater, times(4)).runJob(any(PlatformConfiguration.class), anyString());
     }
 
     @Test
@@ -189,7 +188,6 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
     }
-
 
     @Test
     public void testValidation() {
@@ -239,13 +237,6 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         action.setPlatformFileFileName("abc.cdf");
         action.validate();
         assertTrue(action.hasFieldErrors());
-
-        //action.clearErrorsAndMessages();
-        //action.setSelectedAction("addAnnotationFile");
-        //action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
-        //action.setPlatformFileFileName(TestArrayDesignFiles.HG_U133A_ANNOTATION_PATH);
-        //action.setPlatformType("notAValidPlatformType");
-        //action.validate();
 
         // Test createPlatform
         action.setSelectedAction("createPlatform");
@@ -410,22 +401,6 @@ public class ManagePlatformsActionTest extends AbstractSessionBasedTest {
         action.setSelectedAction("updatePlatformType");
         action.setSelectedPlatformType("Affymetrix SNP");
         assertEquals(ActionSupport.SUCCESS, action.updatePlatform());
-    }
-
-    private static class PlatformDeploymentAjaxUpdaterStub implements IPlatformDeploymentAjaxUpdater {
-
-        public boolean runJobCalled = false;
-
-        @Override
-        public void initializeJsp() {
-
-        }
-
-        @Override
-        public void runJob(PlatformConfiguration platformConfiguration, String username) {
-            runJobCalled = true;
-        }
-
     }
 }
 

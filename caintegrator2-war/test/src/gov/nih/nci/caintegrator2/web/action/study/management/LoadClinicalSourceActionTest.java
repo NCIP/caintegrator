@@ -86,14 +86,18 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFileStub;
 import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.ISubjectDataSourceAjaxUpdater;
-import gov.nih.nci.caintegrator2.web.ajax.SubjectDataSourceAjaxRunner;
+import gov.nih.nci.caintegrator2.web.ajax.SubjectDataSourceAjaxRunner.JobType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -104,19 +108,18 @@ public class LoadClinicalSourceActionTest extends AbstractSessionBasedTest {
 
     private LoadClinicalSourceAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
-    private SubjectDataSourceAjaxUpdaterStub updater;
+    private ISubjectDataSourceAjaxUpdater updater;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        updater = mock(ISubjectDataSourceAjaxUpdater.class);
         studyManagementServiceStub = new StudyManagementServiceStub();
         action = new LoadClinicalSourceAction();
         action.setStudyManagementService(studyManagementServiceStub);
         action.setWorkspaceService(workspaceService);
         action.getClinicalSource().setAnnotationFile(createAnnotationFile());
-        updater = new SubjectDataSourceAjaxUpdaterStub();
-        updater.clear();
         action.setUpdater(updater);
     }
 
@@ -124,21 +127,21 @@ public class LoadClinicalSourceActionTest extends AbstractSessionBasedTest {
     public void testExecute() {
         action.getStudyConfiguration().getStudy().setShortTitleText("");
         assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(updater.runJobCalled);
+        verify(updater, times(1)).runJob(anyLong(), anyLong(), any(JobType.class));
     }
 
     @Test
     public void testReLoad() {
         action.getStudyConfiguration().getStudy().setShortTitleText("");
         assertEquals(Action.SUCCESS, action.reLoad());
-        assertTrue(updater.runJobCalled);
+        verify(updater, times(1)).runJob(anyLong(), anyLong(), any(JobType.class));
     }
 
     @Test
     public void testDelete() {
         action.getStudyConfiguration().getStudy().setShortTitleText("");
         assertEquals(Action.SUCCESS, action.delete());
-        assertTrue(updater.runJobCalled);
+        verify(updater, times(1)).runJob(anyLong(), anyLong(), any(JobType.class));
     }
 
     private AnnotationFile createAnnotationFile() {
@@ -147,24 +150,4 @@ public class LoadClinicalSourceActionTest extends AbstractSessionBasedTest {
         clinicalConf.setAnnotationFile(annotationFile);
         return annotationFile;
     }
-
-
-    private static class SubjectDataSourceAjaxUpdaterStub implements ISubjectDataSourceAjaxUpdater {
-
-        public boolean runJobCalled = false;
-
-        public void clear() {
-            runJobCalled = false;
-        }
-
-        public void initializeJsp() {
-
-        }
-
-        public void runJob(Long studyConfigurationId, Long subjectSourceId, SubjectDataSourceAjaxRunner.JobType jobType) {
-            runJobCalled = true;
-        }
-
-    }
-
 }

@@ -96,7 +96,6 @@ import gov.nih.nci.caintegrator2.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -107,8 +106,6 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class DeploymentServiceTest extends AbstractMockitoTest {
 
@@ -117,11 +114,12 @@ public class DeploymentServiceTest extends AbstractMockitoTest {
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class);
-        deploymentServiceImpl = (DeploymentServiceImpl) context.getBean("deploymentService");
-        deploymentServiceImpl.setCaArrayFacade(caArrayFacade);
         daoStub = new DeploymentDaoStub();
+
+        deploymentServiceImpl = new DeploymentServiceImpl();
+        deploymentServiceImpl.setCaArrayFacade(caArrayFacade);
         deploymentServiceImpl.setDao(daoStub);
+        deploymentServiceImpl.setDnaAnalysisHandlerFactory(new DnaAnalysisHandlerFactoryImpl());
     }
 
     @Test

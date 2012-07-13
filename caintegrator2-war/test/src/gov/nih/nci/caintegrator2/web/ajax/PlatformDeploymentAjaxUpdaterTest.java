@@ -117,7 +117,7 @@ public class PlatformDeploymentAjaxUpdaterTest extends AbstractSessionBasedTest 
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
         updater.setArrayDataService(arrayDataService);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        WebContextFactory.setWebContextBuilder(webContextBuilder);
 
         UserWorkspace workspace = new UserWorkspace();
         workspace.setUsername("Test");

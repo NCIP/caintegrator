@@ -129,7 +129,7 @@ public class IGVAjaxUpdaterTest extends AbstractSessionBasedTest {
         parameters.setQuery(query);
         parameters.setSessionId("sessionId");
         SessionHelper.getInstance().getDisplayableUserWorkspace().setIgvParameters(parameters);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        WebContextFactory.setWebContextBuilder(webContextBuilder);
     }
 
     @Test

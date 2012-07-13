@@ -128,7 +128,7 @@ public class ImagingDataSourceAjaxUpdaterTest extends AbstractSessionBasedTest {
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
         updater.setStudyManagementService(studyManagementServiceStub);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        WebContextFactory.setWebContextBuilder(webContextBuilder);
         StudyHelper studyHelper = new StudyHelper();
         studyConfiguration = studyHelper.populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();
         studyConfiguration.setId(Long.valueOf(1));

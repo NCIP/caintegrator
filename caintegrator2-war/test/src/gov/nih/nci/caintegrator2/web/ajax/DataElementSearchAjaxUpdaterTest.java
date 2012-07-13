@@ -116,7 +116,7 @@ public class DataElementSearchAjaxUpdaterTest extends AbstractSessionBasedTest {
         studyManagementService = new StudyManagementServiceStubForSearch();
         studyManagementService.clear();
         updater.setStudyManagementService(studyManagementService);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        WebContextFactory.setWebContextBuilder(webContextBuilder);
     }
 
     @Test

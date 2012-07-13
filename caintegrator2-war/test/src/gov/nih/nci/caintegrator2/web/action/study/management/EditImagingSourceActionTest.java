@@ -88,6 +88,16 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
@@ -95,7 +105,6 @@ import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeStub;
 import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 
@@ -113,25 +122,20 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
 
     private EditImagingSourceAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
-    private ImagingDataSourceAjaxUpdaterStub updaterStub;
-    private NCIAFacadeStubForAction nciaFacadeStub;
+    private IImagingDataSourceAjaxUpdater updater;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        updater = mock(IImagingDataSourceAjaxUpdater.class);
+
         studyManagementServiceStub = new StudyManagementServiceStub();
         action = new EditImagingSourceAction();
         action.setStudyManagementService(studyManagementServiceStub);
         action.setWorkspaceService(workspaceService);
-
-        nciaFacadeStub = new NCIAFacadeStubForAction();
-        nciaFacadeStub.clear();
-        action.clearErrorsAndMessages();
-        updaterStub = new ImagingDataSourceAjaxUpdaterStub();
-        updaterStub.clear();
-        action.setUpdater(updaterStub);
-        action.setNciaFacade(nciaFacadeStub);
+        action.setUpdater(updater);
+        action.setNciaFacade(nciaFacade);
     }
 
     @Test
@@ -216,27 +220,36 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         validateAddSource();
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
         assertEquals(Action.SUCCESS, action.saveImagingSource());
-        assertTrue(updaterStub.runJobCalled);
-        updaterStub.clear();
-        action.clearErrorsAndMessages();
-
-        nciaFacadeStub.throwConnectionException = true;
-        assertEquals(Action.INPUT, action.saveImagingSource());
-        nciaFacadeStub.clear();
-        updaterStub.clear();
-        action.clearErrorsAndMessages();
-        nciaFacadeStub.throwInvalidImagingCollectionException = true;
-        assertEquals(Action.INPUT, action.saveImagingSource());
-        nciaFacadeStub.clear();
-        updaterStub.clear();
-        action.clearErrorsAndMessages();
-
+        verify(updater, atLeastOnce()).runJob(anyLong(), any(File.class), any(ImageDataSourceMappingTypeEnum.class),
+                anyBoolean(), anyBoolean());
         action.getImageSourceConfiguration().setId(1l);
         assertEquals(Action.SUCCESS, action.saveImagingSource());
         assertTrue(studyManagementServiceStub.deleteCalled);
-        assertTrue(updaterStub.runJobCalled);
+        verify(updater, atLeast(2)).runJob(anyLong(), any(File.class), any(ImageDataSourceMappingTypeEnum.class),
+                anyBoolean(), anyBoolean());
+    }
 
+    @Test
+    public void saveConnectionError() throws Exception {
+        validateAddSource();
+        action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
+        assertEquals(Action.SUCCESS, action.saveImagingSource());
+        verify(updater, atLeastOnce()).runJob(anyLong(), any(File.class), any(ImageDataSourceMappingTypeEnum.class),
+                anyBoolean(), anyBoolean());
+        doThrow(new ConnectionException("Invalid Connection."))
+            .when(nciaFacade).validateImagingSourceConnection(any(ServerConnectionProfile.class), anyString());
+        assertEquals(Action.INPUT, action.saveImagingSource());
+    }
 
+    public void saveIvalidImagingCollectionError() throws Exception {
+        validateAddSource();
+        action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
+        assertEquals(Action.SUCCESS, action.saveImagingSource());
+        verify(updater, times(1)).runJob(anyLong(), any(File.class), any(ImageDataSourceMappingTypeEnum.class),
+                anyBoolean(), anyBoolean());
+        doThrow(new InvalidImagingCollectionException("Invalid Imaging Collection"))
+            .when(nciaFacade).validateImagingSourceConnection(any(ServerConnectionProfile.class), anyString());
+        assertEquals(Action.INPUT, action.saveImagingSource());
     }
 
     @Test
@@ -266,7 +279,8 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         action.clearErrorsAndMessages();
         studyManagementServiceStub.clear();
         assertEquals(Action.SUCCESS, action.mapImagingSource());
-        assertTrue(updaterStub.runJobCalled);
+        verify(updater, times(1)).runJob(anyLong(), any(File.class), any(ImageDataSourceMappingTypeEnum.class),
+                anyBoolean(), anyBoolean());
     }
 
     @Test
@@ -277,47 +291,5 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         assertEquals("", action.getMappingType());
         action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue());
         assertEquals(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue(), action.getMappingType());
-    }
-
-    private static class ImagingDataSourceAjaxUpdaterStub implements IImagingDataSourceAjaxUpdater {
-
-        public boolean runJobCalled = false;
-
-        public void clear() {
-            runJobCalled = false;
-        }
-
-        public void initializeJsp() {
-
-        }
-
-        public void runJob(Long imagingSourceId, File imageClinicalMappingFile,
-                ImageDataSourceMappingTypeEnum mappingType, boolean mapOnly,
-                boolean loadAimAnnotation) {
-            runJobCalled = true;
-        }
-
-    }
-
-    private static class NCIAFacadeStubForAction extends NCIAFacadeStub {
-        public boolean throwConnectionException = false;
-        public boolean throwInvalidImagingCollectionException = false;
-
-        @Override
-        public void clear() {
-            throwConnectionException = false;
-            throwInvalidImagingCollectionException = false;
-        }
-
-        @Override
-        public void validateImagingSourceConnection(ServerConnectionProfile profile, String collectionNameProject)
-        throws ConnectionException ,InvalidImagingCollectionException {
-            if (throwConnectionException) {
-                throw new ConnectionException("Exception Thrown");
-            }
-            if (throwInvalidImagingCollectionException) {
-                throw new InvalidImagingCollectionException("Exception Thrown");
-            }
-        }
     }
 }

@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -115,18 +116,21 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
     private EditGenomicSourceAction action;
     private StudyManagmentServiceStubForGenomicSource studyManagementServiceStub;
     private CaArrayFacade caArrayFacade;
+    private IGenomicDataSourceAjaxUpdater updater;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        updater = mock(IGenomicDataSourceAjaxUpdater.class);
+        caArrayFacade = mock(CaArrayFacade.class);
+        studyManagementServiceStub = new StudyManagmentServiceStubForGenomicSource();
+
         action = new EditGenomicSourceAction();
         action.setConfigurationHelper(configurationHelper);
         action.setWorkspaceService(workspaceService);
-        studyManagementServiceStub = new StudyManagmentServiceStubForGenomicSource();
         action.setStudyManagementService(studyManagementServiceStub);
-        action.setUpdater(new GenomicDataSourceAjaxUpdaterStub());
-        caArrayFacade = mock(CaArrayFacade.class);
+        action.setUpdater(updater);
         action.setCaArrayFacade(caArrayFacade);
         action.setArrayDataService(arrayDataService);
     }
@@ -179,9 +183,7 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         verify(workspaceService, times(1)).clearSession();
         action.getGenomicSource().setPlatformName("Platform name");
         assertEquals(Action.SUCCESS, action.save());
-        GenomicDataSourceAjaxUpdaterStub updaterStub = (GenomicDataSourceAjaxUpdaterStub) action.getUpdater();
-        assertTrue(updaterStub.runJobCalled);
-        updaterStub.runJobCalled = false;
+        verify(updater, times(1)).runJob(anyLong());
         studyManagementServiceStub.clear();
         action.getGenomicSource().setId(1L);
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -190,7 +192,7 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         action.setStudyConfiguration(studyConfiguration);
         assertEquals(Action.SUCCESS, action.save());
         assertTrue(studyManagementServiceStub.deleteCalled);
-        assertTrue(updaterStub.runJobCalled);
+        verify(updater, times(2)).runJob(anyLong());
 
         // Test platform validation.
         action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT);
@@ -247,21 +249,6 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
             genomicSource.setStudyConfiguration(new StudyConfiguration());
             super.getRefreshedEntity(entity);
             return (T) genomicSource;
-        }
-    }
-
-    private static class GenomicDataSourceAjaxUpdaterStub implements IGenomicDataSourceAjaxUpdater {
-
-        public boolean runJobCalled = false;
-
-        @Override
-        public void initializeJsp() {
-
-        }
-
-        @Override
-        public void runJob(Long id) {
-            runJobCalled = true;
         }
     }
 }

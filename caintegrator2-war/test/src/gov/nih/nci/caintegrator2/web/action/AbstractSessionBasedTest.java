@@ -85,15 +85,26 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.acegisecurity.context.SecurityContextHolder;
+import org.directwebremoting.ScriptSession;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory.WebContextBuilder;
 import org.junit.Before;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.springframework.mock.web.MockHttpSession;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.config.Configuration;
@@ -106,6 +117,7 @@ import com.opensymphony.xwork2.util.ValueStackFactory;
 public abstract class AbstractSessionBasedTest extends AbstractMockitoTest {
 
     private AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
+    protected WebContextBuilder webContextBuilder;
 
     @Before
     public void setUp() throws Exception {
@@ -124,6 +136,26 @@ public abstract class AbstractSessionBasedTest extends AbstractMockitoTest {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
 
         SessionHelper.getInstance().setStudyManager(true);
+
+        setUpWebContextBuilder();
+    }
+
+    private void setUpWebContextBuilder() {
+        ScriptSession scriptSession = mock(ScriptSession.class);
+        WebContext context = mock(WebContext.class);
+        when(context.getScriptSession()).thenReturn(scriptSession);
+        when(context.getSession()).thenAnswer(new Answer<HttpSession>() {
+            @Override
+            public HttpSession answer(InvocationOnMock invocation) throws Throwable {
+                MockHttpSession session = new MockHttpSession();
+                DisplayableUserWorkspace workspace = SessionHelper.getInstance().getDisplayableUserWorkspace();
+                workspace.setCurrentStudySubscriptionId(1L);
+                session.putValue("displayableWorkspace", workspace);
+                return session;
+            }
+        });
+        webContextBuilder = mock(WebContextBuilder.class);
+        when(webContextBuilder.get()).thenReturn(context);
     }
 
     protected void setUserAnonymous() {

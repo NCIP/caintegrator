@@ -129,7 +129,7 @@ public class HeatmapAjaxUpdaterTest extends AbstractSessionBasedTest {
         parameters.setQuery(query);
         parameters.setSessionId("sessionId");
         SessionHelper.getInstance().getDisplayableUserWorkspace().setHeatmapParameters(parameters);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        WebContextFactory.setWebContextBuilder(webContextBuilder);
     }
 
     @Test
