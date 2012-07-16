@@ -1246,11 +1246,8 @@
 
     <bean id="dataRefreshJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="dataRefreshJob"/>
-        <!-- Once every day at 11pm for starter.
+        <!-- Once every day at 11pm for starter.-->
         <property name="cronExpression" value="0 0 23 * * ?"/>
-         -->
-         <!-- Run once an hour until QA is finished. -->
-         <property name="cronExpression" value="0 0/60 * * * ?"/>
     </bean>
 
     <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
