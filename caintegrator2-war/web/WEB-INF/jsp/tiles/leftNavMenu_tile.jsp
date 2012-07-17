@@ -32,10 +32,19 @@
                 <li><s:url id="homePageUrl" includeParams="none" action="workspace" />
                     <a href="${ homePageUrl }">Home</a>
                 </li>
-                <li class="stdnav">
-                    <a href='<s:property value="#newQueryUrl" />'>
-                    Search <s:property value="currentStudy.shortTitleText"/></a>
-                </li>
+                <s:if test="anonymousUser && !currentStudy.studyConfiguration.authorizedStudyElementsGroups.isEmpty()">
+                    <li title="Must be logged in to use this feature">
+                        <a class="inActiveLink" style="color: #999999;">
+                            Search <s:property value="currentStudy.shortTitleText"/>
+                        </a>
+                    </li>
+                </s:if>
+                <s:else>
+                    <li class="stdnav">
+                        <a href='<s:property value="#newQueryUrl" />'>
+                        Search <s:property value="currentStudy.shortTitleText"/></a>
+                    </li>
+                </s:else>
                 <s:if test="%{anonymousUser}">
 	                <li title="Must be logged in to use this feature">
 	                    <a class="inActiveLink" style="color: #999999;">Create New List</a>
