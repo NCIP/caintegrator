@@ -3,10 +3,17 @@
 <div id="content">
     <h1 style="color: #FFFFFF; background: #263D6B; padding: 5px;"> editing: <strong><s:property value="studyConfiguration.study.shortTitleText" /></strong>
     </h1>
+    
+    <div class="pagehelp">
+        <a href="javascript:openWikiHelp('3xeSB', '3-ManagingaStudyorPlatform-ManagingStudyAccess')" class="help">
+            &nbsp;
+        </a>
+    </div>
+    
     <h1>
         <s:property value="#subTitleText" />
     </h1>
-
+    
     <div class="form_wrapper_outer">
 
         <table class="data">

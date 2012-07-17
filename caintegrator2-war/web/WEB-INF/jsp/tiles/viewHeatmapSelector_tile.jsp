@@ -28,7 +28,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-AddingorEditingGenomicData')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('DYDnAg', '6-AnalyzingStudies-ViewingDatawithHeatMapViewer')" class="help">
    &nbsp;</a>
     </div>
 
