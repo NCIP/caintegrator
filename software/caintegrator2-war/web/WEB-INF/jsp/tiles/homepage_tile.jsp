@@ -6,8 +6,10 @@
 
     <!--Page Help-->
 
-    <div class="tabhelp" style="margin-right: 0.5em;margin-top: 1.75em;"><a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-WelcometothecaIntegratorWorkspace')" class="help">
-   &nbsp;</a>
+    <div class="tabhelp" style="margin-right: 0.5em;margin-top: 1.75em;">
+        <a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-WelcometothecaIntegratorWorkspace')" class="help">
+            &nbsp;
+        </a>
     </div>
 
     <!--/Page Help-->

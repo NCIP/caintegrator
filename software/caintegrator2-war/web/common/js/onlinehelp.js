@@ -11,7 +11,7 @@ var wikiHelpURL = "https://wiki.nci.nih.gov/x/";
 
 // actually opens the help window
 function openWin(pageURL) {
-    window.open(pageURL,"Help","status,scrollbars,resizable,alwaysRaised,dependent,width=800,height=500");
+    window.open(pageURL,"Help","status,scrollbars,resizable,alwaysRaised,dependent,width=1000,height=800");
 }
 
 // open tutorial window (default; no navigation)
