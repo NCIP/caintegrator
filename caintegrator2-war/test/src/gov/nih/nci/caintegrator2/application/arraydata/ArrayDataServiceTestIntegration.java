@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
@@ -11,30 +12,31 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath*:/**/service-test-integration-config.xml"})
 @Transactional
-public class ArrayDataServiceTestIntegration extends AbstractTransactionalSpringContextTests {
-    
+@TransactionConfiguration(defaultRollback = true)
+public class ArrayDataServiceTestIntegration {
+
+    @Autowired
     private ArrayDataService arrayDataService;
+    @Autowired
     private CaIntegrator2Dao dao;
-    
-    public ArrayDataServiceTestIntegration() {
-        setDefaultRollback(true);
-    }
-    
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/service-test-integration-config.xml"};
-    }
-    
+
     @Test
     public void testLoadGeneLocationFile() throws ValidationException, IOException {
-        GeneLocationConfiguration geneLocationConf = 
+        GeneLocationConfiguration geneLocationConf =
             arrayDataService.loadGeneLocationFile(TestDataFiles.HG18_GENE_LOCATIONS_FILE, GenomeBuildVersionEnum.HG18);
         assertEquals(22404, geneLocationConf.getGeneLocations().size());
-        
-        geneLocationConf = 
+
+        geneLocationConf =
             arrayDataService.loadGeneLocationFile(TestDataFiles.HG19_GENE_LOCATIONS_FILE, GenomeBuildVersionEnum.HG19);
         assertEquals(22397, geneLocationConf.getGeneLocations().size());
     }

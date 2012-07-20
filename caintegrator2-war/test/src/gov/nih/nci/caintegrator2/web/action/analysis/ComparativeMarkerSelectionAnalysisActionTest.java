@@ -88,7 +88,8 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -114,9 +115,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessionBasedTest {
-
     private ComparativeMarkerSelectionAnalysisAction action;
-    private QueryManagementServiceStubComparativeMarker queryManagementService;
     private StudySubscription subscription;
 
     @Override
@@ -124,7 +123,7 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
     public void setUp() throws Exception {
         super.setUp();
         subscription = new StudySubscription();
-        queryManagementService = new QueryManagementServiceStubComparativeMarker();
+
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
@@ -147,6 +146,7 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
 
         setStudySubscription(subscription);
+
         action = new ComparativeMarkerSelectionAnalysisAction();
         action.setAnalysisService(analysisService);
         action.setQueryManagementService(queryManagementService);
@@ -182,13 +182,16 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         assertFalse(action.hasErrors());
 
         // Test platforms
-        queryManagementService.studyHasMultiplePlatforms = false;
+        Set<String> platforms = new HashSet<String>();
+        platforms.add("platform1");
+        when(queryManagementService.retrieveGeneExpressionPlatformsForStudy(any(Study.class))).thenReturn(platforms);
+
         action.prepare();
         assertFalse(action.isStudyHasMultiplePlatforms());
         action.validate();
         assertFalse(action.hasErrors());
 
-        queryManagementService.studyHasMultiplePlatforms = true;
+        platforms.add("platform2");
         action.prepare();
         action.clearErrorsAndMessages();
         assertTrue(action.isStudyHasMultiplePlatforms());
@@ -198,83 +201,73 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         action.getComparativeMarkerSelectionAnalysisForm().setPlatformName("platform1");
         action.validate();
         assertFalse(action.hasErrors());
-
     }
 
     @Test
-    public void testExecute() {
-        testOpen();
+    public void execute() {
+        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.OPEN_ACTION);
+        assertEquals(ActionSupport.SUCCESS, action.execute());
         action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
         assertEquals("status", action.execute());
-        testOpen();
+    }
+
+    @Test
+    public void executeValidResults() throws Exception {
+        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.OPEN_ACTION);
+        assertEquals(ActionSupport.SUCCESS, action.execute());
+
+        when(queryManagementService.execute(any(Query.class))).thenReturn(getValidQueryResults());
         action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
         action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query1");
         action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query2");
-        queryManagementService.setupInvalidQueryResult();
-        assertEquals("input", action.execute());
-        testOpen();
-        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
-        assertTrue(action.hasErrors());
-        action.clearErrorsAndMessages();
-        queryManagementService.setupValidQueryResult();
         assertEquals("status", action.execute());
         assertFalse(action.hasErrors());
     }
 
-    private class QueryManagementServiceStubComparativeMarker extends QueryManagementServiceStub {
-        public boolean studyHasMultiplePlatforms = false;
-
-        private QueryResult queryResult;
-
-        @Override
-        public QueryResult execute(Query query) {
-
-            return queryResult;
-        }
-
-        public void setupValidQueryResult() {
-            queryResult = new QueryResult();
-            queryResult.setRowCollection(new HashSet<ResultRow>());
-            ResultRow row1 = new ResultRow();
-            StudySubjectAssignment assignment1 = new StudySubjectAssignment();
-            row1.setSubjectAssignment(assignment1);
-            SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
-            assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
-
-            ResultRow row2 = new ResultRow();
-            StudySubjectAssignment assignment2 = new StudySubjectAssignment();
-            row2.setSubjectAssignment(assignment2);
-            SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
-            assignment2.getSampleAcquisitionCollection().add(sampleAcquisition2);
-
-            queryResult.getRowCollection().add(row1);
-            queryResult.getRowCollection().add(row2);
-
-        }
-
-        public void setupInvalidQueryResult() {
-            queryResult = new QueryResult();
-            queryResult.setRowCollection(new HashSet<ResultRow>());
-            ResultRow row1 = new ResultRow();
-            StudySubjectAssignment assignment1 = new StudySubjectAssignment();
-            row1.setSubjectAssignment(assignment1);
-            SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
-            assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
-
-            queryResult.getRowCollection().add(row1);
-
-        }
-
-        @Override
-        public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
-            Set<String> platformsInStudy = new HashSet<String>();
-            platformsInStudy.add("Platform1");
-            if (studyHasMultiplePlatforms) {
-                platformsInStudy.add("Platform2");
-            }
-            return platformsInStudy;
-        }
-
+    @Test
+    public void executeInvalidResults() throws Exception {
+        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.OPEN_ACTION);
+        assertEquals(ActionSupport.SUCCESS, action.execute());
+        when(queryManagementService.execute(any(Query.class))).thenReturn(getInvalidQueryResults());
+        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query1");
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query2");
+        assertEquals("input", action.execute());
+        assertTrue(action.hasErrors());
     }
 
+    private QueryResult getValidQueryResults() {
+        QueryResult queryResult = new QueryResult();
+        queryResult.setRowCollection(new HashSet<ResultRow>());
+        ResultRow row1 = new ResultRow();
+        StudySubjectAssignment assignment1 = new StudySubjectAssignment();
+        row1.setSubjectAssignment(assignment1);
+        SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
+        assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
+
+        ResultRow row2 = new ResultRow();
+        StudySubjectAssignment assignment2 = new StudySubjectAssignment();
+        row2.setSubjectAssignment(assignment2);
+        SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
+        assignment2.getSampleAcquisitionCollection().add(sampleAcquisition2);
+
+        queryResult.getRowCollection().add(row1);
+        queryResult.getRowCollection().add(row2);
+        return queryResult;
+    }
+
+    private QueryResult getInvalidQueryResults() {
+        QueryResult queryResult = new QueryResult();
+        queryResult.setRowCollection(new HashSet<ResultRow>());
+
+        StudySubjectAssignment assignment1 = new StudySubjectAssignment();
+        SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
+        assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
+
+        ResultRow row1 = new ResultRow();
+        row1.setSubjectAssignment(assignment1);
+
+        queryResult.getRowCollection().add(row1);
+        return queryResult;
+    }
 }

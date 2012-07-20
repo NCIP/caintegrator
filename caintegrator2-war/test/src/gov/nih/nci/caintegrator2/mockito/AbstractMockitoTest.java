@@ -40,6 +40,8 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
+import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMSampleGroupCriteriaDTO;
+import gov.nih.nci.caintegrator.plots.services.KMPlotService;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractKMParameters;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
@@ -147,6 +149,7 @@ public abstract class AbstractMockitoTest {
     protected AnalysisFileManager analysisFileManager;
     protected FileManager fileManager;
     protected QueryManagementService queryManagementService;
+    protected KMPlotService kmPlotService;
     private StudySubscription studySubscription;
 
     /**
@@ -166,6 +169,7 @@ public abstract class AbstractMockitoTest {
         setUpAnalysisFileManager();
         setUpFileManager();
         setUpQueryManagementService();
+        setUpKmPlotService();
     }
 
     /**
@@ -556,6 +560,11 @@ public abstract class AbstractMockitoTest {
                 return (Query) invocation.getArguments()[0];
             }
         });
+    }
+
+    private void setUpKmPlotService() {
+        kmPlotService = mock(KMPlotService.class);
+        when(kmPlotService.computeLogRankPValueBetween(any(KMSampleGroupCriteriaDTO.class), any(KMSampleGroupCriteriaDTO.class))).thenReturn(1.1);
     }
 
     private void setUpCaArrayFacadeRetrieveData() throws Exception {

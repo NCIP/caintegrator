@@ -105,7 +105,6 @@ import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMCriteriaDTO;
 import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMSampleGroupCriteriaDTO;
-import gov.nih.nci.caintegrator.plots.services.KMPlotService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
@@ -203,8 +202,6 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
 
     private AnalysisService service;
     private GenePatternClientFactory genePatternClientFactory;
-    // KMPlot Items
-    private KMPlotService caIntKMPlotService;
     private DaoForAnalysisServiceStub daoStub = new DaoForAnalysisServiceStub();
     private SessionAnalysisResultsManager sessionAnalysisResultsManager = new SessionAnalysisResultsManager();
 
@@ -268,11 +265,9 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
                 return data;
             }
         });
-        caIntKMPlotService = mock(KMPlotService.class);
-        when(caIntKMPlotService.computeLogRankPValueBetween(any(KMSampleGroupCriteriaDTO.class), any(KMSampleGroupCriteriaDTO.class))).thenReturn(1.1);
         AnalysisServiceImpl serviceImpl = new AnalysisServiceImpl();
-        KMPlotServiceCaIntegratorImpl kmPlotService = new KMPlotServiceCaIntegratorImpl();
-        kmPlotService.setCaIntegratorPlotService(caIntKMPlotService);
+        KMPlotServiceCaIntegratorImpl caKMPlotService = new KMPlotServiceCaIntegratorImpl();
+        caKMPlotService.setCaIntegratorPlotService(kmPlotService);
         GeneExpressionPlotServiceImpl gePlotService = new GeneExpressionPlotServiceImpl();
         FileManagerImpl fileManagerImpl = new FileManagerImpl();
         fileManagerImpl.setConfigurationHelper(configurationHelper);
@@ -286,7 +281,7 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
 
         serviceImpl.setGenePatternClientFactory(genePatternClientFactory);
         serviceImpl.setDao(daoStub);
-        serviceImpl.setKmPlotService(kmPlotService);
+        serviceImpl.setKmPlotService(caKMPlotService);
         serviceImpl.setGePlotService(gePlotService);
         serviceImpl.setQueryManagementService(queryManagementService);
         serviceImpl.setFileManager(fileManager);
@@ -301,6 +296,7 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
 
     }
 
+    @SuppressWarnings("unchecked")
     private void setUpGenePatternClient() throws Exception {
         genePatternClient = mock(GenePatternClient.class);
         when(genePatternClient.runAnalysis(anyString(), anyListOf(ParameterInfo.class))).thenReturn(new JobInfo());
@@ -658,8 +654,8 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         KMPlot kmPlot = service.createKMPlot(subscription, annotationParameters);
 
         assertNotNull(kmPlot);
-        verify(caIntKMPlotService, atLeastOnce()).computeLogRankPValueBetween(any(KMSampleGroupCriteriaDTO.class), any(KMSampleGroupCriteriaDTO.class));
-        verify(caIntKMPlotService, atLeastOnce()).getChart(any(KMCriteriaDTO.class));
+        verify(kmPlotService, atLeastOnce()).computeLogRankPValueBetween(any(KMSampleGroupCriteriaDTO.class), any(KMSampleGroupCriteriaDTO.class));
+        verify(kmPlotService, atLeastOnce()).getChart(any(KMCriteriaDTO.class));
         boolean exceptionCaught = false;
         try { // Try giving no survival value definition.
             annotationParameters.setSurvivalValueDefinition(null);
