@@ -85,6 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.analysis.heatmap.HeatmapParameters;
@@ -134,6 +138,7 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 import gov.nih.nci.caintegrator2.security.AuthorizationManagerFactory;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
@@ -149,37 +154,42 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 
-public abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath*:/**/service-test-integration-config.xml"})
+@TransactionConfiguration(defaultRollback = false)
+public abstract class AbstractDeployStudyTestIntegration extends AbstractMockitoTest {
     private static final String USER_NCIMANAGER = "ncimanager";
     private static final String APPLICATION_CONTEXT_NAME = "caintegrator2";
     private final Logger logger = Logger.getLogger(getClass());
     private long startTime;
 
+    @Autowired
     private StudyManagementService service;
+    @Autowired
     private DeploymentService deploymentService;
+    @Autowired
     private QueryManagementService queryManagementService;
+    @Autowired
     private WorkspaceService workspaceService;
+    @Autowired
+    private CaIntegrator2Dao dao;
+    @Autowired
+    private ArrayDataService arrayDataService;
+    @Autowired
+    private AuthorizationManagerFactory authorizationManagerFactory;
+    @Autowired
+    private FileManager fileManager;
+
     private StudyConfiguration studyConfiguration;
     private DelimitedTextClinicalSourceConfiguration sourceConfiguration;
-    private CaIntegrator2Dao dao;
-    private ArrayDataService arrayDataService;
     private Platform design;
-    private FileManager fileManager;
-    private AuthorizationManagerFactory authorizationManagerFactory;
     private boolean isPublicSubscription = Boolean.FALSE;
-    private Group group1 = new Group();
-    private Group group2 = new Group();
-
-    public AbstractDeployStudyTestIntegration() {
-        setDefaultRollback(false);
-    }
-
-    @Override
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/service-test-integration-config.xml"};
-    }
 
     /**
      * @param caIntegrator2Dao the caIntegrator2Dao to set

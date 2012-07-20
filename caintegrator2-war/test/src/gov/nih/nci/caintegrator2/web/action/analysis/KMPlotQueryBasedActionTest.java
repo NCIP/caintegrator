@@ -93,7 +93,6 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractKMParameters;
-import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
@@ -218,7 +217,7 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
 
     @Test
     public void testGetAllStringPValues() {
-        plotService.setCaIntegratorPlotService(new CaIntegratorKMPlotServiceStub());
+        plotService.setCaIntegratorPlotService(kmPlotService);
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         configuration.setTitle("title");
         configuration.setDurationLabel("duration");

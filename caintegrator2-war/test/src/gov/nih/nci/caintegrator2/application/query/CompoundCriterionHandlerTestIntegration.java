@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -97,25 +97,27 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.mockito.AbstractMockitoTest;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion
  */
-public class CompoundCriterionHandlerTestIntegration extends AbstractTransactionalSpringContextTests {
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath*:/**/dao-test-config.xml"})
+@Transactional
+public class CompoundCriterionHandlerTestIntegration extends AbstractMockitoTest {
+    @Autowired
     private CaIntegrator2Dao dao;
-    private ArrayDataService arrayDataService;
-
-    @Override
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/dao-test-config.xml"};
-    }
 
     @Test
     public void testGetMatches() throws InvalidCriterionException {
@@ -182,26 +184,4 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
                 ResultTypeEnum.GENE_EXPRESSION);
         assertEquals(1, compoundCriterionHandler4.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
     }
-
-    /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
-     */
-    public void setDao(CaIntegrator2Dao caIntegrator2Dao) {
-        this.dao = caIntegrator2Dao;
-    }
-
-    /**
-     * @return the arrayDataService
-     */
-    public ArrayDataService getArrayDataService() {
-        return arrayDataService;
-    }
-
-    /**
-     * @param arrayDataService the arrayDataService to set
-     */
-    public void setArrayDataService(ArrayDataService arrayDataService) {
-        this.arrayDataService = arrayDataService;
-    }
-
 }

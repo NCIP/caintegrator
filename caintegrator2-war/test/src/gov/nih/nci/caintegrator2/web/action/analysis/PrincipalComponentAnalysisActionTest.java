@@ -88,7 +88,8 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -115,9 +116,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTest {
-
     private PrincipalComponentAnalysisAction action;
-    private QueryManagementServiceStubComparativeMarker queryManagementService;
     private StudySubscription subscription;
 
     @Override
@@ -125,7 +124,6 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
     public void setUp() throws Exception {
         super.setUp();
         subscription = new StudySubscription();
-        queryManagementService = new QueryManagementServiceStubComparativeMarker();
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
@@ -178,13 +176,15 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
         assertFalse(action.hasErrors());
 
         // Test platforms
-        queryManagementService.studyHasMultiplePlatforms = false;
+        Set<String> platforms = new HashSet<String>();
+        platforms.add("platform1");
+        when(queryManagementService.retrieveGeneExpressionPlatformsForStudy(any(Study.class))).thenReturn(platforms);
         action.prepare();
         assertFalse(action.isStudyHasMultiplePlatforms());
         action.validate();
         assertFalse(action.hasErrors());
 
-        queryManagementService.studyHasMultiplePlatforms = true;
+        platforms.add("platform2");
         action.prepare();
         action.clearErrorsAndMessages();
         assertTrue(action.isStudyHasMultiplePlatforms());
@@ -198,10 +198,10 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
     }
 
     @Test
-    public void testExecute() {
+    public void testExecute() throws Exception {
         testOpen();
         action.setSelectedAction(PrincipalComponentAnalysisAction.EXECUTE_ACTION);
-        queryManagementService.setupValidQueryResult();
+        when(queryManagementService.execute(any(Query.class))).thenReturn(setupValidQueryResult());
         assertEquals("status", action.execute());
         assertFalse(action.hasErrors());
     }
@@ -215,51 +215,25 @@ public class PrincipalComponentAnalysisActionTest extends AbstractSessionBasedTe
         action.getPrincipalComponentAnalysisForm().setPlatformName("Platform1");
         assertEquals(Action.INPUT, action.execute());
         assertFalse(action.hasErrors());
-
     }
 
-    private class QueryManagementServiceStubComparativeMarker extends QueryManagementServiceStub {
-        public boolean studyHasMultiplePlatforms = false;
+    private QueryResult setupValidQueryResult() {
+        QueryResult queryResult = new QueryResult();
+        queryResult.setRowCollection(new HashSet<ResultRow>());
+        ResultRow row1 = new ResultRow();
+        StudySubjectAssignment assignment1 = new StudySubjectAssignment();
+        row1.setSubjectAssignment(assignment1);
+        SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
+        assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
 
-        private QueryResult queryResult;
+        ResultRow row2 = new ResultRow();
+        StudySubjectAssignment assignment2 = new StudySubjectAssignment();
+        row2.setSubjectAssignment(assignment2);
+        SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
+        assignment2.getSampleAcquisitionCollection().add(sampleAcquisition2);
 
-        @Override
-        public QueryResult execute(Query query) {
-
-            return queryResult;
-        }
-
-        public void setupValidQueryResult() {
-            queryResult = new QueryResult();
-            queryResult.setRowCollection(new HashSet<ResultRow>());
-            ResultRow row1 = new ResultRow();
-            StudySubjectAssignment assignment1 = new StudySubjectAssignment();
-            row1.setSubjectAssignment(assignment1);
-            SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
-            assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
-
-            ResultRow row2 = new ResultRow();
-            StudySubjectAssignment assignment2 = new StudySubjectAssignment();
-            row2.setSubjectAssignment(assignment2);
-            SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
-            assignment2.getSampleAcquisitionCollection().add(sampleAcquisition2);
-
-            queryResult.getRowCollection().add(row1);
-            queryResult.getRowCollection().add(row2);
-
-        }
-
-        @Override
-        public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
-            Set<String> platformsInStudy = new HashSet<String>();
-            platformsInStudy.add("Platform1");
-            if (studyHasMultiplePlatforms) {
-                platformsInStudy.add("Platform2");
-            }
-            return platformsInStudy;
-        }
-
-
+        queryResult.getRowCollection().add(row1);
+        queryResult.getRowCollection().add(row2);
+        return queryResult;
     }
-
 }

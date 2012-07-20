@@ -91,7 +91,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -123,9 +122,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
-
     private GisticAnalysisAction action;
-    private QueryManagementServiceStubGistic queryManagementService;
     private StudySubscription subscription;
 
     @Override
@@ -133,7 +130,6 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
     public void setUp() throws Exception {
         super.setUp();
         subscription = new StudySubscription();
-        queryManagementService = new QueryManagementServiceStubGistic();
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
@@ -208,13 +204,18 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
     }
 
     @Test
-    public void executeValidConnection() {
+    public void execute() {
         testOpen();
         action.setSelectedAction(GisticAnalysisAction.EXECUTE_ACTION);
         when(analysisService.validateGenePatternConnection(any(ServerConnectionProfile.class))).thenReturn(Boolean.TRUE);
         assertEquals("status", action.execute());
+    }
+
+    @Test
+    public void executeValidConnection() throws Exception {
         testOpen();
-        queryManagementService.setupValidQueryResult();
+        when(analysisService.validateGenePatternConnection(any(ServerConnectionProfile.class))).thenReturn(Boolean.TRUE);
+        when(queryManagementService.execute(any(Query.class))).thenReturn(getValidQueryResult());
         action.setSelectedAction(GisticAnalysisAction.EXECUTE_ACTION);
         action.getGisticAnalysisForm().setSelectedQuery("[Q]-query1");
         assertEquals("status", action.execute());
@@ -228,62 +229,38 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         assertEquals("input", action.execute());
     }
 
-    private class QueryManagementServiceStubGistic extends QueryManagementServiceStub {
-        private QueryResult queryResult;
+    private QueryResult getValidQueryResult() {
+        QueryResult queryResult = new QueryResult();
+        queryResult.setRowCollection(new HashSet<ResultRow>());
+        ResultRow row1 = new ResultRow();
+        StudySubjectAssignment assignment1 = new StudySubjectAssignment();
+        row1.setSubjectAssignment(assignment1);
+        SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
+        Sample sample1 = new Sample();
+        ArrayData arrayData1 = new ArrayData();
+        sample1.getArrayDataCollection().add(arrayData1);
+        Platform platform = new Platform();
+        ReporterList reporterList = platform.addReporterList("test", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        reporterList.setGenomeVersion("hg18");
+        arrayData1.getReporterLists().add(reporterList);
+        sampleAcquisition1.setSample(sample1);
+        assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
+        row1.setSampleAcquisition(sampleAcquisition1);
 
-        @Override
-        public QueryResult execute(Query query) {
+        ResultRow row2 = new ResultRow();
+        StudySubjectAssignment assignment2 = new StudySubjectAssignment();
+        row2.setSubjectAssignment(assignment2);
+        SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
+        Sample sample2 = new Sample();
+        ArrayData arrayData2 = new ArrayData();
+        arrayData2.getReporterLists().add(reporterList);
+        sample2.getArrayDataCollection().add(arrayData1);
+        sampleAcquisition2.setSample(sample2);
+        assignment2.getSampleAcquisitionCollection().add(sampleAcquisition2);
+        row2.setSampleAcquisition(sampleAcquisition2);
 
-            return queryResult;
-        }
-
-        public void setupValidQueryResult() {
-            queryResult = new QueryResult();
-            queryResult.setRowCollection(new HashSet<ResultRow>());
-            ResultRow row1 = new ResultRow();
-            StudySubjectAssignment assignment1 = new StudySubjectAssignment();
-            row1.setSubjectAssignment(assignment1);
-            SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
-            Sample sample1 = new Sample();
-            ArrayData arrayData1 = new ArrayData();
-            sample1.getArrayDataCollection().add(arrayData1);
-            Platform platform = new Platform();
-            ReporterList reporterList = platform.addReporterList("test", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-            reporterList.setGenomeVersion("hg18");
-            arrayData1.getReporterLists().add(reporterList);
-            sampleAcquisition1.setSample(sample1);
-            assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
-            row1.setSampleAcquisition(sampleAcquisition1);
-
-            ResultRow row2 = new ResultRow();
-            StudySubjectAssignment assignment2 = new StudySubjectAssignment();
-            row2.setSubjectAssignment(assignment2);
-            SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
-            Sample sample2 = new Sample();
-            ArrayData arrayData2 = new ArrayData();
-            arrayData2.getReporterLists().add(reporterList);
-            sample2.getArrayDataCollection().add(arrayData1);
-            sampleAcquisition2.setSample(sample2);
-            assignment2.getSampleAcquisitionCollection().add(sampleAcquisition2);
-            row2.setSampleAcquisition(sampleAcquisition2);
-
-            queryResult.getRowCollection().add(row1);
-            queryResult.getRowCollection().add(row2);
-
-        }
-
-        @SuppressWarnings("unused")
-        public void setupInvalidQueryResult() {
-            queryResult = new QueryResult();
-            queryResult.setRowCollection(new HashSet<ResultRow>());
-            ResultRow row1 = new ResultRow();
-            StudySubjectAssignment assignment1 = new StudySubjectAssignment();
-            row1.setSubjectAssignment(assignment1);
-            SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
-            assignment1.getSampleAcquisitionCollection().add(sampleAcquisition1);
-
-            queryResult.getRowCollection().add(row1);
-        }
+        queryResult.getRowCollection().add(row1);
+        queryResult.getRowCollection().add(row2);
+        return queryResult;
     }
-
 }
