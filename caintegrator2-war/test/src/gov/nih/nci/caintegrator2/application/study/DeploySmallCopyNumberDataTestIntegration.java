@@ -112,7 +112,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 2880)
+@Transactional
 public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStudyTestIntegration {
 
     private final static Logger LOGGER = Logger.getLogger(DeploySmallCopyNumberDataTestIntegration.class);
