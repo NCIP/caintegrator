@@ -1189,17 +1189,16 @@
             <ref local="sessionFactory"/>
         </property>
     </bean>
-
+    
     <bean id="configurationHelper" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperImpl">
         <property name="dataSource">
             <ref local="dataSource"/>
         </property>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <bean id="sessionFactory"
-        class="gov.nih.nci.caintegrator2.data.SecureSessionFactory">
+    <bean id="sessionFactory" class="gov.nih.nci.caintegrator2.data.SecureSessionFactory">
         <property name="dataSource">
             <ref local="dataSource"/>
         </property>
@@ -1223,8 +1222,7 @@
     </bean>
 
     <bean id="gridDiscoveryServiceTask" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass"
-            value="gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob" />
+        <property name="jobClass" value="gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob" />
         <property name="jobDataAsMap">
             <map>
                 <entry key="gridDiscoveryClient" value-ref="gridDiscoveryClient"/>
@@ -1246,11 +1244,12 @@
 
     <bean id="dataRefreshJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="dataRefreshJob"/>
-        <!-- Once every day at 11pm for starter.
+        <!-- Once every day at 11pm for starter.-->
         <property name="cronExpression" value="0 0 23 * * ?"/>
-         -->
          <!-- Run once an hour until QA is finished. -->
+         <!-- 
          <property name="cronExpression" value="0 0/60 * * * ?"/>
+         -->
     </bean>
 
     <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">

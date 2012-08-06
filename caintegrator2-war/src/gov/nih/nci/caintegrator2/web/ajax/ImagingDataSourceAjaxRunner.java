@@ -130,18 +130,18 @@ public class ImagingDataSourceAjaxRunner implements Runnable {
     @Override
     public void run() {
         setupSession();
-        updater.updateJobStatus(username, imagingSource);
+        updater.updateJobStatus(username, imageDataSourceId);
         if (loadAimAnnotation) {
             runLoadAimAnnotation();
         } else {
             mapImaging();
         }
-        updater.updateJobStatus(username, imagingSource);
+        updater.updateJobStatus(username, imageDataSourceId);
     }
 
     private void runLoadAimAnnotation() {
         try {
-            updater.getStudyManagementService().loadAimAnnotations(imagingSource);
+            updater.getStudyManagementService().loadAimAnnotations(imageDataSourceId);
         } catch (ConnectionException e) {
             addError("The configured AIM server couldn't be reached. Please check the configuration settings.", e);
         } catch (ValidationException e) {

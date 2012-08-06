@@ -96,6 +96,7 @@ import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -837,6 +838,7 @@ public class StudyManagementServiceTest extends AbstractSecurityEnabledMockitoTe
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        imageDataSourceConfiguration.setId(1L);
         imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
         ImageSeriesAcquisition acquisition = new ImageSeriesAcquisition();
         acquisition.setSeriesCollection(new HashSet<ImageSeries>());
@@ -849,7 +851,15 @@ public class StudyManagementServiceTest extends AbstractSecurityEnabledMockitoTe
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition);
         studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(new ImageAnnotationConfiguration());
-        studyManagementService.loadAimAnnotations(imageDataSourceConfiguration);
+        imageDataSourceConfiguration.getImageAnnotationConfiguration().setUploadType(ImageAnnotationUploadType.AIM);
+
+
+        when(dao.get(anyLong(), eq(ImageDataSourceConfiguration.class))).thenReturn(imageDataSourceConfiguration);
+
+        studyManagementService.setDao(dao);
+        studyManagementService.loadAimAnnotations(imageDataSourceConfiguration.getId());
+
+
         assertEquals(1, studyConfiguration.getStudy().getAnnotationGroups().size());
         assertEquals(2, studyConfiguration.getStudy().getAnnotationGroup("Group").getAnnotationFieldDescriptors().
                 iterator().next().getDefinition().getAnnotationValueCollection().size()); // 2 values, one for each image series.
