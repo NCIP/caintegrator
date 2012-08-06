@@ -638,7 +638,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
     @Override
-    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource)
+    public void loadAimAnnotations(Long imageSourceId)
     throws ConnectionException, ValidationException {
         loadAimAnnotationsCalled = true;
         if (throwConnectionException) {

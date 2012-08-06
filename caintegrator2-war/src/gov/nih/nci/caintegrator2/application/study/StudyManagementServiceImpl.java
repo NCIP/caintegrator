@@ -1035,13 +1035,9 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.NOT_SUPPORTED,
-            rollbackFor = {ConnectionException.class, ValidationException.class })
-    // Using Propagation.NOT_SUPPORTED because when it was being run it wouldn't always save the
-    // AnnotationValue.AnnotationDefinition or AnnotationValue.ImageSeries, so when it's outside
-    // of the transaction and using a daoSave it correctly saves the objects
-    public void loadAimAnnotations(ImageDataSourceConfiguration imageSource)
-        throws ConnectionException, ValidationException {
+    @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
+    public void loadAimAnnotations(Long imageSourceId) throws ConnectionException, ValidationException {
+        ImageDataSourceConfiguration imageSource = getRefreshedImageSource(imageSourceId);
         List<ImageSeries> imageSeriesCollection = new ArrayList<ImageSeries>();
         for (ImageSeriesAcquisition imageSeriesAcquisition : imageSource.getImageSeriesAcquisitions()) {
             for (ImageSeries imageSeries : imageSeriesAcquisition.getSeriesCollection()) {

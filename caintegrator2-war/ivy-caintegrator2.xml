@@ -148,7 +148,6 @@
     <dependency org="weka" name="weka" rev="3.4.13" conf="runtime"/>
     <dependency org="org.directwebremoting" name="dwr" rev="2.0.6" conf="runtime->master" />
     <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" conf="runtime->master" />
-    <dependency org="org.apache.axis2" name="axis2-saaj" rev="1.1" conf="runtime->default" />
     
     <!-- caGrid 1.4 stuff -->
     <dependency org="gov.nih.nci.cagrid" name="cagrid-data-utils" rev="1.4" conf="runtime->default" />
