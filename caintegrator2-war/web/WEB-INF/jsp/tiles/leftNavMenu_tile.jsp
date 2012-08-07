@@ -24,6 +24,9 @@
     
     <s:set name="sessionHelper" value="#session['sessionHelper']" />
     
+    <s:set name="isUserNotLoggedIn" 
+        value="anonymousUser && !currentStudy.studyConfiguration.authorizedStudyElementsGroups.isEmpty()"/>
+    
     <s:if test="studySubscription != null">    
     <ul class="menu">
         <li class="stdnavforinvestigator">
@@ -32,7 +35,7 @@
                 <li><s:url id="homePageUrl" includeParams="none" action="workspace" />
                     <a href="${ homePageUrl }">Home</a>
                 </li>
-                <s:if test="anonymousUser && !currentStudy.studyConfiguration.authorizedStudyElementsGroups.isEmpty()">
+                <s:if test="isUserNotLoggedIn">
                     <li title="Must be logged in to use this feature">
                         <a class="inActiveLink" style="color: #999999;">
                             Search <s:property value="currentStudy.shortTitleText"/>
@@ -406,12 +409,23 @@
         
         <li class="stdnavforinvestigator"><div>Analysis Tools</div>
             <ul>
-                <li>
-                    <s:url id="kmPlotUrl" includeParams="none" action="initializeKmPlot" />
-                    <a href="${ kmPlotUrl }">KM Plot</a></li>
-                <li>
-                    <s:url id="gePlotUrl" includeParams="none" action="initializeGePlot" />
-                    <a href="${ gePlotUrl }">Gene Expression Plot</a></li>
+                <s:if test="isUserNotLoggedIn">
+                    <li title="Must be logged in to use this feature">
+                        <a class="inActiveLink" style="color: #999999;">KM Plot</a>
+                    </li>
+                    <li title="Must be logged in to use this feature">
+                         <a class="inActiveLink" style="color: #999999;">Gene Expression Plot</a>
+                    </li>
+                </s:if>
+                <s:else>
+                    <li>
+                        <s:url id="kmPlotUrl" includeParams="none" action="initializeKmPlot" />
+                        <a href="${ kmPlotUrl }">KM Plot</a></li>
+                    <li>
+                        <s:url id="gePlotUrl" includeParams="none" action="initializeGePlot" />
+                        <a href="${ gePlotUrl }">Gene Expression Plot</a>
+                    </li>
+                </s:else>
                 <s:if test="%{anonymousUser}">    
                     <li title="Must be logged in to use this feature" >
                     <a class="inActiveLink" style="color: #999999;">GenePattern Analysis</a></li>
