@@ -625,12 +625,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     @Override
     @Transactional(rollbackFor = {ValidationException.class, IOException.class })
     public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile,
-            GenomicDataSourceConfiguration genomicSource)
-        throws ValidationException, IOException {
+            GenomicDataSourceConfiguration genomicSource) throws ValidationException, IOException {
         unmapSamples(genomicSource);
         new SampleMappingHelper(studyConfiguration, mappingFile, genomicSource).mapSamples();
-        if (!Status.LOADED.equals(genomicSource.getStatus())
-                || !ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
+        if (genomicSource.getStatus() != Status.LOADED
+                || genomicSource.getLoadingType() != ArrayDataLoadingTypeEnum.PARSED_DATA) {
             genomicSource.setStatus(genomicSource.getMappedSamples().isEmpty()
                 ? Status.NOT_MAPPED : Status.READY_FOR_LOAD);
             studyConfiguration.setStatus(Status.NOT_DEPLOYED);
@@ -641,8 +640,8 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     private void unmapSamples(GenomicDataSourceConfiguration genomicSource) {
         for (Sample sample : genomicSource.getSamples()) {
             sample.removeSampleAcquisitionAssociations();
-            if (!ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())
-                    || PlatformDataTypeEnum.COPY_NUMBER.equals(genomicSource.getDataType())) {
+            if (ArrayDataLoadingTypeEnum.PARSED_DATA != genomicSource.getLoadingType()
+                    || PlatformDataTypeEnum.COPY_NUMBER == genomicSource.getDataType()) {
                 for (Array array : sample.getArrayCollection()) {
                     array.getSampleCollection().remove(sample);
                     if (array.getSampleCollection().isEmpty()) {
@@ -650,6 +649,11 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     }
                 }
                 sample.clearArrayData();
+            }
+            if (sample.getSampleAcquisition() != null) {
+                SampleAcquisition sa = sample.getSampleAcquisition();
+                sample.setSampleAcquisition(null);
+                getDao().delete(sa);
             }
         }
     }

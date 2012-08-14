@@ -17,7 +17,7 @@
 			<key column="STUDY_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.translational.Timepoint"/>
 		</set>
-        <set name="assignmentCollection" lazy="true" cascade="all" >
+        <set name="assignmentCollection" lazy="true" cascade="all-delete-orphan">
             <cache usage="read-write" />
             <key column="STUDY_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment"/>

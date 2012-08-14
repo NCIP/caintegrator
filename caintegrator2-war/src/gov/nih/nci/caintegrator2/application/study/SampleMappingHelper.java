@@ -121,9 +121,8 @@ class SampleMappingHelper {
     void mapSamples() throws ValidationException, IOException {
         CSVReader reader = new CSVReader(new FileReader(mappingFile));
         String[] values;
-        int columnNumber = (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType()))
-            ? PARSED_DATA_SAMPLE_MAPPING_COLUMN
-            : genomicSource.getPlatformVendor().getSampleMappingColumns();
+        int columnNumber = ArrayDataLoadingTypeEnum.PARSED_DATA == genomicSource.getLoadingType()
+            ? PARSED_DATA_SAMPLE_MAPPING_COLUMN : genomicSource.getPlatformVendor().getSampleMappingColumns();
         while ((values = Cai2Util.readDataLine(reader)) != null) {
             if (values.length < columnNumber) {
                 throw new ValidationException("Invalid file format - Expect at least " + columnNumber
@@ -161,7 +160,11 @@ class SampleMappingHelper {
     private void map(StudySubjectAssignment subjectAssignment, Sample sample) {
         SampleAcquisition sampleAcquisition = new SampleAcquisition();
         sampleAcquisition.setSample(sample);
+        sampleAcquisition.setAssignment(subjectAssignment);
         sample.setSampleAcquisition(sampleAcquisition);
+
+        //Remove the below call once we have a saner way of checking if samples have been mapped that doesn't rely on
+        //checking mapped samples before they are persisted.
         subjectAssignment.getSampleAcquisitionCollection().add(sampleAcquisition);
     }
 
