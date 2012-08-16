@@ -161,7 +161,7 @@ public class GenomicStudyHelper {
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
         sample.setGenomicDataSource(genomicDataSourceConfiguration);
-        sample.setSampleAcquisition(acquisition);
+        sample.getSampleAcquisitions().add(acquisition);
         Array array = new Array();
         array.setPlatform(platform);
         ArrayData arrayData = new ArrayData();

@@ -227,9 +227,12 @@ public class ArrayDataServiceTest extends AbstractMockitoTest {
         arrayData.setSample(new Sample());
         arrayData.setArray(new Array());
         arrayData.getReporterLists().add(reporterList);
-        arrayData.getSample().setSampleAcquisition(new SampleAcquisition());
-        arrayData.getSample().getSampleAcquisition().setAssignment(new StudySubjectAssignment());
-        arrayData.getSample().getSampleAcquisition().getAssignment().setStudy(study);
+
+        SampleAcquisition sa = new SampleAcquisition();
+        sa.setAssignment(new StudySubjectAssignment());
+        sa.getAssignment().setStudy(study);
+
+        arrayData.getSample().getSampleAcquisitions().add(sa);
         return arrayData;
     }
 

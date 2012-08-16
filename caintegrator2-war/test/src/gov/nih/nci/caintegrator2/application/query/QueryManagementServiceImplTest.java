@@ -317,7 +317,7 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
         acquisition.setAssignment(assignment);
-        sample.setSampleAcquisition(acquisition);
+        sample.getSampleAcquisitions().add(acquisition);
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         genomicDataSourceConfiguration.setExperimentIdentifier(EXP_ID);
         study.getStudyConfiguration().getGenomicDataSources().add(genomicDataSourceConfiguration);

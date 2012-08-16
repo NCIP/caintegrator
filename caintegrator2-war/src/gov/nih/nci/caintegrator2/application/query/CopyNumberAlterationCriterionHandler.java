@@ -106,6 +106,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+
 /**
  *
  */
@@ -144,8 +146,8 @@ public final class CopyNumberAlterationCriterionHandler extends AbstractCriterio
         ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
         Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
         for (SegmentData segmentData : segmentDatas) {
-            if (segmentData.getArrayData().getSample().getSampleAcquisition() != null) {
-                sampleAcquisitions.add(segmentData.getArrayData().getSample().getSampleAcquisition());
+            if (CollectionUtils.isNotEmpty(segmentData.getArrayData().getSample().getSampleAcquisitions())) {
+                sampleAcquisitions.addAll(segmentData.getArrayData().getSample().getSampleAcquisitions());
             }
         }
         return rowFactory.getSampleRows(sampleAcquisitions);

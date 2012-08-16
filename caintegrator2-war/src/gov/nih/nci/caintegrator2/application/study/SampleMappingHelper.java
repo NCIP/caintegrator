@@ -161,7 +161,7 @@ class SampleMappingHelper {
         SampleAcquisition sampleAcquisition = new SampleAcquisition();
         sampleAcquisition.setSample(sample);
         sampleAcquisition.setAssignment(subjectAssignment);
-        sample.setSampleAcquisition(sampleAcquisition);
+        sample.getSampleAcquisitions().add(sampleAcquisition);
 
         //Remove the below call once we have a saner way of checking if samples have been mapped that doesn't rely on
         //checking mapped samples before they are persisted.

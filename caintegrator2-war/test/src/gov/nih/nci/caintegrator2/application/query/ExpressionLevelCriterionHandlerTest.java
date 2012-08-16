@@ -155,7 +155,7 @@ public class ExpressionLevelCriterionHandlerTest extends AbstractMockitoTest {
         reporterList.getArrayDatas().add(arrayData);
         reporterList.addReporter(new GeneExpressionReporter());
         arrayData.setSample(sample);
-        sample.setSampleAcquisition(acquisition);
+        sample.getSampleAcquisitions().add(acquisition);
         sample.getArrayDataCollection().add(arrayData);
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);
