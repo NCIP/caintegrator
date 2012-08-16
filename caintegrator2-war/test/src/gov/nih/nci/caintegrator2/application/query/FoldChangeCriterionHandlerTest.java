@@ -159,7 +159,7 @@ public class FoldChangeCriterionHandlerTest extends AbstractMockitoTest {
         arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
         arrayData.setSample(sample);
-        sample.setSampleAcquisition(acquisition);
+        sample.getSampleAcquisitions().add(acquisition);
         sample.getArrayDataCollection().add(arrayData);
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);

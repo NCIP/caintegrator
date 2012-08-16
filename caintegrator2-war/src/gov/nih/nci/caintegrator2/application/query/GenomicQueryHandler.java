@@ -179,7 +179,8 @@ class GenomicQueryHandler {
             CompoundCriterionHandler criterionHandler) {
 
         GenomicDataResultColumn column = result.addColumn();
-        column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
+        //Just take the 1st sample aquisition
+        column.setSampleAcquisition(arrayData.getSample().getSampleAcquisitions().iterator().next());
         for (SegmentData segmentData : segmentDataToRowMap.keySet()) {
             if (segmentData.getArrayData().equals(arrayData)) {
                 GenomicDataResultRow row = segmentDataToRowMap.get(segmentData);
@@ -246,7 +247,8 @@ class GenomicQueryHandler {
                 query.getCompoundCriterion(), query.getResultType());
         result.setHasCriterionSpecifiedValues(criterionHandler.hasCriterionSpecifiedReporterValues());
         GenomicDataResultColumn column = result.addColumn();
-        column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
+        //Take the 1st sample acquisition
+        column.setSampleAcquisition(arrayData.getSample().getSampleAcquisitions().iterator().next());
         for (AbstractReporter reporter : values.getReporters()) {
             if (query.isNeedsGenomicHighlighting()) {
                 HibernateUtil.loadCollection(reporter.getGenes());

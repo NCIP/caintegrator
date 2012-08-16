@@ -542,7 +542,7 @@ public class StudyHelper {
      */
     private void createGenomicData(SampleAcquisition sampleAcquisition, int sampleNum, Array array, Study study) {
         Sample sample = new Sample();
-        sample.setSampleAcquisition(sampleAcquisition);
+        sample.getSampleAcquisitions().add(sampleAcquisition);
         sampleAcquisition.setSample(sample);
         sample.setName("SAMPLE_" + sampleNum);
         ArrayData arrayData = createArrayData(sampleNum);

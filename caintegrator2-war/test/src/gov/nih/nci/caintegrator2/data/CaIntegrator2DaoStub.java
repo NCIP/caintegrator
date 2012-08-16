@@ -382,7 +382,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes" })
     public void removeObjects(Collection objects) {
         removeObjectsCalled = true;
     }

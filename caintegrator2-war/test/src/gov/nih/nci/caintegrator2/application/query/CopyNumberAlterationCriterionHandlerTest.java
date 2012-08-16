@@ -149,7 +149,7 @@ public class CopyNumberAlterationCriterionHandlerTest extends AbstractMockitoTes
         arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
         arrayData.setSample(sample);
-        sample.setSampleAcquisition(acquisition);
+        sample.getSampleAcquisitions().add(acquisition);
         sample.getArrayDataCollection().add(arrayData);
         segmentData = new SegmentData();
         arrayData.getSegmentDatas().add(segmentData);

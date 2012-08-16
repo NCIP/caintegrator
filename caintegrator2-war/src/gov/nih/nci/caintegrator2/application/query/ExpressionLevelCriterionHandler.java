@@ -156,7 +156,7 @@ public final class ExpressionLevelCriterionHandler extends AbstractCriterionHand
         Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
         for (ArrayData arrayData : values.getArrayDatas()) {
             if (hasExpressionLevelMatch(arrayData, values)) {
-                sampleAcquisitions.add(arrayData.getSample().getSampleAcquisition());
+                sampleAcquisitions.addAll(arrayData.getSample().getSampleAcquisitions());
             }
         }
         return rowFactory.getSampleRows(sampleAcquisitions);

@@ -390,6 +390,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         sample.getArrayDataCollection().add(arrayData);
         arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
+        dao.save(sample);
         dao.save(study);
         dao.save(gene);
         Set<String> geneSymbols = new HashSet<String>();

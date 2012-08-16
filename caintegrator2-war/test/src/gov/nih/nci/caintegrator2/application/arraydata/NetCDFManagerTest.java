@@ -430,9 +430,11 @@ public class NetCDFManagerTest extends AbstractMockitoTest {
         arrayData.setStudy(study);
         arrayData.setId(nextArrayDataId++);
         arrayData.setSample(new Sample());
-        arrayData.getSample().setSampleAcquisition(new SampleAcquisition());
-        arrayData.getSample().getSampleAcquisition().setAssignment(new StudySubjectAssignment());
-        arrayData.getSample().getSampleAcquisition().getAssignment().setStudy(study);
+
+        SampleAcquisition sa = new SampleAcquisition();
+        sa.setAssignment(new StudySubjectAssignment());
+        sa.getAssignment().setStudy(study);
+        arrayData.getSample().getSampleAcquisitions().add(sa);
         return arrayData;
     }
 

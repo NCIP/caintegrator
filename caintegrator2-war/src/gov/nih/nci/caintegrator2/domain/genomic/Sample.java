@@ -2,7 +2,6 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collections;
 import java.util.Date;
@@ -20,7 +19,7 @@ public class Sample extends AbstractCaIntegrator2Object {
 
     private String name;
     private GenomicDataSourceConfiguration genomicDataSource;
-    private SampleAcquisition sampleAcquisition;
+    private Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
     private Set<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
     private Set<Array> arrayCollection = new HashSet<Array>();
     private Set<AbstractReporter> reportersHighVariance = new HashSet<AbstractReporter>();
@@ -43,17 +42,17 @@ public class Sample extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the sampleAcquisition
+     * @return the sampleAcquisitions
      */
-    public SampleAcquisition getSampleAcquisition() {
-        return sampleAcquisition;
+    public Set<SampleAcquisition> getSampleAcquisitions() {
+        return sampleAcquisitions;
     }
 
     /**
-     * @param sampleAcquisition the sampleAcquisition to set
+     * @param sampleAcquisitions the sampleAcquisitions to set
      */
-    public void setSampleAcquisition(SampleAcquisition sampleAcquisition) {
-        this.sampleAcquisition = sampleAcquisition;
+    public void setSampleAcquisitions(Set<SampleAcquisition> sampleAcquisitions) {
+        this.sampleAcquisitions = sampleAcquisitions;
     }
 
     /**
@@ -131,27 +130,6 @@ public class Sample extends AbstractCaIntegrator2Object {
      */
     public void setGenomicDataSource(GenomicDataSourceConfiguration genomicDataSource) {
         this.genomicDataSource = genomicDataSource;
-    }
-
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        if (getSampleAcquisition() != null) {
-            return getSampleAcquisition().getStudy();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Removes the associations from the Sample Acquisition.
-     */
-    public void removeSampleAcquisitionAssociations() {
-        if (sampleAcquisition != null && sampleAcquisition.getAssignment() != null) {
-            sampleAcquisition.getAssignment().getSampleAcquisitionCollection().remove(sampleAcquisition);
-            sampleAcquisition.setAssignment(null);
-        }
     }
 
     /**

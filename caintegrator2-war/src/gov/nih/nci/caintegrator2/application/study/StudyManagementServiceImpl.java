@@ -510,7 +510,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             if (sampleAcquisition.getTimepoint() != null) {
                 sampleAcquisition.getTimepoint().getSampleAcquisitionCollection().clear();
             }
-            sampleAcquisition.getSample().setSampleAcquisition(null);
             for (AbstractAnnotationValue annotationValue : sampleAcquisition.getAnnotationCollection()) {
                 annotationValue.setSampleAcquisition(null);
             }
@@ -563,7 +562,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
         }
         for (Sample sample : genomicSource.getSamples()) {
-            sample.removeSampleAcquisitionAssociations();
+            sample.getSampleAcquisitions().clear();
             for (Array array : sample.getArrayCollection()) {
                 array.getSampleCollection().remove(sample);
                 if (array.getSampleCollection().isEmpty()) {
@@ -572,7 +571,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
             }
             sample.clearArrayData();
         }
-        getDao().refresh(genomicSource); // refresh to prevent hibernate resave error
         getDao().delete(genomicSource);
     }
 
@@ -639,7 +637,6 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
 
     private void unmapSamples(GenomicDataSourceConfiguration genomicSource) {
         for (Sample sample : genomicSource.getSamples()) {
-            sample.removeSampleAcquisitionAssociations();
             if (ArrayDataLoadingTypeEnum.PARSED_DATA != genomicSource.getLoadingType()
                     || PlatformDataTypeEnum.COPY_NUMBER == genomicSource.getDataType()) {
                 for (Array array : sample.getArrayCollection()) {
@@ -649,11 +646,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     }
                 }
                 sample.clearArrayData();
-            }
-            if (sample.getSampleAcquisition() != null) {
-                SampleAcquisition sa = sample.getSampleAcquisition();
-                sample.setSampleAcquisition(null);
-                getDao().delete(sa);
+                sample.getSampleAcquisitions().clear();
             }
         }
     }
