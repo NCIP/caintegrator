@@ -15,7 +15,7 @@
 
         <tr>
             <td class="label"><label for="searchname">Query Name:</label></td>
-            <td class="value"><s:textfield id="saveName" label="Search Name" name="queryForm.query.name" theme="simple" /></td>
+            <td class="value"><s:textfield id="saveName" label="Search Name" name="queryForm.query.name" length="100" theme="simple" /></td>
         </tr>
         <tr>
             <td class="label"><label for="searchdesc">Query Description:</label></td>

@@ -44,8 +44,7 @@
                             <s:hidden name="selectedAction" />
                             <s:hidden name="listOldName" />
                             <s:hidden name="globalList" />
-                            <s:textfield id="listName" name="listName" label="Subject List Name"
-                                theme="css_xhtml" /><br>
+                            <s:textfield id="listName" name="listName" label="Subject List Name" size="100" theme="css_xhtml" /><br>
                                 
                             <div class="wwgrp" >
                                 <div class="wwlbl" >

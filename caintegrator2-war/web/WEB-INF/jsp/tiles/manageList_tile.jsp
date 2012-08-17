@@ -54,8 +54,7 @@
                         <s:hidden name="selectedAction" />
                         <table>
                             <tr>
-                                <td><s:textfield id="listName" name="listName" label="List Name"
-                                    theme="css_xhtml" required="true"/></td>
+                                <td><s:textfield id="listName" name="listName" label="List Name" size="100" theme="css_xhtml" required="true"/></td>
                             </tr>
                             <tr>
                                 <td><s:textarea label="List Description" name="description"

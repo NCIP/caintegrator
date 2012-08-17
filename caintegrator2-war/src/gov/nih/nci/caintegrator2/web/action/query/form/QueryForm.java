@@ -114,6 +114,8 @@ import com.opensymphony.xwork2.ValidationAware;
  * Top-level UI element for query management.
  */
 public class QueryForm {
+    private static final int QUERY_NAME_LENGTH = 100;
+    private static final int QUERY_DESCRIPTION_LENGTH = 200;
 
     private StudyManagementService studyManagementService;
     private Query query;
@@ -286,13 +288,22 @@ public class QueryForm {
     public void validateForSave(ValidationAware action) {
         validate(action);
         validateQueryName(action);
+        validateQueryDescription(action);
     }
 
     private void validateQueryName(ValidationAware action) {
         if (StringUtils.isBlank(getQuery().getName())) {
             action.addActionError("Query Name is required.");
+        } else if (StringUtils.length(getQuery().getName()) > QUERY_NAME_LENGTH) {
+            action.addActionError("Query Name must be " + QUERY_NAME_LENGTH + " characters or less.");
         } else {
             validateUniqueQueryName(action);
+        }
+    }
+
+    private void validateQueryDescription(ValidationAware action) {
+        if (StringUtils.length(getQuery().getDescription()) > QUERY_DESCRIPTION_LENGTH) {
+            action.addActionError("Query Description must be " + QUERY_DESCRIPTION_LENGTH + " characters or less.");
         }
     }
 

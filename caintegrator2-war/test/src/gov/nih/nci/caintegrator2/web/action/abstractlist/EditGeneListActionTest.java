@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import java.util.HashMap;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -154,18 +155,34 @@ public class EditGeneListActionTest extends AbstractSessionBasedTest {
     }
 
     @Test
-    public void testAll() {
+    public void validate() {
         action.setVisibleToOther(false);
         action.setSelectedAction(EditGeneListAction.EDIT_ACTION);
         action.validate();
         assertTrue(action.hasActionErrors());
 
+        action.setSelectedAction(EditGeneListAction.SAVE_ACTION);
+        action.setListName(RandomStringUtils.randomAlphabetic(150));
+        action.validate();
+        assertFalse(action.hasActionErrors());
+        assertTrue(action.hasFieldErrors());
+        assertEquals(1, action.getFieldErrors().size());
+        action.clearErrorsAndMessages();
+
         action.setListName("List1");
         action.validate();
         assertFalse(action.hasActionErrors());
+        assertTrue(action.hasFieldErrors());
+    }
+
+    @Test
+    public void testAll() {
+        action.setVisibleToOther(false);
+        action.setSelectedAction(EditGeneListAction.EDIT_ACTION);
+        action.setListName("List1");
+        action.validate();
 
         assertEquals(15, action.getGeneSymbolListing().length());
-
         assertEquals(EditGeneListAction.SUCCESS, action.execute());
 
         action.setSelectedAction(EditGeneListAction.SAVE_ACTION);
