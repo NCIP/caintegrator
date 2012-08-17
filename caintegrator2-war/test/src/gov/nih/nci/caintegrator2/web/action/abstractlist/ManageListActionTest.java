@@ -121,7 +121,7 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
     }
 
     @Test
-    public void testAll() throws Exception {
+    public void validate() {
         action.setVisibleToOther(false);
         // Test Validate
         action.validate();
@@ -129,6 +129,13 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         action.setSelectedAction("createList");
         action.validate();
         assertTrue(action.hasFieldErrors());
+
+        action.setListName(RandomStringUtils.randomAlphabetic(150));
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        assertFalse(action.hasActionErrors());
+        assertEquals(1, action.getFieldErrors().size());
+
         action.setListName("Test");
         action.validate();
         assertFalse(action.hasFieldErrors());
@@ -161,7 +168,10 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         action.setListFileContentType("application/vnd.ms-excel");
         action.validate();
         assertEquals(6, action.getElementList().size());
+    }
 
+    @Test
+    public void testAll() throws Exception {
         // Test execute
         action.setDescription("Test description");
         action.setSelectedAction("createList");

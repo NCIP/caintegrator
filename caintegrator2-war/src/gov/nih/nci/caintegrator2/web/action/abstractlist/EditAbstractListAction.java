@@ -100,6 +100,7 @@ import org.apache.commons.lang.StringUtils;
 public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
+    private static final int LIST_NAME_LENGTH = 100;
     private AbstractList abstractList;
     private String listOldName = "";
     private String listName = "";
@@ -270,6 +271,8 @@ public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action
     private void validateListName() {
         if (StringUtils.isEmpty(getListName())) {
             addFieldError(LIST_NAME, getText("struts.messages.error.name.required", getArgs("List")));
+        } else if (StringUtils.length(getListName()) > LIST_NAME_LENGTH) {
+            addFieldError(LIST_NAME, getText("struts.message.error.list.name.length"));
         } else if ((!listOldName.equals(listName) && getAbstractList(listName, isVisibleToOther()) != null)
                 || (isVisibleToOther() != isGlobalList() && getAbstractList(listName, isVisibleToOther()) != null)) {
             addFieldError(LIST_NAME, getText("struts.messages.error.duplicate.name", getArgs("List", getListName())));

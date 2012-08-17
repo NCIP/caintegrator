@@ -117,6 +117,7 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -200,17 +201,24 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void createNewQuery() {
+        manageQueryAction.setSelectedAction("createNewQuery");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+    }
 
-        // test create new query
+    @Test
+    public void selectSearchResults() {
+        manageQueryAction.setSelectedAction("selectedTabSearchResults");
+        manageQueryAction.prepare();
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals("searchResults", manageQueryAction.getDisplayTab());
+    }
+
+    @Test
+    public void executeQuery() throws Exception {
         manageQueryAction.setSelectedAction("createNewQuery");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
 
-        // test selectedTabSearchResults
-        manageQueryAction.setSelectedAction("selectedTabSearchResults");
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
-
-        // test execute query
         manageQueryAction.setSelectedAction("executeQuery");
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
@@ -220,56 +228,83 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.getQueryForm().getResultConfiguration().setCopyNumberType(CopyNumberCriterionTypeEnum.SEGMENT_VALUE.getValue());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         verify(queryManagementService, times(1)).executeGenomicDataQuery(any(Query.class));
+    }
 
-        // test load & execute my gene list
+    @Test
+    public void loadGeneList() throws Exception {
         manageQueryAction.setSelectedAction("loadGeneListExecute");
         manageQueryAction.setGeneListName("GeneList1");
         assertEquals(Action.ERROR, manageQueryAction.execute());
-        verify(queryManagementService, times(1)).executeGenomicDataQuery(any(Query.class));
         assertEquals("criteria", manageQueryAction.getDisplayTab());
 
         manageQueryAction.getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        verify(queryManagementService, times(2)).executeGenomicDataQuery(any(Query.class));
+        verify(queryManagementService, times(1)).executeGenomicDataQuery(any(Query.class));
         assertEquals("searchResults", manageQueryAction.getDisplayTab());
-        manageQueryAction.getStudyConfiguration().getGenomicDataSources().clear();
-        // Clean up after testing
-        manageQueryAction.setGeneListName("");
-        manageQueryAction.setSelectedAction("remove");
-        manageQueryAction.setRowNumber("0");
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+    }
 
-        // test load & execute my subject list
+    @Test
+    public void loadSubjectList() throws Exception {
         manageQueryAction.setSelectedAction("loadSubjectListExecute");
         manageQueryAction.setSubjectListName("SubjectList1");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        verify(queryManagementService, times(2)).execute(any(Query.class));
+        verify(queryManagementService, times(1)).execute(any(Query.class));
         assertEquals("searchResults", manageQueryAction.getDisplayTab());
+    }
 
-        // test selectAll
+    @Test
+    public void selectAll() {
+        //We have to load the subject list prior to performing selection.
+        manageQueryAction.setSelectedAction("loadSubjectListExecute");
+        manageQueryAction.setSubjectListName("SubjectList1");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+
         manageQueryAction.setSelectedAction("selectAll");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
 
-        // test selectAll
         manageQueryAction.setSelectedAction("selectAllSubject");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
 
-        // test selectAll
         manageQueryAction.setSelectedAction("selectNoneSubject");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
+    }
 
-        // Clean up after testing
-        manageQueryAction.setSubjectListName("");
-        manageQueryAction.setSelectedAction("remove");
-        manageQueryAction.setRowNumber("0");
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+    @Test
+    public void validate() {
+        manageQueryAction.setSelectedAction("createNewQuery");
+        manageQueryAction.execute();
 
-        // test selectSearchTab
-        manageQueryAction.setSelectedAction("selectedTabSearchResults");
+        manageQueryAction.setSelectedAction("saveQuery");
         manageQueryAction.prepare();
-        assertEquals("searchResults", manageQueryAction.getDisplayTab());
+        manageQueryAction.validate();
+        assertTrue(manageQueryAction.hasErrors());
+        manageQueryAction.clearErrorsAndMessages();
 
-        // test save query
+        manageQueryAction.setSelectedAction("saveQuery");
+        manageQueryAction.getQueryForm().getQuery().setName(RandomStringUtils.randomAlphabetic(200));
+        manageQueryAction.getQueryForm().getQuery().setDescription(RandomStringUtils.randomAlphabetic(300));
+        manageQueryAction.validate();
+        assertTrue(manageQueryAction.hasActionErrors());
+        assertEquals(2, manageQueryAction.getActionErrors().size());
+        manageQueryAction.clearErrorsAndMessages();
+
+        Query duplicateQuery = new Query();
+        duplicateQuery.setName("Test Query");
+
+        manageQueryAction.getQuery().getSubscription().getQueryCollection().add(duplicateQuery);
+        manageQueryAction.getQueryForm().getQuery().setName("Test Query");
+        manageQueryAction.getQueryForm().getQuery().setDescription("Test Description");
+        manageQueryAction.validate();
+        assertTrue(manageQueryAction.hasActionErrors());
+        assertEquals(1, manageQueryAction.getActionErrors().size());
+
+    }
+
+    @Test
+    public void saveQuery() {
+        manageQueryAction.setSelectedAction("createNewQuery");
+        manageQueryAction.execute();
+
         manageQueryAction.setSelectedAction("saveQuery");
         manageQueryAction.prepare();
         manageQueryAction.validate();
@@ -285,24 +320,31 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         manageQueryAction.setSelectedAction("saveQuery");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         verify(queryManagementService, times(1)).save(any(Query.class));
+    }
 
-        // test save as query
+    @Test
+    public void saveAsQuery() {
+        manageQueryAction.setSelectedAction("createNewQuery");
+        manageQueryAction.execute();
+
         manageQueryAction.setSelectedAction("saveAsQuery");
         manageQueryAction.prepare();
         manageQueryAction.getQueryForm().getQuery().setId(1L);
+        manageQueryAction.getQueryForm().getQuery().setName("query name");
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        verify(queryManagementService, times(2)).save(any(Query.class));
+        verify(queryManagementService, times(1)).save(any(Query.class));
+    }
 
-        // test save subject
+    @Test
+    public void saveSubject() {
         manageQueryAction.setSelectedAction("saveSubjectList");
         manageQueryAction.prepare();
         manageQueryAction.validate();
         assertTrue(manageQueryAction.hasErrors());
         manageQueryAction.clearErrorsAndMessages();
         manageQueryAction.getCurrentStudy().getStudyConfiguration().setStatus(Status.DEPLOYED);
-        manageQueryAction.getQueryForm().getQuery().setName("query name");
         manageQueryAction.validate();
         assertTrue(manageQueryAction.hasErrors());
         manageQueryAction.clearErrorsAndMessages();
@@ -312,32 +354,60 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         manageQueryAction.setSubjectListVisibleToOthers(true);
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
+    }
 
-        // test load query
+    @Test
+    public void loadQuery() throws Exception {
+        manageQueryAction.setSelectedAction("createNewQuery");
+        manageQueryAction.execute();
+
+        manageQueryAction.setSelectedAction("saveAsQuery");
+        manageQueryAction.prepare();
+        manageQueryAction.getQueryForm().getQuery().setId(1L);
+        manageQueryAction.getQueryForm().getQuery().setName("query name");
+        manageQueryAction.validate();
+        manageQueryAction.execute();
+
         manageQueryAction.setSelectedAction("loadQuery");
         manageQueryAction.setQueryId(1L);
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        verify(queryManagementService, times(3)).execute(any(Query.class));
+        verify(queryManagementService, times(1)).execute(any(Query.class));
         manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENE_EXPRESSION.getValue());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertEquals("criteria", manageQueryAction.getDisplayTab());
-        verify(queryManagementService, times(3)).executeGenomicDataQuery(any(Query.class));
+        verify(queryManagementService, times(1)).executeGenomicDataQuery(any(Query.class));
+    }
 
-        // test load & execute query
+    @Test
+    public void loadThenExecuteQuery() throws Exception {
+        manageQueryAction.setSelectedAction("createNewQuery");
+        manageQueryAction.execute();
+
+        manageQueryAction.setSelectedAction("saveAsQuery");
+        manageQueryAction.prepare();
+        manageQueryAction.getQueryForm().getQuery().setId(1L);
+        manageQueryAction.getQueryForm().getQuery().setName("query name");
+        manageQueryAction.execute();
+
         manageQueryAction.setSelectedAction("loadExecute");
         manageQueryAction.setQueryId(1L);
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        verify(queryManagementService, times(3)).execute(any(Query.class));
+        verify(queryManagementService, times(1)).execute(any(Query.class));
         manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENE_EXPRESSION.getValue());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertEquals("searchResults", manageQueryAction.getDisplayTab());
-        verify(queryManagementService, times(5)).executeGenomicDataQuery(any(Query.class));
+        verify(queryManagementService, times(1)).executeGenomicDataQuery(any(Query.class));
+    }
 
-        // test - addition of criteria rows
+    @Test
+    public void manageCriterionRows() {
+        manageQueryAction.setSelectedAction("createNewQuery");
+        manageQueryAction.execute();
+
         manageQueryAction.setSelectedAction("addCriterionRow");
         manageQueryAction.getQueryForm().getCriteriaGroup().setCriterionTypeName("group");
         manageQueryAction.validate();
@@ -345,13 +415,17 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertEquals(1, manageQueryAction.getQueryForm().getCriteriaGroup().getRows().size());
 
-        // test removal of row
         manageQueryAction.setSelectedAction("remove");
         manageQueryAction.setRowNumber("0");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertEquals(0, manageQueryAction.getQueryForm().getCriteriaGroup().getRows().size());
+    }
 
-        // test delete query
+    @Test
+    public void deleteQuery() {
+        manageQueryAction.setSelectedAction("createNewQuery");
+        manageQueryAction.execute();
+
         manageQueryAction.setSelectedAction("deleteQuery");
         manageQueryAction.prepare();
         manageQueryAction.validate();
@@ -361,23 +435,24 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         verify(queryManagementService, times(1)).delete(any(Query.class));
+    }
 
-        // test for invalid action
+    @Test
+    public void invalidAction() {
         manageQueryAction.setSelectedAction("invalid");
         assertEquals(Action.ERROR, manageQueryAction.execute());
+    }
 
-        assertFalse(manageQueryAction.acceptableParameterName("d-12345-e"));
-        assertFalse(manageQueryAction.acceptableParameterName("d-12345-p"));
-        assertFalse(manageQueryAction.acceptableParameterName("12345f678"));
-        assertTrue(manageQueryAction.acceptableParameterName("NewQuery"));
+    @Test
+    public void viewer() {
+        manageQueryAction.setSelectedAction("createNewQuery");
+        manageQueryAction.execute();
 
-        // test viewer
         manageQueryAction.setSelectedAction("viewIGV");
         assertEquals("viewIGV", manageQueryAction.execute());
         manageQueryAction.setSelectedAction("viewHeatmap");
         manageQueryAction.setServletContext(servletContext);
         assertEquals("viewHeatmap", manageQueryAction.execute());
-
     }
 
     @Test

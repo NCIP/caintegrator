@@ -112,6 +112,7 @@ import au.com.bytecode.opencsv.CSVReader;
 public class ManageListAction extends AbstractDeployedStudyAction {
 
     private static final long serialVersionUID = 1L;
+    private static final int LIST_NAME_LENGTH = 100;
     private FileManager fileManager;
     private File listFile;
     private String listFileContentType;
@@ -209,6 +210,8 @@ public class ManageListAction extends AbstractDeployedStudyAction {
     private void validateListName() {
         if (StringUtils.isEmpty(getListName())) {
             addFieldError(LIST_NAME, getText("struts.messages.error.name.required", getArgs("List")));
+        } else if (StringUtils.length(getListName()) > LIST_NAME_LENGTH) {
+            addFieldError(LIST_NAME, getText("struts.message.error.list.name.length"));
         } else if (duplicateListName()) {
             addFieldError(LIST_NAME, getText("struts.messages.error.duplicate.name", getArgs("List", getListName())));
         }
