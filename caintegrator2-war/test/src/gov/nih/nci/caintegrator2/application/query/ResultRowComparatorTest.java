@@ -85,7 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -105,15 +106,10 @@ public class ResultRowComparatorTest {
     @Test
     public void testSort() {
         ResultRow row1 = new ResultRow();
-        row1.setId(Long.valueOf(1));
         ResultRow row2 = new ResultRow();
-        row2.setId(Long.valueOf(2));
         ResultRow row3 = new ResultRow();
-        row3.setId(Long.valueOf(3));
         ResultRow row4 = new ResultRow();
-        row4.setId(Long.valueOf(4));
         ResultRow row5 = new ResultRow();
-        row5.setId(Long.valueOf(5));
 
         ResultColumn col1 = new ResultColumn();
         ResultColumn col2 = new ResultColumn();
@@ -122,31 +118,31 @@ public class ResultRowComparatorTest {
         rowCollection.add(row1);
         ResultValue row1col1Value = new ResultValue();
         ResultValue row1col2Value = new ResultValue();
-        Collection <ResultValue> row1ValueCollection = new HashSet<ResultValue>();
+        Collection<ResultValue> row1ValueCollection = new HashSet<ResultValue>();
         row1.setValueCollection(row1ValueCollection);
 
         rowCollection.add(row2);
         ResultValue row2col1Value = new ResultValue();
         ResultValue row2col2Value = new ResultValue();
-        Collection <ResultValue> row2ValueCollection = new HashSet<ResultValue>();
+        Collection<ResultValue> row2ValueCollection = new HashSet<ResultValue>();
         row2.setValueCollection(row2ValueCollection);
 
         rowCollection.add(row3);
         ResultValue row3col1Value = new ResultValue();
         ResultValue row3col2Value = new ResultValue();
-        Collection <ResultValue> row3ValueCollection = new HashSet<ResultValue>();
+        Collection<ResultValue> row3ValueCollection = new HashSet<ResultValue>();
         row3.setValueCollection(row3ValueCollection);
 
         rowCollection.add(row4);
         ResultValue row4col1Value = new ResultValue();
         ResultValue row4col2Value = new ResultValue();
-        Collection <ResultValue> row4ValueCollection = new HashSet<ResultValue>();
+        Collection<ResultValue> row4ValueCollection = new HashSet<ResultValue>();
         row4.setValueCollection(row4ValueCollection);
 
         rowCollection.add(row5);
         ResultValue row5col1Value = new ResultValue();
         ResultValue row5col2Value = new ResultValue();
-        Collection <ResultValue> row5ValueCollection = new HashSet<ResultValue>();
+        Collection<ResultValue> row5ValueCollection = new HashSet<ResultValue>();
         row5.setValueCollection(row5ValueCollection);
 
         NumericAnnotationValue numVal1 = new NumericAnnotationValue();
@@ -160,9 +156,8 @@ public class ResultRowComparatorTest {
         NumericAnnotationValue numVal5 = new NumericAnnotationValue();
         numVal5.setNumericValue(1.0);
 
+        //Null values are always lower.
         StringAnnotationValue stringVal1 = new StringAnnotationValue();
-        // Commenting this out to make sure that null values are sorted properly. (Always lower)
-//        stringVal1.setStringValue("value 1");
         StringAnnotationValue stringVal2 = new StringAnnotationValue();
         stringVal2.setStringValue("value 2");
         StringAnnotationValue stringVal3 = new StringAnnotationValue();
@@ -213,33 +208,29 @@ public class ResultRowComparatorTest {
         col2.setSortOrder(2);
         col2.setSortType(SortTypeEnum.DESCENDING);
 
-        List <ResultColumn> sortColumns = new ArrayList<ResultColumn>();
+        List<ResultColumn> sortColumns = new ArrayList<ResultColumn>();
         sortColumns.add(col1);
         sortColumns.add(col2);
 
         // Teset1 is col1.sortType ascending, col2.sortType descending.
-        List <ResultRow> sortedRows = ResultRowComparator.sort(rowCollection, sortColumns);
-        assertEquals(Long.valueOf(5), sortedRows.get(0).getId());
-        assertEquals(Long.valueOf(1), sortedRows.get(1).getId());
-        assertEquals(Long.valueOf(3), sortedRows.get(2).getId());
-        assertEquals(Long.valueOf(4), sortedRows.get(3).getId());
-        assertEquals(Long.valueOf(2), sortedRows.get(4).getId());
+        List<ResultRow> sortedRows = ResultRowComparator.sort(rowCollection, sortColumns);
+        assertEquals(row5, sortedRows.get(0));
+        assertEquals(row1, sortedRows.get(1));
+        assertEquals(row3, sortedRows.get(2));
+        assertEquals(row4, sortedRows.get(3));
+        assertEquals(row2, sortedRows.get(4));
 
         // Test2 is col1.sortType null (should default to ascending), col2.sortType ascending.
         col1.setSortType(null);
         col2.setSortType(SortTypeEnum.ASCENDING);
         assertNull(col1.getSortType());
-        List <ResultRow> sortedRows2 = ResultRowComparator.sort(rowCollection, sortColumns);
-        assertEquals(Long.valueOf(1), sortedRows2.get(0).getId());
-        assertEquals(Long.valueOf(5), sortedRows2.get(1).getId());
-        assertEquals(Long.valueOf(3), sortedRows2.get(2).getId());
-        assertEquals(Long.valueOf(2), sortedRows2.get(3).getId());
-        assertEquals(Long.valueOf(4), sortedRows2.get(4).getId());
+        List<ResultRow> sortedRows2 = ResultRowComparator.sort(rowCollection, sortColumns);
+        assertEquals(row1, sortedRows2.get(0));
+        assertEquals(row5, sortedRows2.get(1));
+        assertEquals(row3, sortedRows2.get(2));
+        assertEquals(row2, sortedRows2.get(3));
+        assertEquals(row4, sortedRows2.get(4));
         // Test to make sure that column's default to Ascending sort types.
         assertEquals(SortTypeEnum.ASCENDING, col1.getSortType());
-
     }
-
-
-
 }

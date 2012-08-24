@@ -103,7 +103,6 @@ import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SubjectListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
@@ -177,14 +176,6 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         return new CompoundCriterionHandler(handlers, compoundCriterion, resultType);
     }
 
-    static CompoundCriterionHandler createAllSampleAnnotation() {
-        Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
-        AbstractAnnotationCriterion annotationCriterion = new StringComparisonCriterion();
-        annotationCriterion.setEntityType(EntityTypeEnum.SAMPLE);
-        handlers.add(new AnnotationCriterionHandler(annotationCriterion));
-        return new CompoundCriterionHandler(handlers, null, ResultTypeEnum.CLINICAL);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -239,7 +230,9 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                 allValidRows = newRows;
                 rowsRetrieved = true;
             } else {
-                allValidRows = combineResults(allValidRows, newRows, query.isMultiplePlatformQuery());
+                allValidRows =  newRows.size() >= allValidRows.size()
+                        ? combineResults(allValidRows, newRows, query.isMultiplePlatformQuery())
+                        : combineResults(newRows, allValidRows, query.isMultiplePlatformQuery());
             }
 
         }
@@ -385,22 +378,20 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         return combinedResults;
     }
 
-
-    private Set<ResultRow> combineResultsForAndOperator(Set<ResultRow> currentValidRows,
-                                   Set<ResultRow> newRows, boolean isMultiplePlatformQuery) {
+    private Set<ResultRow> combineResultsForAndOperator(Set<ResultRow> currentValidRows, Set<ResultRow> newRows,
+            boolean isMultiplePlatformQuery) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
-           for (ResultRow row : newRows) {
-               ResultRow rowFound =
-                   QueryUtil.resultRowSetContainsResultRow(currentValidRows, row, isMultiplePlatformQuery);
-               if (rowFound != null) {
-                   if (isMultiplePlatformQuery) {
-                       combinedResults.add(checkRowsForAppropriateReporter(rowFound, row));
-                   } else {
-                       combinedResults.add(row);
-                   }
-               }
-           }
-           return combinedResults;
+        for (ResultRow row : newRows) {
+            ResultRow matchingRow = QueryUtil.getMatchingRow(currentValidRows, row, isMultiplePlatformQuery);
+            if (matchingRow != null) {
+                if (isMultiplePlatformQuery) {
+                    combinedResults.add(checkRowsForAppropriateReporter(matchingRow, row));
+                } else {
+                    combinedResults.add(row);
+                }
+            }
+        }
+        return combinedResults;
     }
 
     private ResultRow checkRowsForAppropriateReporter(ResultRow rowFound, ResultRow row) {
@@ -419,15 +410,11 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     private Set<ResultRow> combineResultsForOrOperator(Set<ResultRow> currentValidRows,
                                              Set<ResultRow> newRows, boolean isMultiplePlatformQuery) {
-        Set<ResultRow> combinedResults = new HashSet<ResultRow>();
-        combinedResults.addAll(currentValidRows);
+        Set<ResultRow> combinedResults = new HashSet<ResultRow>(currentValidRows);
         for (ResultRow row : newRows) {
-            ResultRow rowFound =
-                QueryUtil.resultRowSetContainsResultRow(currentValidRows, row, isMultiplePlatformQuery);
-            if (rowFound == null) {
+            if (QueryUtil.getMatchingRow(currentValidRows, row, isMultiplePlatformQuery) == null) {
                 combinedResults.add(row);
             }
-
         }
         return combinedResults;
     }
