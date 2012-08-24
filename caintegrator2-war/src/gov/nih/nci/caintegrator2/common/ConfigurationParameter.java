@@ -198,7 +198,7 @@ public enum ConfigurationParameter {
     /**
      * Default Integrative Genomics Viewer download URL.
      */
-    BROAD_HOSTED_IGV_URL("http://www.broadinstitute.org/igv/dynsession/igv.jnlp?sessionURL=");
+    BROAD_HOSTED_IGV_URL("http://www.broadinstitute.org/igv/projects/current/igv.php?sessionURL=");
 
     private String defaultValue;
 
