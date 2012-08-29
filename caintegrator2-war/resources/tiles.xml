@@ -330,4 +330,8 @@
         <put-attribute name="subTitle" value="View External Links" />
     </definition>
     
+    <definition name="unhandledError" extends="cssBaseDef">
+        <put-attribute name="content" value="/error.jsp" />
+        <put-attribute name="subTitle" value="Unexpected Error"/>
+    </definition>
 </tiles-definitions>
