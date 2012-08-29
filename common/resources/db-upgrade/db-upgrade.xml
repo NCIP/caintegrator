@@ -514,4 +514,12 @@
         <comment>Removing the sample's SAMPLE_ACQUISITION_ID column.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.4.1/CAINT-1132.sql"/>
     </changeSet>
+    <changeSet id="CAINT-50" author="aevansel">
+        <comment>Adding the cai2admin user to Platform Managers group if they aren't already in the group.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4.1/CAINT-50.sql" splitStatements="false"/>
+        <sql>
+            CALL assignCai2AdminGroups();
+            DROP PROCEDURE IF EXISTS assignCai2AdminGroups;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
