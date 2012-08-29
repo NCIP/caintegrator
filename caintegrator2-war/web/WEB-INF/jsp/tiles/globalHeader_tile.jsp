@@ -58,6 +58,7 @@
 	        Welcome, <s:property value="#sessionHelper.username"/> | <a href="${logoutUrl}">Logout</a>
 	        </s:else>
         </div>
+        <s:if test="%{displayableWorkspace != null}">
         <div id="mystudies">
                <s:form action="workspace" theme="simple">
 
@@ -81,7 +82,7 @@
 
                </s:form>
         </div>    
-   
+        </s:if>
          
         
     </div>

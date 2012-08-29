@@ -94,7 +94,7 @@
         </interceptors>
         
         <default-interceptor-ref name="cai2ParamsPrepareParamsStack" />
-        
+
         <global-results>
             <result name="invalid.token" type="tiles">unauthorized</result>
             <result name="unauthorized" type="redirectAction">
@@ -102,7 +102,12 @@
                 <param name="invalidAccess">true</param>
             </result>
             <result name="invalidDataBeingAccessed" type="redirectAction">workspace</result>
+            <result name="error" type="tiles">unhandledError</result>
         </global-results>
+        
+         <global-exception-mappings>
+            <exception-mapping result="error" exception="java.lang.Throwable"/>
+        </global-exception-mappings>
         
         <!--  Navigation Actions -->
         <!--  Navigation Actions -->
