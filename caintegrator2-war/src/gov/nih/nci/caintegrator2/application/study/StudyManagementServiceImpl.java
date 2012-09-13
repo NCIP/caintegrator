@@ -646,6 +646,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
                     }
                 }
                 sample.clearArrayData();
+                for (SampleAcquisition sa : sample.getSampleAcquisitions()) {
+                    sa.getAssignment().getSampleAcquisitionCollection().remove(sa);
+                    sa.setAssignment(null);
+                }
                 sample.getSampleAcquisitions().clear();
             }
         }
