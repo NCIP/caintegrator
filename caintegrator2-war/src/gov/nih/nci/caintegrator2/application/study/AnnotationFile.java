@@ -113,7 +113,6 @@ import au.com.bytecode.opencsv.CSVReader;
  * Represents a CSV annotation text file.
  */
 public class AnnotationFile extends AbstractCaIntegrator2Object {
-
     private static final long serialVersionUID = 1L;
     private String path;
     private List<FileColumn> columns = new ArrayList<FileColumn>();
@@ -151,12 +150,9 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         this.columns = columns;
     }
 
-    static AnnotationFile load(File file, CaIntegrator2Dao dao,
-            StudyConfiguration studyConfiguration, EntityTypeEnum type,
-            boolean createNewAnnotationDefinition)
-    throws ValidationException {
-        return createAndLoadFile(file, dao, studyConfiguration,
-                type, createNewAnnotationDefinition);
+    static AnnotationFile load(File file, CaIntegrator2Dao dao, StudyConfiguration studyConfiguration,
+            EntityTypeEnum type, boolean createNewAnnotationDefinition) throws ValidationException {
+        return createAndLoadFile(file, dao, studyConfiguration, type, createNewAnnotationDefinition);
     }
 
     private static AnnotationFile createAndLoadFile(File file, CaIntegrator2Dao dao,
@@ -177,8 +173,7 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             FileColumn column = new FileColumn(this);
             column.setPosition(index);
             column.setName(currentLineValues[index].trim());
-            column.retrieveOrCreateFieldDescriptor(dao, studyConfiguration, type,
-                    createNewAnnotationDefinition);
+            column.retrieveOrCreateFieldDescriptor(dao, studyConfiguration, type, createNewAnnotationDefinition);
             columns.add(column);
         }
     }
@@ -439,8 +434,8 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             if (currentlyLoadedIdentifier.contains(identifier)) {
                 throw new ValidationException("Multiples identifiers found for '" + identifier + "'");
             }
-            currentlyLoadedIdentifier.add(identifier);
             handler.handleIdentifier(identifier);
+            currentlyLoadedIdentifier.add(identifier);
             loadAnnotationLine(handler);
         }
         setCurrentlyLoaded(String.valueOf(true));
