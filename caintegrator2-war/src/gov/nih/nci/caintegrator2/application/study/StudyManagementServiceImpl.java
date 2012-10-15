@@ -856,11 +856,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         daoSave(fieldDescriptor);
     }
 
-    private void validateAnnotationDefinition(AnnotationFieldDescriptor fieldDescriptor,
-            Study study, EntityTypeEnum entityType,
-            AnnotationDefinition annotationDefinition) throws ValidationException {
-        Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType,
-                fieldDescriptor, annotationDefinition);
+    private void validateAnnotationDefinition(AnnotationFieldDescriptor fieldDescriptor, Study study,
+            EntityTypeEnum entityType, AnnotationDefinition annotationDefinition) throws ValidationException {
+        Set<Object> uniqueValues = validateAndRetrieveUniqueValues(study, entityType, fieldDescriptor,
+                annotationDefinition);
         if (!annotationDefinition.getPermissibleValueCollection().isEmpty()) {
             validateValuesWithPermissibleValues(uniqueValues, annotationDefinition);
         }

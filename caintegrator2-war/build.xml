@@ -108,6 +108,7 @@
     <property name="pmd.lib.dir" location="${lib.dir}/test-pmd"/>
     <property name="selenium.lib.dir" location="${lib.dir}/test-selenium"/>
     <property name="simian.lib.dir" location="${lib.dir}/test-simian"/>
+    <property name="integration.lib.dir" location="${lib.dir}/test-integration"/>
 
     <target name="ivy:init">
         <property name="ivy.dep.file" value="${ivy.def.file}"/>
@@ -131,6 +132,7 @@
         <delete dir="${pmd.lib.dir}" />
         <delete dir="${selenium.lib.dir}" />
         <delete dir="${simian.lib.dir}" />
+        <delete dir="${integration.lib.dir}" />
     </target>
 
     <target name="ivy:setup" depends="ivy:setup-runtime,
@@ -161,6 +163,13 @@
         <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-junit" />
         <path id="junit.classpath">
             <fileset dir="${junit.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-integration" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-integration" />
+        <path id="integration.classpath">
+            <fileset dir="${integration.lib.dir}">
                 <include name="*.jar" />
             </fileset>
         </path>
@@ -426,7 +435,16 @@
             <pathelement location="${caintegrator2.war.resources.test.dir}" />
             <path refid="junit.classpath" />
         </path>
+        <path id="caintegrator2.war.integration.dependencies.path">
+            <pathelement location="${caintegrator2.war.test.classes.dir}" />
+            <path refid="caintegrator2.war.dependencies.path" />
+            <pathelement location="${caintegrator2.war.resources.src.dir}" />
+            <pathelement location="${caintegrator2.war.resources.test.dir}" />
+            <path refid="junit.classpath" />
+            <path refid="integration.classpath" />
+        </path>
         <property name="caintegrator2.war.test.dependencies.path" refid="caintegrator2.war.test.dependencies.path" />
+        <property name="caintegrator2.war.integration.dependencies.path" refid="caintegrator2.war.integration.dependencies.path" />
     </target>
 
     <target name="clean:caintegrator2.war">
@@ -575,7 +593,7 @@
         <run-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}"
             xml.output.dir="${caintegrator2.war.target.dir}/junit"
             instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}"
-            classpath="${caintegrator2.war.test.dependencies.path}" />
+            classpath="${caintegrator2.war.integration.dependencies.path}" />
     </target>
 
     <target name="test:integration:master.build" depends="test:compile:caintegrator2.war.test.classes,
@@ -584,7 +602,7 @@
         <run-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}"
             xml.output.dir="${caintegrator2.war.target.dir}/junit"
             instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}"
-            classpath="${caintegrator2.war.test.dependencies.path}" />
+            classpath="${caintegrator2.war.integration.dependencies.path}" />
     </target>
 
     <target name="test:nondeploy-integration" depends="test:compile:caintegrator2.war.test.classes,
@@ -593,7 +611,7 @@
         <run-nondeploy-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}"
             xml.output.dir="${caintegrator2.war.target.dir}/junit"
             instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}"
-            classpath="${caintegrator2.war.test.dependencies.path}" />
+            classpath="${caintegrator2.war.integration.dependencies.path}" />
     </target>
 
     <target name="test:instrument:unit:caintegrator2.war" depends="compile:caintegrator2.war,ivy:setup-test">
@@ -1140,7 +1158,7 @@
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
             <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
-                 <pathelement path="${caintegrator2.war.test.dependencies.path}" />
+                 <pathelement path="${caintegrator2.war.integration.dependencies.path}" />
              </classpath>
              <formatter type="xml" />
              <batchtest todir="${caintegrator2.war.target.dir}/junit">
@@ -1158,7 +1176,7 @@
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
             <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
-                 <pathelement path="${caintegrator2.war.test.dependencies.path}" />
+                 <pathelement path="${caintegrator2.war.integration.dependencies.path}" />
              </classpath>
              <formatter type="xml" />
              <batchtest todir="${caintegrator2.war.target.dir}/junit">
@@ -1175,7 +1193,7 @@
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
-                 <pathelement path="${caintegrator2.war.test.dependencies.path}" />
+                 <pathelement path="${caintegrator2.war.integration.dependencies.path}" />
              </classpath>
              <formatter type="xml" />
              <batchtest todir="${caintegrator2.war.target.dir}/junit">
@@ -1193,7 +1211,7 @@
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
             <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
-                 <pathelement path="${caintegrator2.war.test.dependencies.path}" />
+                 <pathelement path="${caintegrator2.war.integration.dependencies.path}" />
              </classpath>
              <formatter type="xml" />
              <batchtest todir="${caintegrator2.war.target.dir}/junit">
@@ -1211,7 +1229,7 @@
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
             <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
-                 <pathelement path="${caintegrator2.war.test.dependencies.path}" />
+                 <pathelement path="${caintegrator2.war.integration.dependencies.path}" />
              </classpath>
              <formatter type="xml" />
              <batchtest todir="${caintegrator2.war.target.dir}/junit">
@@ -1229,7 +1247,7 @@
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>
-                 <pathelement path="${caintegrator2.war.test.dependencies.path}" />
+                 <pathelement path="${caintegrator2.war.integration.dependencies.path}" />
              </classpath>
              <formatter type="xml" />
              <batchtest todir="${caintegrator2.war.target.dir}/junit">
