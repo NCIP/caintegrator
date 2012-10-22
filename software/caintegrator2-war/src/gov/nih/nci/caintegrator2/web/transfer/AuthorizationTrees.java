@@ -101,7 +101,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;

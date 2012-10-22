@@ -102,7 +102,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Action dealing with Gene Expression Clinical Query Based plotting.

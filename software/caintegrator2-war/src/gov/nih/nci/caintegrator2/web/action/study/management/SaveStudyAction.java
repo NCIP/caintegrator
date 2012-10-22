@@ -89,7 +89,7 @@ import gov.nih.nci.caintegrator2.application.study.LogEntry;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.security.exceptions.CSException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Saves basic study information.

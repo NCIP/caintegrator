@@ -109,7 +109,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='subjectAnnotationsForm']/table[2]/tbody/tr[3]/td[3]/a</td>
+	<td>//form[@id='subjectAnnotationsForm']/table[2]/tbody/tr[3]/td[4]/a</td>
 	<td></td>
 </tr>
 <tr>
