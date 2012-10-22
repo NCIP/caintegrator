@@ -91,9 +91,8 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts2.util.ServletContextAware;
-
 
 /**
  * Action used to log in a user (may not actually need this action when using ACEGI).

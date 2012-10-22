@@ -7,24 +7,25 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
- * 
+ *
  */
 public abstract class AbstractGenomicCriterion extends AbstractCriterion implements Cloneable {
 
     private static final long serialVersionUID = 1L;
     private String geneSymbol = "";
     private String platformName = "";
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     protected AbstractGenomicCriterion clone() throws CloneNotSupportedException {
         return (AbstractGenomicCriterion) super.clone();
     }
-    
+
     /**
      * @return the geneSymbol
      */
@@ -38,7 +39,7 @@ public abstract class AbstractGenomicCriterion extends AbstractCriterion impleme
     public void setGeneSymbol(String geneSymbol) {
         this.geneSymbol = geneSymbol.toUpperCase(Locale.getDefault());
     }
-    
+
     /**
      * @return the gene symbols.
      */
@@ -50,7 +51,7 @@ public abstract class AbstractGenomicCriterion extends AbstractCriterion impleme
         geneSymbols.addAll(Arrays.asList(getGeneSymbol().replaceAll("\\s*", "").split(",")));
         return geneSymbols;
     }
-    
+
     /**
      * @param platformName the platformName to set
      */
@@ -68,6 +69,7 @@ public abstract class AbstractGenomicCriterion extends AbstractCriterion impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     protected List<String> getGeneSymbolsInCriterion() {
         return new ArrayList<String>(getGeneSymbols());
     }

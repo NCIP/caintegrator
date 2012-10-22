@@ -90,7 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.RangeTypeEnum;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.opensymphony.xwork2.ValidationAware;
 

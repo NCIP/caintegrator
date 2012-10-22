@@ -11,67 +11,67 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
- * 
+ *
  */
 public class Platform extends AbstractCaIntegrator2Object implements Comparable<Platform> {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private String name;
     private String version = "";
     private PlatformVendorEnum vendor;
     private PlatformConfiguration platformConfiguration;
     private SortedSet<ReporterList> reporterListsInternal = new TreeSet<ReporterList>();
     private Map<ReporterTypeEnum, SortedSet<ReporterList>> typeToReporterListMap;
-    
+
     /**
      * @return the name
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * @return the vendor
      */
     public PlatformVendorEnum getVendor() {
         return vendor;
     }
-    
+
     /**
      * @param vendor the vendor to set
      */
     public void setVendor(PlatformVendorEnum vendor) {
         this.vendor = vendor;
     }
-    
+
     /**
      * @return the reporterLists
      */
     public SortedSet<ReporterList> getReporterLists() {
         return Collections.unmodifiableSortedSet(getReporterListsInternal());
     }
-    
+
     /**
      * Returns all <code>ReporterLists</code> of the requested type.
-     * 
+     *
      * @param reporterType get lists of this type.
      * @return the reporterLists
      */
     public SortedSet<ReporterList> getReporterLists(ReporterTypeEnum reporterType) {
         return Collections.unmodifiableSortedSet(getTypeToReporterListMap().get(reporterType));
     }
-    
+
     private Map<ReporterTypeEnum, SortedSet<ReporterList>> getTypeToReporterListMap() {
         if (typeToReporterListMap == null) {
             createTypeToReporterListMap();
@@ -80,7 +80,7 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
     }
 
     /**
-     * 
+     *
      */
     private void createTypeToReporterListMap() {
         typeToReporterListMap = new HashMap<ReporterTypeEnum, SortedSet<ReporterList>>();
@@ -96,7 +96,7 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
 
     /**
      * Creates a new <code>ReporterList</code> with the given name.
-     * 
+     *
      * @param listName the reporter list name
      * @param reporterType the reporter type in this list
      * @return the reporter list.
@@ -104,7 +104,7 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
     public ReporterList addReporterList(String listName, ReporterTypeEnum reporterType) {
         for (ReporterList reporterList : getReporterLists()) {
             if (reporterList.getName().equals(listName) && reporterList.getReporterType().equals(reporterType)) {
-                throw new IllegalArgumentException("ReporterList name " + listName + " is not unique for type " 
+                throw new IllegalArgumentException("ReporterList name " + listName + " is not unique for type "
                         + reporterType + ".");
             }
         }
@@ -113,14 +113,14 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
         this.getReporterListsInternal().add(reporterList);
         return reporterList;
     }
-    
+
     /**
      * @param reporterList to add.
      */
     public void addReporterList(ReporterList reporterList) {
         this.getReporterListsInternal().add(reporterList);
     }
-    
+
     /**
      * @return the reporterLists
      */
@@ -146,7 +146,7 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
     private void setReporterListsInternal(SortedSet<ReporterList> reporterListsInternal) {
         this.reporterListsInternal = reporterListsInternal;
     }
-    
+
     /**
      * Retrieves the displayable (comma separated) array names for the this platform.  Because
      * some of the ReporterLists are duplicate names, have to strip those out so they are only
@@ -205,7 +205,7 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
     public int compareTo(Platform o) {
         return this.getName().compareTo(o.getName());
     }
-    
+
     /**
      * Loop through the reporterLists to look for genome version.
      * @return the genome version enum
@@ -218,7 +218,7 @@ public class Platform extends AbstractCaIntegrator2Object implements Comparable<
         }
         return null;
     }
-    
+
     /**
      * @return the display string of the genome version.
      */

@@ -85,17 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.DateComparisonOperatorEnum;
-import gov.nih.nci.caintegrator2.common.DateUtil;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.opensymphony.xwork2.ValidationAware;
 

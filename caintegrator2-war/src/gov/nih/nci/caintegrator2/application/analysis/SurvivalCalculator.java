@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Calendar;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This is a static utility class used for calculating survival values for a subject.

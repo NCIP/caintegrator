@@ -115,7 +115,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * KM Plot Handler for Gene Expression Based KM Plots.
