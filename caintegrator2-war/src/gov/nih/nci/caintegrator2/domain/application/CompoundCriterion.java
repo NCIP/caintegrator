@@ -9,10 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
- * 
+ *
  */
 public class CompoundCriterion extends AbstractCriterion implements Cloneable {
 
@@ -21,14 +21,14 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
     private static final String ALL_GENES = "-AllGenes-";
     private BooleanOperatorEnum booleanOperator;
     private Collection<AbstractCriterion> criterionCollection = new HashSet<AbstractCriterion>();
-    
+
     /**
      * @return the criterionCollection
      */
     public Collection<AbstractCriterion> getCriterionCollection() {
         return criterionCollection;
     }
-    
+
     /**
      * @param criterionCollection the criterionCollection to set
      */
@@ -49,7 +49,7 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
     public void setBooleanOperator(BooleanOperatorEnum booleanOperator) {
         this.booleanOperator = booleanOperator;
     }
-    
+
     /**
      * Determines if there exists any masked criteria in this compound criterion.
      * @return boolean if there are any masked criteria.
@@ -62,7 +62,7 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
         }
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -80,15 +80,15 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
         clone.setCriterionCollection(cloneCriterionCollection());
         return clone;
     }
-    
+
     private Collection<AbstractCriterion> cloneCriterionCollection() throws CloneNotSupportedException {
         Collection<AbstractCriterion> clones = new HashSet<AbstractCriterion>();
         for (AbstractCriterion abstractCriterion : criterionCollection) {
-            clones.add((AbstractCriterion) abstractCriterion.clone());
+            clones.add(abstractCriterion.clone());
         }
         return clones;
     }
-    
+
     /**
      * @return Returns all gene symbols for all criterion under this compound criterion.
      */
@@ -97,10 +97,10 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
         for (AbstractCriterion criterion : getCriterionCollection()) {
             geneSymbolsInQuery.addAll(criterion.getGeneSymbolsInCriterion());
         }
-        
+
         return geneSymbolsInQuery;
     }
-    
+
     /**
      * @return Returns all gene symbols for all criterion under this compound criterion.
      */
@@ -109,10 +109,10 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
         for (AbstractCriterion criterion : getCriterionCollection()) {
             subjectIdsInQuery.addAll(criterion.getSubjectIdentifiers());
         }
-        
+
         return subjectIdsInQuery;
     }
-    
+
     /**
      * @param genomicCriterionType the criterion type to get the platforms for.
      * @return returns all platform names for all criterion under this compound criterion.
@@ -130,7 +130,7 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
         }
         return platformNames;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -138,7 +138,7 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
     public String getPlatformName(GenomicCriterionTypeEnum genomicCriterionType) {
         return null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -179,8 +179,8 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
             }
         }
     }
-    
-    private void validateExpressionLevelValues(ExpressionLevelCriterion expressionLevelCriterion) 
+
+    private void validateExpressionLevelValues(ExpressionLevelCriterion expressionLevelCriterion)
         throws InvalidCriterionException {
         if ((RangeTypeEnum.INSIDE_RANGE.equals(expressionLevelCriterion.getRangeType()) || RangeTypeEnum.OUTSIDE_RANGE
                 .equals(expressionLevelCriterion.getRangeType()))
@@ -191,7 +191,7 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
         }
     }
 
-    private void validateMixedCriterion(boolean isFoldChange, boolean isGeneName, boolean isExpressionlevel) 
+    private void validateMixedCriterion(boolean isFoldChange, boolean isGeneName, boolean isExpressionlevel)
         throws InvalidCriterionException {
         int numMixedTypes = 0;
         if (isFoldChange) {

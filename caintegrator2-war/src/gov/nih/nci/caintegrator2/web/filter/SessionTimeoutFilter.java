@@ -95,17 +95,17 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * 
+ *
  * When the session destroyed, MySessionListener will do necessary logout operations.
  * Later, at the first request of client, this filter will be fired and redirect
  * the user to the appropriate timeout page if the session is not valid.
- * 
+ *
  * @author hturksoy
- * 
+ *
  */
 public class SessionTimeoutFilter implements Filter {
 
@@ -156,7 +156,7 @@ public class SessionTimeoutFilter implements Filter {
     }
 
     /**
-     * 
+     *
      * session shouldn't be checked for some pages. For example: for timeout page.. Since we're redirecting to timeout
      * page from this filter, if we don't disable session control for it, filter will again redirect to it and this will
      * be result with an infinite loop...

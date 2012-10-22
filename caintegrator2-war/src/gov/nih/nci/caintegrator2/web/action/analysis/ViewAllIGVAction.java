@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 /**

@@ -96,7 +96,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import au.com.bytecode.opencsv.CSVReader;
 

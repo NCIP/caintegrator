@@ -98,7 +98,7 @@ import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Saves basic study information.

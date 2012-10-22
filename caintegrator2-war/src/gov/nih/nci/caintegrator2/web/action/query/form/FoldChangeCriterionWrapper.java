@@ -91,8 +91,8 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.opensymphony.xwork2.ValidationAware;
 

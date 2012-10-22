@@ -1,86 +1,86 @@
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
- * Software was developed in conjunction with the National Cancer Institute 
+ * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
- * and Science Applications International Corporation (SAIC). To the extent 
- * government employees are authors, any rights in such works shall be subject 
- * to Title 17 of the United States Code, section 105. 
+ * and Science Applications International Corporation (SAIC). To the extent
+ * government employees are authors, any rights in such works shall be subject
+ * to Title 17 of the United States Code, section 105.
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
- * Your) shall mean a person or an entity, and all other entities that control, 
- * are controlled by, or are under common control with the entity. Control for 
- * purposes of this definition means (i) the direct or indirect power to cause 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or
+ * Your) shall mean a person or an entity, and all other entities that control,
+ * are controlled by, or are under common control with the entity. Control for
+ * purposes of this definition means (i) the direct or indirect power to cause
  * the direction or management of such entity, whether by contract or otherwise,
- * or (ii) ownership of fifty percent (50%) or more of the outstanding shares, 
- * or (iii) beneficial ownership of such entity. 
+ * or (ii) ownership of fifty percent (50%) or more of the outstanding shares,
+ * or (iii) beneficial ownership of such entity.
  *
- * This License is granted provided that You agree to the conditions described 
- * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
- * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * This License is granted provided that You agree to the conditions described
+ * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
+ * no-charge, irrevocable, transferable and royalty-free right and license in
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
- * modifications and derivative works thereof; and (iii) sublicense the 
- * foregoing rights set out in (i) and (ii) to third parties, including the 
- * right to license such rights to further third parties. For sake of clarity, 
- * and not by way of limitation, NCI shall have no right of accounting or right 
- * of payment from You or Your sub-licensees for the rights granted under this 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and
+ * have distributed to and by third parties the caIntegrator2 Software and any
+ * modifications and derivative works thereof; and (iii) sublicense the
+ * foregoing rights set out in (i) and (ii) to third parties, including the
+ * right to license such rights to further third parties. For sake of clarity,
+ * and not by way of limitation, NCI shall have no right of accounting or right
+ * of payment from You or Your sub-licensees for the rights granted under this
  * License. This License is granted at no charge to You.
  *
- * Your redistributions of the source code for the Software must retain the 
- * above copyright notice, this list of conditions and the disclaimer and 
- * limitation of liability of Article 6, below. Your redistributions in object 
- * code form must reproduce the above copyright notice, this list of conditions 
- * and the disclaimer of Article 6 in the documentation and/or other materials 
- * provided with the distribution, if any. 
+ * Your redistributions of the source code for the Software must retain the
+ * above copyright notice, this list of conditions and the disclaimer and
+ * limitation of liability of Article 6, below. Your redistributions in object
+ * code form must reproduce the above copyright notice, this list of conditions
+ * and the disclaimer of Article 6 in the documentation and/or other materials
+ * provided with the distribution, if any.
  *
- * Your end-user documentation included with the redistribution, if any, must 
- * include the following acknowledgment: This product includes software 
- * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do 
- * not include such end-user documentation, You shall include this acknowledgment 
- * in the Software itself, wherever such third-party acknowledgments normally 
+ * Your end-user documentation included with the redistribution, if any, must
+ * include the following acknowledgment: This product includes software
+ * developed by 5AM, ScenPro, SAIC and the National Cancer Institute. If You do
+ * not include such end-user documentation, You shall include this acknowledgment
+ * in the Software itself, wherever such third-party acknowledgments normally
  * appear.
  *
  * You may not use the names "The National Cancer Institute", "NCI", "ScenPro",
- * "SAIC" or "5AM" to endorse or promote products derived from this Software. 
- * This License does not authorize You to use any trademarks, service marks, 
- * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM, 
- * except as required to comply with the terms of this License. 
+ * "SAIC" or "5AM" to endorse or promote products derived from this Software.
+ * This License does not authorize You to use any trademarks, service marks,
+ * trade names, logos or product names of either NCI, ScenPro, SAID or 5AM,
+ * except as required to comply with the terms of this License.
  *
- * For sake of clarity, and not by way of limitation, You may incorporate this 
- * Software into Your proprietary programs and into any third party proprietary 
- * programs. However, if You incorporate the Software into third party 
+ * For sake of clarity, and not by way of limitation, You may incorporate this
+ * Software into Your proprietary programs and into any third party proprietary
+ * programs. However, if You incorporate the Software into third party
  * proprietary programs, You agree that You are solely responsible for obtaining
- * any permission from such third parties required to incorporate the Software 
+ * any permission from such third parties required to incorporate the Software
  * into such third party proprietary programs and for informing Your a
- * sub-licensees, including without limitation Your end-users, of their 
- * obligation to secure any required permissions from such third parties before 
- * incorporating the Software into such third party proprietary software 
- * programs. In the event that You fail to obtain such permissions, You agree 
- * to indemnify NCI for any claims against NCI by such third parties, except to 
- * the extent prohibited by law, resulting from Your failure to obtain such 
- * permissions. 
+ * sub-licensees, including without limitation Your end-users, of their
+ * obligation to secure any required permissions from such third parties before
+ * incorporating the Software into such third party proprietary software
+ * programs. In the event that You fail to obtain such permissions, You agree
+ * to indemnify NCI for any claims against NCI by such third parties, except to
+ * the extent prohibited by law, resulting from Your failure to obtain such
+ * permissions.
  *
- * For sake of clarity, and not by way of limitation, You may add Your own 
- * copyright statement to Your modifications and to the derivative works, and 
- * You may provide additional or different license terms and conditions in Your 
- * sublicenses of modifications of the Software, or any derivative works of the 
+ * For sake of clarity, and not by way of limitation, You may add Your own
+ * copyright statement to Your modifications and to the derivative works, and
+ * You may provide additional or different license terms and conditions in Your
+ * sublicenses of modifications of the Software, or any derivative works of the
  * Software as a whole, provided Your use, reproduction, and distribution of the
  * Work otherwise complies with the conditions stated in this License.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
- * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
- * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO 
+ * THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO
  * EVENT SHALL THE NATIONAL CANCER INSTITUTE, 5AM SOLUTIONS, INC., SCENPRO, INC.,
- * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR 
- * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * SCIENCE APPLICATIONS INTERNATIONAL CORPORATION OR THEIR
+ * AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
@@ -105,13 +105,13 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Abstract Action dealing with Kaplan-Meier plotting.
  */
 public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAction {
-    
+
     /**
      * Default serialize.
      */
@@ -129,7 +129,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
      * Query Tab.
      */
     protected static final String QUERY_TAB = "queryTab";
-    
+
     private static final Double SMALLEST_TWO_DIGIT_DECIMAL = .01;
     private static final Integer DELAY_TIME_BETWEEN_PLOT_CREATE = 25;
     private static final String KMPLOT_RESULT = "kmPlotResult";
@@ -142,6 +142,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     /**
      * {@inheritDoc}
      */
+    @Override
     public void prepare() {
         super.prepare();
         refreshGenomicSources();
@@ -151,7 +152,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
             showGeneExpressionTab = false;
         }
     }
-    
+
     /**
      * Starting point for the kmPlot_tile.jsp.
      * @return Struts string.
@@ -159,11 +160,11 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     public String initializeKmPlot() {
         return SUCCESS;
     }
-    
+
     private void retrieveAndRefreshSurvivalValueDefinition() {
        AbstractKMParameters params = getKmPlotParameters();
-       if (getKmPlotForm().getSurvivalValueDefinitionId() != null 
-                && !StringUtils.isEmpty(getKmPlotForm().getSurvivalValueDefinitionId()) 
+       if (getKmPlotForm().getSurvivalValueDefinitionId() != null
+                && !StringUtils.isEmpty(getKmPlotForm().getSurvivalValueDefinitionId())
                 && params != null
                 && params.getSurvivalValueDefinition() != null) {
                 params.getSurvivalValueDefinition().setId(
@@ -172,22 +173,22 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
                         getRefreshedEntity(params.getSurvivalValueDefinition()));
        }
     }
-    
+
     /**
      * Return the kmPlotParameters for the action.
      * @param <T> implementation subclass of AbstractKMParameter.
      * @return implementation subclass of AbstractKMParameter.
      */
     public abstract <T extends AbstractKMParameters> T getKmPlotParameters();
-    
+
     /**
      * The URL for the action which retrieves the KM Plot graph image for display.
      * @return URL string.
      */
     public abstract String getPlotUrl();
-    
+
     private void populateSurvivalValueDefinitions() {
-        if (getStudy() != null 
+        if (getStudy() != null
             && getStudy().getSurvivalValueDefinitionCollection() != null) {
             Set<SurvivalValueDefinition> validDefinitions = new HashSet<SurvivalValueDefinition>();
             validDefinitions = Cai2Util.retrieveValidSurvivalValueDefinitions(getStudy()
@@ -197,7 +198,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     }
 
     private void addValidDefinitionsToForm(Set<SurvivalValueDefinition> validDefinitions) {
-        if (getKmPlotForm().getSurvivalValueDefinitions().size() 
+        if (getKmPlotForm().getSurvivalValueDefinitions().size()
             != validDefinitions.size()) {
             getKmPlotForm().setSurvivalValueDefinitions(new HashMap<String, SurvivalValueDefinition>());
             for (SurvivalValueDefinition def : validDefinitions) {
@@ -205,7 +206,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -216,7 +217,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
             addActionError(getText("struts.messages.error.kmplot.no.survival.definitions"));
         }
     }
-    
+
     /**
      * Clears the survival value definition ID.
      */
@@ -224,7 +225,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
         SessionHelper.clearKmPlots();
         getKmPlotForm().setSurvivalValueDefinitionId(null);
     }
-    
+
     /**
      * Returns the KMPlotResult image to the JSP.
      * @return Struts return value.
@@ -232,7 +233,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     public String retrievePlot() {
         return KMPLOT_RESULT;
     }
-    
+
     /**
      * Determines if the "Create Plot" button should be displayed.
      * @return T/F value.
@@ -251,7 +252,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
      * @return Map of Strings for PValues, for output on the JSP.
      */
     protected SortedMap<String, SortedMap<String, String>> retrieveAllStringPValues(KMPlot kmPlot) {
-        
+
         SortedMap<String, SortedMap<String, String>> allPValues = new TreeMap<String, SortedMap<String, String>>();
         Set<SubjectGroup> currentlyCalculatedGroups = new HashSet<SubjectGroup>();
 
@@ -270,13 +271,13 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
         }
         for (SubjectGroup group2 : kmPlot.getConfiguration().getGroups()) {
             if (group1 != group2 && !currentlyCalculatedGroups.contains(group2)) {
-                allPValues.get(group1Name).put(group2.getName(), 
+                allPValues.get(group1Name).put(group2.getName(),
                                                formatDoubleValue(kmPlot.getPValue(group1, group2)));
             }
         }
         currentlyCalculatedGroups.add(group1);
     }
-    
+
     private String formatDoubleValue(Double number) {
         if (number == null || KMAlgorithm.UNKNOWN_PVALUE.equals(number)) {
             return "N/A";
@@ -288,17 +289,17 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
         DecimalFormat df = new DecimalFormat(pattern);
         return df.format(number);
     }
-    
+
     /**
      * This function figures out which kmPlot action it needs to forward to, and then adds the current
-     * time to the end to be absolutely sure the image gets redrawn everytime (and not cached), since 
+     * time to the end to be absolutely sure the image gets redrawn everytime (and not cached), since
      * the graph will be drawn without a page refresh using AJAX.
      * @return action URL to return to JSP.
      */
     public String retrieveKmPlotUrl() {
         return getPlotUrl() + Calendar.getInstance().getTimeInMillis();
     }
-    
+
     /**
      * When the form is filled out and the user clicks "Create Plot" this calls the
      * analysis service to generate a KMPlot object.
@@ -313,13 +314,13 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
         }
         return returnString;
     }
-    
+
     /**
      * Since createPlot creates 2 calls, this function is used to do the actual running
      * of the service layer to generate the plot.
      */
-    protected abstract void runFirstCreatePlotThread(); 
-    
+    protected abstract void runFirstCreatePlotThread();
+
     /**
      * This gets called by the CreatePlot function to add validation error messages and to see if it's the
      * second call to CreatePlot().  There is a bug when using s:div inside an s:tabbedPanel where it will call
@@ -328,7 +329,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
      * @return struts 2 return value.
      * @throws InterruptedException if thread.wait doesn't work.
      */
-    protected synchronized String validateAndWaitSecondCreatePlotThread() 
+    protected synchronized String validateAndWaitSecondCreatePlotThread()
         throws InterruptedException {
         String returnString = SUCCESS;
         AbstractKMParameters kmParameters = getKmPlotParameters();
@@ -406,7 +407,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     public void setCreatePlotSelected(boolean createPlotSelected) {
         getDisplayableWorkspace().setCreatePlotSelected(createPlotSelected);
     }
-    
+
     /**
      * @return the createPlotSelected
      */
@@ -427,5 +428,5 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     public boolean isShowGeneExpressionTab() {
         return showGeneExpressionTab;
     }
-    
+
 }

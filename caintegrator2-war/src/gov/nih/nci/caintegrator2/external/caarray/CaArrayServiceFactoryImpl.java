@@ -95,7 +95,7 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import javax.ejb.EJBException;
 import javax.security.auth.login.FailedLoginException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Implementation of the service factory.

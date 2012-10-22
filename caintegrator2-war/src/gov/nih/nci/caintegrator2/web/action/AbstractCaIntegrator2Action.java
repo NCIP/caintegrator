@@ -107,14 +107,14 @@ import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.platform.form.PlatformForm;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableCopyNumberQueryResult;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;

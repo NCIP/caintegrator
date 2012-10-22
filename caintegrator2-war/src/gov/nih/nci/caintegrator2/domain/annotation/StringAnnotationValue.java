@@ -6,28 +6,28 @@ import gov.nih.nci.caintegrator2.common.DateUtil;
 
 import java.text.ParseException;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 
 /**
- * 
+ *
  */
 public class StringAnnotationValue extends AbstractAnnotationValue {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String stringValue;
 
     /**
      * Empty Constructor.
      */
-    public StringAnnotationValue() { 
+    public StringAnnotationValue() {
         // Empty Constructor
     }
-    
+
     /**
-     * Converts the given annotation value to a new object, as well as moves it to the new 
+     * Converts the given annotation value to a new object, as well as moves it to the new
      * annotationDefinition.
      * @param value to use to update this object.
      * @param annotationDefinition is the new definition to move value to.
@@ -35,7 +35,7 @@ public class StringAnnotationValue extends AbstractAnnotationValue {
     public StringAnnotationValue(AbstractAnnotationValue value, AnnotationDefinition annotationDefinition) {
         super(value, annotationDefinition);
     }
-    
+
     /**
      * @return the stringValue
      */
@@ -49,7 +49,7 @@ public class StringAnnotationValue extends AbstractAnnotationValue {
     public void setStringValue(String stringValue) {
         this.stringValue = stringValue;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -57,7 +57,7 @@ public class StringAnnotationValue extends AbstractAnnotationValue {
     public String toString() {
         return stringValue;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -71,7 +71,7 @@ public class StringAnnotationValue extends AbstractAnnotationValue {
      * {@inheritDoc}
      */
     @Override
-    public void convertAnnotationValue(AnnotationDefinition annotationDefinition) 
+    public void convertAnnotationValue(AnnotationDefinition annotationDefinition)
         throws ValidationException {
         switch (annotationDefinition.getDataType()) {
         case STRING:
@@ -91,7 +91,7 @@ public class StringAnnotationValue extends AbstractAnnotationValue {
             throw new IllegalArgumentException("Must input valid annotationType.");
         }
     }
-    
+
     private void handleNumericType(AnnotationDefinition annotationDefinition) throws ValidationException {
         NumericAnnotationValue numericValue = new NumericAnnotationValue(this, annotationDefinition);
         if (StringUtils.isBlank(stringValue)) {
@@ -102,7 +102,7 @@ public class StringAnnotationValue extends AbstractAnnotationValue {
         }
         numericValue.setNumericValue(Double.valueOf(stringValue));
     }
-    
+
     private void handleDateType(AnnotationDefinition annotationDefinition) throws ValidationException {
         DateAnnotationValue dateValue = new DateAnnotationValue(this, annotationDefinition);
         try {
