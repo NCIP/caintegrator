@@ -88,8 +88,7 @@ package gov.nih.nci.caintegrator2.web.transfer;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.builder.CompareToBuilder;
-
+import org.apache.commons.lang3.builder.CompareToBuilder;
 
 /**
  * Represents a node in our permissions tree. Simply consists of the id of the object and whether or

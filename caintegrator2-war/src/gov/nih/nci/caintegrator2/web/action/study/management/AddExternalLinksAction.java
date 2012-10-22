@@ -92,7 +92,7 @@ import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Adds a new new clinical data source file to a study.

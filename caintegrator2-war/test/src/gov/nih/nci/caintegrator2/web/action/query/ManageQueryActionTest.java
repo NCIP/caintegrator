@@ -117,7 +117,7 @@ import gov.nih.nci.caintegrator2.web.action.AbstractSessionBasedTest;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.junit.Before;
 import org.junit.Test;

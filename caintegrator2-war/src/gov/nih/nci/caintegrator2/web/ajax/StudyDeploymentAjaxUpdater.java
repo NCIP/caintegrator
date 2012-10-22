@@ -97,8 +97,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.xwork.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.directwebremoting.proxy.dwr.Util;
 
 /**
@@ -319,11 +319,11 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     private String getCopyStudyUrlString(StudyConfiguration studyConfiguration) {
 
         String token = "", tokenName = "";
-       
+
         try {
             token = SessionHelper.getInstance().getToken();
             tokenName = SessionHelper.getInstance().getTokenName();
-        } catch (Exception e) { token = ""; }       
+        } catch (Exception e) { token = ""; }
 
        String returnString = null;
 

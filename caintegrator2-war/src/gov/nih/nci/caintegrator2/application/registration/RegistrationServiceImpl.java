@@ -102,7 +102,7 @@ import javax.mail.MessagingException;
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.security.auth.login.XMLLoginConfigImpl;
 
 /**

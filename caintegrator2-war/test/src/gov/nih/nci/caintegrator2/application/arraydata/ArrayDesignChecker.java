@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class ArrayDesignChecker {
 
@@ -61,7 +61,7 @@ public class ArrayDesignChecker {
         }
     }
 
-    public static Platform checkLoadAffymetrixExpressionArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) 
+    public static Platform checkLoadAffymetrixExpressionArrayDesign(File cdfFile, File annotationFile, ArrayDataService service)
     throws PlatformLoadingException, AffymetrixCdfReadException {
         AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(cdfFile);
         AffymetrixExpressionPlatformSource source = new AffymetrixExpressionPlatformSource(annotationFile);
@@ -76,7 +76,7 @@ public class ArrayDesignChecker {
         return platform;
     }
 
-    public static Platform checkLoadAgilentExpressionArrayDesign(String platformName, File annotationFile, ArrayDataService service) 
+    public static Platform checkLoadAgilentExpressionArrayDesign(String platformName, File annotationFile, ArrayDataService service)
     throws PlatformLoadingException {
         AgilentExpressionPlatformSource source = new AgilentExpressionPlatformSource(annotationFile, platformName,
                 annotationFile.getName());
@@ -88,7 +88,7 @@ public class ArrayDesignChecker {
         return platform;
     }
 
-    public static Platform checkLoadAgilentCopyNumberArrayDesign(String platformName, File annotationFile, ArrayDataService service) 
+    public static Platform checkLoadAgilentCopyNumberArrayDesign(String platformName, File annotationFile, ArrayDataService service)
     throws PlatformLoadingException {
         AgilentCnPlatformSource source = new AgilentCnPlatformSource(annotationFile, platformName,
                 annotationFile.getName());
@@ -143,7 +143,7 @@ public class ArrayDesignChecker {
         assertEquals(PlatformVendorEnum.AFFYMETRIX, platform.getVendor());
         assertEquals(2, platform.getReporterLists().size());
     }
-    
+
     private static Platform retrievePlatform(AbstractPlatformSource source, ArrayDataService service) {
         PlatformConfiguration configuration = new PlatformConfiguration(source);
         configuration.setDeploymentStartDate(new Date());

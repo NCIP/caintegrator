@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *

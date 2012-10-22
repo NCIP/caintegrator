@@ -93,8 +93,7 @@ import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
-
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
