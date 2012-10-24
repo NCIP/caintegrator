@@ -545,9 +545,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
     
     <target name="build-artifacts" depends="build:all,dist:upgrader:prep" description="" >
-        <deploy-local
-        			target.name="common:init"
-        			/>
+        <deploy-local 
+            target.name="common:init" 
+            override.properties="database.name=${database.name},database.user=${database.user},database.password=${database.password},database.port=${database.port},database.server=${database.server}"
+            override.properties.delimiter=","
+        />
         <property name="caintegrator2-war.dir.dist" location="${dist.exploded.dir}/${caintegrator2-war.dist.relative.dir}" />
         <property name="caintegrator2.jms.file" value="caintegrator2-jms-destinations-service.xml" />
         <property name="caintegrator2-war.ds.file" value="caintegrator2-mysql-ds.xml" />
