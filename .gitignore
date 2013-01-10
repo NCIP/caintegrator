@@ -1,3 +1,4 @@
+.project
 build/local.properties
 caintegrator2-war/local.properties
 target/
