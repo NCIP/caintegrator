@@ -1,8 +1,8 @@
 /**
- * AnalysisService.java
+ * Copyright 5AM Solutions Inc, ESAC, ScenPro & SAIC
  *
- * This file was auto-generated from WSDL
- * by the Apache Axis 1.2RC2 Nov 16, 2004 (12:19:44 EST) WSDL2Java emitter.
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See https://github.com/NCIP/caintegrator2/blob/master/LICENSEfor details.
  */
 
 package edu.mit.broad.genepattern.gp.services;
