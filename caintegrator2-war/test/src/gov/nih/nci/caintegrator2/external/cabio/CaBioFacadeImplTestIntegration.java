@@ -26,12 +26,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class CaBioFacadeImplTestIntegration {
 
     private CaBioFacadeImpl caBioFacade;
-    private static final Logger LOGGER = Logger.getLogger(CaBioFacadeImplTestIntegration.class);    
+    private static final Logger LOGGER = Logger.getLogger(CaBioFacadeImplTestIntegration.class);
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext(
-                "cabio-test-config.xml", CaBioFacadeImplTestIntegration.class); 
-        caBioFacade = (CaBioFacadeImpl) context.getBean("caBioFacade"); 
+                "cabio-test-config.xml", CaBioFacadeImplTestIntegration.class);
+        caBioFacade = (CaBioFacadeImpl) context.getBean("caBioFacade");
     }
 
     @Test
@@ -43,7 +43,7 @@ public class CaBioFacadeImplTestIntegration {
         params.setFilterGenesOnStudy(false);
         List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
         assertTrue(checkSymbolExists("EGFR", genes));
-        
+
         params.setTaxon(CaBioSearchParameters.ALL_TAXONS);
         genes = caBioFacade.retrieveGenes(params);
         assertTrue(!genes.isEmpty());
@@ -58,7 +58,6 @@ public class CaBioFacadeImplTestIntegration {
         params.setFilterGenesOnStudy(false);
         List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
         assertTrue(checkSymbolExists("LIMD2", genes));
-        assertTrue(checkSymbolExists("TCERG1", genes));
     }
 
     @Test
@@ -74,18 +73,18 @@ public class CaBioFacadeImplTestIntegration {
         assertTrue(checkSymbolExists("HAND2", genes));
         assertTrue(checkSymbolExists("LBH", genes));
         assertTrue(checkSymbolExists("HRTRT1", genes));
-        
+
         params.setTaxon("mouse");
         genes = caBioFacade.retrieveGenes(params);
         assertFalse(checkSymbolExists("CDH13", genes));
         assertTrue(checkSymbolExists("FABP3", genes));
-        
+
         params.setTaxon(CaBioSearchParameters.ALL_TAXONS);
         genes = caBioFacade.retrieveGenes(params);
         assertTrue(!genes.isEmpty());
     }
-    
-    @Test 
+
+    @Test
     public void testRetrievePathways() throws ConnectionException {
         CaBioSearchParameters params = new CaBioSearchParameters();
         params.setKeywords("h_41bbPathway");
@@ -93,9 +92,9 @@ public class CaBioFacadeImplTestIntegration {
         params.setSearchType(CaBioSearchTypeEnum.PATHWAYS);
         List<CaBioDisplayablePathway> pathways = caBioFacade.retrievePathways(params);
         assertEquals(1, pathways.size());
-        assertEquals("7829", pathways.get(0).getId());
+        assertEquals("5163", pathways.get(0).getId());
     }
-    
+
     @Test
     public void testRetrieveGenesFromPathways() throws ConnectionException {
         CaBioSearchParameters params = new CaBioSearchParameters();
@@ -114,13 +113,13 @@ public class CaBioFacadeImplTestIntegration {
         List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenesFromPathways(params);
         assertEquals(19, genes.size());
     }
-    
+
     @Test
     public void testRetrieveAllTaxons() throws ConnectionException {
         List<String> taxons = caBioFacade.retrieveAllTaxons();
         assertFalse(taxons.isEmpty());
     }
-    
+
     private boolean checkSymbolExists(String symbol, List<CaBioDisplayableGene> genes) {
         for (CaBioDisplayableGene gene : genes) {
             if (symbol.equals(gene.getSymbol())) {
