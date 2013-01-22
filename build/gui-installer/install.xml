@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
 <!--
-$Id: install.xml 1934 2009-08-06 15:51:28Z saksass $
-$HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-template/software/build/gui-installer/install.xml $
--->
-
-<!--
     A sample installation file.
     Use it as a base for your own installers :-)
 
@@ -20,7 +15,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<property name="target.location" location="${software.location}/target" />
 	<property name="dist.location" location="${target.location}/dist" />
 	<property name="bda-utils.dir" location="${target.location}/bda-utils" />
-	<property name="custom.resource.dir" location="${target.location}/izpack-custom/resources"/>
+	<property name="custom.resource.dir" location="${target.location}/izpack-4.3/resources"/>
 	<property name="project.name" value="bda-blueprints"/>
 	<property name="installer.dir" value=".installer-${project.name}"/>
 	<property name="gui-installer.dist.base.name" value="caintegrator2_gui_distribution_${caintegrator2.version}.jar"/>

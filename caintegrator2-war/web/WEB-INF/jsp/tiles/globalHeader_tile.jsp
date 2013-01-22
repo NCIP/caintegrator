@@ -26,12 +26,12 @@
         <div>
             <a href="index.jsp"><img src="/caintegrator/images/logo_caintegrator2.gif" alt="Logo: caIntegrator" /></a>
         </div>
-        <s:set name="holdsvnurl" value="#application['svnUrl']"/>
-        <s:set name="holdsvntag" value="#application['caintegrator2Svntag']"/>
-        <s:set name="holdsvnrev" value="#application['svnRevision']"/>
-        <s:set name="holdbuilddate" value="#application['caintegrator2Builddate']"/>
-        <s:div id="versioninfo" title="caINTEGRATOR2, BUILD DATE: %{holdbuilddate}, SVNTAG: %{holdsvntag}, SVNURL: %{holdsvnurl}, SVNREV: %{holdsvnrev}">
-            build: <s:property value="%{holdsvntag}"/> | 
+        <s:set name="holdurl" value="#application['gitUrl']"/>
+        <s:set name="holdversion" value="#application['caIntegratorVersion']"/>
+        <s:set name="holdrevision" value="#application['gitRevision']"/>
+        <s:set name="holdbuilddate" value="#application['builddate']"/>
+        <s:div id="versioninfo" title="caINTEGRATOR, BUILD DATE: %{holdbuilddate}, VERSION: %{holdversion}, URL: %{holdurl}, REVISION: %{holdrevision}">
+            version: <s:property value="%{holdversion}"/> | 
             date: <s:property value="%{holdbuilddate}"/>           
         </s:div>
     </div> 

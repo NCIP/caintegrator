@@ -254,103 +254,27 @@
         static-analysis:simian,
         static-analysis:pmd,
         static-analysis:checkstyle,
-        static-analysis:javancss,
-        static-analysis:findbugs
-        ">
+        static-analysis:javancss">
             <fail if="checkstyle.failure" message="There were Checkstyle failures." />
     </target>
-
-    <target name="svn:getinfo" description="obtain subversion revision info" unless="nosvn">
-
-            <echo message="svn:info" />
-            <var name="revision" value="BASE"/>
-            <echo>Local root directory: ${root.dir}</echo>
-
-            <!-- find out revision number of BASE, need svn.exe installed on local machine -->
-            <exec executable="svn" outputproperty="svnlog.out">
-                <arg line="log ${root.dir}/software -r ${revision} -q"/>
-            </exec>
-
-            <!-- need ant-contrib.jar for this in lib dir of ant install -->
-            <propertyregex property="svn.info.rev" input="${svnlog.out}" select="\1" defaultValue="Unknown">
-                <regexp pattern="r([0-9]*)"/>
-            </propertyregex>
-
-            <echo message="Using svn revison tag: ${revision}." />
-            <propertyregex property="caintegrator2.version" input="${svn.info.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
-            <echo message="svn url: ${svn.info.url}" />
-            <echo message="repository revision: ${svn.info.rev}  caI2 version: ${caintegrator2.version}" />
-
-    </target>
-
-    <target name="svn:getinfo2" description="obtain subversion revision info" unless="nosvn">
-        <property name="svnlib.dir" value="${software.dir}/target/bda-utils" />
-
-        <echo message="svn info for directory: ${software.dir}" />
-
-        <path id="svnlib.classpath">
-            <fileset dir="${svnlib.dir}">
-                   <include name="*.jar"/>
-            </fileset>
-        </path>
-
-        <taskdef name="svn" classpathref="svnlib.classpath" classname="org.tigris.subversion.svnant.SvnTask" />
-
-        <svn javahl="false" svnkit="true">
-            <info target="${software.dir}" />
-        </svn>
-        <!--
-          Note that if you explicitly define caintegrator2.version it will take
-          precedence over the one obtained from SVN
-          -->
-        <echo message="svn getinfo: cai2 version: ${caintegrator2.version}" />
-        <propertyregex property="caintegrator2.svntag" input="${svn.info.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
-        <echo message="svn getinfo: url: ${svn.info.url}" />
-        <echo message="svn getinfo: rev: ${svn.info.rev}" />
-        <echo message="svn getinfo: cai2 version:${caintegrator2.svntag}" />
-    </target>
-
-
-    <!-- ****************************************************************** -->
-    <!-- svntag: performs tagging using properties from a local.properties  -->
-    <!--         file or from command line properties.  Command line        -->
-    <!--         properties will override local.properties.                 -->
-    <!-- ****************************************************************** -->
-    <target name="svntag" description="tags individual project using svnant task">
-
-        <!-- set default values for some of the properties if no value is found by this point -->
-        <condition property="svn.base.url" value="https://ncisvn.nci.nih.gov/svn">
-           <not>
-              <isset property="svn.base.url"/>
-           </not>
-        </condition>
-
-        <property name="tag.name" value="CAI_TAG" />
-        <property name="svn.username" value="${svn.username}" />
-        <property name="svn.password" value="${svn.password}" />
-
-        <property name="svnant.javahl" value="false" />
-        <property name="svnant.svnkit" value="true" />
-
-        <property name="svn.tag.message" value="Tagging Project ${project.name} with tag name ${tag.name} from trunk "/>
-        <property name="src.url"  value="${svn.base.url}/${project.name}/trunk/software"/>
-        <property name="dest.url" value="${svn.base.url}/${project.name}/tags/${tag.name}"/>
-
-        <echo message="${svn.tag.message}"/>
-        <echo message="SVN Username: ${svn.username}"/>
-        <echo message="Source: ${src.url}"/>
-        <echo message="Destination: ${dest.url}"/>
-
-        <echo message="Delete Destination Before Copy: ${dest.url}"/>
-        <svn javahl="${svnant.javahl}" svnkit="${svnant.svnkit}" username="${svn.username}" password="${svn.password}" failonerror="false">
-            <delete url="${dest.url}" message=" Delete previous tag: ${dest.url}" />
-        </svn>
-
-        <svn javahl="${svnant.javahl}" svnkit="${svnant.svnkit}" username="${svn.username}" password="${svn.password}" failonerror="true">
-            <copy srcUrl="${src.url}" destUrl="${dest.url}" message="${svn.tag.message}"/>
-        </svn>
-
-        <echo message="Success."/>
+    
+    <target name="git:getinfo" description="obtain git revision info" unless="nogit">
+        <exec executable="git" outputproperty="git.url" failifexecutionfails="true" errorproperty="">
+            <arg value="config"/>
+            <arg value="--get"/>
+            <arg value="remote.origin.url"/>
+        </exec>
+        <exec executable="git" outputproperty="git.caintegrator.version" failifexecutionfails="true" errorproperty="">
+            <arg value="rev-parse"/>
+            <arg value="--abbrev-ref"/>
+            <arg value="HEAD"/>
+        </exec>
+        <exec executable="git" outputproperty="git.revision" failifexecutionfails="true" errorproperty="">
+            <arg value="show"/>
+            <arg value="-s"/>
+            <arg value="--format=%h"/>
+         </exec>
+         <echo message="found git info: ${git.url} ${git.revision} ${git.caintegrator.version}" />
     </target>
 
     <target name="cleanbdautil" description="prepare for info and delete bda util">
@@ -453,16 +377,25 @@
 
     <property name="web-inf.working.dir" location="${caintegrator2.war.target.dir}" />
 
-    <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy,struts.properties.deploy">
-
-        <copy todir="${caintegrator2.xml.dir}" file="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml" overwrite="true"/>
+    <target name="caintegrator2.war" depends="git:getinfo,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy,struts.properties.deploy">
+        <copy todir="${caintegrator2.xml.dir}" file="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="caintegrator2.version" value="${caintegrator2.version}" />
+                <filter token="git.url" value="${git.url}"/>
+                <filter token="git.revision" value="${git.revision}"/>
+                <filter token="git.caintegrator.version" value="${git.caintegrator.version}"/>
+                <filter token="caintegrator.builddate" value="${build.date}"/>
+                <filter token="cas.server.hostname" value="${cas.server.hostname}"/>
+                <filter token="cas.server.post" value="${cas.server.port}"/>
+            </filterset>
+        </copy>
         <copy todir="${web-inf.working.dir}" file="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="caintegrator2.version" value="${caintegrator2.version}" />
-                <filter token="svn.url" value="${svn.info.url}"/>
-                <filter token="svn.revision" value="${svn.info.rev}"/>
-                <filter token="caintegrator2.svntag" value="${caintegrator2.svntag}"/>
-                <filter token="caintegrator2.builddate" value="${build.date}"/>
+                <filter token="git.url" value="${git.url}"/>
+                <filter token="git.revision" value="${git.revision}"/>
+                <filter token="git.caintegrator.version" value="${git.caintegrator.version}"/>
+                <filter token="caintegrator.builddate" value="${build.date}"/>
                 <filter token="cas.server.hostname" value="${cas.server.hostname}"/>
                 <filter token="cas.server.post" value="${cas.server.port}"/>
             </filterset>
@@ -989,30 +922,6 @@
 
     <!-- One target and one macro have been written for each static-analysis tool.  The macro runs static-analysis on an one set of values. The target then calls the macro with values for each sub-project.  If a user wanted to add options to the static-analysis tool in the the macro, they could add an attribute, refer to that attribute in the static-analysis call and then add the option to each of the calls to the marco in the wrapper target.-->
 
-    <!-- Findbugs is realy a full application that has ant support.  This target downloads the binaries for this distribution for use by ant target.  Additionaly setups a jboss installation to uses in the classpath of findbugs to cover runtime libraries -->
-    <target name="static-analysis:findbugs-init" >
-        <mkdir dir="${reports.findbugs.dir}"/>
-        <property name="temp.dir" value="${software.dir}/temp"/>
-        <mkdir dir="${temp.dir}"/>
-        <property name="findbugs.home.dir" value="${lib.dir}/${findbugs.binaries.relative.dir}"/>
-        <if>
-            <not>
-                <available file="${findbugs.home.dir}/lib/findbugs.jar"/>
-            </not>
-            <then>
-                <echo message="Findbugs is missing, downloading and isnstalling in ${findbugs.home.dir}"/>
-                <get src="${findbugs.src.url}"
-                    dest="${temp.dir}/${findbugs.binaries.file}"/>
-                <unzip dest="${lib.dir}" src="${temp.dir}/${findbugs.binaries.file}" />
-            </then>
-        </if>
-        <path id="project.test.findbugs.classpath">
-            <fileset dir="${findbugs.home.dir}">
-                <include name="**/*.jar" />
-            </fileset>
-        </path>
-    </target>
-
     <!-- Runs Simian a code duplication reporter.
         You can find additional information about simian at:
         http://www.redhillconsulting.com.au/products/simian/installation.html
@@ -1072,29 +981,6 @@
             checkstyle.xml.name="checkstyle.xml"
             checkstyle.html.name="checkstyle.html"
             checkstyle.classpath.ref.name="caintegrator2.full.classpath"
-            />
-    </target>
-
-    <!-- Runs Findbugs a tool that attempts to find bugs.
-        You can find additional information about findbugs at:
-        http://findbugs.sourceforge.net/
-        -->
-    <target name="static-analysis:findbugs"
-        depends="
-        caintegrator2.war,
-        ivy:setup-static-analysis,
-        static-analysis:findbugs-init">
-        <mkdir dir="${reports.findbugs.dir}/caintegrator2"/>
-
-        <static-analysis-findbugs
-            findbugs.home.dir="${findbugs.home.dir}"
-            findbugs.src.dir="${caintegrator2.war.java.src.dir}"
-            findbugs.classes.dir="${caintegrator2.war.java.classes.dir}"
-            findbugs.rpt.dir="${reports.findbugs.dir}/caintegrator2"
-            findbugs.report-xsl.file="${findbugs.home.dir}/src/xsl/fancy.xsl"
-            findbugs.app.classpath.ref="caintegrator2.full.classpath"
-            findbugs.xml.name="findbugs.xml"
-            findbugs.html.name="findbugs.html"
             />
     </target>
 

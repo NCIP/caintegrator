@@ -1,7 +1,4 @@
 <!--
-$Id: userInputSpec.xml 1934 2009-08-06 15:51:28Z saksass $
-$HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-template/software/build/gui-installer/userInputSpec.xml $
-
 Guide to this file:
 	First off remember this is a template you will be changing it.  Our test project deploys both an application and a grid component on both Tomcat and JBoss.  You may only support JBoss and have no grid component, at which point you would delete Tomcat and grid related panels.  Or you have have 3 JBoss containers, two apps and one grid.  This would reuqire that you delete tomcat and copy the jboss sections 3 times.
 	Second the fields in this file should match the fields in your install.properties.  Excluding hard coding things in properties-template/* you should have one field in here for every field in install.properties.  Also not that the install and upgrade properties file under properties template should also have all the properties in your master install.properties.  Also dynamic variables in gui-installer/install.xml should be reviewed.

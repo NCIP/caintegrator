@@ -1,9 +1,4 @@
 <project name="bda-utils" xmlns:antunit="antlib:org.apache.ant.antunit">
-<!--
-$Id: bda-build-utils.xml 3314 2010-09-09 17:53:56Z tbassett $
-$HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5/software/utils/bda-build-utils.xml $
--->
-
  	<!-- Properties -->
 	<property name="software.dir" location="${basedir}"/>
 	<property name="temp.dir" location="${software.dir}/target/temp"/>
@@ -40,7 +35,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 	<!-- Taskdefs -->
 	<typedef resource="net/ggtools/grand/antlib.xml" classpathref="macrodef.classpath" />
 	<taskdef name="dbconfig" classname="com.dbconfig.anttask.DbConfig" classpathref="macrodef.classpath" />
-	<taskdef name="svn" classpathref="macrodef.classpath" classname="org.tigris.subversion.svnant.SvnTask" />
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="macrodef.classpath"/>
 	<taskdef uri="antlib:org.apache.ant.antunit" resource="org/apache/ant/antunit/antlib.xml" classpathref="macrodef.classpath"/>
 	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask" classpathref="macrodef.classpath"/>
@@ -1197,33 +1191,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 				jboss.server.name="@{jboss.server.name}"
 			/>
 
-			<!-- Send test message if smtp proeprties are set
-			<if>
-				<and>
-					<isset property="mail.smtp.host"/>
-					<isset property="mail.smtp.port"/>
-					<isset property="validation.email.from"/>
-					<isset property="validation.email.to"/>
-				</and>
-			<then>
-				<if>
-						<socket port="${mail.smtp.port}" server="${mail.smtp.host}" />
-					<then>
-						<echo message="Able to connect to smpt host on port."/>
-					</then>
-					<else>
-						<echo message="Failed to connnect to ${mail.smtp.host}:${mail.smtp.port}"/>
-					</else>
-				</if>
-				<echo message="Sending Test message- look for errors below"/>
-				<mail mailhost="${mail.smtp.host}" mailport="${mail.smtp.port}" subject="Test Message" failonerror="false">
-					<from address="${validation.email.from}"/>
-					<to address="${validation.email.to}"/>
-				<message>Attempting install of ${project.name} ${env.USER}@${env.HOSTNAME} at ${run.date}.</message>
-				</mail>
-			</then>
-			</if>
-			-->
 			<echo message="******* INSTALLATION COMPLETED SUCESSFULLY *******"/>
 			<echo message="${line.separator}To view your application goto ${application.url}."/>
 			<tstamp>
@@ -1715,71 +1682,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		</sequential>
 	</macrodef>
 
-	<!--
-	svn-co macro checks out from a subversion repository based on properties passed to macro, clean the destination directory, then check out the tag specified into the destination directory.
-	The macro assumes that all code required to build the application will be located under the software folder off the project root.  You will not be able to use this macro if you do not adhere to this structure.
-	usage: <svn-co svn.project.base.url="${svn.project.base.url}" svn.project.name="${svn.project.name}" svn.tag="${svn.tag}" svn.co.base.dir="${svn.co.base.dir}"/>
-		The svn.project.base.url is the URL of Subverion reposition to check out from
-		The svn.project.name is the name of the project in the repositiory
-		The svn.tag is the tag of the build ex. trunk
-		The svn.co.base.dir is the local directory to the checkout
-	-->
-
-	<macrodef name="svn-co" description="based on properties passed to macro, clean the destination directory, then check out the tag specified into the destination directory.">
-		<attribute name="svn.checkout.url" />
-		<attribute name="svn.checkout.dir"/>
-		<attribute name="svn.checkout.user" default="anonymous"/>
-		<attribute name="svn.checkout.pass" default=""/>
-		<attribute name="delete" default="true"/>
-		<sequential>
-			<if>
-				<equals arg1="@{delete}" arg2="true" />
-				<then>
-					<echo message="Scorching temporary checkout directory @{svn.checkout.dir}."/>
-					<delete dir="@{svn.checkout.dir}" failonerror="false"/>
-					<mkdir dir="@{svn.checkout.dir}"/>
-				</then>
-			</if>
-			<echo message="Checking out @{svn.checkout.url} to @{svn.checkout.dir}."/>
-			<svn username="@{svn.checkout.user}" password="@{svn.checkout.pass}" javahl="false" svnkit="true">
-				<!-- <checkout url="@{svn.checkout.url}" revision="HEAD" destPath="@{svn.checkout.dir}" />-->
-				<checkout url="@{svn.checkout.url}"  destPath="@{svn.checkout.dir}" />
-			</svn>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="svn-add" description="">
-		<attribute name="svn.add.dir"/>
-		<sequential>
-			<echo message="Adding @{svn.add.dir} to svn."/>
-			<svn failonerror="false" javahl="false" svnkit="true">
-				<add dir="@{svn.add.dir}" force="true"/>
-			</svn>
-		</sequential>
-	</macrodef>
-	<macrodef name="svn-update" description="">
-		<attribute name="svn.update.dir"/>
-		<sequential>
-			<echo message="Adding @{svn.update.dir} to svn."/>
-			<svn failonerror="false" javahl="false" svnkit="true">
-				<update dir="@{svn.update.dir}"/>
-			</svn>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="svn-commit" description="">
-		<attribute name="svn.commit.dir"/>
-		<attribute name="svn.commit.user" default="anonymous"/>
-		<attribute name="svn.commit.pass" default=""/>
-		<attribute name="svn.commit.message" default="Added by build process"/>
-		<sequential>
-			<echo message="Commiting @{svn.commit.dir} to svn."/>
-			<svn username="@{svn.commit.user}" password="@{svn.commit.pass}" javahl="false" svnkit="true">
-				<commit dir="@{svn.commit.dir}" message="@{svn.commit.message}"/>
-			</svn>
-		</sequential>
-	</macrodef>
-
 	<macrodef name="report-grand" description="generates grand graphs of build.xml files">
 		<attribute name="build.file.location" default="build.xml"/>
 		<attribute name="output.file.dir" default="."/>
@@ -1929,7 +1831,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		<attribute name="jboss.server.name" default="${jboss.server.name}"/>
 		<attribute name="jboss.server.ports.name" default="${jboss.server.ports.name}"/>
 		<attribute name="jboss.server.bindingfile.location" default="@{jboss.home}/server/@{jboss.server.name}/conf/bindingservice.beans/META-INF/bindings-jboss-beans.xml"/>
-		<!--<attribute name="jboss.server.bindingfile.location" default="${jboss.server.bindingfile.location}"/>-->
 		<attribute name="jboss.server.binding.template.location" default="${jboss.server.binding.template.location}"/>
 		<attribute name="jboss.server.jndi.port" default="${jboss.server.jndi.port}"/>
 		<attribute name="jboss.server.port" default="${jboss.server.port}"/>
@@ -2254,129 +2155,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		</sequential>
 	</macrodef>
 
-	<!--
-	svn-getinfo macro gets the latest revision number in the repository for the give path and will set the lsd.revision property
-		usage: <svn-getinfo />
-		my.path is the checked out location of the project
-	-->
-	<macrodef name="svn-getinfo">
-		<attribute name="my.path" default="${basedir}"/>
-		<sequential>
-			<svn javahl="false" svnkit="true">
-				<status path="@{my.path}" revisionProperty="svn.revision" urlProperty="svn.url"/>
-			</svn>
-			<var name="lsd.revision" value="${svn.revision}" />
-			<echo> in macrodef - @{my.path} </echo>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="validate-pre-build">
-		<attribute name="application.base.path" default="${application.base.path}"/>
-		<attribute name="require.build.wscore" default="${require.build.wscore}"/>
-		<attribute name="wscore.download.url" default="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/techstack-2006/os-independent/ws-core-enum-4.0.3.zip"/>
-		<attribute name="wscore.relative.dir" default="ws-core-4.0.3"/>
-		<attribute name="cacore-sdk.required" default="${cacore-sdk.required}"/>
-		<attribute name="cacore-sdk.src.url" default="${cacore-sdk.src.url}"/>
-		<attribute name="download.dir" default="${download.dir}"/>
-		<attribute name="cacore-sdk.dir" default="${cacore-sdk.dir}"/>
-		<sequential>
-			<if>
-				<equals arg1="@{require.build.wscore}" arg2="true"/>
-				<then>
-					<check-wscore-exists
-						wscore.download.url="@{wscore.download.url}"
-						application.base.path="@{application.base.path}"
-						wscore.relative.dir="@{wscore.relative.dir}"
-						/>
-				</then>
-			</if>
-			<get-cacore-sdk
-				cacore-sdk.required="@{cacore-sdk.required}"
-				cacore-sdk.src.url="@{cacore-sdk.src.url}"
-				download.dir="@{download.dir}"
-				cacore-sdk.dir="@{cacore-sdk.dir}"
-				/>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="check-wscore-exists">
-		<attribute name="wscore.download.url" default="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/techstack-2006/os-independent/ws-core-enum-4.0.3.zip"/>
-		<attribute name="wscore.relative.dir" default="ws-core-4.0.3"/>
-		<attribute name="application.base.path" default="${application.base.path}"/>
-		<attribute name="download.dir" default="${download.dir}"/>
-		<sequential>
-			<basename property="wscore.file.name" file="@{wscore.download.url}"/>
-			<var name="wscore.dest.file" value="@{download.dir}/${wscore.file.name}"/>
-			<echo message="Checking for existence of GLOBUS_LOCATION envrironment variable."/>
-			<echo message="wscore.relative.dir = @{wscore.relative.dir}"/>
-			<mkdir dir="${temp.dir}"/>
-			<if>
-				<not>
-					<isset property="env.GLOBUS_LOCATION"/>
-				</not>
-				<then>
-					<echo message="GLOBUS_LOCATION not set, downloading and installing @{wscore.download.url}"/>
-					<if>
-						<not>
-							<available file="${wscore.dest.file}"/>
-						</not>
-						<then>
-							<get src="@{wscore.download.url}"
-								dest="${wscore.dest.file}"/>
-							<get src="@{wscore.download.url}.MD5"
-								dest="${wscore.dest.file}.MD5"/>
-							<checksum file="${wscore.dest.file}" verifyProperty="wscore.cksum.ok"/>
-							<if>
-								<equals arg1="${wscore.cksum.ok}" arg2="true"/>
-								<then>
-									<echo message="Downloaded wscore sucessfully"/>
-								</then>
-								<else>
-									<fail message="Failed to download wscore file sucessfully."/>
-								</else>
-							</if>
-						</then>
-					</if>
-					<var name="env.GLOBUS_LOCATION" value="@{application.base.path}/@{wscore.relative.dir}"/>
-					<if>
-						<not>
-							<available file="${env.GLOBUS_LOCATION}"/>
-						</not>
-						<then>
-							<unzip dest="@{application.base.path}" src="${wscore.dest.file}"/>
-							<echo message="Completed install of wscore files into ${env.GLOBUS_LOCATION} "/>
-						</then>
-						<else>
-							<echo message="${env.GLOBUS_LOCATION} already exists."/>
-						</else>
-					</if>
-
-					<!-- no longer needed
-					<osfamily property="os.family"/>
-					<echo message="os.family=${os.family}"/>
-					<switch value="${os.family}">
-						<case value="unix">
-							<echo message="Now you need configure the environment variable GLOBUS_LOCATION."/>
-							<echo message="For bash shell you can edit the $HOME/.bash_profile and add 'export GLOBUS_LOCATION=${application.base.path}/${wscore.relative.dir}'"/>
-							<echo message="For other shells refer to you operating system documentation (you can check your shell by 'echo $SHELL')"/>
-
-						</case>
-						<case value="windows">
-							<echo message="Now you need configure the environment variable GLOBUS_LOCATION."/>
-							<echo message="Right click on MyComputer, select Proeprties, select Advanced tab, click on Environment Variables, click on New under System Variables,  and set GLOBUS_LOCATION to ${application.base.path}/${wscore.relative.dir}"/>
-						</case>
-					</switch>
-					<fail message="Set GLOBUS_LOCATION and build again."/>
-					-->
-				</then>
-				<else>
-					<echo message="GLOBUS_LOCATION is set to ${env.GLOBUS_LOCATION} nothing needs to be done."/>
-				</else>
-			</if>
-		</sequential>
-	</macrodef>
-
-	<!--
+    <!--
 	generate-uml macro will generate the UML diagram from the checked in code. It will first create a javadoc HTML report and uses Graphviz to generate the UML graph
 	Pre-Requisites: Graphviz should be present in the Path,
 		usage: <generate-uml />
@@ -2513,44 +2292,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 				   <pathelement location="${bda-utils.dir}/groovy-all-1.6.jar"/>
 			 </classpath>
 			</java>
-		</sequential>
-	</macrodef>
-
-	<!--
-	diffrevision macro will generate a file will names of the java files that were checked in from the last revision number till the HEAD or the current revision number
-		usage: <diffrevision envpropertyfile="project.properties" differential.file.name="diff_list.txt" />
-		old.revision.number is the old revision number when the static analysis is done
-		differential.file.name is the name of the file to which the differential list is written.
-	-->
-	<macrodef name="diffrevision">
-		<attribute name="old.revision.number" />
-		<attribute name="differential.file.name" default="diff_list.txt" />
-		<sequential>
-			<svn javahl="false" svnkit="true">
-				<status path="${basedir}"  revisionProperty="build.svn.revision" urlProperty="svn.source.url"/>
-			</svn>
-
-			<svn javahl="false" svnkit="true">
-				<diff oldUrl="${svn.source.url}" oldTargetRevision="@{old.revision.number}" newTargetRevision="${build.svn.revision}" outFile="${basedir}/patch.txt"/>
-			</svn>
-			<loadfile
-				property="diff.file.list"
-				srcFile="${basedir}/patch.txt">
-				<filterchain>
-					<linecontainsregexp>
-						<regexp pattern="Index: .*\.java"/>
-					</linecontainsregexp>
-				</filterchain>
-			</loadfile>
-			<if>
-				<isset property="diff.file.list"/>
-				<then>
-					<echo file="@{differential.file.name}" append="false" message="${diff.file.list}${line.separator}"/>
-				</then>
-			</if>
-			<replaceregexp file="@{differential.file.name}" byline="true" match="^Index: (.*)" replace="\1"/>
-			<delete file="${basedir}/patch.txt"/>
-
 		</sequential>
 	</macrodef>
 
@@ -2909,100 +2650,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 				/>
 		</sequential>
 	</macrodef>
-	<macrodef name="ivy-module-add2repo">
-		<attribute name="ivy-repo.base.url" default="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo"/>
-		<attribute name="ivy-repo.base.dir"/>
-		<attribute name="ivy.add.org" />
-		<attribute name="ivy.add.module" />
-		<attribute name="ivy.add.version" />
-		<attribute name="ivy.add.module.src.dir" />
-		<attribute name="ivy.add.module.src.file.list" />
-		<attribute name="ivy.add.xml.src.location" />
-
-		<sequential>
-			<var name="ivy.org.dir" value="@{ivy-repo.base.dir}/@{ivy.add.org}"/>
-			<var name="ivy.module.dir" value="@{ivy-repo.base.dir}/@{ivy.add.org}/@{ivy.add.module}"/>
-			<var name="ivy.version.dir" value="@{ivy-repo.base.dir}/@{ivy.add.org}/@{ivy.add.module}/@{ivy.add.version}"/>
-			<available file="${ivy.org.dir}" property="org.dir.exists" />
-			<available file="${ivy.module.dir}" property="module.dir.exists" />
-
-			<check-svnuser/>
-			<!-- Conditionally checkout or update -->
-			<if>
-				<available file="@{ivy-repo.base.dir}"/>
-				<then>
-					<echo message="Found @{ivy-repo.base.dir}, doing svn update."/>
-					<svn-update
-						svn.update.dir="@{ivy-repo.base.dir}"
-						/>
-				</then>
-				<else>
-					<svn-co
-						svn.checkout.url="@{ivy-repo.base.url}"
-						svn.checkout.dir="@{ivy-repo.base.dir}"
-						delete="false"
-						/>
-				</else>
-			</if>
-			<!-- Copy artifacts to directory -->
-			<copy todir="${ivy.version.dir}" file="@{ivy.add.xml.src.location}"/>
-
-			<for list="@{ivy.add.module.src.file.list}" param="ivy.add.module.src.file" delimiter=",">
-				<sequential>
-					<copy todir="${ivy.version.dir}" file="@{ivy.add.module.src.dir}/@{ivy.add.module.src.file}"/>
-				</sequential>
-			</for>
-			<!-- Add and commit to svn, only the directory level that does not exist -->
-			<if>
-				<not>
-					<isset property="org.dir.exists"/>
-				</not>
-				<then>
-					<echo message="Adding org @{ivy.add.org}."/>
-					<svn-add
-						svn.add.dir="${ivy.org.dir}"
-						/>
-					<svn-commit
-						svn.commit.dir="${ivy.org.dir}"
-						svn.commit.user="${svn.user.name}"
-						svn.commit.pass="${svn.user.pass}"
-						svn.commit.message="Files added by build process as part of ivy deploy process"
-						/>
-				</then>
-				<elseif>
-					<not>
-						<isset property="module.dir.exists"/>
-					</not>
-					<then>
-						<echo message="Adding module @{ivy.add.org}/@{ivy.add.module}."/>
-						<svn-add
-							svn.add.dir="${ivy.module.dir}"
-							/>
-						<svn-commit
-							svn.commit.dir="${ivy.module.dir}"
-							svn.commit.user="${svn.user.name}"
-							svn.commit.pass="${svn.user.pass}"
-							svn.commit.message="Files added by build process as part of ivy deploy process"
-							/>
-					</then>
-				</elseif>
-				<else>
-					<echo message="Adding version @{ivy.add.org}/@{ivy.add.module}/@{ivy.add.version}."/>
-					<svn-add
-						svn.add.dir="${ivy.version.dir}"
-						/>
-					<svn-commit
-						svn.commit.dir="${ivy.version.dir}"
-						svn.commit.user="${svn.user.name}"
-						svn.commit.pass="${svn.user.pass}"
-						svn.commit.message="Files added by build process as part of ivy deploy process"
-						/>
-				</else>
-			</if>
-		</sequential>
-
-	</macrodef>
-
+	
 	<macrodef name="check-svnuser">
 		<sequential>
 			<property name="prop.list" value="svn.user.name,svn.user.pass"/>
@@ -3021,549 +2669,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 			</for>
 		</sequential>
 	</macrodef>
-	<macrodef name="jboss-configure-grid">
-		<attribute name="jboss.home" default="${jboss.home}"/>
-		<attribute name="jboss.server.name" default="${jboss.server.name}"/>
-		<attribute name="jboss.conf.dir" default="@{jboss.home}/server/@{jboss.server.name}/conf"/>
-		<attribute name="jboss.webapp.dir" default="@{jboss.home}/server/@{jboss.server.name}/deploy"/>
-		<attribute name="jboss.server-xml.file" default="@{jboss.home}/server/@{jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
-		<attribute name="jboss.server-xml.service.name" default="jboss.web"/>
-		<attribute name="jboss.port.http" default="${jboss.server.port}"/>
-		<attribute name="jboss.port.ssl" default="${jboss.ssl.port}"/>
-		<attribute name="jboss.hostname" default="${jboss.server.hostname}"/>
-		<attribute name="jboss.external.http.host" default="${jboss.external.http.host}"/>
-		<attribute name="jboss.external.http.port" default="${jboss.external.http.port}"/>
-		<attribute name="search.host" default="localhost"/>
-		<attribute name="search.port" default="8080"/>
-		<attribute name="jboss.external.grid.secure.host" default="${jboss.external.grid.secure.host}"/>
-		<attribute name="jboss.external.grid.secure.port" default="${jboss.external.grid.secure.port}"/>
-		<attribute name="jboss.grid.secure.enable" default="${jboss.grid.secure.enable}"/>
-		<attribute name="jboss.grid.secure.dir" default="${jboss.grid.secure.dir}"/>
-		<attribute name="jboss.grid.secure.port" default="${jboss.grid.secure.port}"/>
-		<attribute name="jboss.grid.secure.key.file" default="${jboss.grid.secure.key.file}"/>
-		<attribute name="jboss.grid.secure.cert.file" default="${jboss.grid.secure.cert.file}"/>
-		<!-- Grid specific attributes -->
-		<attribute name="grid.application.name" default="${grid.application.name}"/>
-		<attribute name="grid.application.relative.dir" default="${grid.dir.dest}"/>
-		<attribute name="grid.index.url" default="${grid.index.url}"/>
-		<attribute name="grid.poc.science.affiliation" default="${grid.poc.science.affiliation}"/>
-		<attribute name="grid.poc.science.name.last" default="${grid.poc.science.name.last}"/>
-		<attribute name="grid.poc.science.name.first" default="${grid.poc.science.name.first}" />
-		<attribute name="grid.poc.science.phone" default="${grid.poc.science.phone}"/>
-		<attribute name="grid.poc.science.role" default="${grid.poc.science.role}" />
-		<attribute name="grid.poc.science.email" default="${grid.poc.science.email}" />
-		<attribute name="grid.poc.tech.researchCenter.displayname" default="${grid.poc.tech.researchCenter.displayname}"/>
-		<attribute name="grid.poc.tech.researchCenter.shortname" default="${grid.poc.tech.researchCenter.shortname}"/>
-		<attribute name="grid.poc.tech.addr.country" default="${grid.poc.tech.addr.country}"/>
-		<attribute name="grid.poc.tech.addr.locality" default="${grid.poc.tech.addr.locality}"/>
-		<attribute name="grid.poc.tech.addr.postalCode" default="${grid.poc.tech.addr.postalCode}"/>
-		<attribute name="grid.poc.tech.addr.stateProvince" default="${grid.poc.tech.addr.stateProvince}"/>
-		<attribute name="grid.poc.tech.addr.street1" default="${grid.poc.tech.addr.street1}"/>
-		<attribute name="grid.poc.tech.addr.street2" default="${grid.poc.tech.addr.street2}"/>
-		<attribute name="grid.poc.tech.affiliation" default="${grid.poc.tech.affiliation}"/>
-		<attribute name="grid.poc.tech.name.last" default="${grid.poc.tech.name.last}"/>
-		<attribute name="grid.poc.tech.name.first" default="${grid.poc.tech.name.first}"/>
-		<attribute name="grid.poc.tech.phone" default="${grid.poc.tech.phone}"/>
-		<attribute name="grid.poc.tech.email" default="${grid.poc.tech.email}"/>
-		<attribute name="grid.poc.tech.role" default="${grid.poc.tech.role}"/>
-		<attribute name="grid.secdesc.file" default="@{jboss.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml"/>
-		<!-- appserver-install-sync-gts -->
-		<attribute name="sync-gts.build.dir" default="${sync-gts.build.dir}"/>
-		<attribute name="cagrid-target.dir" default="${cagrid-target.dir}"/>
-		<attribute name="grid.target" default="${grid.target}"/>
-		<attribute name="cagrid-console.dir" default="${basedir}/caGrid-console"/>
-		<attribute name="cagrid-console.target" default="deployJBoss"/>
-		<attribute name="wscore.src.url" default="${wscore.src.url}"/>
-		<sequential>
-			<grid-appserver-configure
-				appserver.home="@{jboss.home}"
-				appserver.server.name="@{jboss.server.name}"
-				appserver.conf.dir="@{jboss.conf.dir}"
-				appserver.webapp.dir="@{jboss.webapp.dir}"
-				appserver.server-xml.file="@{jboss.server-xml.file}"
-				appserver.server-xml.service.name="@{jboss.server-xml.service.name}"
-				appserver.port.http="@{jboss.port.http}"
-				appserver.port.ssl="@{jboss.port.ssl}"
-				appserver.hostname="@{jboss.hostname}"
-				appserver.external.http.host="@{jboss.external.http.host}"
-				appserver.external.http.port="@{jboss.external.http.port}"
-				search.host="@{search.host}"
-				search.port="@{search.port}"
-				grid.external.secure.host="@{jboss.external.grid.secure.host}"
-				grid.external.secure.port="@{jboss.external.grid.secure.port}"
-				grid.secure.enable="@{jboss.grid.secure.enable}"
-				grid.secure.dir="@{jboss.grid.secure.dir}"
-				grid.secure.port="@{jboss.grid.secure.port}"
-				grid.secure.key.file="@{jboss.grid.secure.key.file}"
-				grid.secure.cert.file="@{jboss.grid.secure.cert.file}"
-
-				grid.application.name="@{grid.application.name}"
-				grid.application.relative.dir="@{grid.application.relative.dir}"
-				grid.index.url="@{grid.index.url}"
-				grid.poc.science.affiliation="@{grid.poc.science.affiliation}"
-				grid.poc.science.name.last="@{grid.poc.science.name.last}"
-				grid.poc.science.name.first="@{grid.poc.science.name.first}"
-				grid.poc.science.phone="@{grid.poc.science.phone}"
-				grid.poc.science.role="@{grid.poc.science.role}"
-				grid.poc.science.email="@{grid.poc.science.email}"
-				grid.poc.tech.researchCenter.displayname="@{grid.poc.tech.researchCenter.displayname}"
-				grid.poc.tech.researchCenter.shortname="@{grid.poc.tech.researchCenter.shortname}"
-				grid.poc.tech.addr.country="@{grid.poc.tech.addr.country}"
-				grid.poc.tech.addr.locality="@{grid.poc.tech.addr.locality}"
-				grid.poc.tech.addr.postalCode="@{grid.poc.tech.addr.postalCode}"
-				grid.poc.tech.addr.stateProvince="@{grid.poc.tech.addr.stateProvince}"
-				grid.poc.tech.addr.street1="@{grid.poc.tech.addr.street1}"
-				grid.poc.tech.addr.street2="@{grid.poc.tech.addr.street2}"
-				grid.poc.tech.affiliation="@{grid.poc.tech.affiliation}"
-				grid.poc.tech.name.last="@{grid.poc.tech.name.last}"
-				grid.poc.tech.name.first="@{grid.poc.tech.name.first}"
-				grid.poc.tech.phone="@{grid.poc.tech.phone}"
-				grid.poc.tech.email="@{grid.poc.tech.email}"
-				grid.poc.tech.role="@{grid.poc.tech.role}"
-				grid.secdesc.file="@{grid.secdesc.file}"
-				sync-gts.build.dir="@{sync-gts.build.dir}"
-				cagrid-target.dir="@{cagrid-target.dir}"
-				grid.target="@{grid.target}"
-				cagrid-console.dir="@{cagrid-console.dir}"
-				cagrid-console.target="@{cagrid-console.target}"
-				wscore.src.url="@{wscore.src.url}"
-				/>
-		</sequential>
-	</macrodef>
-	<macrodef name="tomcat-configure-grid">
-		<attribute name="tomcat.home" default="${tomcat.home}"/>
-		<attribute name="tomcat.server.name" default=""/>
-		<attribute name="tomcat.conf.dir" default="@{tomcat.home}/conf"/>
-		<attribute name="tomcat.webapp.dir" default="@{tomcat.home}/webapps"/>
-		<attribute name="tomcat.server-xml.file" default="@{tomcat.home}/conf/server.xml"/>
-		<attribute name="tomcat.server-xml.service.name" default="Catalina"/>
-		<attribute name="tomcat.port.http" default="${tomcat.port.http}"/>
-		<attribute name="tomcat.port.ssl" default="${tomcat.port.ssl}"/>
-		<attribute name="tomcat.hostname" default="${tomcat.hostname}"/>
-		<attribute name="tomcat.external.http.host" default="${tomcat.external.http.host}"/>
-		<attribute name="tomcat.external.http.port" default="${tomcat.external.http.port}"/>
-		<attribute name="search.host" default="localhost"/>
-		<attribute name="search.port" default="8080"/>
-		<attribute name="tomcat.external.grid.secure.host" default="${tomcat.external.grid.secure.host}"/>
-		<attribute name="tomcat.external.grid.secure.port" default="${tomcat.external.grid.secure.port}"/>
-		<attribute name="tomcat.grid.secure.enable" default="${tomcat.grid.secure.enable}"/>
-		<attribute name="tomcat.grid.secure.dir" default="${tomcat.grid.secure.dir}"/>
-		<attribute name="tomcat.grid.secure.port" default="${tomcat.grid.secure.port}"/>
-		<attribute name="tomcat.grid.secure.key.file" default="${tomcat.grid.secure.key.file}"/>
-		<attribute name="tomcat.grid.secure.cert.file" default="${tomcat.grid.secure.cert.file}"/>
-		<!-- Grid specific attributes -->
-		<attribute name="grid.application.name" default="${grid.application.name}"/>
-		<attribute name="grid.application.relative.dir" default="${grid.dir.dest}"/>
-		<attribute name="grid.index.url" default="${grid.index.url}"/>
-		<attribute name="grid.poc.science.affiliation" default="${grid.poc.science.affiliation}"/>
-		<attribute name="grid.poc.science.name.last" default="${grid.poc.science.name.last}"/>
-		<attribute name="grid.poc.science.name.first" default="${grid.poc.science.name.first}" />
-		<attribute name="grid.poc.science.phone" default="${grid.poc.science.phone}"/>
-		<attribute name="grid.poc.science.role" default="${grid.poc.science.role}" />
-		<attribute name="grid.poc.science.email" default="${grid.poc.science.email}" />
-		<attribute name="grid.poc.tech.researchCenter.displayname" default="${grid.poc.tech.researchCenter.displayname}"/>
-		<attribute name="grid.poc.tech.researchCenter.shortname" default="${grid.poc.tech.researchCenter.shortname}"/>
-		<attribute name="grid.poc.tech.addr.country" default="${grid.poc.tech.addr.country}"/>
-		<attribute name="grid.poc.tech.addr.locality" default="${grid.poc.tech.addr.locality}"/>
-		<attribute name="grid.poc.tech.addr.postalCode" default="${grid.poc.tech.addr.postalCode}"/>
-		<attribute name="grid.poc.tech.addr.stateProvince" default="${grid.poc.tech.addr.stateProvince}"/>
-		<attribute name="grid.poc.tech.addr.street1" default="${grid.poc.tech.addr.street1}"/>
-		<attribute name="grid.poc.tech.addr.street2" default="${grid.poc.tech.addr.street2}"/>
-		<attribute name="grid.poc.tech.affiliation" default="${grid.poc.tech.affiliation}"/>
-		<attribute name="grid.poc.tech.name.last" default="${grid.poc.tech.name.last}"/>
-		<attribute name="grid.poc.tech.name.first" default="${grid.poc.tech.name.first}"/>
-		<attribute name="grid.poc.tech.phone" default="${grid.poc.tech.phone}"/>
-		<attribute name="grid.poc.tech.email" default="${grid.poc.tech.email}"/>
-		<attribute name="grid.poc.tech.role" default="${grid.poc.tech.role}"/>
-		<attribute name="grid.secdesc.file" default="@{tomcat.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml"/>
-		<!-- appserver-install-sync-gts -->
-		<attribute name="sync-gts.build.dir" default="${sync-gts.build.dir}"/>
-		<attribute name="cagrid-target.dir" default="${cagrid-target.dir}"/>
-		<attribute name="grid.target" default="${grid.target}"/>
-		<attribute name="cagrid-console.dir" default="${basedir}/caGrid-console"/>
-		<attribute name="cagrid-console.target" default="deployTomcat"/>
-		<attribute name="wscore.src.url" default="${wscore.src.url}"/>
-		<sequential>
-			<grid-appserver-configure
-				appserver.home="@{tomcat.home}"
-				appserver.server.name="@{tomcat.server.name}"
-				appserver.conf.dir="@{tomcat.conf.dir}"
-				appserver.webapp.dir="@{tomcat.webapp.dir}"
-				appserver.server-xml.file="@{tomcat.server-xml.file}"
-				appserver.server-xml.service.name="@{tomcat.server-xml.service.name}"
-				appserver.port.http="@{tomcat.port.http}"
-				appserver.port.ssl="@{tomcat.port.ssl}"
-				appserver.hostname="@{tomcat.hostname}"
-				appserver.external.http.host="@{tomcat.external.http.host}"
-				appserver.external.http.port="@{tomcat.external.http.port}"
-				search.host="@{search.host}"
-				search.port="@{search.port}"
-				grid.external.secure.host="@{tomcat.external.grid.secure.host}"
-				grid.external.secure.port="@{tomcat.external.grid.secure.port}"
-				grid.secure.enable="@{tomcat.grid.secure.enable}"
-				grid.secure.dir="@{tomcat.grid.secure.dir}"
-				grid.secure.port="@{tomcat.grid.secure.port}"
-				grid.secure.key.file="@{tomcat.grid.secure.key.file}"
-				grid.secure.cert.file="@{tomcat.grid.secure.cert.file}"
-
-				grid.application.name="@{grid.application.name}"
-				grid.application.relative.dir="@{grid.application.relative.dir}"
-				grid.index.url="@{grid.index.url}"
-				grid.poc.science.affiliation="@{grid.poc.science.affiliation}"
-				grid.poc.science.name.last="@{grid.poc.science.name.last}"
-				grid.poc.science.name.first="@{grid.poc.science.name.first}"
-				grid.poc.science.phone="@{grid.poc.science.phone}"
-				grid.poc.science.role="@{grid.poc.science.role}"
-				grid.poc.science.email="@{grid.poc.science.email}"
-				grid.poc.tech.researchCenter.displayname="@{grid.poc.tech.researchCenter.displayname}"
-				grid.poc.tech.researchCenter.shortname="@{grid.poc.tech.researchCenter.shortname}"
-				grid.poc.tech.addr.country="@{grid.poc.tech.addr.country}"
-				grid.poc.tech.addr.locality="@{grid.poc.tech.addr.locality}"
-				grid.poc.tech.addr.postalCode="@{grid.poc.tech.addr.postalCode}"
-				grid.poc.tech.addr.stateProvince="@{grid.poc.tech.addr.stateProvince}"
-				grid.poc.tech.addr.street1="@{grid.poc.tech.addr.street1}"
-				grid.poc.tech.addr.street2="@{grid.poc.tech.addr.street2}"
-				grid.poc.tech.affiliation="@{grid.poc.tech.affiliation}"
-				grid.poc.tech.name.last="@{grid.poc.tech.name.last}"
-				grid.poc.tech.name.first="@{grid.poc.tech.name.first}"
-				grid.poc.tech.phone="@{grid.poc.tech.phone}"
-				grid.poc.tech.email="@{grid.poc.tech.email}"
-				grid.poc.tech.role="@{grid.poc.tech.role}"
-				grid.secdesc.file="@{grid.secdesc.file}"
-				sync-gts.build.dir="@{sync-gts.build.dir}"
-				cagrid-target.dir="@{cagrid-target.dir}"
-				grid.target="@{grid.target}"
-				cagrid-console.dir="@{cagrid-console.dir}"
-				cagrid-console.target="@{cagrid-console.target}"
-				wscore.src.url="@{wscore.src.url}"
-				/>
-		</sequential>
-	</macrodef>
-	<macrodef name="grid-appserver-configure">
-		<attribute name="appserver.home" default="${jboss.home}"/>
-		<attribute name="appserver.server.name" default="${jboss.server.name}"/>
-		<attribute name="appserver.conf.dir" default="${jboss.home}/server/${jboss.server.name}/conf"/>
-		<attribute name="appserver.webapp.dir" default="${jboss.home}/server/${jboss.server.name}/deploy"/>
-		<attribute name="appserver.server-xml.file" default="${jboss.home}/server/${jboss.server.name}/deploy/jbossweb.sar/server.xml"/>
-		<attribute name="appserver.server-xml.service.name" default="jboss.web"/>
-		<attribute name="appserver.port.http" default="${jboss.server.port}"/>
-		<attribute name="appserver.port.ssl" default="${jboss.ssl.port}"/>
-		<attribute name="appserver.hostname" default="${jboss.server.hostname}"/>
-		<attribute name="search.host" default="localhost"/>
-		<attribute name="search.port" default="8080"/>
-		<attribute name="grid.application.name" default="${grid.application.name}"/>
-		<attribute name="grid.application.relative.dir" default="${grid.dir.dest}"/>
-		<attribute name="grid.index.url" default="${grid.index.url}"/>
-		<attribute name="grid.poc.science.affiliation" default="${grid.poc.science.affiliation}"/>
-		<attribute name="grid.poc.science.name.last" default="${grid.poc.science.name.last}"/>
-		<attribute name="grid.poc.science.name.first" default="${grid.poc.science.name.first}" />
-		<attribute name="grid.poc.science.phone" default="${grid.poc.science.phone}"/>
-		<attribute name="grid.poc.science.role" default="${grid.poc.science.role}" />
-		<attribute name="grid.poc.science.email" default="${grid.poc.science.email}" />
-		<attribute name="grid.poc.tech.researchCenter.displayname" default="${grid.poc.tech.researchCenter.displayname}"/>
-		<attribute name="grid.poc.tech.researchCenter.shortname" default="${grid.poc.tech.researchCenter.shortname}"/>
-		<attribute name="grid.poc.tech.addr.country" default="${grid.poc.tech.addr.country}"/>
-		<attribute name="grid.poc.tech.addr.locality" default="${grid.poc.tech.addr.locality}"/>
-		<attribute name="grid.poc.tech.addr.postalCode" default="${grid.poc.tech.addr.postalCode}"/>
-		<attribute name="grid.poc.tech.addr.stateProvince" default="${grid.poc.tech.addr.stateProvince}"/>
-		<attribute name="grid.poc.tech.addr.street1" default="${grid.poc.tech.addr.street1}"/>
-		<attribute name="grid.poc.tech.addr.street2" default="${grid.poc.tech.addr.street2}"/>
-		<attribute name="grid.poc.tech.affiliation" default="${grid.poc.tech.affiliation}"/>
-		<attribute name="grid.poc.tech.name.last" default="${grid.poc.tech.name.last}"/>
-		<attribute name="grid.poc.tech.name.first" default="${grid.poc.tech.name.first}"/>
-		<attribute name="grid.poc.tech.phone" default="${grid.poc.tech.phone}"/>
-		<attribute name="grid.poc.tech.email" default="${grid.poc.tech.email}"/>
-		<attribute name="grid.poc.tech.role" default="${grid.poc.tech.role}"/>
-		<attribute name="grid.external.secure.host" default="${grid.external.secure.host}"/>
-		<attribute name="grid.external.secure.port" default="${grid.external.secure.port}"/>
-		<attribute name="grid.secure.enable" default="${grid.secure.enable}"/>
-		<attribute name="grid.secure.dir" default="${grid.secure.dir}"/>
-		<attribute name="grid.secure.port" default="${grid.secure.port}"/>
-		<attribute name="grid.secure.key.file" default="${grid.secure.key.file}"/>
-		<attribute name="grid.secure.cert.file" default="${grid.secure.cert.file}"/>
-		<attribute name="grid.secdesc.file" default="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml"/>
-		<attribute name="appserver.external.http.host" default="${jboss.external.http.host}"/>
-		<attribute name="appserver.external.http.port" default="${jboss.external.http.port}"/>
-		<!-- appserver-install-sync-gts -->
-		<attribute name="sync-gts.build.dir" default="${sync-gts.build.dir}"/>
-		<attribute name="cagrid-target.dir" default="${cagrid-target.dir}"/>
-		<attribute name="grid.target" default="${grid.target}"/>
-		<attribute name="cagrid-console.dir" default="${basedir}/caGrid-console"/>
-		<attribute name="cagrid-console.target" default="deployJboss"/>
-		<attribute name="wscore.src.url" default="${wscore.src.url}"/>
-		<sequential>
-			<if>
-				<not>
-					<isset property="env.GLOBUS_LOCATION"/>
-				</not>
-				<then>
-					<echo message="env.GLOBUS_LOCATION not set, installing temporary copy"/>
-					<property name="working.dir" location="${basedir}/working"/>
-					<var name="env.GLOBUS_LOCATION" value="${working.dir}/${wscore.binaries.relative.dir}"/>
-					<if>
-						<not>
-							<available file="${env.GLOBUS_LOCATION}"/>
-						</not>
-						<then>
-							<echo message="temporary copy not found, installing"/>
-							<if>
-								<not>
-									<available file="${tools.dist.relative.dir}/ws-core-enum-4.0.3.zip"/>
-								</not>
-								<then>
-									<var name="wscore.src.url.unexpanded" unset="true"/>
-									<propertyregex property="wscore.src.url.unexpanded"
-										input="@{wscore.src.url}"
-										regexp="^\${.*}"
-										select="true"
-										/>
-									<if>
-										<isset property="wscore.src.url.unexpanded"/>
-										<then>
-											<property name="tmp.wscore.src.url" value="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/techstack-2006/os-independent/ws-core-enum-4.0.3.zip"/>
-										</then>
-										<else>
-											<property name="tmp.wscore.src.url" value="@{wscore.src.url}"/>
-										</else>
-									</if>
-									<var name="temp.file.name" usnet="true"/>
-									<basename file="" property="temp.file.name"/>
-									<get src="${temp.wscore.src.url}" dest="${tools.dist.relative.dir}/${temp.file.name}"/>
-								</then>
-								<else>
-									<echo message="Installing WSCORE, and continuing onto cagrid-console install"/>
-									<unzip dest="${working.dir}" src="${tools.dist.relative.dir}/ws-core-enum-4.0.3.zip"/>
-								</else>
-							</if>
-						</then>
-					</if>
-				</then>
-				<else>
-					<echo message="GLOBUS_LOCATION (${env.GLOBUS_LOCATION}) found continuing to cagrid-console install"/>
-				</else>
-			</if>
-			<var name="ext.globus.dir" value="${env.GLOBUS_LOCATION}"/>
-			<if>
-				<equals arg1="@{grid.secure.enable}" arg2="true"/>
-				<then>
-					<var name="scheme" value="https"/>
-					<var name="ext.grid.ssl.port.is.set" unset="true"/>
-					<propertyregex property="ext.grid.ssl.port.is.set"
-						input="@{grid.external.secure.port}"
-						regexp="\S+"
-						select="true"
-						/>
-					<if>
-						<isset property="ext.grid.ssl.port.is.set"/>
-						<then>
-							<var name="appserver.default.web.port" value="@{grid.external.secure.port}"/>
-						</then>
-						<else>
-							<var name="appserver.default.web.port" value="@{grid.secure.port}"/>
-						</else>
-					</if>
-				</then>
-				<else>
-					<var name="scheme" value="http"/>
-					<var name="ext.http.port.is.set" unset="true"/>
-					<propertyregex property="ext.http.port.is.set"
-						input="@{appserver.external.http.port}"
-						regexp="\S+"
-						select="true"
-						/>
-					<if>
-						<isset property="ext.http.port.is.set"/>
-						<then>
-							<var name="appserver.default.web.port" value="@{appserver.external.http.port}"/>
-						</then>
-						<else>
-							<var name="appserver.default.web.port" value="@{appserver.port.http}"/>
-						</else>
-					</if>
-				</else>
-			</if>
-
-			<!-- Fix all wsdl files that refer to statically defined host and port -->
-			<echo message="Cleaning up hostname:port refereces in **/*.wsdl"/>
-			<replace dir="@{appserver.webapp.dir}/@{grid.application.relative.dir}" token="http://@{search.host}:@{search.port}" value="${scheme}://@{appserver.hostname}:${appserver.default.web.port}">
-				<include name="**/*.wsdl" />
-			</replace>
-
-			<!-- Fix default jndi-config -->
-			<echo message="Fixing grid jndi-config"/>
-			<replace file="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/globus_resolution_service/jndi-config.xml" token="http://@{search.host}:@{search.port}" value="${scheme}://@{appserver.hostname}:${appserver.default.web.port}"/>
-
-			<!-- fix web.xml -->
-			<echo message="Updating grid web.xml"/>
-			<update-grid-web-xml-protocol
-				appserver.webapp.dir="@{appserver.webapp.dir}"
-				grid.application.relative.dir="@{grid.application.relative.dir}"
-				web-xml.location="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/web.xml"
-				scheme="${scheme}"
-				port="${appserver.default.web.port}"
-				/>
-
-			<!-- Secure Grid configuraiotns -->
-			<if>
-				<equals arg1="@{grid.secure.enable}" arg2="true"/>
-				<then>
-					<echo message="grid.secure.enable=true, configuring secure grid services @{grid.secdesc.file}"/>
-					<grid-secure-configure-secdesc
-						appserver.conf.dir="@{appserver.conf.dir}"
-						appserver.webapp.dir="@{appserver.webapp.dir}"
-						grid.application.relative.dir="@{grid.application.relative.dir}"
-						grid.secdesc.file="@{grid.secdesc.file}"
-						grid.secure.cert.file="@{grid.secure.cert.file}"
-						grid.secure.key.file="@{grid.secure.key.file}"
-						/>
-					<appserver-install-sync-gts
-						appserver.home="@{appserver.home}"
-						appserver.server.name="@{appserver.server.name}"
-						grid.dir.dest="@{grid.application.relative.dir}"
-						appserver.grid.secure.enable="@{grid.secure.enable}"
-						sync-gts.build.dir="@{sync-gts.build.dir}"
-						cagrid-target.dir="@{cagrid-target.dir}"
-						grid.target="@{grid.target}"
-						/>
-				</then>
-				<else>
-					<echo message="grid.secure.enable=false, skipping configuring secure grid services"/>
-				</else>
-
-			</if>
-
-			<!-- Fix service specific jndi-config- don't think this is needed, ssaksa090626
-			<echo message="Fixing second grid jnid-config"/>
-			<replaceregexp file="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/cagrid_@{grid.application.name}/jndi-config.xml"
-				match="(\s+.value.)http://.*\:\d+(\/.*)"
-				replace="\1${scheme}://@{appserver.hostname}:${appserver.default.web.port}\2"
-				flags="g" byline="true"/>
-			-->
-			<!-- Configure grid service to advertise the external URL if server is protected by a NAT -->
-			<grid-configure-server-config
-				appserver.webapp.dir="@{appserver.webapp.dir}"
-				grid.application.relative.dir="@{grid.application.relative.dir}"
-				grid.external.secure.host="@{grid.external.secure.host}"
-				grid.secure.enable="@{grid.secure.enable}"
-				appserver.external.http.host="@{appserver.external.http.host}"
-				/>
-
-			<!-- POC stuff -->
-			<echo message="Updateing POC info @{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/cagrid_@{grid.application.name}/serviceMetadata.xml"/>
-			<!--
-			<xmltask preservetype="true" source="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/cagrid_@{grid.application.name}/serviceMetadata.xml" dest="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/cagrid_@{grid.application.name}/serviceMetadata.xml">
-				<remove path="/:ServiceMetadata/:serviceDescription/:Service/:pointOfContactCollection/:PointOfContact" />
-				<insert path="/:ServiceMetadata/:serviceDescription/:Service/:pointOfContactCollection">
-					<![CDATA[
-						<ns3:PointOfContact affiliation="@{grid.poc.science.affiliation}" email="@{grid.poc.science.email}" firstName="@{grid.poc.science.name.first}" lastName="@{grid.poc.science.name.last}" phoneNumber="@{grid.poc.science.phone}" role="@{grid.poc.science.role}" "/>
-					]]>
-				</insert>
-			</xmltask>
-			-->
-			<var name="poc.science.string" value=" affiliation=&quot;@{grid.poc.science.affiliation}&quot; email=&quot;@{grid.poc.science.email}&quot; firstName=&quot;@{grid.poc.science.name.first}&quot; lastName=&quot;@{grid.poc.science.name.last}&quot; phoneNumber=&quot;@{grid.poc.science.phone}&quot; role=&quot;@{grid.poc.science.role}&quot; "/>
-
-			<replaceregexp file="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/cagrid_@{grid.application.name}/serviceMetadata.xml"
-				match="^(\s+&lt;ns3:PointOfContact).*(xmlns:ns3.*&gt;)"
-				replace="\1${poc.science.string}\2"
-				flags="g" byline="true"/>
-			<!-- Research Center info -->
-			<var name="research.center.lines" unset="true"/>
-			<loadfile
-				property="research.center.lines"
-				srcFile="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/cagrid_@{grid.application.name}/serviceMetadata.xml">
-				<filterchain>
-					<linecontainsregexp>
-						<regexp pattern=":ResearchCenter"/>
-					</linecontainsregexp>
-				</filterchain>
-			</loadfile>
-			<var name="ns.name" unset="true"/>
-			<propertyregex property="ns.name"
-				input="${research.center.lines}"
-				regexp="^\s*&lt;(.*?):ResearchCenter"
-				select="\1"
-				/>
-			<echo message="Read namespace from :ResearchCenter as ${ns.name}"/>
-
-			<var name="poc.tech.string" value="${line.separator}
-&lt;${ns.name}:ResearchCenter displayName=&quot;@{grid.poc.tech.researchCenter.displayname}&quot; shortName=&quot;@{grid.poc.tech.researchCenter.shortname}&quot; xmlns:${ns.name}=&quot;gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common&quot;&gt;${line.separator}
-&lt;${ns.name}:Address country=&quot;@{grid.poc.tech.addr.country}&quot; locality=&quot;@{grid.poc.tech.addr.locality}&quot; postalCode=&quot;@{grid.poc.tech.addr.postalCode}&quot; stateProvince=&quot;@{grid.poc.tech.addr.stateProvince}&quot; street1=&quot;@{grid.poc.tech.addr.street1}&quot; street2=&quot;@{grid.poc.tech.addr.street2}&quot;/&gt;${line.separator}
-&lt;${ns.name}:pointOfContactCollection&gt;${line.separator}
-&lt;${ns.name}:PointOfContact affiliation=&quot;@{grid.poc.tech.affiliation}&quot; email=&quot;@{grid.poc.tech.email}&quot; firstName=&quot;@{grid.poc.tech.name.first}&quot; lastName=&quot;@{grid.poc.tech.name.last}&quot; phoneNumber=&quot;@{grid.poc.tech.phone}&quot; role=&quot;@{grid.poc.tech.role}&quot;/&gt;${line.separator}
-&lt;/${ns.name}:pointOfContactCollection&gt;${line.separator}
-&lt;/${ns.name}:ResearchCenter&gt;${line.separator}
-"/>
-			<replaceregexp file="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc/cagrid_@{grid.application.name}/serviceMetadata.xml"
-				match="&lt;ns1:hostingResearchCenter&gt;.*&lt;\/ns1:hostingResearchCenter&gt;"
-				replace="&lt;ns1:hostingResearchCenter&gt;${poc.tech.string}&lt;\/ns1:hostingResearchCenter&gt;"
-				flags="sg"/>
-
-			<echo message="Updating poll interval grid registration.xml"/>
-			<replaceregexp
-				match="(&lt;agg:PollIntervalMillis&gt;).*(&lt;\/agg:PollIntervalMillis&gt;)"
-				replace="\13600000\2"
-				flags="sg">
-				<fileset dir="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc">
-					<include name="**/*_registration.xml"/>
-				</fileset>
-			</replaceregexp>
-			<!-- Change pointer to index service based on property -->
-			<echo message="Updating grid.index.url - @{grid.index.url}"/>
-			<replaceregexp
-				match="(&lt;wsa:Address&gt;).*(&lt;\/wsa:Address&gt;)"
-				replace="\1@{grid.index.url}\2"
-				flags="sg">
-				<fileset dir="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/etc">
-					<include name="**/*_registration.xml"/>
-				</fileset>
-			</replaceregexp>
-
-			<!-- installs cagrid console -->
-			<replaceregexp file="@{cagrid-console.dir}/ivy-build.xml" byline="true"
-				match="ivy.instance"
-				replace="console-jboss"
-				/>
-
-			<var name="classpath.colon.found" unset="true"/>
-			<propertyregex property="classpath.colon.found"
-				input="${java.classpath}"
-				regexp=":"
-				select="true"
-				/>
-			<if>
-				<equals arg1="${classpath.colon.found}" arg2="true"/>
-				<then>
-					<echo message="not in gui-installer, using ant to run cagrid-console build"/>
-
-					<ant inheritAll="false" inheritRefs="false"
-						antfile="build.xml"
-						target="@{cagrid-console.target}"
-						dir="@{cagrid-console.dir}"
-						>
-						<property name="jboss.dir" value="@{appserver.home}"/>
-						<property name="wsrf.webapp.dir" value="@{appserver.webapp.dir}/@{grid.application.relative.dir}"/>
-						<property name="env.GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
-					</ant>
-				</then>
-				<else>
-					<echo message="in gui-installer, using exec to run cagrid-console build"/>
-					<exec osfamily="unix" executable="${executable-ant-full-path}/ant" dir="@{cagrid-console.dir}">
-						<arg line="-Djboss.dir=@{appserver.home} -Dwsrf.webapp.dir=@{appserver.webapp.dir}/@{grid.application.relative.dir} @{cagrid-console.target}"/>
-						<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
-					</exec>
-					<exec osfamily="windows" executable="${executable-ant-full-path}/ant.bat" dir="@{cagrid-console.dir}">
-						<arg line="-Djboss.dir=@{appserver.home} -Dwsrf.webapp.dir=@{appserver.webapp.dir}/@{grid.application.relative.dir} @{cagrid-console.target}"/>
-						<env key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
-					</exec>
-				</else>
-			</if>
-			<delete>
-				<fileset dir="@{appserver.webapp.dir}/@{grid.application.relative.dir}/WEB-INF/lib">
-					<include name="commons-logging*.jar"/>
-				</fileset>
-			</delete>
-		</sequential>
-	</macrodef>
+	
 	<macrodef name="check-absolute-directory" description="Diagnose the host system before the installation">
 		<attribute name="directory.property" />
 		<sequential>
@@ -3914,24 +3020,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 					<echo message="User not added to ${jmx-console.user.file}"/>
 				</else>
 			</if>
-
-			<!--
-			<var name="web-console.password.file" value="@{jboss.home}/server/@{jboss.server.name}/conf/props/web-console-users.properties"/>
-			<echo message="Updating ${web-console.password.file}"/>
-
-			<replaceregexp file="${web-console.password.file}"
-				match="^(admin)=.*"
-				replace="@{jboss.web.user}=@{jboss.web.password}"
-				flags="g" byline="true"/>
-
-			<var name="login-config.xml" value="@{jboss.home}/server/@{jboss.server.name}/conf/login-config.xml"/>
-			<echo message="Updating ${login-config.xml}"/>
-
-			<replaceregexp file="${login-config.xml}"
-				match="web-console-"
-				replace="props\/web-console-"
-				flags="g" byline="true"/>
-			-->
 		</sequential>
 	</macrodef>
 	<macrodef name="gui-installer-prep">
@@ -3942,9 +3030,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 		<attribute name="dist.dir" default="${dist.dir}"/>
 		<attribute name="izpack.binary.name" default="izpack-4.3" />
 		<attribute name="izpack.binary.file" default="izpack-4.3.zip" />
-		<attribute name="izpack.binary.uri" default="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/techstack-2008/os-independent" />
-		<attribute name="izpack-custom.svn.url" default="https://ncisvn.nci.nih.gov/svn/automation/trunk/software/bda-installer/src-custom-4.3"/>
-		<attribute name="izpack-custom.svn.dir" default="${target.dir}/izpack-custom"/>
+	    <attribute name="izpack-custom.binary.file" default="izpack-custom.zip"/>
+	    <attribute name="third-party.dir" default="${software.dir}/third-party"/>
 		<attribute name="product.name" default="caArray-installer" />
 		<attribute name="product.version" default="2.1.0" />
 		<sequential>
@@ -3956,43 +3043,18 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 			<delete dir="@{target.dir}/@{izpack.binary.name}" />
 
 			<!-- Extract izpack -->
-			<get src="@{izpack.binary.uri}/@{izpack.binary.file}" dest="@{download.dir}/@{izpack.binary.file}" usetimestamp="true"/>
-			<unzip dest="@{target.dir}" src="@{download.dir}/@{izpack.binary.file}" />
+			<unzip dest="@{target.dir}" src="@{third-party.dir}/@{izpack.binary.file}"/>
 
-			<!-- Check out izpack custom code and copy into extracted izpack dist -->
-			<osfamily property="os.family"/>
-			<switch value="${os.family}">
-				<case value="windows">
-					<echo message="Retreiving izpack custom code from svn task."/>
-					<svn-co
-						svn.checkout.url="@{izpack-custom.svn.url}"
-						svn.checkout.dir="@{izpack-custom.svn.dir}"
-						/>
-				</case>
-				<case value="unix">
-					<echo message="Retreiving izpack custom code from svn command line."/>
-					<mkdir dir="@{izpack-custom.svn.dir}"/>
-					<exec osfamily="unix" executable="svn" spawn="true">
-						<arg line="co @{izpack-custom.svn.url} @{izpack-custom.svn.dir}" />
-					</exec>
-				</case>
-				<default>
-					<fail message="Unexpected OS type ${os.family}"/>
-				</default>
-			</switch>
-			<sleep seconds="10"/>
-
-			<copy todir="@{target.dir}/@{izpack.binary.name}/src/lib" overwrite="true">
-				<fileset dir="@{izpack-custom.svn.dir}" />
-			</copy>
-
+		    <!-- Extract izpack custom code and copy into izpack dist. -->
+		    <unzip dest="@{target.dir}/@{izpack.binary.name}" src="@{third-party.dir}/@{izpack-custom.binary.file}" overwrite="true"/>
+		    
 			<!-- customize izpack  -->
 			<xmltask preservetype="true" failWithoutMatch="true" source="@{target.dir}/@{izpack.binary.name}/src/build.xml"
 				dest="@{target.dir}/@{izpack.binary.name}/src/build.xml">
 				<xmlcatalog refid="bda.xml.catalog"/>
-				<insert path="//target[@name='build.listeners']" file="@{izpack-custom.svn.dir}/resources/ProgressBarInstallerListener.xml"/>
+				<insert path="//target[@name='build.listeners']" file="@{target.dir}/@{izpack.binary.name}/resources/ProgressBarInstallerListener.xml"/>
 			</xmltask>
-			<copy file="@{izpack-custom.svn.dir}/resources/eng.xml" todir="@{target.dir}/@{izpack.binary.name}/bin/langpacks/installer" overwrite="true" />
+			<copy file="@{target.dir}/@{izpack.binary.name}/resources/eng.xml" todir="@{target.dir}/@{izpack.binary.name}/bin/langpacks/installer" overwrite="true" />
 
 			<!-- Copy over library files -->
 			<mkdir dir="@{target.dir}/@{izpack.binary.name}/lib"/>
@@ -4013,8 +3075,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.5
 					<chmod dir="@{target.dir}/@{izpack.binary.name}/bin" perm="ugo+rx" includes="compile" />
 				</then>
 			</if>
-		<!--  <get src="@{ant.binary.url}" dest="@{download.dir}/@{ant.binary.file}" usetimestamp="true"/>
-			<unzip dest="@{target.dir}" src="@{download.dir}/@{ant.binary.file}" /> -->
 		</sequential>
 	</macrodef>
 	<macrodef name="jboss-read-ldapconfig" description="check if the application is installed">
@@ -10431,29 +9491,6 @@ gov.nih.nci.security.cgmm.login.config.file=@{cgmm.conf.dest.dir}/cgmm.login.con
 					<fail message="grid.target=@{grid.target} is an invalid option, please use a valid name (nci_prod-1.3 nci_stage-1.3 nci_qa-1.3 training-1.3)"/>
 				</default>
 			</switch>
-		</sequential>
-	</macrodef>
-	<macrodef name="migrate-ivy-report">
-		<attribute name="groovy.file" default="${bda-utils.dir}/resource/groovy/migrateIvy.groovy"/>
-		<attribute name="maven.filelist.src" default="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk/file-list.txt"/>
-		<attribute name="maven.filelist.dest" default="${target.dir}/maven-filelist.txt"/>
-		<attribute name="cagrid12.filelist.dest" default="${target.dir}/cagrid12-filelist.txt"/>
-		<attribute name="cagrid12.filelist.src" default="https://ncisvn.nci.nih.gov/svn/cagrid-repo-copy/trunk/repository-1.2/file-list.txt"/>
-		<attribute name="cagrid13.filelist.dest" default="${target.dir}/cagrid13-filelist.txt"/>
-		<attribute name="cagrid13.filelist.src" default="https://ncisvn.nci.nih.gov/svn/cagrid-repo-copy/trunk/repository-1.3/file-list.txt"/>
-		<attribute name="cbiit-ivy.filelist.dest" default="${target.dir}/cbiit-ivy-filelist.txt"/>
-		<attribute name="cbiit-ivy.filelist.src" default="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/file-list.txt"/>
-		<attribute name="ivy.analyze.file" default="${basedir}/ivy.xml"/>
-		<attribute name="migrate.out.file" default="${target.dir}/migration-ivy.out"/>
-		<sequential>
-			<get src="@{maven.filelist.src}" dest="@{maven.filelist.dest}" usetimestamp="true"/>
-			<get src="@{cbiit-ivy.filelist.src}" dest="@{cbiit-ivy.filelist.dest}" usetimestamp="true"/>
-			<get src="@{cagrid12.filelist.src}" dest="@{cagrid12.filelist.dest}" usetimestamp="true"/>
-			<get src="@{cagrid13.filelist.src}" dest="@{cagrid13.filelist.dest}" usetimestamp="true"/>
-			<echo message="Executing @{groovy.file}"/>
-			<groovy src="@{groovy.file}">
-				<arg line="@{maven.filelist.dest} @{cagrid12.filelist.dest} @{cagrid13.filelist.dest} @{cbiit-ivy.filelist.dest} @{ivy.analyze.file} @{migrate.out.file}"/>
-			</groovy>
 		</sequential>
 	</macrodef>
 	<macrodef name="tomcat-nci-customizations">

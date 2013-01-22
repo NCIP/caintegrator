@@ -48,10 +48,6 @@
     
     <dependency org="junit" name="junit" rev="4.4" conf="test-integration->master"/>
 
-    <!-- svn connectors -->
-    <dependency org="org.tigris" name="svnant" rev="1.3" conf="compile"/>
-
-
     <!-- Runtime items that exist in WEB-INF/lib for war runtime -->
 
     <!-- These are created by TJ -->

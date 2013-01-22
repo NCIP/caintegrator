@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!--
-$Id: build.xml 4753 2008-05-15 18:24:16Z saksass $
-$HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
--->
-<project name="build-caintegrator2" default="continuous-integration" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
+
+<project name="build-caintegrator2" default="continuous-integration" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 	<description>
 		Builds the application.
 	</description>
@@ -43,6 +40,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="software.dir" location=".." />
 	<property name="common.dir" location="${software.dir}/common" />
 	<property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
+    <property name="third-party.dir" location="${software.dir}/third-party"/>
     <property name="bda.local.repo.dir" location="${local.repo.dir}" />
 	<property name="target.dir" location="${software.dir}/target" />
 	<property name="bda-download.dir" location="${common.dir}/bda-download" />
@@ -58,12 +56,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="working.dir" location="${target.dir}/working" />
     <property name="ivy.settings.file" location="${build.dir}/ivy-bda-settings.xml" />
 
-
-	<!-- Used by dist:*:prep to copy resource files to distribution area -->
-
-	<!-- Used by dist:*:prep to determin list of files to use for incremental build process.
-		Directory and files must be in svn to work.
-	-->
+	<!-- Used by dist:*:prep to determin list of files to use for incremental build process.-->
 	<property name="db-install.src.dir" value="${common.dir}/resources/db-install" />
 	<property name="db-upgrade.src.dir" value="${common.dir}/resources/db-upgrade" />
 
@@ -100,14 +93,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
     
 	<!-- Where to write files retrieved by get, into the distribution area.  The file names come from project.properties  -->
 	<property name="jboss.dest.file" value="${download.dir}/${jboss.binaries.file}" />
-	<property name="jbosscp.dest.file" value="${download.dir}/${jbosscp.binaries.file}" />
 
 	<!-- Default install time targets passed by deploy targets to the installer, can be overridden by being set on the command line if different target is desitred.  -->
 	<property name="install.target" value="install" />
 	<property name="upgrade.target" value="upgrade" />
-
-	<!-- Where grand stores it's outputed pdf reports of build files -->
-	<property name="grand.rpt.dir" value="common/grand" />
 
 	<!-- Testing & static-analysis properties -->
 	<property name="caintegrator2-war.java.dir" value="${caintegrator2-war.base.dir}/src" />
@@ -141,20 +130,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</condition>
 
 	<property name="bda-download.file" value="bda-ivy-2.0.0-build.xml" />
-	<!--
-	<mkdir dir="${bda-download.dir}" />
-	<property name="bda-download.src.url" value="http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-download/${bda-download.file}" />
-	<get src="${bda-download.src.url}" dest="${bda-download.dir}/${bda-download.file}" />
-	-->
         <ant inheritAll="false" inheritRefs="false" antfile="${bda-download.file}" target="retrieve-bda" dir="${bda-download.dir}">
 		<property name="bda.version" value="${bda.version}" />
 		<property name="bda-utils.dir" location="${bda-utils.dir}" />
 		<property name="lib.dir" location="${lib.dir}" />
 		<property name="software.dir" location="${software.dir}" />
 		<property name="commonlibrary.dir" location="${commonlibrary.dir}" />
-        <!-- Use below for old ivy repo -->
-		<!--<property name="ivy.settings.file" value="ivy-bda-settings.xml"/>-->
-		<!-- Use below for new ivy repo -->
 		<property name="ivy.settings.file" value="cbiit-ivy-bda-settings.xml"/>
 		<property name="target.dir" location="${target.dir}"/>
 		<property name="local.cbiit-ivy-repo.dir" value="${local.cbiit-ivy-repo.dir}"/>
@@ -213,7 +194,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<mkdir dir="${temp.dir}" />
 		<mkdir dir="${download.dir}" />
 		<available file="${jboss.dest.file}" property="jboss.tools.exists" />
-		<available file="${jbosscp.dest.file}" property="jbosscp.tools.exists" />
 	</target>
 
 	<target name="ivy:clean" description="Clean">
@@ -242,14 +222,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         <util-dot-on-dir dot-file.dir="../target/reports/ivy" />
     </target>
 
-	<target name="validate:pre:build">
-		<validate-pre-build
-			/>
-	</target>
-
 	<!-- Wrapper build target, call appropriate builds for sub-projects -->
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level dist.directory, used by distribution targets to make distributions" depends="
-		validate:pre:build,
 		clean,
 		init,
         build:kaplan-meier.jar,
@@ -300,39 +274,16 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Wrapper target that downloads all required binaries from Common Tools Repository -->
 	<target name="dist:tools:retrieve" description="Downloads binary support tools form common tools repository" depends="
 		init,
-		dist:tools:retrieve:jboss,
-		dist:tools:retrieve:jbosscp
+		dist:tools:retrieve:jboss
 		" />
 
 	<!-- Downloads jboss from tools repository and compares checksum, based on properties set in project.properties -->
 	<target name="dist:tools:retrieve:jboss" unless="jboss.tools.exists">
-		<get src="${jboss.src.url}" dest="${jboss.dest.file}" />
-		<get src="${jboss.src.url}.MD5" dest="${jboss.dest.file}.MD5" />
-		<checksum file="${jboss.dest.file}" verifyProperty="jboss.cksum.ok" />
-		<if>
-			<equals arg1="${jboss.cksum.ok}" arg2="true" />
-			<then>
-				<echo message="Downloaded jboss sucessfully" />
-			</then>
-			<else>
-				<fail message="Failed to download jboss file sucessfully." />
-			</else>
-		</if>
+	    <copy todir="${download.dir}" file="${third-party.dir}/${jboss.binaries.file}"/>
 	</target>
-	<target name="dist:tools:retrieve:jbosscp" unless="jbosscp.tools.exists" description="Downloads JBOSS Cumulative Patch from binary repository and verifies checksum">
-		<if>    
-			<isset property="${jbosscp.src.url}"/>
-			<then>  
-				<get src="${jbosscp.src.url}" dest="${jbosscp.dest.file}" />
-			</then> 
-			<else>  
-				<echo message="jbosscp.src.url not set skipping download of jboss cumulative patch"/>
-			</else> 
-		</if>   
-	</target>
+    
 	<target name="dist:tools:retrieve:jboss-bindings"  description="Downloads JBOSS bindings filefrom binary repository and verifies checksum">
-		<get src="${jboss4-bindings.src.url}" dest="${dist.exploded.dir}/${jboss4-bindings.file}" />
-        <get src="${jboss5-bindings.src.url}" dest="${dist.exploded.dir}/${jboss5-bindings.file}" />
+        <copy file="${third-party.dir}/${jboss5-bindings.file}" todir="${dist.exploded.dir}" />
 	</target>
 
     <target name="dist:gui-installer" description="Makes Gui-Installer distribution">
@@ -343,7 +294,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         </delete>
         <gui-installer-prep product.name="${caintegrator2.install.name}" product.version="${caintegrator2.version}" /> 
         <ant inheritAll="false" inheritRefs="false" antfile="install.xml" target="build:installer" dir="${build.dir}/gui-installer">
-            <property name="compile.jar.dir" value="${target.dir}/izpack-4.3" /> 
+            <property name="compile.jar.dir" value="${target.dir}/izpack-4.3" />
         </ant>
     </target>
 
@@ -378,9 +329,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<zip destfile="${dist.dir}/${caintegrator2.install.zip.file}" basedir="${dist.exploded.dir}" />
 	</target>
 
-	<!-- For non DAC upgrades
-	<target name="dist:upgrader:prep" depends="build:all,dist:tools:retrieve:jboss-bindings" description="Copies artifacts not generated by sub-project builds into the install distribution area">
-	-->
 	<!-- for DAC Upgrades-->
 	<target name="dist:upgrader:prep" depends="build:all,dist:tools:retrieve,dist:tools:retrieve:jboss-bindings" description="Copies artifacts not generated by sub-project builds into the install distribution area">
         <copy todir="${db-install.dist.dir}" overwrite="true">
@@ -394,13 +342,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<include name="**/*" />
 			</fileset>
 		</copy>
-
-		<!-- For non DAC upgrades
-		<dist-prep
-			copy.tools.flag="N"
-			default.target="upgrade"
-			/>
-		-->
 		<!-- For DAC upgrades -->
 		<dist-prep
 			copy.tools.flag="Y"
@@ -436,12 +377,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<zip destfile="${dist.dir}/${caintegrator2.install.name}_${caintegrator2.version}-db.zip">
 			<zipfileset dir="${db-install.dist.dir}" prefix="${db-install.dist.relative.dir}" />
 			<zipfileset dir="${db-upgrade.dist.dir}" prefix="${db-upgrade.dist.relative.dir}" />
-			<!-- not needed for this target
-			<zipfileset dir="${caintegrator2.dist.dir}" prefix="${caintegrator2.dist.relative.dir}"/>
-			<zipfileset dir="${grid-sample.dist.dir}" prefix="${grid-sample.dist.relative.dir}"/>
-			<zipfileset dir="${tools.dist.dir}" prefix="${tools.dist.relative.dir}"/>
-			<zipfileset dir="${common.dist.dir}" prefix="${common.dist.relative.dir}"/>
-			-->
 			<zipfileset dir="${bda-utils.dir}" prefix="bda-utils"/>
 			<zipfileset dir="${dist.exploded.dir}">
 				<include name="build.xml" />
@@ -449,11 +384,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<include name="properties.template" />
 				<include name="project.properties" />
 			</zipfileset>
-			<!--  might want to add this  
-			<zipfileset dir="${build.dir}">
-				<include name="local.properties" />
-			</zipfileset>
-			-->
 		</zip>
 	</target>
 
@@ -627,211 +557,35 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<echo message="To run a remote upgrade type: ant deploy:remote:upgrade -Dproperties.file=[path to environment proeprty file]" />
 	</target>
 
-	<!-- Scorches checkout area and then checks out the generic project from svn. Serval propeties influence what is checked out.  Each of the properites have defaults, which will check out trunk.  This target uses the svn-co macro from bda -->
-	<target name="svn:co">
-		<property name="svn.project.base.url" value="http://gforge.nci.nih.gov/svnroot/generic" />
-		<property name="svn.project.name" value="generic" />
-		<property name="svn.tag" value="trunk" />
-		<property name="svn.co.base.dir" value="${user.home}/tmp" />
-
-		<svn-co svn.project.base.url="${svn.project.base.url}" svn.project.name="${svn.project.name}" svn.tag="${svn.tag}" svn.co.base.dir="${svn.co.base.dir}" />
-	</target>
-    
-    <!-- Wrapper to call caintegrator2-war svntag task from master build directory -->
-    <target name="svntag:caintegrator2.war" depends="">
-        <ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="svntag" dir="${caintegrator2-war.base.dir}">
-        </ant>
-    </target>    
-    
-	<!-- this target generates visio like diagrams of the build files -->
-	<target name="report:grand" depends="build:all" description="Generates grand graphs for build.xml files">
-		<!-- Temporary fix to make grand work for install.xml -->
-		<report-grand 
-			build.file.location="build.xml" 
-			output.file.dir="${grand.rpt.dir}"
-			output.file.name="master-build.xml"
-		       	/>
-		<report-grand 
-			build.file.location="${dist.exploded.dir}/build.xml" 
-			output.file.dir="${grand.rpt.dir}"
-			output.file.name="master-install.xml"
-		       	/>
-		<report-grand 
-			build.file.location="caintegrator2-war/build.xml" 
-			output.file.dir="${grand.rpt.dir}"
-			output.file.name="caintegrator2-build.xml"
-		       	/>
-		<report-grand 
-			build.file.location="caintegrator-cacore/build.xml" 
-			output.file.dir="${grand.rpt.dir}"
-			output.file.name="cacore-build.xml"
-		       	/>
-		<delete dir="${software.dir}/bda-utils"/>
-		<delete dir="${software.dir}/logs"/>
-		<delete dir="${software.dir}/working"/>
-		<delete file="${software.dir}/db-integrate.xml"/>
-
-	</target>
-
 	<!-- Wrapper test target, call appropriate test for sub-projects -->
 
-	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level dist.directory, used by distribution targets to make distributions" depends="
-		clean,
-		init,
-		test:unit:all
-		" />
-
-	<target name="test:acceptance" depends="-test:fit" description="Runs automated acceptance tests">
-		<echo message="===========================================" />
-		<echo message="Running caIntegrator2 Acceptance Test Suite" />
-		<echo message="===========================================" />
-	</target>
-
-	<target name="-test:start-seleniumrc" description="Starts a SeleniumRC server">
-		<parallel>
-			<daemons>
-				<java jar="${bda-utils.dir}/acceptance-tests/selenium-server.jar" fork="true" failonerror="true" />
-			</daemons>
-		</parallel>
-	</target>
-
-	<target name="-test:fit" description="Runs fit acceptance tests">
-		<java classname="fit.runner.FolderRunner" classpathref="bda-utils.classpath">
-			<arg line="${caintegrator2-war.base.dir}/test/acceptance/tables"/>
-			<arg line="${reports.dir}/fit"/>
-		</java>
-	</target>
-	
-	<target name="-test:fitnesse" description="Runs fitnesse acceptance tests">
-		<property name="fitnesse.output.dir" value="${software.dir}/target/common" />
-		<property name="fitnesse_root_dir" value="${bda-utils.dir}/acceptance-tests" />
-		<property name="fitnesse_log_dir" value="${software.dir}/target/common" />
-		<property name="dir_containing_FitNesseRoot_dir" value="${software.dir}/caintegrator2-war/test/acceptance" />
-		<property name="fitnesse.output.file" value="${fitnesse.output.dir}/fitnesse-test-results" />
-		<property name="fitnesse.port" value="8085" />
-		<property name="Fitnesse.Test.Page.Path" value="JavaExamples.WebTest.AlertTest" />
-
-		<path id="fitpath">
-			<fileset dir="${lib.dir}/acceptance-tests">
-				<include name="*.jar" />
-			</fileset>
-			<!-- Add any other jars that your app might need -->
-		</path>
-
-		<echo message="Starting FitNesse server..." level="info" />
-
-		<parallel>
-
-			<daemons>
-				<java classname="fitnesse.FitNesse" classpath="${lib.dir}/acceptance-tests/fitnesse.jar;${ant.home}/lib/xercesImpl.jar">
-					<arg value="-l" />
-					<arg value="${fitnesse_log_dir}" />
-					<arg value="-p" />
-					<arg value="${fitnesse.port}" />
-					<arg value="-e" />
-					<arg value="0" />
-					<arg value="-d" />
-					<arg value="${dir_containing_FitNesseRoot_dir}" />
-				</java>
-			</daemons>
-
-			<sequential>
-				<echo message="Starting ${Fitnesse.Test.Page.Path} test suite..." level="info" />
-				<sleep seconds="5" />
-				<java classpathref="fitpath" classname="fitnesse.runner.TestRunner" fork="true" resultproperty="fit.test.failures">
-					<arg value="-debug" />
-					<arg value="-xml" />
-					<arg value="${fitnesse.output.file}.xml" />
-					<arg value="-html" />
-					<arg value="${fitnesse.output.file}.html" />
-					<arg value="-nopath" />
-					<arg value="localhost" />
-					<arg value="${fitnesse.port}" />
-					<arg value="${Fitnesse.Test.Page.Path}" />
-				</java>
-				<!--
-				<replace file="${fitnesse.output.file}.html" token="localhost:${fitnesse.port}" />
-				-->
-
-				<echo message="Finished FitNesse tests: ${fit.test.failures} failures/exceptions" level="info" />
-				<fail message="FIT test failures/exceptions: ${fit.test.failures}">
-					<condition>
-						<not>
-							<equals arg1="${fit.test.failures}" arg2="0" />
-						</not>
-					</condition>
-				</fail>
-				<!-- This will fail the build if the return code was not Zero, which means there were errors or exceptions -->
-			</sequential>
-
-		</parallel>
-	</target>
-
-	<target name="-test:stop-seleniumrc" description="Stops a SeleniumRC server">
-		<java jar="${lib.dir}/acceptance-tests/selenium-server.jar" fork="true" failonerror="true" />
-	</target>
+	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level dist.directory, used by distribution targets to make distributions" 
+	    depends="clean,init,test:unit:all" />
 
 	<target name="test:unit:all" description="calls sub-project test:unit targets"
-		depends="
-		test:unit:caintegrator2-war
-		"/>
+		depends="test:unit:caintegrator2-war"/>
 
 	<target name="test:unit:caintegrator2-war" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" 
-			target="test:unit" 
-			dir="${caintegrator2-war.base.dir}"
-			/>
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="test:unit" dir="${caintegrator2-war.base.dir}"/>
 	</target>
 
     <target name="test:integration:caintegrator2-war" depends="init">
         <ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" 
-            target="test:integration:from-master" 
-            dir="${caintegrator2-war.base.dir}"
-            />
+            target="test:integration:from-master" dir="${caintegrator2-war.base.dir}" />
     </target>
 
 	<target name="static-analysis:all" description="calls all sub-project static-analysis targets"
-		depends="
-		static-analysis:caintegrator2-war
-		"/>
+		depends="static-analysis:caintegrator2-war"/>
 
 	<target name="static-analysis:caintegrator2-war" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}"
-			target="static-analysis"
-			dir="${caintegrator2-war.base.dir}" >
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="static-analysis"
+		    dir="${caintegrator2-war.base.dir}" >
 		</ant>
-	</target>
+	</target>  
 	
 	<target name="continuous-integration" description="calls wrapper targets for continuous integration build"
-		depends="
-		build:all,
-		static-analysis:all,
-		test:unit:all
-		"/>
-
-
-	<target name="init:ivy">
-		<mkdir dir="${local.repo.dir}"/>
-		<property name="ivy.dep.file" value="${bda-download.dir}/ivy-bda.xml"/>
-		<ivy:settings file="${bda-download.dir}/ivy-bda-settings.xml" />
-	</target>
-
-	<target name="ivy-test-selenium" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-selenium" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-selenium" />
-		<path id="project.test.selenium.classpath">
-			<fileset dir="${lib.dir}/test-selenium">
-				<include name="*.jar" />
-			</fileset>
-		</path> 
-	</target>
-
-	<target name="test:seleniumrc:stop">
-		<get taskname="selenium-shutdown"
-			src="http://localhost:${selenium.proxy.port}/selenium-server/driver/?cmd=shutDownSeleniumServer"
-			dest="${temp.dir}/result.txt" ignoreerrors="true"/>
-	</target>
-
+		depends="build:all,static-analysis:all,test:unit:all"/>
+	
     <property name="selenium.test.src.dir" value="${software.dir}/caintegrator2-war/test/acceptance/selenium"/>
     <property name="selenium.test.target.dir" value="${software.dir}/caintegrator2-war/target/selenium"/>
     <property name="selenium.test.suite" value="${selenium.test.target.dir}/cai2_test_suite_functional_tests"/>
@@ -862,125 +616,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         </copy>
     </target>
 
-    <target name="test:selenium:init" depends="test:selenium:copy-tests">
-		<property name="selenium.jar" value="${lib.dir}/test-selenium/selenium-server-1.0.3.jar"/>
-        
-        <!-- the following are options for telling selenium which browser to use.  Set selenium.browser
-             as a property in local.properties with a value similar to one of the following:
-             
-        - firefox, generic firefox for all platforms
-        <property name="selenium.browser" value="*firefox"/>
-        - firefox 2, for windows platform
-        <property name="selenium.browser" value="*firefox C:\Program Files\Mozilla Firefox 2\firefox.exe"/>
-        - chrome, needed for file upload
-        <property name="selenium.browser" value="*chrome C:\Program Files\Mozilla Firefox 2\firefox.exe"/>
-        - firefox on linux
-        <property name="selenium.browser" value="*firefox /usr/lib64/firefox-1.5.0.12/firefox-bin"/>
-        - chrome on linux
-        <property name="selenium.browser" value="*chrome /usr/lib64/firefox-1.5.0.12/firefox-bin"/>
-        
-        <property name="selenium.browser" value="*chrome /Applications/Firefox.app/Contents/MacOS/firefox-bin"/>
-        
-        -->
-
-        <property name="selenium.browser" value="*chrome C:\Program Files\Mozilla Firefox 2\firefox.exe"/>
-		<property name="selenium.proxy.port" value="47444"/>
-		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
-		<property name="selenium.report.file" value="selenium-rpt.html"/>
-        <property name="selenium.testcase.timeout" value="900"/>
-		<property name="selenium.url" value="http://${jboss.server.hostname}:${jboss.server.port}"/>
-        <property name="selenium.error.on.failures" value="true"/>
-        
-        <echo message="selenium:init: selenium server running on port ${selenium.proxy.port}."/>
-        <echo message="selenium:init: selenium test case timeout is ${selenium.testcase.timeout} seconds."/>
-        <echo message="selenium:init: browser being tested is ${selenium.browser}."/>
-        <echo message="selenium:init: web app being tested is ${selenium.url}."/>
-        
-		<mkdir dir="${selenium.report.dir}"/>
-
-		<if>
-			<not>
-				<socket server="${jboss.server.hostname}" port="${jboss.server.port}" />
-			</not>
-			<then>
-				<jboss-start-jboss />
-			</then>
-		</if>
-	</target>
-
-	<target name="test:selenium"
-		depends="
-		ivy-test-selenium,
-		test:selenium:init,
-		test:selenium:run,
-		test:seleniumrc:stop
-		"
-		/>
-
-	<target name="test:selenium:run">
-	    
-		<java jar="${selenium.jar}" fork="true" resultproperty="selenium.test.failures">
-		    <arg line=" -port ${selenium.proxy.port}"/>
-			<arg line=" -htmlSuite &quot;${selenium.browser}&quot;"/>
-			<arg line=" &quot;${selenium.url}&quot;"/>
-			<arg line=" &quot;${selenium.test.suite}&quot;"/>
-			<arg line=" &quot;${selenium.report.dir}/${selenium.report.file}&quot;"/>
-			<arg line=" -timeout ${selenium.testcase.timeout}"/>
-			<arg line=" -log ${temp.dir}/selenium-debug.log"/>
-		</java> 
-	    <echo message="Finished selenium tests ${selenium.test.failures} failures/exceptions" level="info" />
-	    
-        <fail message="Selenium test failures/exceptions: ${selenium.test.failures}">
-            <condition>
-                <and>
-                    <equals arg1="${selenium.error.on.failures}" arg2="true"/>
-                    <not>
-                        <equals arg1="${selenium.test.failures}" arg2="0" />
-                    </not>
-                </and>
-            </condition>
-        </fail>
-	                    
-		<osfamily property="os.family"/>
-		<if>
-			<equals arg1="${os.family}" arg2="unix"/>
-			<then>
-				<echo message="To be able to selenium tests on Unix platforms you need to meet the following conditions."/>
-				<echo message="You need to be logged in on the console running X (developer linux or mac workstation)."/>
-				<echo message=" If you are running it from a server that does not have a console (like a CI server) you need to be running at runlevel 3, running and xframe buffer ('Xvfb :1 -screen 0 1024x768x24', should be setup on a CI server) and have your DISPLAY environment variable sto to match your frame buffer ('DISPLAY=:1.0', should be set in .bash_profile on CI server)."/>
-				<fail unless="env.DISPLAY" message="DISPLAY environment variable not set, please set it as outlined above and run again."/>
-			</then>
-		</if>
-		<taskdef resource="selenium-ant.properties"  classpathref="project.test.selenium.classpath"/>
-<!--	    
-		<selenese  
-			suite="${selenium.test.suite}"
-			browser="${selenium.browser}"
-			results="${selenium.report.dir}/${selenium.report.file}"
-			multiWindow="false"
-			timeoutInSeconds="${selenium.testcase.timeout}"
-			port="${selenium.proxy.port}"
-			startURL="${selenium.url}"
-		      	/>
--->
-	</target>
-	<!-- These targets are for adding files to ivy --> 
-	<target name="ivy:module:add2repo">
-		<!-- you would want to use this value instead and you can get rid of the mkdir below 
-		<property name="ivy-repo.base.dir" location="${software.dir}/../../ivy-repo"/>
-		-->
-		<mkdir dir="${user.home}/tmp"/>
-		<ivy-module-add2repo
-			ivy-repo.base.dir="${user.home}/tmp/ivy-repo"
-			ivy.add.org="ncicb"
-			ivy.add.module="ssaksa-test-module3"
-			ivy.add.version="0.1.0"
-			ivy.add.module.src.dir="${build.dir}"
-			ivy.add.module.src.file.list="build.xml"
-			ivy.add.xml.src.location="${build.dir}/install.xml"
-			/>
-	</target>
-
 	<target name="database:prep" description="Copies db files with filtering">
 		<switch value="${database.type}">
 			<case value="mysql">
@@ -1008,53 +643,4 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			</filterset>
 		</copy>
 	</target>
-
-	<target name="database:gencl" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database"
-		depends="
-		database:prep
-		">
-		<database-genchangelog
-			database.changelog.file="${target.dir}/generated-change-log.xml"
-			/>
-	</target>
-	<target name="database:diff" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database"
-		depends="
-		database:prep
-		">
-		<database-diff
-			output.file.txt="${target.dir}/generated-diff-log.txt"
-			output.file.xml="${target.dir}/generated-diff-log.xml"
-			/>
-	</target>
-	<target name="database:doc" description="Generates database documentation." unless="exclude.database"
-		depends="
-		database:prep
-		">
-		<mkdir dir="${reports.dir}/db"/>
-		<database-doc
-			output.dir="${reports.dir}/db"
-			database.changelog.file="${working.dir}/db-upgrade/db-upgrade.xml"
-			/>
-	</target>
-	<target name="report:erd">
-		<generate-erd   
-			schemaspy.jar="schemaspy-3.1.1.jar"
-			database.driver.jar="mysql-connector-java-5.1.13.jar"
-			/>
-	</target>
-
-	<target name="report:uml">
-		<property name="uml.dir" value="${reports.dir}/uml"/>
-		<path id="bda-blueprints.classpath.ref">
-			<fileset dir="${lib.dir}/runtime">
-				<include name="**/*.jar" />
-			</fileset>
-		</path>
-		<generate-uml   
-			uml.dir="${uml.dir}"    
-			src.java.dir="${caintegrator2.base.dir}/src/java"
-			uml.source.path="bda-blueprints.classpath.ref"
-			/>
-	</target>
-
 </project>

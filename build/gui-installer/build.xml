@@ -1,7 +1,3 @@
-<!--
-$Id: build.xml 1767 2009-06-24 20:06:18Z saksass $
-$HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-template/software/build/gui-installer/build.xml $
--->
 <project name="Installer" default="install" basedir="." >
 	<!-- Generic properties -->
 	<property name="application_installer" value="caintegrator2_installer" />

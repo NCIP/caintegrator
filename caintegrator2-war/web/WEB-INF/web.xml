@@ -35,24 +35,20 @@
 
     <!-- Application version information being stored as an application context param -->
     <context-param>
-        <param-name>caintegrator2Version</param-name>
-        <param-value>@caintegrator2.version@</param-value>
+        <param-name>caIntegratorVersion</param-name>
+        <param-value>@git.caintegrator.version@</param-value>
     </context-param>
     <context-param>
-        <param-name>svnUrl</param-name>
-        <param-value>@svn.url@</param-value>
+        <param-name>gitUrl</param-name>
+        <param-value>@git.url@</param-value>
     </context-param>
     <context-param>
-        <param-name>svnRevision</param-name>
-        <param-value>@svn.revision@</param-value>
+        <param-name>gitRevision</param-name>
+        <param-value>@git.revision@</param-value>
     </context-param>
     <context-param>
-        <param-name>caintegrator2Svntag</param-name>
-        <param-value>@caintegrator2.svntag@</param-value>
-    </context-param>
-    <context-param>
-        <param-name>caintegrator2Builddate</param-name>
-        <param-value>@caintegrator2.builddate@</param-value>
+        <param-name>builddate</param-name>
+        <param-value>@caintegrator.builddate@</param-value>
     </context-param>
     <context-param>
         <param-name>templatePath</param-name>

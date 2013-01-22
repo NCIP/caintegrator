@@ -1,13 +1,5 @@
-<!--
-$Id: install.xml 4757 2008-05-15 20:43:31Z zengje $
-$HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/install.xml $
--->
-<project name="caintegrator-cacore-caintegrator2-war-installer" default="upgrade" basedir="."
-    xmlns:ivy="antlib:org.apache.ivy.ant"
-    >
-    <description>
-        TBD
-    </description>
+<project name="caintegrator-cacore-caintegrator2-war-installer" default="upgrade" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+    <description>TBD</description>
 
     <!-- Properties file related properties and tasks -->
     <property environment="env" />
@@ -229,7 +221,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             </filterset>
         </copy>
     </target>
-
+    
     <target name="diag">
         <echoproperties/>
     </target>
@@ -361,57 +353,8 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     </target>
 
     <target name="install:jboss:configure:log4j" description="Configure custom entries in system wide log4j" unless="exclude.jboss"  depends="common:jboss:init, common:init">
-        <!--
-        <echo message="Configuring Log4J"/>
-
-        <property name="log4j.file.name" value="log4j.xml"/>
-        <copy file="${jboss.home}/server/${jboss.server.name}/conf/${log4j.file.name}" tofile="${jboss.home}/server/${jboss.server.name}/conf/${log4j.file.name}.pre"/>
-
-        <replaceregexp file="${jboss.home}/server/${jboss.server.name}/conf/${log4j.file.name}"
-            byline="true"
-            match="^(&lt;!DOCTYPE.*)"
-            replace="&lt;!\-\-\1\-\-&gt;"
-            />
-
-        <xmltask source="${jboss.home}/server/${jboss.server.name}/conf/${log4j.file.name}"
-            dest="${jboss.home}/server/${jboss.server.name}/conf/${log4j.file.name}">
-            <xmlcatalog refid="installer.catalog"/>
-            <remove path="/log4j:configuration/appender[@name='TestAppender']"/>
-            <insert path="/log4j:configuration">
-                <![CDATA[
-                <appender name="TestAppender" class="org.jboss.logging.appender.RollingFileAppender">
-                    <errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>
-                    <param name="File" value="${jboss.server.log.dir}/testAppender.log"/>
-                    <param name="Append" value="false"/>
-                    <param name="MaxFileSize" value="${log4j.maxFileSize}"/>
-                    <param name="MaxBackupIndex" value="${log4j.maxDays}"/>
-
-                    <layout class="org.apache.log4j.PatternLayout">
-                        <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
-                    </layout>
-                </appender>
-                ]]>
-            </insert>
-            <remove path="/log4j:configuration/category[@name='org.nih.nci']"/>
-            <insert path="/log4j:configuration">
-                <![CDATA[
-                <category name="org.nih.nci">
-                    <priority value="${log4j.level}"/>
-                </category>
-                ]]>
-            </insert>
-        </xmltask>
-        <validate-log4j
-            log4j.file="${jboss.home}/server/${jboss.server.name}/conf/${log4j.file.name}"
-            />
-
-        <replaceregexp file="${jboss.home}/server/${jboss.server.name}/conf/${log4j.file.name}"
-            byline="true"
-            match="^&lt;!\-\-(&lt;!DOCTYPE.*)\-\-&gt;"
-            replace="\1"
-            />
-        -->
     </target>
+    
     <target name="install:jboss:configure" description="Configure JBoss (bindings, login-config.xml, ect)" unless="exclude.jboss"
         depends="
         common:jboss:init,
@@ -614,29 +557,6 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     <target name="install:jboss:caintegrator2-war:re-configure" unless="exclude.jboss" depends="common:init">
         <delete dir="${working.dir}/caintegrator2-war"/>
         <unzip src="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" dest="${working.dir}/caintegrator2-war"/>
-        <!--
-
-        <replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
-            match="(connection.driver_class&quot;&lt;).*(&gt;)"
-            replace="\1${database.driver}\2"
-            flags="sg"/>
-        <replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
-            match="(connection.url&quot;&lt;).*(&gt;)"
-            replace="\1${database.url}\2"
-            flags="sg"/>
-        <replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
-            match="(connection.username&quot;&lt;).*(&gt;)"
-            replace="\1${database.user}\2"
-            flags="sg"/>
-        <replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
-            match="(connection.password&quot;&lt;).*(&gt;)"
-            replace="\1${database.password}\2"
-            flags="sg"/>
-        <replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
-            match="(dialect&quot;&lt;).*(&gt;)"
-            replace="\1${database.dialect}\2"
-            flags="sg"/>
-    -->
         <if>
              <equals arg1="${jboss.ssl.enable}" arg2="true"/>
              <then>
@@ -649,11 +569,10 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
 
         <copy todir="${working.dir}/caintegrator2-war/WEB-INF" file="${working.dir}/caintegrator2-war/WEB-INF/xml/web.xml" filtering="true" overwrite="true">
             <filterset>
-                <filter token="caintegrator2.version" value="${caintegrator2.version}" />
-                <filter token="svn.url" value="${svn.info.url}"/>
-                <filter token="svn.revision" value="${svn.info.rev}"/>
-                <filter token="caintegrator2.svntag" value="${caintegrator2.svntag}"/>
-                <filter token="caintegrator2.builddate" value="${build.date}"/>
+                <filter token="git.caintegrator.version" value="${git.caintegrator.version}" />
+                <filter token="git.url" value="${git.url}"/>
+                <filter token="git.revision" value="${git.revision}"/>
+                <filter token="caintegrator.builddate" value="${build.date}"/>
                 <filter token="cas.server.hostname" value="${cas.server.hostname}"/>
                 <filter token="cas.server.port" value="${cas.server.port}"/>
             </filterset>
