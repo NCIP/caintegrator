@@ -4,9 +4,9 @@
 // 
 // help constants
 var contextPath = "/caintegrator/";
-var overviewTutorialURL = "https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/docs/project_management/external_meetings/overview_screencast/overview_screencast.html";
-var deployStudyTutorialURL = "https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/docs/project_management/external_meetings/deploy_study_screencast/deploy_study_screencast.html";
-var useStudyTutorialURL = "https://ncisvn.nci.nih.gov/svn/caintegrator2/trunk/docs/project_management/external_meetings/use_study_screencast/use_study.html";
+var overviewTutorialURL = contextPath + "tutorials/overview_screencast/overview_screencast.html";
+var deployStudyTutorialURL = contextPath + "tutorials/deploy_study_screencast/deploy_study_screencast.html";
+var useStudyTutorialURL = contextPath + "tutorials/use_study_screencast/use_study.html";
 var wikiHelpURL = "https://wiki.nci.nih.gov/x/";
 
 // actually opens the help window
