@@ -388,7 +388,7 @@ Guide to this file:
 			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your JBoss Web Console passwords"/>
 		</field>
 		<field type="text" variable="jboss.java.opts">
-			<spec txt="JBoss Server JAVA_OPTS:" size="135" set="-server -Xms256m -Xmx512m -XX:ThreadStackSize=128 -XX:SurvivorRatio=10 -XX:PermSize=128m -XX:MaxPermSize=128m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Djava.awt.headless=true"/>
+			<spec txt="JBoss Server JAVA_OPTS:" size="135" set="-server -Xms256m -Xmx512m -XX:SurvivorRatio=10 -XX:PermSize=128m -XX:MaxPermSize=128m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Djava.awt.headless=true"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="JBoss Server JAVA_OPTS is a required field" />
 		</field>
 
