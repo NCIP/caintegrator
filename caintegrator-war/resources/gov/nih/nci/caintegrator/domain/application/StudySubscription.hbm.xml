@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.application">
+	<class name="StudySubscription" table="STUDY_SUBSCRIPTION" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<property name="publicSubscription" type="boolean" column="IS_PUBLIC_SUBSCRIPTION" />
+		<!-- Attributes mapping for the StudySubscription class -->
+		<!-- Associations mapping for the StudySubscription class -->
+		<many-to-one name="study" class="gov.nih.nci.caintegrator.domain.translational.Study" column="STUDY_ID" lazy="proxy" cascade="save-update,merge" />
+		<set name="queryCollection" lazy="true" cascade="all" >
+			<cache usage="read-write" />
+			<key column="STUDY_SUBSCRIPTION_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator.domain.application.Query"/>
+		</set>
+		<set name="listCollection" lazy="true" cascade="all" inverse="true">
+			<cache usage="read-write" />
+			<key column="STUDY_SUBSCRIPTION_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator.domain.application.AbstractList"/>
+		</set>
+        <set name="analysisJobCollection" lazy="true" cascade="all" >
+            <cache usage="read-write" />
+            <key column="STUDY_SUBSCRIPTION_ID" />
+            <one-to-many class="AbstractPersistedAnalysisJob"/>
+        </set>
+        <set name="copyNumberAnalysisCollection" lazy="true" cascade="all" >
+            <cache usage="read-write" />
+            <key column="STUDY_SUBSCRIPTION_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator.domain.analysis.AbstractCopyNumberAnalysis"/>
+        </set>
+        
+		<many-to-one name="userWorkspace" class="UserWorkspace" column="USER_WORKSPACE_ID" lazy="proxy" cascade="save-update,merge" />
+	</class>
+</hibernate-mapping>

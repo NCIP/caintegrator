@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.genomic">
+	<class name="Gene" table="GENE" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the Gene class -->
+		<property name="ensemblgeneID" type="string" column="ENSEMBLE_GENE_ID"/>
+		<property name="entrezgeneID" type="string" column="ENTREZ_GENE_ID"/>
+		<property name="fullName" type="string" column="FULL_NAME"/>
+		<property name="genbankAccession" type="string" column="GENBANK_ACCESSION"/>
+		<property name="genbankAccessionVersion" type="string" column="GENBANK_ACCESSION_VERSION"/>
+		<property name="symbol" type="string" column="SYMBOL"/>
+		<property name="unigeneclusterID" type="string" column="UNIGENE_CLUSTER_ID"/>
+	</class>
+</hibernate-mapping>

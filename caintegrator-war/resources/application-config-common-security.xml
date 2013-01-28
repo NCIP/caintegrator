@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- Filters / Entry Points -->
+    <bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
+        <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+        <property name="authenticationEntryPoint"><ref local="basicProcessingFilterEntryPoint"/></property>
+    </bean>
+
+    <bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
+        <property name="realmName"><value>SDK Realm</value></property>
+    </bean>
+
+    <bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+        <property name="key" value="anonProviderKey"/>
+        <property name="userAttribute" value="anonymousUser,IS_AUTHENTICATED_ANONYMOUSLY"/>
+    </bean>
+
+    <bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+        <property name="authenticationEntryPoint">
+            <ref bean="processingFilterEntryPoint"/>
+        </property>
+        <property name="accessDeniedHandler">
+            <bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
+                <property name="errorPage" value="/accessDenied.jsp"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="sessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
+
+    <bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
+        <constructor-arg value="/login.action"/>
+        <constructor-arg>
+            <list>
+                <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- Interceptors -->
+    <bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="accessDecisionManager">
+            <bean class="org.acegisecurity.vote.ConsensusBased">
+                <property name="allowIfAllAbstainDecisions" value="false"/>
+                <property name="decisionVoters">
+                    <list>
+                        <bean class="org.acegisecurity.vote.AuthenticatedVoter"/>
+                        <bean class="gov.nih.nci.security.acegi.authorization.CSMRoleVoter"/>
+                    </list>
+                </property>
+            </bean>
+        </property>
+        <property name="objectDefinitionSource">
+            <value>
+                CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                PATTERN_TYPE_APACHE_ANT
+                /**=IS_AUTHENTICATED_ANONYMOUSLY,IS_AUTHENTICATED_FULLY
+            </value>
+        </property>
+    </bean>
+
+    <!-- Managers -->
+    <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
+        <property name="providers">
+            <list>
+                <ref bean="authenticationProvider"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id='accessDecisionManager' class='org.acegisecurity.vote.AffirmativeBased'>
+        <property name='decisionVoters'>
+            <list>
+                <bean class='gov.nih.nci.security.acegi.authorization.CSMRoleVoter'/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id='afterInvocationManager' class='gov.nih.nci.security.acegi.CSMAfterInvocationProviderManager'>
+        <property name='providers'>
+            <list>
+                <bean id='afterInvocationProvider' class='gov.nih.nci.security.acegi.CSMAfterInvocationProvider'/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
+
+    <bean id="anonymousAuthenticationProvider" class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+        <property name="key">
+            <value>anonProviderKey</value>
+        </property>
+    </bean>
+
+    <!-- Additional Utility Beans -->
+
+    <bean id="userDetailsService" class="gov.nih.nci.security.acegi.authentication.CSMUserDetailsService">
+        <property name="csmApplicationContext">
+            <value>caintegrator</value>
+        </property>
+    </bean>
+
+</beans>

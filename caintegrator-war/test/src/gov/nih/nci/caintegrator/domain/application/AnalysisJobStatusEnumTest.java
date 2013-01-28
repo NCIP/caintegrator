@@ -1,0 +1,29 @@
+/**
+ * Copyright 5AM Solutions Inc, ESAC, ScenPro & SAIC
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See https://github.com/NCIP/caintegrator/blob/master/LICENSE for details.
+ */
+package gov.nih.nci.caintegrator.domain.application;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+import gov.nih.nci.caintegrator.domain.application.AnalysisJobStatusEnum;
+
+import org.junit.Test;
+
+public class AnalysisJobStatusEnumTest {
+
+    @Test
+    public void testGetByValue() {
+        assertEquals(AnalysisJobStatusEnum.COMPLETED, AnalysisJobStatusEnum.getByValue("Completed"));
+        assertNull(AnalysisJobStatusEnum.getByValue(null));
+    }
+    
+    @Test
+    public void testCheckType() {
+        assertFalse(AnalysisJobStatusEnum.checkType("no match"));
+    }
+
+}

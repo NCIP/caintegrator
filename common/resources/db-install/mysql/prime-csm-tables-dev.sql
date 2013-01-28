@@ -2,7 +2,7 @@
 # The following entries creates a super admin application incase you decide 
 # to use this database to run UPT also. In that case you need to provide
 # the project login id and name for the super admin.
-# However in incase you are using this database just to host the application's
+# However in incase you are using this database just to host the application''s
 # authorization schema, these enteries are not used and hence they can be left as 
 # it is.
 #

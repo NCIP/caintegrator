@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.analysis">
+	<class name="AbstractCopyNumberAnalysis" table="ABSTRACT_COPY_NUMBER_ANALYSIS" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the AbstractAnnotationValue class -->
+		<!-- Associations mapping for the AbstractCopyNumberAnalysis class -->
+        <set name="samplesUsedForCalculation" lazy="true" cascade="none" table="COPY_NUMBER_ANALYSIS_SAMPLES">
+            <cache usage="read-write" />
+            <key column="COPY_NUMBER_ANALYSIS_ID" />
+            <many-to-many class="gov.nih.nci.caintegrator.domain.genomic.Sample" column="SAMPLE_ID"/>
+        </set>
+        <property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
+        <many-to-one name="studySubscription" class="gov.nih.nci.caintegrator.domain.application.StudySubscription"
+            column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="save-update,merge" />
+
+		<joined-subclass name="GisticAnalysis" table="GISTIC_ANALYSIS" lazy="false">
+			<key column="ID" />
+			<!-- Attributes mapping for the GisticAnalysis class -->
+			<property name="name" type="string" column="NAME"/>
+			<property name="amplificationsThreshold" type="float" column="AMPLIFICATIONS_THRESHOLD"/>
+		    <property name="deletionsThreshold" type="float" column="DELETIONS_THRESHOLD"/>
+		    <property name="genomeBuildInformation" type="string" column="GENOME_BUILD_INFORMATION"/>
+		    <property name="joinSegmentSize" type="integer" column="JOIN_SEGMENT_SIZE"/>
+		    <property name="queryOrListName" type="string" column="QUERY_OR_LIST_NAME"/>
+		    <property name="qvThreshold" type="float" column="QV_THRESHOLD"/>
+		    <property name="url" type="string" column="URL"/>
+		    <many-to-one name="reporterList" class="gov.nih.nci.caintegrator.domain.genomic.ReporterList" column="REPORTER_LIST_ID" lazy="proxy" cascade="all" />
+		    
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

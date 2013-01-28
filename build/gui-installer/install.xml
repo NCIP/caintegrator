@@ -7,7 +7,7 @@
     - go in the bin directory where you installed IzPack
     - call "compile ../sample/install.xml -b ../sample"
 -->
-<project name="caintegrator2-gui-installer" default="build:installer" basedir=".">
+<project name="caintegrator-gui-installer" default="build:installer" basedir=".">
 
 	<property name="this.dir" value="${basedir}" />
 	<property file="../project.properties" />
@@ -18,9 +18,9 @@
 	<property name="custom.resource.dir" location="${target.location}/izpack-4.3/resources"/>
 	<property name="project.name" value="bda-blueprints"/>
 	<property name="installer.dir" value=".installer-${project.name}"/>
-	<property name="gui-installer.dist.base.name" value="caintegrator2_gui_distribution_${caintegrator2.version}.jar"/>
-	<property name="install.zip.file" value="${caintegrator2.install.zip.file}"/>
-	<property name="upgrade.zip.file" value="${caintegrator2.upgrade.zip.file}"/>
+	<property name="gui-installer.dist.base.name" value="caintegrator_gui_distribution_${caintegrator.version}.jar"/>
+	<property name="install.zip.file" value="${caintegrator.install.zip.file}"/>
+	<property name="upgrade.zip.file" value="${caintegrator.upgrade.zip.file}"/>
 
 	<echoproperties/>
 <echo message="compile.jar.dir ::: ${compile.jar.dir}"/>
@@ -59,8 +59,8 @@
 				The meaning of the tags should be natural ...
 				-->
 				<info>
-					<appname>caintegrator2</appname>
-					<appversion>@{caintegrator2.version}</appversion>
+					<appname>caintegrator</appname>
+					<appversion>@{caintegrator.version}</appversion>
 					<authors>
 					    <author name="NCI" email=""/>
 					</authors>
@@ -401,7 +401,7 @@
 				We specify here our packs.
 				-->
 				<packs>
-					<pack name="download_install" id="download_install" installGroups="caintegrator2" required="no">
+					<pack name="download_install" id="download_install" installGroups="caintegrator" required="no">
 					    <description>The base files</description>
 					    <file src="@{dist.location}/@{install.zip.file}" targetdir="$SYSTEM_user_home/@{installer.dir}"/>
 					    <file src="@{this.dir}/build.xml" targetdir="$SYSTEM_user_home/@{installer.dir}"/>
@@ -412,12 +412,12 @@
 
 					<pack name="parse-install" required="no" preselected="no" condition="install">
 					    <description>parse the input values</description>
-					    <parsable targetfile="$SYSTEM_user_home/@{installer.dir}/caintegrator2_installer/install.properties" type="javaprop" />
+					    <parsable targetfile="$SYSTEM_user_home/@{installer.dir}/caintegrator_installer/install.properties" type="javaprop" />
 					</pack>
 
 					<pack name="parse-upgrade" required="no" preselected="no" condition="upgrade">
 					    <description>parse the input values</description>
-					    <parsable targetfile="$SYSTEM_user_home/@{installer.dir}/caintegrator2_installer/upgrade.properties" type="javaprop" />
+					    <parsable targetfile="$SYSTEM_user_home/@{installer.dir}/caintegrator_installer/upgrade.properties" type="javaprop" />
 					</pack>
 
 					<pack name="convert-install-path" required="no" preselected="no" condition="install">

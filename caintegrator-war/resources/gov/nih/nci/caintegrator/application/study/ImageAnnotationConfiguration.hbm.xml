@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.application.study">
+
+    <!-- Create typedef's for the enums -->
+    <typedef name="UploadType" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator.application.study.ImageAnnotationUploadType</param> 
+    </typedef> 
+    
+	<class name="ImageAnnotationConfiguration" table="IMAGE_ANNOTATION_CONFIGURATION" lazy="true" polymorphism="explicit">
+    
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+        
+        <many-to-one name="imageDataSourceConfiguration" 
+            class="gov.nih.nci.caintegrator.application.study.ImageDataSourceConfiguration" 
+            column="IMAGE_DATA_SOURCE_CONFIGURATION_ID" lazy="proxy" cascade="none" />
+        
+        <many-to-one name="annotationFile"
+            class="gov.nih.nci.caintegrator.application.study.AnnotationFile"
+            column="ANNOTATION_FILE_ID" lazy="proxy" cascade="all"/>   
+        
+        <many-to-one name="aimServerProfile"
+            class="gov.nih.nci.caintegrator.external.ServerConnectionProfile"
+            column="AIM_SERVER_CONNECTION_PROFILE_ID"
+            lazy="proxy" cascade="all" />
+    
+        <property name="uploadType" type="UploadType" column="ANNOTATION_UPLOAD_TYPE"/>
+        
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.translational">
+	<class name="Timepoint" table="TIMEPOINT" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the Timepoint class -->
+		<property name="description" type="string" column="DESCRIPTION"/>
+		<property name="endDate" type="java.util.Date" column="END_DATE"/>
+		<property name="name" type="string" column="NAME"/>
+		<property name="startDate" type="java.util.Date" column="START_DATE"/>
+		<!-- Associations mapping for the Timepoint class -->
+		<set name="sampleAcquisitionCollection" lazy="true" cascade="all" >
+			<cache usage="read-write" />
+			<key column="TIMEPOINT_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator.domain.genomic.SampleAcquisition"/>
+		</set>
+		<set name="ImageSeriesAcquisitionCollection" lazy="true" cascade="all" >
+			<cache usage="read-write" />
+			<key column="TIMEPOINT_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator.domain.imaging.ImageSeriesAcquisition"/>
+		</set>
+	</class>
+</hibernate-mapping>

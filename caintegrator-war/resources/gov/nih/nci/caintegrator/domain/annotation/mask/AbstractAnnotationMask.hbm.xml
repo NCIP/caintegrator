@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.annotation.mask">
+	<class name="AbstractAnnotationMask" table="ABSTRACT_ANNOTATION_MASK" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the AbstractAnnotationMask class -->
+		<joined-subclass name="MaxNumberMask" table="MAX_NUMBER_MASK" lazy="false">
+			<key column="ID" />
+			<property name="maxNumber" type="double" column="MAX_NUMBER"/>
+		</joined-subclass>
+		<joined-subclass name="NumericRangeMask" table="NUMERIC_RANGE_MASK" lazy="false">
+			<key column="ID" />
+			<property name="numericRange" type="integer" column="NUMERIC_RANGE"/>
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

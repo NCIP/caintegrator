@@ -1,14 +1,14 @@
 .project
 build/local.properties
-caintegrator2-war/local.properties
+caintegrator-war/local.properties
 target/
-caintegrator2-war/target/
+caintegrator-war/target/
 lib/
-caintegrator2-war/test/resources/tmp*
-caintegrator2-war/test/resources/QA_Test_Study
-caintegrator2-war/test/resources/__MACOSX
-caintegrator2-war/test/resources/Pilot Study
-caintegrator2-war/test/resources/arraydesign/affymetrix/*.csv
-caintegrator2-war/test/resources/arraydesign/affymetrix/*.cdf
-caintegrator2-war/test/resources/arraydesign/affymetrix/*.txt
-caintegrator2-war/test/resources/arraydata/affymetrix/*.cnchp
+caintegrator-war/test/resources/tmp*
+caintegrator-war/test/resources/QA_Test_Study
+caintegrator-war/test/resources/__MACOSX
+caintegrator-war/test/resources/Pilot Study
+caintegrator-war/test/resources/arraydesign/affymetrix/*.csv
+caintegrator-war/test/resources/arraydesign/affymetrix/*.cdf
+caintegrator-war/test/resources/arraydesign/affymetrix/*.txt
+caintegrator-war/test/resources/arraydata/affymetrix/*.cnchp

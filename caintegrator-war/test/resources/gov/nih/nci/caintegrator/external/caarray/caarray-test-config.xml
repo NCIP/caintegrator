@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
+    <bean name="CaArrayFacadeIntegration" class="gov.nih.nci.caintegrator.external.caarray.CaArrayFacadeImpl" singleton="true">
+        <property name="serviceFactory">
+            <ref local="serviceFactory"/>
+        </property>
+        <property name="dao">
+            <ref local="dao"/>
+        </property>
+    </bean>
+    
+    <bean id="serviceFactory" class="gov.nih.nci.caintegrator.external.caarray.CaArrayServiceFactoryImpl" />
+    <bean id="dao" class="gov.nih.nci.caintegrator.data.CaIntegrator2DaoStub" />
+</beans>

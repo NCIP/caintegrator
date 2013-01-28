@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.application">
+    <typedef name="AnalysisJobStatusEnum" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator.domain.application.AnalysisJobStatusEnum</param> 
+    </typedef> 
+    <typedef name="AnalysisJobTypeEnum" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator.domain.application.AnalysisJobTypeEnum</param> 
+    </typedef> 
+    <typedef name="ServerConnectionTypeEnum" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator.domain.application.ServerConnectionTypeEnum</param> 
+    </typedef> 
+	<class name="AbstractPersistedAnalysisJob" table="ABSTRACT_PERSISTED_ANALYSIS_JOB" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the AbstractPersistedJob class -->
+		<discriminator column="TYPE" />
+        <property name="name" type="string" column="NAME"/>
+        <property name="method" type="string" column="METHOD"/>
+        <property name="status" type="AnalysisJobStatusEnum" column="STATUS"/>
+        <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
+        <property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
+        <property name="lastUpdateDate" type="java.util.Date" column="LAST_UPDATE_DATE"/>
+        <component name="inputZipFile" class="ResultsZipFile">
+            <property name="path" column="INPUT_ZIP_FILE_PATH" />
+        </component>
+
+        <many-to-one name="subscription" class="gov.nih.nci.caintegrator.domain.application.StudySubscription" column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="none" />
+
+        <subclass name="GenePatternAnalysisJob" lazy="false" discriminator-value="Gene Pattern">
+            <!-- Attributes mapping for the GenePatternAnalysisJob class -->
+	        <property name="jobUrl" type="string" column="JOB_URL"/>
+            <property name="gpJobNumber" type="integer" column="GP_JOB_NUMBER"/>
+            <!-- Associations mapping for the AbstractPersistedJob class -->   
+        </subclass>
+        <subclass name="ComparativeMarkerSelectionAnalysisJob" lazy="false" discriminator-value="Comparative Marker Selection">
+            <!-- Attributes mapping for the ComparativeMarkerSelectionAnalysisJob class -->
+            <property name="preprocessDataSetUrl" type="string" column="PREPROCESS_GRID_URL"/>
+            <property name="comparativeMarkerSelectionUrl" type="string" column="MAIN_GRID_URL"/>
+            <!-- Associations mapping for the ComparativeMarkerSelectionAnalysisJob class -->
+            <component name="ResultsZipFile">
+                <property name="path" column="RESULTS_ZIP_FILE_PATH" />
+            </component>
+        </subclass>
+        <subclass name="PrincipalComponentAnalysisJob" lazy="false" discriminator-value="Principal Component Analysis" >
+            <!-- Attributes mapping for the PCAAnalysisJob class -->
+            <component name="ResultsZipFile">
+                <property name="path" column="RESULTS_ZIP_FILE_PATH" />
+	        </component>
+	        <property name="pcaUrl" type="string" column="MAIN_GRID_URL"/>
+	        <property name="preprocessDataSetUrl" type="string" column="PREPROCESS_GRID_URL"/>
+        </subclass>
+        <subclass name="GisticAnalysisJob" lazy="false" discriminator-value="GISTIC">
+            <!-- Attributes mapping for the GisticAnalysisJob class -->
+            <component name="ResultsZipFile">
+                <property name="path" column="RESULTS_ZIP_FILE_PATH" />
+            </component>
+            <property name="connectionType" type="ServerConnectionTypeEnum" column="SERVER_CONNECTION_TYPE" />
+        </subclass>
+	</class>
+</hibernate-mapping>

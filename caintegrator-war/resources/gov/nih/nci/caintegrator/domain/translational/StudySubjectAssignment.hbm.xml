@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.translational">
+	<class name="StudySubjectAssignment" table="STUDY_SUBJECT_ASSIGNMENT" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the StudySubjectAssignment class -->
+		<property name="identifier" type="string" column="IDENTIFIER"/>
+		<!-- Associations mapping for the StudySubjectAssignment class -->
+		<set name="sampleAcquisitionCollection" lazy="true" cascade="all-delete-orphan" inverse="true">
+			<cache usage="read-write" />
+			<key column="STUDY_SUBJECT_ASSIGN_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator.domain.genomic.SampleAcquisition"/>
+		</set>
+		<many-to-one name="subject" class="gov.nih.nci.caintegrator.domain.translational.Subject" column="SUBJECT_ID" lazy="proxy" cascade="save-update,merge" />
+		<many-to-one name="study" class="gov.nih.nci.caintegrator.domain.translational.Study" column="STUDY_ID" lazy="proxy" cascade="save-update,merge" />
+		<set name="subjectAnnotationCollection" lazy="extra" cascade="all" >
+			<cache usage="read-write" />
+			<key column="STUDY_SUBJECT_ASSIGNMENT_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator.domain.annotation.SubjectAnnotation"/>
+		</set>
+		<set name="imageStudyCollection" lazy="true" cascade="save-update,merge" >
+			<cache usage="read-write" />
+			<key column="STUDY_SUBJECT_ASSIGN_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator.domain.imaging.ImageSeriesAcquisition"/>
+		</set>
+	</class>
+</hibernate-mapping>

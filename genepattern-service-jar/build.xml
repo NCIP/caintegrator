@@ -69,10 +69,6 @@
         depends="genepattern-service.jar"
         description="Compiles all production source code and assembles artifacts." />
 
-    <!-- ******************************************************************* -->
-    <!-- ** CAINTEGRATOR2.WAR                                             ** -->
-    <!-- ******************************************************************* -->
-
     <property name="genepattern-service.jar.dir" location="${software.dir}/genepattern-service-jar" />
     <property name="genepattern-service.jar.java.src.dir" location="${genepattern-service.jar.dir}/src" />
     <property name="genepattern-service.jar.resources.src.dir" location="${genepattern-service.jar.dir}/resources" />

@@ -1,0 +1,55 @@
+/**
+ * Copyright 5AM Solutions Inc, ESAC, ScenPro & SAIC
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See https://github.com/NCIP/caintegrator/blob/master/LICENSE for details.
+ */
+package gov.nih.nci.caintegrator.domain.application;
+
+import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator.domain.annotation.AbstractAnnotationValue;
+
+/**
+ * 
+ */
+public class ResultValue extends AbstractCaIntegrator2Object {
+
+    private static final long serialVersionUID = 1L;
+    private AbstractAnnotationValue value;
+    private ResultColumn column;
+
+    /**
+     * @return the value
+     */
+    public AbstractAnnotationValue getValue() {
+        return value;
+    }
+    
+    /**
+     * @param value the value to set
+     */
+    public void setValue(AbstractAnnotationValue value) {
+        this.value = value;
+    }
+    
+    /**
+     * @return the column
+     */
+    public ResultColumn getColumn() {
+        return column;
+    }
+    
+    /**
+     * @param column the column to set
+     */
+    public void setColumn(ResultColumn column) {
+        this.column = column;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String toString() {
+        return value != null ? value.toString() : "";
+    }
+}

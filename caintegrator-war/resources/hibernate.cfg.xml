@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+
+        <!-- @DATASOURCE_CONFIG_START@
+        <property name="connection.datasource">java:jdbc/CaIntegratorDataSource</property>
+        @DATASOURCE_CONFIG_END@ -->
+
+        <!-- @HIBERNATE_CONFIG_START@
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://@database.server@:@database.port@/@database.name@</property>
+        <property name="connection.username">@database.user@</property>
+        <property name="connection.password">@database.password@</property>
+        <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+        <property name="c3p0.max_size">10</property>
+        <property name="c3p0.min_size">2</property>
+        <property name="c3p0.timeout">5000</property>
+        <property name="c3p0.max_statements">100</property>
+        <property name="c3p0.idle_test_period">3000</property>
+        <property name="c3p0.acquire_increment">2</property>
+        <property name="c3p0.validate">false</property>
+        @HIBERNATE_CONFIG_END@ -->
+
+        <!-- Properties for the session factory -->
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.use_sql_comments">true</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <property name="hibernate.max_fetch_depth">1</property>
+        <property name="hibernate.jdbc.batch_versioned_data">true</property>
+        <property name="hibernate.jdbc.use_streams_for_binary">true</property>
+        <property name="hibernate.cache.use_query_cache">true</property>
+        <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <property name="hibernate.current_session_context_class">org.springframework.orm.hibernate3.SpringSessionContext</property> 
+        <property name="hibernate.default_batch_fetch_size">16</property>
+        <property name="hibernate.jdbc.fetch_size">5</property>
+        <property name="hibernate.jdbc.batch_size">20</property>
+        
+        <!-- Mapped Resources -->
+        
+        <!-- Application Object Mappings -->
+        <mapping resource="gov/nih/nci/caintegrator/application/study/AbstractClinicalSourceConfiguration.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/AnnotationFieldDescriptor.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/AnnotationFile.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/AnnotationGroup.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/AuthorizedAnnotationFieldDescriptor.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/AuthorizedQuery.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/AuthorizedGenomicDataSourceConfiguration.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/AuthorizedStudyElementsGroup.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/ExternalLinkList.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/ExternalLink.hbm.xml" />                
+        <mapping resource="gov/nih/nci/caintegrator/application/study/LogEntry.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/FileColumn.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/GenomicDataSourceConfiguration.hbm.xml" />        
+        <mapping resource="gov/nih/nci/caintegrator/application/study/ImageAnnotationConfiguration.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/ImageDataSourceConfiguration.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/StudyConfiguration.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/application/study/StudyLogo.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/external/ServerConnectionProfile.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/external/caarray/SampleIdentifier.hbm.xml" />        
+        <!-- Domain Bean Mappings -->
+        <mapping resource="gov/nih/nci/caintegrator/domain/analysis/AbstractCopyNumberAnalysis.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/annotation/mask/AbstractAnnotationMask.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/annotation/AnnotationDefinition.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/annotation/PermissibleValue.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/annotation/AbstractAnnotationValue.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/annotation/SubjectAnnotation.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/annotation/SurvivalValueDefinition.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/application/AbstractCriterion.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/application/ResultColumn.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/application/UserWorkspace.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/application/Query.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/application/StudySubscription.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/application/AbstractList.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/application/AbstractPersistedAnalysisJob.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/application/SubjectIdentifier.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/SampleAcquisition.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/Sample.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/SampleSet.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/Array.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/Gene.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/GeneLocationConfiguration.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/GeneChromosomalLocation.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/ArrayData.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/Platform.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/PlatformConfiguration.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/AbstractReporter.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/ReporterList.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/genomic/SegmentData.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/imaging/ImageSeries.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/imaging/Image.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/imaging/ImageSeriesAcquisition.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/translational/Timepoint.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/translational/StudySubjectAssignment.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/translational/Study.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator/domain/translational/Subject.hbm.xml" />
+        
+        <!-- CSM Mappings -->
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/User.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
+

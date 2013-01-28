@@ -1,0 +1,1500 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="caintegrator" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+            <result-type name="studyLogoResult" class="gov.nih.nci.caintegrator.web.action.StudyLogoResult"/>
+            <result-type name="kmPlotResult" class="gov.nih.nci.caintegrator.web.action.analysis.KMPlotResult"/>
+            <result-type name="gePlotResult" class="gov.nih.nci.caintegrator.web.action.analysis.geneexpression.GEPlotResult"/>
+            <result-type name="dicomFileResult" class="gov.nih.nci.caintegrator.web.action.query.NCIADicomFileResult"/>
+            <result-type name="temporaryDownloadFileResult" class="gov.nih.nci.caintegrator.web.action.TemporaryDownloadFileResult"/>
+            <result-type name="redirect" class="org.apache.struts2.dispatcher.ServletRedirectResult"/>
+        </result-types>
+        
+        <interceptors>
+            <!-- This interceptor is used by cai2 after the prepare method to forward to an unauthorized page if
+            a flag is set based on the user not having proper authorization privileges on the action. -->
+            <interceptor name="cai2AuthorizationInterceptor" class="gov.nih.nci.caintegrator.web.interceptor.AuthorizationInterceptor" />
+            <!-- This interceptor is used by cai2 after the prepare and validation methods to forward to the homepage for a user
+            to select a valid access.  A flag set in the prepare or validation method tells it if it is an invalid accessed. -->
+            <interceptor name="validAccessInterceptor" class="gov.nih.nci.caintegrator.web.interceptor.ValidAccessInterceptor" />
+        
+        <!-- This is the same as the paramsPrepareParams with the addition of excludeParams on the 
+            ParametersInterceptor for special cases, this is done because Struts 2 is parsing the
+            query string/post data and trying to "set" a value for each parameter it finds.  This gets
+            rid of those messages of this type:
+            "Error setting expression '_' with value '[Ljava.lang.String;@1491ddc'"
+            Also, be aware that if anything changes to the paramsPrepareParamsStack in future releases 
+            of struts2 that this needs to be updated as well to conform.  -->
+            <interceptor-stack name="cai2ParamsPrepareParamsStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="tokenSession">
+                    <param name="excludeMethods">*</param>
+                </interceptor-ref>
+                <interceptor-ref name="params">
+                     <!--
+                        Excludes:
+                        *All dojo parameters 
+                        *checkbox type parameters which begin with _ 
+                        *the Displaytag d-#-X parameter(s) 
+                        *all parameters that contain only numbers (kmPlot page has this), 
+                            with the optional "f" because displaytag has a parameter like this for exporting: 6578706f7274
+                     -->
+                     <param name="excludeParams">
+                        dojo\..*,^struts\..*,_.*,d-\d+?-[sop],^\d+(f?\d+)?$
+                     </param>
+                     <!--
+                        The new version of struts is ignoring all "-"'s, so have to add this to the accepted list so we know it is trying to export.
+                        The string "[a-zA-Z0-9\.\]\[\(\)_'\s]+" is the default accept params in the ParametersInterceptor. 
+                     -->
+                     <param name="acceptParamNames">
+                        [a-zA-Z0-9\.\]\[\(\)_'\s]+,d-\d+?-e
+                     </param>
+                 </interceptor-ref>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="cai2AuthorizationInterceptor"/>
+                <interceptor-ref name="validAccessInterceptor"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="multiselect"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params">
+                     <!--
+                        Excludes:
+                        *All dojo parameters 
+                        *checkbox type parameters which begin with _ 
+                        *the Displaytag d-#-X parameter(s) 
+                        *all parameters that contain only numbers (kmPlot page has this), 
+                            with the optional "f" because displaytag has a parameter like this for exporting: 6578706f7274
+                     -->
+                     <param name="excludeParams">
+                        dojo\..*,^struts\..*,_.*,d-\d+?-[sope],^\d+(f?\d+)?$
+                     </param>
+                     <param name="acceptParamNames">
+                        [a-zA-Z0-9\.\]\[\(\)_'\s]+
+                     </param>
+                 </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="validAccessInterceptor"/>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+        
+        <default-interceptor-ref name="cai2ParamsPrepareParamsStack" />
+
+        <global-results>
+            <result name="invalid.token" type="tiles">unauthorized</result>
+            <result name="unauthorized" type="redirectAction">
+                <param name="actionName">workspace</param>
+                <param name="invalidAccess">true</param>
+            </result>
+            <result name="invalidDataBeingAccessed" type="redirectAction">workspace</result>
+            <result name="error" type="tiles">unhandledError</result>
+        </global-results>
+        
+         <global-exception-mappings>
+            <exception-mapping result="error" exception="java.lang.Throwable"/>
+        </global-exception-mappings>
+        
+        <!--  Navigation Actions -->
+        <!--  Navigation Actions -->
+        <!--  Navigation Actions -->
+        
+		<action name="welcome">
+            <result type="chain">workspace</result>
+		</action>
+ 
+        <action name="notYetImplemented" class="emptyAction">
+            <result type="tiles">notYetImplemented</result>
+        </action>
+        
+        <action name="noAction" class="emptyAction">
+             <result type="tiles">homepage</result>
+        </action>        
+        
+        <action name="tutorials" class="emptyAction">
+            <result type="tiles">tutorials</result>
+        </action>
+        
+        <action name="home" class="homepageAction">
+            <result type="tiles">homepage</result>
+        </action>
+        
+        <action name="browseStudy" class="browseStudyAction">
+            <result type="tiles">browseStudy</result>
+        </action>
+        
+        <action name="studySummary" class="studySummaryAction">
+            <result type="tiles">studySummary</result>
+        </action>
+        
+        <action name="login" method="openLogin" class="loginAction">
+            <result name="login" type="redirectAction">workspace</result>
+        </action>
+        
+        <action name="logout" class="gov.nih.nci.caintegrator.web.action.LogoutAction" method="logout">
+            <result name="success" type="redirectAction">login</result>
+            <result name="casLogout" type="redirect">
+                <param name="location">${casServerLogoutUrl}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref> 
+        </action>        
+        
+        <action name="workspace" method="openWorkspace" class="workspaceAction">
+            <result name="workspaceStudy" type="redirectAction">
+                <param name="actionName">studySummary</param>
+            </result>
+            <result name="workspaceNoStudy" type="tiles">homepage</result>
+        </action>
+        
+        <action name="sessionTimeout" method="openLogin" class="loginAction">
+            <result name="login" type="redirectAction">
+                <param name="actionName">workspace</param>
+                <param name="sessionTimeout">true</param>
+            </result>
+        </action>
+        
+        <action name="retrieveStudyLogo" method="retrieveStudyLogo" class="workspaceAction">
+            <result type="studyLogoResult"/> 
+        </action>
+        
+        <!--  Study Actions -->
+        <!--  Study Actions -->
+        <!--  Study Actions -->
+   
+        <action name="retrieveStudyLogoPreview" method="retrieveStudyLogoPreview" class="editStudyAction">
+            <result type="studyLogoResult"/> 
+        </action>
+        
+        <action name="manageStudies" method="manageStudies" class="editStudyAction">
+            <result type="tiles">manageStudies</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
+        </action>
+
+        <action name="createStudy" class="editStudyAction">
+            <result type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
+        </action>
+            
+        <action name="deployStudy" class="deployStudyAction">
+            <result type="redirectAction">
+                <param name="actionName">manageStudies</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
+            </result>
+            <result name="error" type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
+        </action>
+      
+        <action name="editStudy" class="editStudyAction">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="copyStudy" class="copyStudyAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
+            </result>
+            <result name="error" type="tiles">manageStudies</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="disableStudy" method="disableStudy" class="editStudyAction">
+            <result type="redirectAction">
+                <param name="actionName">manageStudies</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="enableStudy" method="enableStudy" class="editStudyAction">
+            <result type="redirectAction">
+                <param name="actionName">manageStudies</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
+            </result>
+            <result name="error" type="tiles">manageStudies</result>
+            <result name="input" type="tiles">manageStudies</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+      
+        <action name="deleteStudy" method="deleteStudy" class="editStudyAction">
+            <result type="redirectAction">
+                <param name="actionName">manageStudies</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
+            </result>
+            <result name="error" type="tiles">manageStudies</result>
+            <result name="input" type="tiles">manageStudies</result>            
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+   
+        <action name="saveStudy" class="saveStudyAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="error" type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>                  
+        </action>
+        
+        <action name="editStudyLog" class="editStudyLogAction">
+            <result type="tiles">editStudyLog</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="saveStudyLog" method="save" class="editStudyLogAction">
+            <result type="redirectAction">
+			<param name="actionName">editStudy</param>
+			<param name="studyConfiguration.id">${studyConfiguration.id}</param>              
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="cancelStudyLog" class="editStudyLogAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        
+        <action name="viewStudyLog" class="viewStudyLogAction">
+            <result type="tiles">viewStudyLog</result>
+            <result name="error" type="tiles">unauthorized</result>
+        </action>
+       
+        <action name="addStudyLogo" class="addStudyLogoAction">
+        
+             <interceptor-ref name="paramsPrepareParamsStack">
+                 <param name="fileUpload.allowedTypes">image/pjpeg,image/jpeg,image/gif</param>
+             </interceptor-ref>
+		    
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="addClinicalFile" class="addClinicalFileAction">
+            <result type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${clinicalSource.id}</param>
+            </result>
+            <result name="input" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="addExternalLinks" class="addExternalLinksAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
+        </action>
+        
+        <action name="deleteExternalLinks" class="deleteExternalLinksAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="viewExternalLinks" class="viewExternalLinksAction">
+            <result type="tiles">viewExternalLinks</result>
+        </action>
+        
+        <action name="viewDataDictionary" class="viewDataDictionaryAction">
+            <result type="tiles">viewDataDictionary</result>
+        </action>
+        
+        <action name="viewControlSamples" class="viewControlSamplesAction">
+            <result type="tiles">viewControlSamples</result>
+        </action>
+       
+        <action name="editClinicalSource" class="editClinicalSourceAction">
+            <result type="tiles">editClinicalFile</result>
+        </action>
+        
+        <action name="saveClinicalSource" method="save" class="editClinicalSourceAction">
+            <result type="tiles">editStudy</result>
+        </action>
+        
+        <action name="cancelClinicalSource" class="editClinicalSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+                      
+        <action name="loadClinicalSource" class="loadClinicalSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+                      
+        <action name="reLoadClinicalSource" method="reLoad" class="loadClinicalSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+                      
+        <action name="deleteClinicalSource" method="delete" class="loadClinicalSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="createNewClinicalDefinition" method="createNewDefinition" class="defineClinicalFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="createNewImagingDefinition" method="createNewDefinition" class="defineImagingFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="createNewGroupDefinition" method="createNewDefinition" class="defineGroupFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="editSurvivalValueDefinitions" method="editSurvivalValueDefinitions" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">genericError</result>
+            <result name="error" type="tiles">genericError</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
+        </action>
+        
+        <action name="editSurvivalValueDefinition" method="editSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
+        <action name="newSurvivalValueDefinition" method="newSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
+        <action name="deleteSurvivalValueDefinition" method="deleteSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
+        <action name="saveSurvivalValueDefinition" method="saveSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
+        <action name="cancelSurvivalValueDefinition" method="cancel" class="defineSurvivalDefinitionAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+        <action name="updateSurvivalStatusValues" method="updateSurvivalStatusValues" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
+        <action name="editClinicalFieldDescriptor" method="editFieldDescriptor" class="defineClinicalFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="cancelClinicalFieldDescriptor" method="cancel" class="defineClinicalFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
+            </result>
+        </action>
+        
+        <action name="cancelImagingFieldDescriptor" method="cancel" class="defineImagingFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editImagingSourceAnnotations</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${sourceId}</param>
+            </result>
+        </action>
+   
+         <action name="editImagingFieldDescriptor" method="editFieldDescriptor" class="defineImagingFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+         <action name="editGroupFieldDescriptor" method="editFieldDescriptor" class="defineGroupFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="cancelGroupFieldDescriptor" method="cancel" class="defineGroupFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editAnnotationGroup</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="annotationGroup.id">${groupId}</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
+            </result>
+        </action>
+        
+        <action name="saveClinicalFieldDescriptorType" method="saveFieldDescriptorType" class="defineClinicalFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+            <result name="saveIdentifier" type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
+            </result>
+        </action>
+        
+        <action name="saveImagingFieldDescriptorType" method="saveFieldDescriptorType" class="defineImagingFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+         <action name="saveGroupFieldDescriptorType" method="saveFieldDescriptorType" class="defineGroupFieldDescriptorAction">
+            <result type="tiles">editFieldDescriptor</result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+   
+        <action name="selectClinicalDataElement" method="selectDataElement" class="defineClinicalFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+   
+        <action name="selectImagingDataElement" method="selectDataElement" class="defineImagingFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editImagingSourceAnnotations</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${sourceId}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="selectGroupDataElement" method="selectDataElement" class="defineGroupFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editAnnotationGroup</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="annotationGroup.id">${groupId}</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="selectClinicalDefinition" method="selectDefinition" class="defineClinicalFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+   
+        <action name="selectImagingDefinition" method="selectDefinition" class="defineImagingFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editImagingSourceAnnotations</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${sourceId}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="selectGroupDefinition" method="selectDefinition" class="defineGroupFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editAnnotationGroup</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="annotationGroup.id">${groupId}</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="updateClinicalAnnotationDefinition" method="updateAnnotationDefinition" class="defineClinicalFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${sourceId}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+
+        
+        <action name="updateImagingAnnotationDefinition" method="updateAnnotationDefinition" class="defineImagingFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editImagingSourceAnnotations</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${sourceId}</param>
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="updateGroupAnnotationDefinition" method="updateAnnotationDefinition" class="defineGroupFieldDescriptorAction">
+            <result type="redirectAction">
+                <param name="actionName">editAnnotationGroup</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="annotationGroup.id">${groupId}</param>
+                <param name="struts.token.name">${tokenName} </param>
+                <param name="struts.token">${newToken}</param>                
+            </result>
+            <result name="input" type="tiles">editFieldDescriptor</result>
+            <result name="error" type="tiles">editFieldDescriptor</result>
+        </action>
+        
+        <action name="homepage.getStudyDetails" method="getStudyDetails" class="homepageAction">
+            <result type="redirectAction">
+                <param name="actionName">browseStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+        <action name="addGenomicSource" method="addNew" class="editGenomicSourceAction">
+            <result type="tiles">editGenomicSource</result>
+            <result name="error" type="tiles">genericErrorWithMenu</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="refreshGenomicSource" method="refresh" class="editGenomicSourceAction">
+            <result type="tiles">editGenomicSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
+        </action>
+        
+        <action name="editGenomicSource" class="editGenomicSourceAction">
+            <result type="tiles">editGenomicSource</result>
+            <result name="error" type="tiles">genericErrorWithMenu</result>
+        </action>
+        
+        <action name="deleteGenomicSource" method="delete" class="editGenomicSourceAction">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="saveGenomicSource" method="save" class="editGenomicSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editGenomicSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref> 
+        </action>
+        
+        <action name="cancelGenomicSource" method="cancel" class="editGenomicSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+        <action name="editSampleMapping" class="editSampleMappingAction">
+            <result type="tiles">editSampleMapping</result>
+            <result name="input" type="tiles">editGenomicSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
+        </action>
+
+        <action name="saveSampleMapping" class="saveSampleMappingAction">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editSampleMapping</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
+        </action>
+        
+        <action name="editDnaAnalysisDataConfiguration" method="edit" class="editDnaAnalysisDataConfigurationAction">
+            <result type="tiles">editDnaAnalysisDataConfiguration</result>
+        </action>
+        
+        <action name="uploadDnaAnalysisDataMapping" method="uploadMapping" class="editDnaAnalysisDataConfigurationAction">
+            <result type="tiles">editDnaAnalysisDataConfiguration</result>
+            <result name="input" type="tiles">editDnaAnalysisDataConfiguration</result>
+        </action>
+        
+        <action name="saveDnaAnalysisDataConfiguration" method="save" class="editDnaAnalysisDataConfigurationAction">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editDnaAnalysisDataConfiguration</result>
+        </action>
+        
+        <action name="cancelDnaAnalysisDataConfiguration" method="cancel" class="editDnaAnalysisDataConfigurationAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+                
+        <action name="addImagingSource" class="editImagingSourceAction">
+            <result type="tiles">editImagingSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="editImagingSource" class="editImagingSourceAction">
+            <result type="tiles">editImagingSource</result>
+        </action>
+        
+        <action name="saveImagingSource" class="editImagingSourceAction" method="saveImagingSource" >
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="editImageAnnotations" type="tiles">editImagingFile</result>
+            <result name="input" type="tiles">editImagingSource</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>             
+        </action>
+        
+        <action name="updateImagingSource" class="editImagingSourceAction" method="updateImagingSource" >
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editImagingSource</result>
+        </action>
+        
+       <action name="mapImagingSource" class="editImagingSourceAction" method="mapImagingSource" >
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editImagingSource</result>
+            <result name="error" type="tiles">editImagingSource</result>
+        </action>
+        
+       <action name="cancelImagingSource" class="editImagingSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+        <action name="loadImagingSource" class="editImagingSourceAction" method="loadImageAnnotations">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="deleteImagingSource" class="editImagingSourceAction" method="delete">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="editImagingSourceAnnotations" class="editImagingSourceAnnotationsAction">
+            <result type="tiles">editImagingFile</result>
+        </action>
+        
+        <action name="addImagingSourceAnnotations" class="editImagingSourceAnnotationsAction" method="addImageAnnotations">
+            <result type="redirectAction">
+                <param name="actionName">editImagingSourceAnnotations</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
+            </result>
+            <result name="loadingAimAnnotation" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editImagingFile</result>
+            <result name="error" type="tiles">editImagingFile</result>
+        </action>
+        
+        <action name="loadAimAnnotation" class="editImagingSourceAnnotationsAction" method="loadAimAnnotation">
+            <result name="loadingAimAnnotation" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+        
+        <action name="saveImagingSourceAnnotations" method="save" class="editImagingSourceAnnotationsAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+        <action name="addAnnotationGroup" class="editAnnotationGroupAction">
+            <result type="tiles">editAnnotationGroup</result>
+            <result name="input" type="tiles">editAnnotationGroup</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="editAnnotationGroup" class="editAnnotationGroupAction">
+            <result type="tiles">editAnnotationGroup</result>
+            <result name="input" type="tiles">editAnnotationGroup</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="deleteAnnotationGroup" class="editAnnotationGroupAction" method="delete">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
+        </action>
+        
+        <action name="saveAnnotationGroup" class="editAnnotationGroupAction">
+            <result type="tiles">editAnnotationGroup</result>
+            <result name="input" type="tiles">editAnnotationGroup</result>
+            <result name="error" type="tiles">editAnnotationGroup</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="cancelAnnotationGroup" class="editAnnotationGroupAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="saveFieldDescriptorsForGroup" method="saveFieldDescriptors" class="editAnnotationGroupAction">
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+        <action name="saveAuthorizedGroup" method="save" class="gov.nih.nci.caintegrator.web.action.study.management.EditAuthorizedGroupAction">
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="cancelAuthorizedGroup" method="cancel" class="gov.nih.nci.caintegrator.web.action.study.management.EditAuthorizedGroupAction">
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="addAuthorizedGroup" method="add" class="gov.nih.nci.caintegrator.web.action.study.management.EditAuthorizedGroupAction">
+            <result name="error" type="tiles">authorizeGroups</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="editAuthorizedGroup" method="edit" class="gov.nih.nci.caintegrator.web.action.study.management.EditAuthorizedGroupAction">
+            <result type="tiles">editAuthorizedGroup</result>
+            <result name="success" type="tiles">editAuthorizedGroup</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="deleteAuthorizedGroup" method="delete" class="gov.nih.nci.caintegrator.web.action.study.management.EditAuthorizedGroupAction">
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="error" type="tiles">editStudy</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <action name="authorizeGroups" class="gov.nih.nci.caintegrator.web.action.study.management.EditAuthorizedGroupAction">
+            <result type="tiles">authorizeGroups</result>
+            <result name="success" type="tiles">authorizeGroups</result>
+            <result name="error" type="tiles">authorizeGroups</result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        
+        <!-- Manage List Actions -->
+        <action name="manageList" class="manageListAction">
+            <result type="tiles">manageList</result>
+            <result name="error" type="tiles">manageList</result>
+            <result name="input" type="tiles">manageList</result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+            <result name="editGenePage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editList</param>
+                <param name="listName">${listName}</param>
+                <param name="creationSuccess">true</param>
+            </result>
+            <result name="editGlobalGenePage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editGlobalList</param>
+                <param name="listName">${listName}</param>
+                <param name="creationSuccess">true</param>
+            </result>
+            <result name="editSubjectPage" type="redirectAction">
+                <param name="actionName">editSubjectList</param>
+                <param name="selectedAction">editList</param>
+                <param name="listName">${listName}</param>
+                <param name="creationSuccess">true</param>
+            </result>
+            <result name="editGlobalSubjectPage" type="redirectAction">
+                <param name="actionName">editSubjectList</param>
+                <param name="selectedAction">editGlobalList</param>
+                <param name="listName">${listName}</param>
+                <param name="creationSuccess">true</param>
+            </result>
+        </action>
+        
+        <!-- Subject List Actions -->
+        <action name="editSubjectList" class="editSubjectListAction">
+            <result type="tiles">editSubjectList</result>
+            <result name="error" type="tiles">editSubjectList</result>
+            <result name="input" type="tiles">editSubjectList</result>
+            <result name="editPage" type="redirectAction">
+                <param name="actionName">editSubjectList</param>
+                <param name="selectedAction">editList</param>
+                <param name="listName">${listName}</param>
+            </result>
+            <result name="editGlobalPage" type="redirectAction">
+                <param name="actionName">editSubjectList</param>
+                <param name="selectedAction">editGlobalList</param>
+                <param name="listName">${listName}</param>
+            </result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+        </action>
+        
+        <!-- Gene List Actions -->
+        <action name="editGeneList" class="editGeneListAction">
+            <result type="tiles">editGeneList</result>
+            <result name="error" type="tiles">editGeneList</result>
+            <result name="input" type="tiles">editGeneList</result>
+            <result name="editPage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editList</param>
+                <param name="listName">${listName}</param>
+            </result>
+            <result name="editGlobalPage" type="redirectAction">
+                <param name="actionName">editGeneList</param>
+                <param name="selectedAction">editGlobalList</param>
+                <param name="listName">${listName}</param>
+            </result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+        </action>
+        
+        <action name="geneListSearchInput" class="searchGeneListAction">
+            <result>/WEB-INF/jsp/tiles/geneListSearch_div.jsp</result>
+        </action>
+        
+        <action name="geneListSearch" method="searchForGenes" class="searchGeneListAction">
+            <result>/WEB-INF/jsp/tiles/geneListSearchResults_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/geneListSearchResults_div.jsp</result>
+            <result name="error">/WEB-INF/jsp/tiles/geneListSearchResults_div.jsp</result>
+        </action>
+        
+        <!-- Copy Number Analysis Action -->
+        <action name="editGisticAnalysis" class="editGisticAnalysisAction">
+            <result type="tiles">editGisticAnalysis</result>
+            <result name="error" type="tiles">editGisticAnalysis</result>
+            <result name="input" type="tiles">editGisticAnalysis</result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+        </action>
+        
+        <!--  Query Actions -->
+        <!--  Query Actions -->
+        <!--  Query Actions -->
+        
+        <action name="newQuery" class="newQueryAction">
+            <result type="redirectAction">
+                <param name="actionName">manageQuery</param>
+                <param name="selectedAction">createNewQuery</param>
+            </result>
+            <result name="input" type="tiles">genericErrorWithMenu</result>
+        </action>
+        
+        <action name="manageQuery" class="manageQueryAction">
+            <result type="tiles">manageQuery</result>
+            <result name="input" type="tiles">manageQuery</result>
+            <result name="error" type="tiles">manageQuery</result>
+            <result name="nciaBasket">/WEB-INF/jsp/tiles/nciaBasket.jsp</result>
+            <result name="viewIGV" type="tiles">igvAjax</result>
+            <result name="viewHeatmap" type="tiles">heatmapAjax</result>
+            <result name="export" type="tiles">exportSearchResults</result>
+            <result name="dicomJobAjax" type="tiles">dicomJobAjax</result>
+            <result name="dicomJobCurrentlyRunning" type="tiles">genericError</result>
+            <result name="exportGenomicResults" type="temporaryDownloadFileResult"/>
+            <result name="missingPlatformChannelType" type="tiles">genericErrorWithMenu</result>
+        </action>
+        
+        <action name="downloadDicomFile" method="downloadDicomFile" class="nciaDicomRetrievalAction">
+            <result name="dicomFileResult" type="dicomFileResult"/>
+            <result name="error" type="tiles">genericError</result>
+        </action>
+        
+        <action name="selectQueryTab" class="selectQueryTabAction">
+            <result name="selectedTabCriteria">/WEB-INF/jsp/tabs/editQueryCriteria.jsp</result>
+            <result name="selectedTabColumns">/WEB-INF/jsp/tabs/editQueryColumns.jsp</result>
+            <result name="selectedTabSorting">/WEB-INF/jsp/tabs/editQuerySorting.jsp</result>
+            <result name="selectedTabSearchResults">/WEB-INF/jsp/tabs/editQuerySearchResults.jsp</result>
+            <result name="selectedTabSaveAs">/WEB-INF/jsp/tabs/editQuerySaveAs.jsp</result>
+        </action>
+
+        <!--  Analysis Actions -->
+        <!--  Analysis Actions -->
+        <!--  Analysis Actions -->
+        
+        <action name="viewAllIGV" class="viewAllIGVAction">
+            <result type="tiles">viewIGVSelector</result>
+            <result name="input" type="tiles">viewIGVSelector</result>
+            <result name="viewIGV" type="tiles">igvAjax</result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+        </action>
+        
+        <action name="viewAllHeatmap" class="viewAllHeatmapAction">
+            <result type="tiles">viewHeatmapSelector</result>
+            <result name="input" type="tiles">viewHeatmapSelector</result>
+            <result name="viewHeatmap" type="tiles">heatmapAjax</result>
+            <result name="homePage" type="redirectAction">
+                <param name="actionName">workspace</param>
+            </result>
+        </action>
+   
+        <action name="selectAnalysis" class="selectAnalysisAction">
+            <result name="genePatternModules" type="redirectAction">
+                <param name="actionName">genePatternAnalysis</param>
+            </result>
+            <result name="comparativeMarkerSelection" type="redirectAction">
+                <param name="actionName">comparativeMarkerSelectionAnalysis</param>
+            </result>
+            <result name="principalComponentAnalysis" type="redirectAction">
+                <param name="actionName">principalComponentAnalysis</param>
+            </result>
+            <result name="gistic" type="redirectAction">
+                <param name="actionName">gisticAnalysis</param>
+            </result>
+            <result name="error" type="tiles">genePatternAnalysisStatus</result>
+            <result name="input" type="tiles">genePatternAnalysisStatus</result>
+        </action>
+   
+        <action name="genePatternAnalysis" class="genePatternAnalysisAction">
+            <result type="tiles">genePatternAnalysis</result>
+            <result name="status" type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+            <result name="input" type="tiles">genePatternAnalysis</result>
+            <result name="error" type="tiles">genePatternAnalysis</result>
+        </action>
+        
+        <action name="cancelGenePatternAnalysis" method="cancel" class="genePatternAnalysisAction">
+            <result type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+        </action>
+        
+        <action name="comparativeMarkerSelectionAnalysis" class="comparativeMarkerSelectionAnalysisAction">
+            <result type="tiles">comparativeMarkerSelectionAnalysis</result>
+            <result name="status" type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+            <result name="input" type="tiles">comparativeMarkerSelectionAnalysis</result>
+        </action>
+        
+        <action name="cancelComparativeMarkerSelectionAnalysis" method="cancel" class="comparativeMarkerSelectionAnalysisAction">
+            <result type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+        </action>
+        
+        <action name="deleteGenePatternAnalysis" class="genePatternAnalysisAction" method="deleteAnalysisJob">
+            <result type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+        </action>
+        
+        <action name="genePatternAnalysisStatus" class="genePatternAnalysisAction" method="showStatusPage">
+            <result name="status" type="tiles">genePatternAnalysisStatus</result>
+            <result name="input" type="tiles">genericErrorWithMenu</result>
+        </action>
+        
+        <action name="principalComponentAnalysis" class="principalComponentAnalysisAction">
+            <result type="tiles">principalComponentAnalysis</result>
+            <result name="status" type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+            <result name="input" type="tiles">principalComponentAnalysis</result>
+        </action>
+        
+        <action name="cancelPrincipalComponentAnalysis" method="cancel" class="principalComponentAnalysisAction">
+            <result type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+        </action>
+        
+        <action name="analysisJobDownload" class="downloadAnalysisResultsAction">
+            <result name="input" type="tiles">genericError</result>
+            <result name="error" type="tiles">genericError</result>
+            <result name="downloadResultFile" type="temporaryDownloadFileResult"/>
+        </action>
+        
+        <action name="gisticAnalysis" class="gisticAnalysisAction">
+            <result type="tiles">gisticAnalysis</result>
+            <result name="status" type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+            <result name="input" type="tiles">gisticAnalysis</result>
+        </action>
+        
+        <!-- Kaplan-Meier Actions -->
+        <!-- Kaplan-Meier Actions -->
+        <!-- Kaplan-Meier Actions -->
+        
+        <action name="initializeKmPlot" method="initializeKmPlot" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">genericErrorWithMenu</result>
+        </action>
+
+        <!-- Annotation Based Kaplan-Meier Actions -->
+        <!-- Annotation Based Kaplan-Meier Actions -->
+        <!-- Annotation Based Kaplan-Meier Actions -->
+        
+        <action name="kmPlotAnnotationBasedInput" method="input" class="kmPlotAnnotationBasedAction">
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBased_tab.jsp</result>
+        </action>
+        
+        <action name="kmPlotUpdateAnnotationDefinitions" method="updateAnnotationDefinitions" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+        <action name="kmPlotUpdatePermissibleValues" method="updatePermissibleValues" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>        
+         </action>
+         
+        <action name="resetAnnotationBasedKMPlot" method="reset" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+        <action name="createAnnotationBasedKMPlot" method="createPlot" class="kmPlotAnnotationBasedAction">
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBasedGraph_div.jsp</result>
+        </action>
+        
+        <action name="retrieveAnnotationKMPlot" method="retrievePlot" class="kmPlotAnnotationBasedAction">
+            <result name="kmPlotResult" type="kmPlotResult"> 
+                <param name="type">annotationBased</param>
+            </result>
+        </action>
+        
+        <!-- Gene Expression Based Kaplan-Meier Actions -->
+        <!-- Gene Expression Based Kaplan-Meier Actions -->
+        <!-- Gene Expression Based Kaplan-Meier Actions -->
+        
+        <action name="kmPlotGeneExpressionBasedInput" method="input" class="kmPlotGeneExpressionBasedAction">
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBased_tab.jsp</result>
+        </action>
+        
+        <action name="resetGeneExpressionBasedKMPlot" method="reset" class="kmPlotGeneExpressionBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+       <action name="createGeneExpressionBasedKMPlot" method="createPlot" class="kmPlotGeneExpressionBasedAction">
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBasedGraph_div.jsp</result>
+        </action>
+        
+        <action name="retrieveGeneExpressionKMPlot" method="retrievePlot" class="kmPlotGeneExpressionBasedAction">
+            <result name="kmPlotResult" type="kmPlotResult"> 
+                <param name="type">geneExpression</param>
+            </result>
+        </action>
+        
+        <action name="updateControlSamplesGeneExpressionBasedKMPlot" method="updateControlSampleSets" class="kmPlotGeneExpressionBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+        <!-- Query Based Kaplan-Meier Actions -->
+        <!-- Query Based Kaplan-Meier Actions -->
+        <!-- Query Based Kaplan-Meier Actions -->
+        
+        <action name="kmPlotQueryBasedInput" method="input" class="kmPlotQueryBasedAction">
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBased_tab.jsp</result>
+        </action>
+        
+        <action name="resetQueryBasedKMPlot" method="reset" class="kmPlotQueryBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+       <action name="createQueryBasedKMPlot" method="createPlot" class="kmPlotQueryBasedAction">
+            <interceptor-ref name="checkbox" />
+            <interceptor-ref name="cai2ParamsPrepareParamsStack" />
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBasedGraph_div.jsp</result>
+        </action>
+        
+        <action name="retrieveQueryKMPlot" method="retrievePlot" class="kmPlotQueryBasedAction">
+            <result name="kmPlotResult" type="kmPlotResult"> 
+                <param name="type">queryBased</param>
+            </result>
+        </action>
+        
+        <!-- GeneExpression Plot Actions -->
+        <!-- GeneExpression Plot Actions -->
+        <!-- GeneExpression Plot Actions -->
+        
+        <action name="initializeGePlot" method="initializeGePlot" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">genericErrorWithMenu</result>
+        </action>
+
+        <!-- Annotation Based GeneExpression Plot Actions -->
+        <!-- Annotation Based GeneExpression Plot Actions -->
+        <!-- Annotation Based GeneExpression Plot Actions -->
+        
+        <action name="gePlotAnnotationBasedInput" method="input" class="gePlotAnnotationBasedAction">
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBased_tab.jsp</result>
+        </action>
+        
+        <action name="gePlotUpdateAnnotationDefinitions" method="updateAnnotationDefinitions" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>
+        </action>
+        
+        <action name="gePlotUpdatePermissibleValues" method="updatePermissibleValues" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>        
+         </action>
+         
+         <action name="updateControlSamplesAnnotationBasedGEPlot" method="updateControlSampleSets" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>        
+        </action>
+         
+        <action name="resetAnnotationBasedGEPlot" method="reset" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>
+        </action>
+        
+        <action name="createAnnotationBasedGEPlot" method="createPlot" class="gePlotAnnotationBasedAction">
+            <interceptor-ref name="checkbox" />
+            <interceptor-ref name="cai2ParamsPrepareParamsStack" />
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBasedGraph_div.jsp</result>
+        </action>
+        
+        <action name="retrieveAnnotationGEPlot_mean" method="retrievePlot" class="gePlotAnnotationBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">annotationBased</param>
+                <param name="calculationType">mean</param>
+            </result>
+        </action>
+        
+        <action name="retrieveAnnotationGEPlot_median" method="retrievePlot" class="gePlotAnnotationBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">annotationBased</param>
+                <param name="calculationType">median</param>
+            </result>
+        </action>
+        
+        <action name="retrieveAnnotationGEPlot_log2" method="retrievePlot" class="gePlotAnnotationBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">annotationBased</param>
+                <param name="calculationType">log2Intensity</param>
+            </result>
+        </action>
+        
+        <action name="retrieveAnnotationGEPlot_bw" method="retrievePlot" class="gePlotAnnotationBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">annotationBased</param>
+                <param name="calculationType">boxWhiskerLog2Intensity</param>
+            </result>
+        </action>
+        
+        <!-- Genomic Query based Gene Expression plots -->
+        <!-- Genomic Query based Gene Expression plots -->
+        <!-- Genomic Query based Gene Expression plots -->
+        
+        <action name="gePlotGenomicQueryBasedInput" method="input" class="gePlotGenomicQueryBasedAction">
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBased_tab.jsp</result>
+        </action>
+         
+        <action name="resetGenomicQueryBasedGEPlot" method="reset" class="gePlotGenomicQueryBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>
+        </action>
+        
+        <action name="createGenomicQueryBasedGEPlot" method="createPlot" class="gePlotGenomicQueryBasedAction">
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBasedGraph_div.jsp</result>
+        </action>
+        
+        <action name="retrieveGenomicQueryGEPlot_mean" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">genomicQueryBased</param>
+                <param name="calculationType">mean</param>
+            </result>
+        </action>
+        
+        <action name="retrieveGenomicQueryGEPlot_median" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">genomicQueryBased</param>
+                <param name="calculationType">median</param>
+            </result>
+        </action>
+
+        <action name="retrieveGenomicQueryGEPlot_log2" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">genomicQueryBased</param>
+                <param name="calculationType">log2Intensity</param>
+            </result>
+        </action>
+        
+        <action name="retrieveGenomicQueryGEPlot_bw" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">genomicQueryBased</param>
+                <param name="calculationType">boxWhiskerLog2Intensity</param>
+            </result>
+        </action>
+        
+        <!-- Clinical Query based Gene Expression plots -->
+        <!-- Clinical Query based Gene Expression plots -->
+        <!-- Clinical Query based Gene Expression plots -->
+        
+        <action name="gePlotClinicalQueryBasedInput" method="input" class="gePlotClinicalQueryBasedAction">
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBased_tab.jsp</result>
+        </action>
+        
+        <action name="updateControlSamplesClinicalQueryBasedGEPlot" method="updateControlSampleSets" class="gePlotClinicalQueryBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>        
+        </action>
+         
+        <action name="resetClinicalQueryBasedGEPlot" method="reset" class="gePlotClinicalQueryBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>
+        </action>
+        
+        <action name="createClinicalQueryBasedGEPlot" method="createPlot" class="gePlotClinicalQueryBasedAction">
+            <interceptor-ref name="checkbox" />
+            <interceptor-ref name="cai2ParamsPrepareParamsStack" />
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBasedGraph_div.jsp</result>
+        </action>
+        
+        <action name="retrieveClinicalQueryGEPlot_mean" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">clinicalQueryBased</param>
+                <param name="calculationType">mean</param>
+            </result>
+        </action>
+        
+        <action name="retrieveClinicalQueryGEPlot_median" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">clinicalQueryBased</param>
+                <param name="calculationType">median</param>
+            </result>
+        </action>
+
+        <action name="retrieveClinicalQueryGEPlot_log2" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">clinicalQueryBased</param>
+                <param name="calculationType">log2Intensity</param>
+            </result>
+        </action>
+        
+        <action name="retrieveClinicalQueryGEPlot_bw" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">clinicalQueryBased</param>
+                <param name="calculationType">boxWhiskerLog2Intensity</param>
+            </result>
+        </action>
+               
+        <!-- Platform Actions -->
+        <!-- Platform Actions -->
+        <!-- Platform Actions -->
+        
+        <action name="managePlatforms" class="managePlatformsAction">
+            <param name="selectedAction">managePlatforms</param>
+            <result type="tiles">managePlatforms</result>
+            <result name="error" type="tiles">managePlatforms</result>
+            <result name="input" type="tiles">managePlatforms</result>
+        </action>
+        
+        <action name="createPlatform" class="managePlatformsAction" method="createPlatform">
+            <result type="tiles">managePlatforms</result>
+            <result name="error" type="tiles">managePlatforms</result>
+            <result name="input" type="tiles">managePlatforms</result>
+        </action>
+        
+        <action name="addAnnotationFile" class="managePlatformsAction" method="addAnnotationFile">
+            <result type="tiles">managePlatforms</result>
+            <result name="error" type="tiles">managePlatforms</result>
+            <result name="input" type="tiles">managePlatforms</result>
+        </action>
+      
+        <action name="updatePlatform" method="updatePlatform" class="managePlatformsAction">
+            <result type="tiles">managePlatforms</result>
+            <result name="error" type="tiles">managePlatforms</result>
+        </action>
+        
+        <!-- CaBio Actions -->
+        <action name="caBioSearchInput" method="input" class="caBioSearchAction">
+            <result>/WEB-INF/jsp/tiles/cabio/caBioGeneSearch_div.jsp</result>
+        </action>
+        
+        <action name="caBioSearch" method="searchCaBio" class="caBioSearchAction">
+            <result>/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
+            <result name="error">/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
+        </action>
+    </package>
+    
+    <package name="registration" namespace="/registration" extends="caintegrator">
+        <action name="*" class="registrationAction" method="{1}" >
+            <result name="input" type="tiles">registration</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">workspace</param>
+                <param name="registrationSuccess">true</param>
+            </result>
+            <result name="cancel" type="redirectAction">
+                <param name="actionName">../login</param>
+            </result>
+            <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>            
+        </action>
+    </package>
+    
+</struts>

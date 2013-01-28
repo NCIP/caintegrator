@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.application">
+	<class name="UserWorkspace" table="USER_WORKSPACE" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<property name="username" type="string" column="USERNAME"/>
+		<!-- Attributes mapping for the UserWorkspace class -->
+		<!-- Associations mapping for the UserWorkspace class -->
+		<many-to-one name="defaultSubscription" class="gov.nih.nci.caintegrator.domain.application.StudySubscription" column="DEFAULT_STUDY_SUBSCRIPTION_ID" unique="true" lazy="proxy" cascade="save-update,merge"/>
+		<set name="subscriptionCollection" lazy="true" cascade="save-update,merge" >
+			<cache usage="read-write" />
+			<key column="USER_WORKSPACE_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator.domain.application.StudySubscription"/>
+		</set>
+	</class>
+</hibernate-mapping>

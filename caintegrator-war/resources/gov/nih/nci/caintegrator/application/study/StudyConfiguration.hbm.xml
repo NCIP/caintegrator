@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.application.study">
+
+    <!-- Create typedef's for the enums -->
+    <typedef name="Visibility" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+	   <param name="enumClass">gov.nih.nci.caintegrator.application.study.Visibility</param> 
+	</typedef> 
+	
+	<typedef name="Status" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator.application.study.Status</param> 
+    </typedef> 
+
+	<class name="StudyConfiguration" table="STUDY_CONFIGURATION" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+        
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+	
+		<property name="visibility" type="Visibility" column="VISIBILITY"/>
+		
+		<property name="status" type="Status" column="STATUS"/>
+		
+		<property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
+		
+		<property name="deploymentStartDate" type="java.util.Date" column="DEPLOYMENT_START_DATE"/>
+		
+        <property name="deploymentFinishDate" type="java.util.Date" column="DEPLOYMENT_FINISH_DATE"/>
+        
+        <property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
+        <property name="dataRefreshed" type="boolean" column="IS_DATA_REFRESHED" />
+        
+    
+        <list name="clinicalConfigurationCollection" lazy="false" cascade="all">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator.application.study.AbstractClinicalSourceConfiguration"/>
+        </list>
+    
+        <list name="genomicDataSources" lazy="false" cascade="all">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration"/>
+        </list>
+    
+        <list name="imageDataSources" lazy="false" cascade="all">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator.application.study.ImageDataSourceConfiguration"/>
+        </list>
+        
+        <list name="externalLinkLists" lazy="false" cascade="all">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="ExternalLinkList"/>
+        </list>
+        
+        <list name="logEntries" lazy="false" cascade="all-delete-orphan">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="LogEntry"/>
+        </list>
+        
+        <set name="listCollection" lazy="true" cascade="all" inverse="true">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator.domain.application.AbstractList"/>
+        </set>
+        
+		<many-to-one name="study" class="gov.nih.nci.caintegrator.domain.translational.Study" column="STUDY_ID"
+		    unique="true" lazy="proxy" cascade="all" />
+		    
+        <many-to-one name="studyLogo" class="gov.nih.nci.caintegrator.application.study.StudyLogo" column="STUDY_LOGO_ID"
+            lazy="proxy" cascade="all" />
+        
+        <many-to-one name="userWorkspace" class="gov.nih.nci.caintegrator.domain.application.UserWorkspace" column="USER_WORKSPACE_ID"
+            lazy="proxy" cascade="none" />
+            
+        <many-to-one name="lastModifiedBy" class="gov.nih.nci.caintegrator.domain.application.UserWorkspace" column="LAST_MODIFIED_BY_USER_ID"
+            lazy="proxy" cascade="none" />
+            
+        <list name="authorizedStudyElementsGroups" lazy="false" cascade="all">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator.application.study.AuthorizedStudyElementsGroup"/>
+        </list>            
+	</class>
+</hibernate-mapping>

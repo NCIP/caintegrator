@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.genomic">
+	<class name="GeneChromosomalLocation" table="GENE_CHROMOSOMAL_LOCATION" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the GeneChromosomalLocation class -->
+        <property name="geneSymbol" column="GENE_SYMBOL" type="string" />
+        <component name="location" class="ChromosomalLocation">
+            <property name="chromosome" column="CHROMOSOME" type="string"/>
+            <property name="startPosition" column="START_POSITION" type="integer"/>
+            <property name="endPosition" column="END_POSITION" type="integer"/>
+        </component>
+		<!-- Associations mapping for the GeneChromosomalLocation class -->
+		<many-to-one name="geneLocationConfiguration" class="GeneLocationConfiguration" column="GENE_LOCATION_CONFIGURATION_ID" unique="false" lazy="proxy" cascade="save-update" />
+	</class>
+</hibernate-mapping>

@@ -69,10 +69,6 @@
         depends="kaplan-meier.jar"
         description="Compiles all production source code and assembles artifacts." />
 
-    <!-- ******************************************************************* -->
-    <!-- ** CAINTEGRATOR2.WAR                                             ** -->
-    <!-- ******************************************************************* -->
-
     <property name="kaplan-meier.jar.dir" location="${software.dir}/kaplan-meier-jar" />
     <property name="kaplan-meier.jar.java.src.dir" location="${kaplan-meier.jar.dir}/src" />
     <property name="kaplan-meier.jar.resources.src.dir" location="${kaplan-meier.jar.dir}/resources" />

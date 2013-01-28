@@ -1,4 +1,4 @@
-<project name="caintegrator-cacore-caintegrator2-war-installer" default="upgrade" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="caintegrator-cacore-caintegrator-war-installer" default="upgrade" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
     <description>TBD</description>
 
     <!-- Properties file related properties and tasks -->
@@ -14,7 +14,7 @@
     <replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
     <property file="${properties.file}" />
     <!-- Generic properties -->
-    <property name="project.name" value="caintegrator2"/>
+    <property name="project.name" value="caintegrator"/>
     <property name="env.name" value="local"/>
     <property name="log.dir" location="${basedir}/logs" />
     <property name="working.dir" location="${basedir}/working" />
@@ -37,11 +37,11 @@
     <property name="jboss-conf.dir.dest" location="${working.dir}/${jboss-conf.dist.relative.dir}" />
 
     <!-- deployment XML files and WAR -->
-    <property name="caintegrator2-war.dir.dist" location="${basedir}/${caintegrator2-war.dist.relative.dir}" />
-    <property name="caintegrator2.jms.file" value="caintegrator2-jms-destinations-service.xml" />
-    <property name="caintegrator2-war.ds.file" value="caintegrator2-mysql-ds.xml" />
-    <property name="caintegrator2-war.mail.service.file" value="mail-service.xml" />
-    <property name="caintegrator2-war.war.file" value="caintegrator.war" />
+    <property name="caintegrator-war.dir.dist" location="${basedir}/${caintegrator-war.dist.relative.dir}" />
+    <property name="caintegrator.jms.file" value="caintegrator-jms-destinations-service.xml" />
+    <property name="caintegrator-war.ds.file" value="caintegrator-mysql-ds.xml" />
+    <property name="caintegrator-war.mail.service.file" value="mail-service.xml" />
+    <property name="caintegrator-war.war.file" value="caintegrator.war" />
     <property name="exclude.jboss.backup" value="true" />
 
     <!-- Paths -->
@@ -329,13 +329,13 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             />
     </target>
 
-    <target name="install:jboss:caintegrator2-war" description="Deploy caintegrator2-war caintegrator2-war.ear, caintegrator2-war-api.war and common libraries" unless="exclude.jboss" depends="common:jboss:init, common:init">
+    <target name="install:jboss:caintegrator-war" description="Deploy caintegrator-war caintegrator-war.ear, caintegrator-war-api.war and common libraries" unless="exclude.jboss" depends="common:jboss:init, common:init">
         <!-- added to ensure working.dirs are fresh for our install -->
         <delete dir="${jboss.home}/server/${jboss.server.name}/tmp"/>
         <delete dir="${jboss.home}/server/${jboss.server.name}/work"/>
         <move file="${jboss.home}/server/${jboss.server.name}/log/server.log" tofile="${jboss.home}/server/${jboss.server.name}/log/server/log.${install.time}" failonerror="false"/>
 
-        <copy file="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy" overwrite="true" />
+        <copy file="${caintegrator-war.dir.dist}/${caintegrator-war.war.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy" overwrite="true" />
         <copy file="${bda-utils.dir}/clm-4.2.beta_jboss51.jar" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
         <copy file="${bda-utils.dir}/commons-digester-2.1.jar" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
         <copy file="${bda-utils.dir}/commons-beanutils-1.8.3.jar" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
@@ -346,10 +346,10 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         <!-- Replace this with file from ivy when project is ivy'fied -->
     </target>
 
-    <target name="install:jboss:caintegrator2-war:configure" description="Configure caintegrator2-war application" unless="exclude.jboss" depends="common:jboss:init, common:init">
-        <copy file="${jboss-conf.dir.dest}/${caintegrator2-war.ds.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy" overwrite="true" />
-        <copy file="${jboss-conf.dir.dest}/${caintegrator2.jms.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy/jms" overwrite="true" />
-        <copy file="${jboss-conf.dir.dest}/${caintegrator2-war.mail.service.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy" overwrite="true" />
+    <target name="install:jboss:caintegrator-war:configure" description="Configure caintegrator-war application" unless="exclude.jboss" depends="common:jboss:init, common:init">
+        <copy file="${jboss-conf.dir.dest}/${caintegrator-war.ds.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy" overwrite="true" />
+        <copy file="${jboss-conf.dir.dest}/${caintegrator.jms.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy/jms" overwrite="true" />
+        <copy file="${jboss-conf.dir.dest}/${caintegrator-war.mail.service.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy" overwrite="true" />
     </target>
 
     <target name="install:jboss:configure:log4j" description="Configure custom entries in system wide log4j" unless="exclude.jboss"  depends="common:jboss:init, common:init">
@@ -481,7 +481,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         depends="
         common:init
         ">
-        <condition property="propertyfile.backup.location" value="/tmp/caintegrator2/bda-property-backups">
+        <condition property="propertyfile.backup.location" value="/tmp/caintegrator/bda-property-backups">
             <or>
                 <os family="unix" />
                 <os family="mac" />
@@ -524,9 +524,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         install:jboss:clean,
         install:jboss:binaries,
         install:jboss:configure,
-        install:jboss:caintegrator2-war:re-configure,
-        install:jboss:caintegrator2-war,
-        install:jboss:caintegrator2-war:configure,
+        install:jboss:caintegrator-war:re-configure,
+        install:jboss:caintegrator-war,
+        install:jboss:caintegrator-war:configure,
         install:post:jboss,
         install:jboss:start,
         install:jboss:validation:post-install
@@ -554,9 +554,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
     </target>
 
     <!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
-    <target name="install:jboss:caintegrator2-war:re-configure" unless="exclude.jboss" depends="common:init">
-        <delete dir="${working.dir}/caintegrator2-war"/>
-        <unzip src="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" dest="${working.dir}/caintegrator2-war"/>
+    <target name="install:jboss:caintegrator-war:re-configure" unless="exclude.jboss" depends="common:init">
+        <delete dir="${working.dir}/caintegrator-war"/>
+        <unzip src="${caintegrator-war.dir.dist}/${caintegrator-war.war.file}" dest="${working.dir}/caintegrator-war"/>
         <if>
              <equals arg1="${jboss.ssl.enable}" arg2="true"/>
              <then>
@@ -567,7 +567,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
              </else>
          </if>
 
-        <copy todir="${working.dir}/caintegrator2-war/WEB-INF" file="${working.dir}/caintegrator2-war/WEB-INF/xml/web.xml" filtering="true" overwrite="true">
+        <copy todir="${working.dir}/caintegrator-war/WEB-INF" file="${working.dir}/caintegrator-war/WEB-INF/xml/web.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="git.caintegrator.version" value="${git.caintegrator.version}" />
                 <filter token="git.url" value="${git.url}"/>
@@ -578,8 +578,8 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             </filterset>
         </copy>
 
-        <copy file="${working.dir}/caintegrator2-war/WEB-INF/xml/application-config-cas-security.xml"
-            todir="${working.dir}/caintegrator2-war/WEB-INF/classes" filtering="true" overwrite="true">
+        <copy file="${working.dir}/caintegrator-war/WEB-INF/xml/application-config-cas-security.xml"
+            todir="${working.dir}/caintegrator-war/WEB-INF/classes" filtering="true" overwrite="true">
             <filterset>
                 <filter token="cas.server.hostname" value="${cas.server.hostname}" />
                 <filter token="cas.server.port" value="${cas.server.port}"/>
@@ -590,8 +590,8 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             </filterset>
         </copy>
         
-        <copy file="${working.dir}/caintegrator2-war/WEB-INF/classes/caintegrator2-config.xml" 
-            todir="${working.dir}/caintegrator2-war/WEB-INF/classes" filtering="true" overwrite="true">
+        <copy file="${working.dir}/caintegrator-war/WEB-INF/classes/caintegrator-config.xml" 
+            todir="${working.dir}/caintegrator-war/WEB-INF/classes" filtering="true" overwrite="true">
             <filterset>
                 <filter token="single.sign.on.install" value="${single.sign.on.install}"/>
             </filterset>
@@ -601,12 +601,12 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         <if>
             <equals arg1="${single.sign.on.install}" arg2="true" />
             <then>
-                <xmltask source="${working.dir}/caintegrator2-war/WEB-INF/web.xml" dest="${working.dir}/caintegrator2-war/WEB-INF/web.xml">
+                <xmltask source="${working.dir}/caintegrator-war/WEB-INF/web.xml" dest="${working.dir}/caintegrator-war/WEB-INF/web.xml">
                     <uncomment path="//:context-param[:param-name/text()='contextConfigLocation']/:param-value/comment()[2]"/>
                 </xmltask>
             </then>
             <else>
-                <xmltask source="${working.dir}/caintegrator2-war/WEB-INF/web.xml" dest="${working.dir}/caintegrator2-war/WEB-INF/web.xml">
+                <xmltask source="${working.dir}/caintegrator-war/WEB-INF/web.xml" dest="${working.dir}/caintegrator-war/WEB-INF/web.xml">
                     <uncomment path="//:context-param[:param-name/text()='contextConfigLocation']/:param-value/comment()[4]"/>
                     <remove path="//:context-param[:param-name/text()='ssoEnabled']"/>
                     <remove path="//:context-param[:param-name/text()='casServerLogoutUrl']"/>
@@ -614,9 +614,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             </else>
         </if>
 
-        <move file="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" tofile="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}.orig"/>
-        <war destfile="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" compress="false" webxml="${working.dir}/caintegrator2-war/WEB-INF/web.xml" >
-            <fileset dir="${working.dir}/caintegrator2-war">
+        <move file="${caintegrator-war.dir.dist}/${caintegrator-war.war.file}" tofile="${caintegrator-war.dir.dist}/${caintegrator-war.war.file}.orig"/>
+        <war destfile="${caintegrator-war.dir.dist}/${caintegrator-war.war.file}" compress="false" webxml="${working.dir}/caintegrator-war/WEB-INF/web.xml" >
+            <fileset dir="${working.dir}/caintegrator-war">
                 <include name="*/**" />
             </fileset>
         </war>
@@ -649,9 +649,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         install:jboss:clean,
         install:jboss:binaries,
         install:jboss:configure,
-        install:jboss:caintegrator2-war:re-configure,
-        install:jboss:caintegrator2-war,
-        install:jboss:caintegrator2-war:configure,
+        install:jboss:caintegrator-war:re-configure,
+        install:jboss:caintegrator-war,
+        install:jboss:caintegrator-war:configure,
         upgrade:post:jboss,
         install:post:jboss,
         install:jboss:start,
@@ -699,9 +699,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         install:jboss:stop,
         install:jboss:validation:pre-install:ports,
         install:jboss:configure,
-        install:jboss:caintegrator2-war:re-configure,
-        install:jboss:caintegrator2-war,
-        install:jboss:caintegrator2-war:configure,
+        install:jboss:caintegrator-war:re-configure,
+        install:jboss:caintegrator-war,
+        install:jboss:caintegrator-war:configure,
         upgrade:post:jboss,
         install:post:jboss,
         install:jboss:start,
@@ -748,9 +748,9 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         install:common:validation:pre-install,
         install:jboss:stop,
         install:jboss:validation:pre-install:ports,
-        install:jboss:caintegrator2-war:re-configure,
-        install:jboss:caintegrator2-war,
-        install:jboss:caintegrator2-war:configure,
+        install:jboss:caintegrator-war:re-configure,
+        install:jboss:caintegrator-war,
+        install:jboss:caintegrator-war:configure,
         upgrade:post:jboss,
         install:post:jboss,
         install:jboss:start,
@@ -949,7 +949,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             />
         <jboss-read-dbconfig
             jboss.home="${read.jboss.home}"
-            jboss.ds-xml.file="caintegrator2-mysql-ds.xml"
+            jboss.ds-xml.file="caintegrator-mysql-ds.xml"
             />
     </target>
     <target name="upgrade:jboss:readers:bda" if="jboss.exists">
@@ -970,7 +970,7 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
         <!-- Begin JBoss Readers -->
         <var name="read.properties.list" value=""/>
         <!-- Reader reqiures that you have only one data source defined in each *-ds.xml file -->
-        <jboss-read-dbconfig jboss.ds-xml.file="caintegrator2-mysql-ds.xml" />
+        <jboss-read-dbconfig jboss.ds-xml.file="caintegrator-mysql-ds.xml" />
         <jboss-read-ldapconfig />
         <jboss-read-bindings-file-location />
         <jboss51-read-ports />

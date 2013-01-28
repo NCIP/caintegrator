@@ -15,7 +15,7 @@ Guide to this file:
 <userInput>
 	<panel order="0">
 		<field type="title" txt="Install or Upgrade software" bold="true" size="1" />
-		<field type="staticText" align="left" txt="Choose Install if you haven't installed caIntegrator2 on this machine before. Choose Upgrade if caIntegrator2 has previously been installed. WARNING: When choosing Install, the installer will remove any previously installed application servers (using caBIG installers) or databases installed based on the information you provide, so be sure to backup your application server and database instance if they exist. For detailed descriptions on each of the properties in this installer, see https://wiki.nci.nih.gov/x/NAUuAQ"/>
+		<field type="staticText" align="left" txt="Choose Install if you haven't installed caIntegrator on this machine before. Choose Upgrade if caIntegrator has previously been installed. WARNING: When choosing Install, the installer will remove any previously installed application servers (using caBIG installers) or databases installed based on the information you provide, so be sure to backup your application server and database instance if they exist. For detailed descriptions on each of the properties in this installer, see https://wiki.nci.nih.gov/x/NAUuAQ"/>
 		<field type="divider" align="top"/>
 		<field type="radio" variable="setup.type">
 			<description align="left" txt="Choose a new Install or Upgrade an existing installation"/>
@@ -51,17 +51,13 @@ Guide to this file:
 		<field type="staticText" align="left" txt="Select the locations of the existing components that are installed. These values will be used to read the existing configuration of the components and pre-populate the following screens with the values from the existing install.  New properties that are part of this installation will have default values."/>
 		<field type="divider" align="top"/>
 		<field type="dir" variable="UserPathPanelVariable">
-			<spec txt="Application Root Directory:" size="25" set="c:/apps/caintegrator2"/>
+			<spec txt="Application Root Directory:" size="25" set="c:/apps/caintegrator"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Application Root Directory is a required field" />
 		</field>
 		<field type="dir" variable="jboss.home">
-			<spec txt="JBoss Home:" size="25" set="c:/apps/caintegrator2/${jboss.binaries.relative.dir}"/>
+			<spec txt="JBoss Home:" size="25" set="c:/apps/caintegrator/${jboss.binaries.relative.dir}"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="JBoss Home is a required field" />
 		</field>
-		<!-- <field type="dir" variable="tomcat.home">
-			<spec txt="Tomcat Home:" size="25" set="c:/apps/caintegrator2/${tomcat.binaries.relative.dir}"/>
-			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Tomcat Home is a required field" />
-		</field> -->
 		<field type="text" variable="jboss.server.name">
 			<spec txt="JBoss Server name:" size="15" set="default"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="JBoss Server Name is a required field" />
@@ -1067,7 +1063,7 @@ Guide to this file:
 		<field type="space"/>
 		<field type="staticText" align="left" txt="JBoss Server Port [${jboss.server.port}] - This is the HTTP port for JBoss.  If you want to make this Application avaliable from the internet you may need to provide this to your network administrator."/>
 		<field type="space"/>
-		<field type="staticText" align="left" txt="JBoss URL [http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2] - This will be the url to reach your application when the install is finished."/>
+		<field type="staticText" align="left" txt="JBoss URL [http://${jboss.server.hostname}:${jboss.server.port}/caintegrator] - This will be the url to reach your application when the install is finished."/>
 		<field type="space"/>
 		<field type="staticText" align="left" txt="JBoss Log Dir [${UserPathPanelVariable}/${jboss.binaries.relative.dir}/server/${jboss.server.name}] - This is where the logs can be found."/>
 

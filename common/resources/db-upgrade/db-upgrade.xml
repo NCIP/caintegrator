@@ -522,4 +522,8 @@
             DROP PROCEDURE IF EXISTS assignCai2AdminGroups;
         </sql>
     </changeSet>
+    <changeSet id="application-rename" author="aevansel">
+        <comment>Renaming the application from caintegrator2 to caintegrator.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/application-rename.sql"/>
+    </changeSet>
 </databaseChangeLog>

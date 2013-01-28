@@ -69,10 +69,6 @@
         depends="cbs-to-heatmap.jar"
         description="Compiles all production source code and assembles artifacts." />
 
-    <!-- ******************************************************************* -->
-    <!-- ** CAINTEGRATOR2.WAR                                             ** -->
-    <!-- ******************************************************************* -->
-
     <property name="cbs-to-heatmap.jar.dir" location="${software.dir}/cbs-to-heatmap-jar" />
     <property name="cbs-to-heatmap.jar.java.src.dir" location="${cbs-to-heatmap.jar.dir}/src" />
     <property name="cbs-to-heatmap.jar.resources.src.dir" location="${cbs-to-heatmap.jar.dir}/resources" />

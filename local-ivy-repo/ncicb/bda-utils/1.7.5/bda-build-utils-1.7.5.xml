@@ -3156,12 +3156,12 @@
 				<isset property="sso.properties.missing"/>
 				<then>
 					<echo message="Reading SSO properties ${sso.properties.list}"/>
-			        <unzip src="@{jboss.home}/server/@{jboss.server.name}/deploy/${caintegrator2-war.war.file}" dest="${working.dir}/caintegrator2-war"/>
+			        <unzip src="@{jboss.home}/server/@{jboss.server.name}/deploy/${caintegrator-war.war.file}" dest="${working.dir}/caintegrator-war"/>
 
-					<xmltask preservetype="true" source="${working.dir}/caintegrator2-war/WEB-INF/web.xml" >
+					<xmltask preservetype="true" source="${working.dir}/caintegrator-war/WEB-INF/web.xml" >
 						<xmlcatalog refid="bda.xml.catalog"/>
 						<copy path="//:context-param[:param-name/text()='ssoEnabled']/:param-value/text()" property="single.sign.on.install" />
-						<copy path="//:context-param[:param-name/text()='caintegrator2Version']/:param-value/text()" property="caintegrator2.version" />
+						<copy path="//:context-param[:param-name/text()='caintegrator2Version']/:param-value/text()" property="caintegrator.version" />
 						<copy path="//:context-param[:param-name/text()='svnUrl']/:param-value/text()" property="svn.info.url" />
 						<copy path="//:context-param[:param-name/text()='svnRevision']/:param-value/text()" property="svn.info.rev" />
 						<copy path="//:context-param[:param-name/text()='caintegrator2Svntag']/:param-value/text()" property="caintegrator2.svntag" />
@@ -3171,7 +3171,7 @@
                         <equals arg1="${single.sign.on.install}" arg2="true"/>
                         <then>
                         	<echo message="Reading SSO config properties"/>
-                            <xmltask preservetype="true" source="${working.dir}/caintegrator2-war/WEB-INF/classes/application-config-cas-security.xml" >
+                            <xmltask preservetype="true" source="${working.dir}/caintegrator-war/WEB-INF/classes/application-config-cas-security.xml" >
                                 <xmlcatalog refid="bda.xml.catalog"/>
                                 <copy path="//bean[@id='authenticationProvider']/property[@name='key']/value/text()"
                                     property="cas.ticket.key"/>
@@ -3201,7 +3201,7 @@
                         </else>
                     </if>
 
-			        <delete dir="${working.dir}/caintegrator2-war"/>
+			        <delete dir="${working.dir}/caintegrator-war"/>
 				</then>
 				<else>
 					<var name="authentication.type" value="db"/>

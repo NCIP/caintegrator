@@ -1,0 +1,182 @@
+<ivy-module version="1.0">
+  <info organisation="ncicb"
+        module="caintegrator"/>
+
+  <configurations>
+    <conf name="master" />
+    <conf name="runtime" />
+    <conf name="compile" extends="runtime" />
+    <conf name="test" />
+    <conf name="test-pmd"  />
+    <conf name="test-selenium" />
+    <conf name="test-junit" />
+    <conf name="test-acceptance" />
+    <conf name="test-cobertura" />
+    <conf name="test-javancss" />
+    <conf name="test-checkstyle" />
+    <conf name="test-findbugs" />
+    <conf name="test-simian" />
+    <conf name="test-integration" />
+  </configurations>
+
+  <publications></publications>
+
+  <dependencies>
+    <dependency org="org.seleniumhq.selenium.server" name="selenium-server" rev="1.0.3" conf="test-selenium->default">
+     <artifact name="selenium-server" type="jar" url="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/org/seleniumhq/selenium/server/selenium-server/1.0.3/selenium-server-1.0.3-standalone.jar"/>
+    </dependency>
+    <dependency org="junit" name="junit" rev="4.10" conf="test-junit,test-pmd->master"/>
+    <dependency org="javassist" name="javassist" rev="3.9.0.GA" conf="test-junit->default"/>
+    <dependency org="org.mockito" name="mockito-all" rev="1.9.0" conf="test-junit->default"/>
+    <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9" conf="test-cobertura->master"/>
+    <dependency org="log4j" name="log4j" rev="1.2.9" conf="runtime,test-cobertura->master"/>
+    <dependency org="javancss" name="javancss" rev="29.50" conf="test-javancss->master"/>
+    <dependency org="javancss" name="ccl" rev="29.50" conf="test-javancss->master"/>
+    <dependency org="com.puppycrawl.tools" name="checkstyle" rev="5.2" conf="test-checkstyle->master"/>
+    <dependency org="commons-beanutils" name="commons-beanutils-core" rev="1.8.3" conf="test-checkstyle->master"/>
+    <dependency org="commons-cli" name="commons-cli" rev="1.2" conf="test-checkstyle->master"/>
+    <dependency org="redhill" name="simian" rev="2.2.4" conf="test-simian->master"/>
+    <dependency org="pmd" name="pmd" rev="4.2.5" conf="test-pmd->master"/>
+    <dependency org="fitlibrary" name="fitrunner" rev="1.0" conf="test-acceptance->master"/>
+    <dependency org="antfit" name="antfit" rev="1.0" conf="test-acceptance->master"/>
+    <dependency org="jaxen" name="jaxen" rev="1.1.1" conf="test-pmd->master" />
+    <dependency org="asm" name="asm" rev="3.1" conf="test-pmd->master"/>
+    <dependency org="asm" name="asm" rev="2.2.1" conf="test-cobertura->master"/>
+    <dependency org="asm" name="asm-tree" rev="2.2.1" conf="test-cobertura->master"/>
+    
+    <dependency org="junit" name="junit" rev="4.4" conf="test-integration->master"/>
+
+    <!-- Runtime items that exist in WEB-INF/lib for war runtime -->
+
+    <!-- These are created by TJ -->
+    <dependency org="concurrent" name="concurrent" rev="1.3.4" conf="compile->master"/>
+    <dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7" conf="runtime->master" transitive="false"/>
+    <dependency org="commons-fileupload" name="commons-fileupload" rev="1.2.1" conf="runtime->master"/>
+    <dependency org="commons-codec" name="commons-codec" rev="1.3" conf="runtime->master"/>
+    <dependency org="commons-configuration" name="commons-configuration" rev="1.5" conf="runtime->master"/>
+    <dependency org="org.apache.commons" name="commons-lang3" rev="3.1" conf="runtime->master"/>
+    <dependency org="commons-math" name="commons-math" rev="1.2" conf="runtime->master"/>
+    <dependency org="commons-io" name="commons-io" rev="1.4" conf="runtime->master"/>
+    <dependency org="jboss" name="jbossall-client" rev="4.0.5.GA" conf="compile->master"/>
+    <dependency org="jboss" name="jboss-ejb3x" rev="4.0.5.GA" conf="runtime->master"/>
+    <dependency org="jboss" name="jboss-aop-client" rev="1.5.2.GA" conf="compile->master"/>
+    <dependency org="jboss" name="jboss-ejb3" rev="4.0.5.GAnci" conf="runtime->master"/>
+    <dependency org="jboss" name="jboss-aspect-client" rev="1.5" conf="compile,runtime->master"/>
+    <dependency org="gov.nih.nci.caintegrator2" name="freestylesearch" rev="4.0" conf="runtime->master"/>
+    <dependency org="gov.nih.nci.caintegrator2" name="caDSR-beans" rev="4.0" conf="compile,runtime->master"/>
+    <dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.0.0.ga" conf="compile->master"/>
+    <dependency org="org.hibernate" name="hibernate-tools" rev="3.2.3.GA" conf="compile->master"/>
+    <dependency org="org.hibernate" name="hibernate-validator" rev="3.0.0.ga" conf="runtime->master"/>
+    <dependency org="org.hibernate" name="hibernate-search" rev="3.1.0.GA" conf="compile->master"/>
+    <dependency org="bouncycastle" name="bcprov-jdk15" rev="140" conf="compile,runtime->master"/>
+    <dependency org="ucar" name="nccore" rev="4.0.34" conf="runtime->master"/>
+    <dependency org="net.sf.opencsv" name="opencsv" rev="1.8" conf="runtime->master"/>
+    <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.4.7" conf="runtime->master"/>
+    <dependency org="cglib" name="cglib" rev="2.1_3" conf="runtime->default" transitive="false"/>
+    <dependency org="dom4j" name="dom4j" rev="1.6" conf="runtime->master"/>
+    <dependency org="ognl" name="ognl" rev="3.0.5" conf="runtime->master"/>
+    <dependency org="org.springframework" name="spring" rev="2.5.6" conf="runtime->master"/>
+    <dependency org="org.springframework" name="spring-web" rev="2.5.6" conf="runtime->master"/>
+    <dependency org="org.springframework" name="spring-webmvc" rev="2.5.6" conf="runtime->master"/>
+    <dependency org="org.springframework" name="spring-beans" rev="2.5.6" conf="runtime->master"/>
+    <dependency org="org.springframework" name="spring-context" rev="2.5.6" conf="runtime->master"/>
+    <dependency org="org.springframework" name="spring-test" rev="2.5.6" conf="test-junit->master"/>
+    <dependency org="org.springframework" name="spring-mock" rev="2.0.3" conf="test-junit->master"/>
+    <dependency org="org.apache.santuario" name="xmlsec" rev="1.4.0" conf="compile->default"/>
+    <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.0.6" conf="runtime->master"/>
+    <dependency org="org.apache.tiles" name="tiles-core" rev="2.0.6" conf="runtime->master"/>
+    <dependency org="org.apache.tiles" name="tiles-api" rev="2.0.6" conf="runtime->master"/>
+    <dependency org="org.freemarker" name="freemarker" rev="2.3.19" conf="runtime->master"/>
+    <dependency org="org.apache.struts" name="struts2-core" rev="2.3.1.1" conf="runtime->master"/>
+    <dependency org="org.apache.struts" name="struts2-spring-plugin" rev="2.3.1.1" conf="runtime->master"/>
+    <dependency org="org.apache.struts" name="struts2-tiles-plugin" rev="2.3.1.1" conf="runtime->master"/>
+    <dependency org="org.apache.struts" name="struts2-dojo-plugin" rev="2.3.1.1" conf="runtime->master"/>
+    <dependency org="affymetrix" name="affxfusion" rev="1.1" conf="runtime->master" force="true"/>
+    <dependency org="ivicore" name="ivicore" rev="1.2dev" conf="runtime->master" />
+    <dependency org="genepattern" name="genepattern" rev="3.2.1" conf="runtime->master" />
+    <dependency org="com.google.guava" name="guava" rev="11.0.2" conf="runtime->master" />
+
+    <!-- These exist in the repository -->
+    <dependency org="javax.activation" name="activation" rev="1.1" conf="compile->master"/>
+    <dependency org="javax.mail" name="mail" rev="1.4" conf="compile->master"/>
+    <dependency org="javax.servlet" name="servlet-api" rev="2.4" conf="compile->master"/>
+    <dependency org="javax.servlet" name="jsp-api" rev="2.0" conf="compile->master"/>
+    <dependency org="javax.transaction" name="jta" rev="1.1" conf="runtime->master"/>
+    <dependency org="globus" name="ws-addressing" rev="1.0" conf="runtime->master" transitive="false"/>
+    <dependency org="globus" name="ws-core-client" rev="4.0.3" conf="compile,runtime->master"/>
+    <dependency org="org.globus" name="cog-axis" rev="1.0nci" conf="runtime->master"/>
+    <dependency org="globus" name="jcog" rev="1.2" conf="compile,runtime->master"/>
+    <dependency org="globus" name="ws-enumeration" rev="4.0.3" conf="runtime->master"/>
+    <dependency org="wss4j" name="wss4j" rev="1.5.1" conf="runtime->master"/>
+    <dependency org="antlr" name="antlr" rev="2.7.7" conf="runtime,test-checkstyle->master"/>
+    <dependency org="asm" name="asm" rev="1.5.3" conf="runtime->master"/>
+    <dependency org="asm" name="asm-attrs" rev="1.5.3" conf="runtime->master"/>
+    <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" conf="compile->master"/>
+    <dependency org="globus" name="axis" rev="1.2RC2" conf="runtime->master"/>
+    <dependency org="javax.xml.bind" name="jaxb-api" rev="2.1" conf="runtime->master"/>
+    <dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.1.4" conf="runtime->master"/>
+    <dependency org="com.sun.xml.bind" name="jaxb-xjc" rev="2.1.4" conf="runtime->master"/>
+
+    <dependency org="xalan" name="xalan" rev="2.7.0" conf="compile->master"/>
+    <dependency org="xerces" name="xercesImpl" rev="2.6.2" conf="compile->master"/>
+    <dependency org="c3p0" name="c3p0" rev="0.9.1" conf="runtime->master"/>
+    <dependency org="org.codehaus.castor" name="castor" rev="1.0.4" conf="runtime->master"/>
+    <dependency org="csmapi" name="csmapi" rev="4.2" conf="runtime->master"/>
+    <dependency org="ncicb" name="nci-commons-core" rev="1.2.18" conf="runtime->master"/>
+    <dependency org="org.hibernate" name="ejb3-persistence" rev="1.0.1.GA" conf="runtime->default"/>
+    <dependency org="org.hibernate" name="hibernate-annotations" rev="3.2.0.ga" conf="runtime->master"/>
+    <dependency org="org.hibernate" name="hibernate" rev="3.2.0.ga" conf="runtime->master"/>
+    <dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="compile->master"/>
+    <dependency org="com.google.collections" name="google-collections" rev="1.0" conf="runtime,test-checkstyle->default"/>
+    <dependency org="commons-collections" name="commons-collections" rev="3.2" conf="runtime,test-checkstyle->master"/>
+    <dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="compile,test-checkstyle->master"/>
+    <dependency org="commons-discovery" name="commons-discovery" rev="0.4" conf="runtime->master"/>
+    <dependency org="commons-httpclient" name="commons-httpclient" rev="3.0" conf="compile,runtime->master"/>
+    <dependency org="oro" name="oro" rev="2.0.8" conf="runtime,test-cobertura->master"/>
+    <dependency org="gov.nih.nci.security" name="clm" rev="4.2.beta_jboss51" transitive="false" conf="compile,runtime->default">
+        <artifact name="clm" type="jar" url="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/gov/nih/nci/security/clm/4.2.beta_jboss51/clm-4.2.beta_jboss51-fix.jar" />
+    </dependency>
+    <dependency org="com.oracle" name="ojdbc14" rev="10.2.0.3.0" conf="runtime->master"/>
+    <dependency org="displaytag" name="displaytag" rev="1.2" conf="runtime->master"/>
+    <dependency org="javax.xml" name="jaxrpc-api" rev="1.1" conf="runtime->master"/>
+    <dependency org="jdom" name="jdom" rev="1.0" conf="runtime->master"/>
+    <dependency org="jfree" name="jcommon" rev="1.0.12" conf="runtime->master"/>
+    <dependency org="weka" name="weka" rev="3.4.13" conf="runtime"/>
+    <dependency org="org.directwebremoting" name="dwr" rev="2.0.6" conf="runtime->master" />
+    <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" conf="runtime->master" />
+    
+    <!-- caGrid 1.4 stuff -->
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-data-utils" rev="1.4" conf="runtime->default" />
+    <dependency org="cagrid" name="cagrid-data-stubs" rev="1.4" conf="runtime->master" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-transfer-client" rev="1.4" conf="runtime->default" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-transfer-stubs" rev="1.4" conf="runtime->default" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-transfer-common" rev="1.4" conf="runtime->default" />
+    <dependency org="cagrid" name="cagrid-sdkquery4-processor" rev="1.4" conf="runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-discovery" rev="1.4" conf="runtime->default" transitive="false"/>
+    <dependency org="cagrid" name="cagrid-metadatautils" rev="1.4" conf="runtime->default" transitive="false" />
+    <dependency org="cagrid" name="cagrid-metadata-data" rev="1.4" conf="compile,runtime->default" transitive="false" />
+    <dependency org="cagrid" name="cagrid-metadata-common" rev="1.4" conf="compile,runtime->default" transitive="false" />
+    <dependency org="cagrid" name="cagrid-metadata-security" rev="1.4" conf="compile,runtime->default" transitive="false" />
+    <dependency org="cagrid" name="cagrid-gts-client" rev="1.4" conf="runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-service-security-provider-client" rev="1.4" conf="compile,runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-service-security-provider-common" rev="1.4" conf="compile,runtime->master" transitive="false" />
+    <dependency org="gov.nih.nci.cagrid" name="cagrid-service-security-provider-stubs" rev="1.4" conf="runtime->master" transitive="false" />
+    <!--  Keeping the one bulk data transfer jar version 1.2 as it doesn't exist in 1.4 -->
+    <dependency org="gov.nih.nci.cagrid" name="bulkdatatransfer-stubs" rev="1.2" conf="runtime->master" transitive="false" />
+    <dependency org="cagrid" name="cagrid-core" rev="1.4" conf="compile,runtime->default" />
+    <dependency org="cryptix" name="cryptix" rev="1.2nci" conf="runtime->master" />
+    <dependency org="cryptix" name="cryptix-asn1" rev="0.1.11nci" conf="runtime->master" />
+    <dependency org="cryptix" name="cryptix" rev="3.2.0" conf="runtime->master" />
+    <dependency org="globus" name="puretls" rev="4.0.3" conf="runtime->master" />
+    
+
+    <!-- quartz 1.5.2 scheduler -->
+    <dependency org="opensymphony" name="quartz" rev="1.6.1" conf="runtime->master" />
+    <dependency org="org.apache.struts.xwork" name="xwork-core" rev="2.3.1.1" conf="runtime->master" />
+
+    <!-- CAS Client -->
+    <dependency org="cas" name="casclient" rev="2.1.1" conf="runtime->master"/>
+
+  </dependencies>
+
+</ivy-module>

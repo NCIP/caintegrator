@@ -1,1 +1,1 @@
-${APPLICATIONS_DEFAULT_ROOT}/apps/caintegrator2
+${APPLICATIONS_DEFAULT_ROOT}/apps/caintegrator

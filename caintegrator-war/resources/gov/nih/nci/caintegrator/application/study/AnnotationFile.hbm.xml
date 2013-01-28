@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.application.study">
+	<class name="AnnotationFile" table="ANNOTATION_FILE" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+        
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		
+        <property name="path" type="string" column="PATH"/>
+        <property name="currentlyLoaded" type="string" column="CURRENTLY_LOADED"/>
+        <list name="columns" lazy="true" cascade="all">
+            <cache usage="read-write" />
+            <key column="ANNOTATION_FILE_ID" />
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator.application.study.FileColumn"/>
+        </list>
+  	</class>
+</hibernate-mapping>

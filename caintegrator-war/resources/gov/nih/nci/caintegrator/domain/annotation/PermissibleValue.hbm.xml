@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.annotation">
+	<class name="PermissibleValue" table="PERMISSIBLE_VALUE" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<property name="value" type="string" column="VALUE"/>
+		<property name="valueMeaning" type="string" column="VALUE_MEANING"/>
+		<property name="valueMeaningId" type="string" column="VALUE_MEANING_ID"/>
+		<property name="valueMeaningVersion" type="string" column="VALUE_MEANING_VERSION"/>
+	</class>
+</hibernate-mapping>

@@ -1,9 +1,9 @@
 
 
-Product Name:  caIntegrator2
+Product Name:  caIntegrator
 ---------------
 
-For release notes, installation instructions and project information, please refer to the caIntegrator2 project WIKI at https://wiki.nci.nih.gov/x/9YMOAQ .
+For release notes, installation instructions and project information, please refer to the caIntegrator project WIKI at https://wiki.nci.nih.gov/x/9YMOAQ .
 
 
 Produced by: The NCI Center for Bioinformatics

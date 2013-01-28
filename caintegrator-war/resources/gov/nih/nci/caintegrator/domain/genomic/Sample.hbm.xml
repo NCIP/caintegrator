@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.genomic">
+    <class name="Sample" table="SAMPLE" lazy="false" polymorphism="explicit">
+        <cache usage="read-write" />
+        <id name="id" type="long" column="ID">
+            <generator class="native" />
+        </id>
+        <!-- Attributes mapping for the Sample class -->
+        <property name="name" type="string" column="NAME"/>
+        <property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
+        
+        <!-- Associations mapping for the Sample class -->
+        <set name="sampleAcquisitions" lazy="true" cascade="all-delete-orphan">
+            <cache usage="read-write"/>
+            <key column="SAMPLE_ID"/>
+            <one-to-many class="gov.nih.nci.caintegrator.domain.genomic.SampleAcquisition"/>    
+        </set>
+        
+        <many-to-one name="genomicDataSource" 
+            class="gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration" 
+            column="GENOMIC_DATA_SOURCE_CONFIGURATION_ID" 
+            insert="false" 
+            update="false" />
+        <set name="arrayCollection" table="MICROARRAY_SAMPLES" lazy="true" cascade="all-delete-orphan" >
+            <cache usage="read-write" />
+            <key column="SAMPLE_ID" />
+            <many-to-many class="gov.nih.nci.caintegrator.domain.genomic.Array" column="MICROARRAY_ID" />
+        </set>
+        <set name="arrayDataCollection" lazy="true" cascade="all" inverse="true">
+            <cache usage="read-write" />
+            <key column="SAMPLE_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator.domain.genomic.ArrayData"/>
+        </set>
+        
+        <set name="reportersHighVariance" table="SAMPLE_REPORTERS_HIGH_VARIANCE" lazy="true" cascade="save-update,merge" >
+            <cache usage="read-write" />
+            <key column="SAMPLE_ID" />
+            <many-to-many class="AbstractReporter" column="ABSTRACT_REPORTER_ID" />
+        </set>
+    </class>
+</hibernate-mapping>

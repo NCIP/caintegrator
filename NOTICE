@@ -1,4 +1,4 @@
-caIntegrator2
+caIntegrator
 Copyright (c) 2001, 5AM Solutions Inc, ESAC, ScenPro, SAIC
 
 This project is distributed under the BSD 3-Clauses License.
@@ -6,6 +6,6 @@ Please see LICENSE file for details.
 
 This project was developed as part of the NCI CBITT initiative.
 
-In 2013, as part of NCI's Open Source Development Initiative (OSDI), caIntegrator2
+In 2013, as part of NCI's Open Source Development Initiative (OSDI), caIntegrator
 was migrated to a more open environment and pursued a larger community of
 contributors.

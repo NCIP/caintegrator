@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.genomic">
+
+    <!-- Create typedef's for the enums -->
+    <typedef name="Status" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator.application.study.Status</param> 
+    </typedef> 
+    
+    <typedef name="PlatformType" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator.application.arraydata.PlatformTypeEnum</param> 
+    </typedef>
+    <typedef name="PlatformChannelType" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator.application.arraydata.PlatformChannelTypeEnum</param> 
+    </typedef>
+
+	<class name="PlatformConfiguration" table="PLATFORM_CONFIGURATION" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the Platform class -->
+		<property name="name" type="string" column="NAME"/>
+		<property name="status" type="Status" column="STATUS"/>
+        <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
+        <property name="deploymentStartDate" type="java.util.Date" column="DEPLOYMENT_START_DATE"/>
+        <property name="deploymentFinishDate" type="java.util.Date" column="DEPLOYMENT_FINISH_DATE"/>
+        <many-to-one name="platform" class="Platform" column="PLATFORM_ID"
+            unique="true" lazy="proxy" cascade="all" />
+        <property name="platformType" type="PlatformType" column="PLATFORM_TYPE"/>  
+        <property name="platformChannelType" type="PlatformChannelType" column="PLATFORM_CHANNEL_TYPE"/>  
+	</class>
+</hibernate-mapping>

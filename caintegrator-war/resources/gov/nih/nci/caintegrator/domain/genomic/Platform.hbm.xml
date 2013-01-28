@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.genomic">
+
+    <!-- Create typedef's for the enums -->
+    <typedef name="Vendor" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum</param> 
+    </typedef> 
+
+	<class name="Platform" table="PLATFORM" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the Platform class -->
+		<property name="name" type="string" column="NAME"/>
+        <property name="version" type="string" column="VERSION"/>
+        <property name="vendor" type="Vendor" column="VENDOR"/>
+		<!-- Associations mapping for the Platform class -->
+		<set name="reporterListsInternal" lazy="true" sort="natural" cascade="all" >
+			<cache usage="read-write" />
+			<key column="PLATFORM_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator.domain.genomic.ReporterList"/>
+		</set>
+        <one-to-one name="platformConfiguration" class="PlatformConfiguration"
+            property-ref="platform"/>
+	</class>
+</hibernate-mapping>

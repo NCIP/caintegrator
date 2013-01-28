@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.domain.application">
+    <typedef name="SortTypeEnum" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator.domain.application.SortTypeEnum</param> 
+    </typedef> 
+    <typedef name="EntityTypeEnum" class="gov.nih.nci.caintegrator.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator.domain.application.EntityTypeEnum</param> 
+    </typedef> 
+	<class name="ResultColumn" table="RESULT_COLUMN" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the ResultColumn class -->
+		<property name="columnIndex" type="integer" column="COLUMN_INDEX"/>
+		<property name="entityType" type="EntityTypeEnum" column="ENTITY_TYPE"/>
+		<property name="sortOrder" type="integer" column="SORT_ORDER"/>
+		<property name="sortType" type="SortTypeEnum" column="SORT_TYPE"/>
+		<!-- Associations mapping for the ResultColumn class -->
+		<many-to-one name="annotationFieldDescriptor" class="gov.nih.nci.caintegrator.application.study.AnnotationFieldDescriptor" column="ANNOTATION_FIELD_DESCRIPTOR_ID" lazy="proxy" cascade="none" />
+		<many-to-one name="query" class="Query" column="QUERY_ID" lazy="proxy" cascade="none" />
+        
+	</class>
+</hibernate-mapping>

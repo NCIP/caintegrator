@@ -1,0 +1,1431 @@
+<!-- *********************************************************************** -->
+<!-- ** PROJECT:   caIntegrator                                           ** -->
+<!-- *********************************************************************** -->
+
+<project name="caintegrator" default="continuous-integration" basedir="."
+    xmlns:ivy="antlib:org.apache.ivy.ant"
+    xmlns="antlib:org.apache.tools.ant"
+    xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
+    >
+
+    <!-- ******************************************************************* -->
+    <!-- ** PROPERTIES / PATHS                                            ** -->
+    <!-- ******************************************************************* -->
+
+    <!-- Mainly -->
+    <property name="root.dir" location="${basedir}/../.." />
+    <property name="docs.dir" location="${root.dir}/docs" />
+    <property name="software.dir" location=".." />
+    <property name="master.build.dir" location="${software.dir}/build" />
+    <property name="build.dir" location="${software.dir}/caintegrator-war" />
+    <property name="lib.dir" location="${software.dir}/lib" />
+    <property name="external.runtime.lib.dir" location="${lib.dir}/external-runtime" />
+    <property name="build.lib.dir" location="${software.dir}/lib" />
+    <property name="resource.dir" location="${software.dir}/common" />
+    <property name="target.dir" location="${build.dir}/target" />
+    <property name="common.dir" value="${software.dir}/common"/>
+
+    <property name="cobertura.linecoverage" value="80"/>
+    <property name="cobertura.branchcoverage" value="70"/>
+    <property name="pmd.maxRuleViolations" value="187"/>
+
+    <tstamp>
+      <format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
+    </tstamp>
+    <property name="build.date" value="'${touch.time}'" />
+
+    <!-- Environment properties -->
+    <property environment="env" />
+    <property file="${master.build.dir}/local.properties" />
+    <property file="${build.dir}/local.properties" />
+    <property file="${build.dir}/default.properties" />
+    <property file="${software.dir}/build/project.properties"/>
+    <property file="${envpropertyfile}" />
+
+    <!-- Filtersets -->
+    <filterset id="caintegrator.filterset" onmissingfiltersfile="warn">
+        <filtersfile file="${build.dir}/local.properties" />
+        <filtersfile file="${build.dir}/default.properties" />
+        <filtersfile file="${envpropertyfile}" />
+    </filterset>
+
+    <!-- Report properties -->
+    <property name="reports.dir" value="${software.dir}/target/reports"/>
+    <property name="reports.simian.dir" value="${reports.dir}/simian"/>
+    <property name="reports.pmd.dir" value="${reports.dir}/pmd"/>
+    <property name="reports.checkstyle.dir" value="${reports.dir}/checkstyle"/>
+    <property name="reports.javancss.dir" value="${reports.dir}/javancss"/>
+    <property name="reports.findbugs.dir" value="${reports.dir}/findbugs"/>
+
+    <!-- ******************************************************************* -->
+    <!-- ** BUILD / TASKDEFS                                              ** -->
+    <!-- ******************************************************************* -->
+    <!-- Checkstyle -->
+    <property name="checkstyle.config" location="${resource.dir}/checkstyle/caintegrator2_checks.xml" />
+
+    <!-- BDA -->
+    <property name="bda-utils.dir" location="${software.dir}/target/bda-utils" />
+    <property name="database.driver.file" value="${bda-utils.dir}/mysql-connector-java-5.1.13.jar"/>
+
+    <mkdir dir="${build.lib.dir}" />
+    <ant inheritAll="false" inheritRefs="false" dir="${software.dir}/common/bda-download" antfile="bda-ivy-build.xml" target="retrieve-bda">
+        <property name="bda-utils.dir" location="${bda-utils.dir}" />
+        <property name="lib.dir" location="${build.lib.dir}" />
+        <property name="software.dir" location="${software.dir}" />
+        <property name="bda.local.repo.dir" location="${software.dir}/../../bda-local-ivy-repo" />
+        <property name="bda.version" value="${bda.version}"/>
+    </ant>
+    <import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
+
+    <!-- Cobertura -->
+    <property name="cobertura.dir" location="${reports.dir}/cobertura" />
+    <property name="cobertura.file" location="${cobertura.dir}/cobertura.ser" />
+    <property name="cobertura-functional.file" location="${cobertura.dir}/cobertura-functional.ser" />
+    <property name="cobertura-merged.file" location="${cobertura.dir}/cobertura-merged.ser" />
+
+    <!-- ******************************************************************* -->
+    <!-- ** IVY TARGETS AND DEPENDENCY PATHS                              ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.2.0.jar" />
+    <get src="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/org/apache/ivy/ivy/2.2.0/ivy-2.2.0.jar"
+                        dest="${ivy.jar}" usetimestamp="true"/>
+    <property name="ivy.settings.file" location="${common.dir}/ivysettings.xml" />
+    <property name="ivy.def.file" location="ivy-caintegrator.xml" />
+    <property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
+
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar}" />
+
+    <property name="caintegrator.war.compile.lib.dir" location="${lib.dir}/caintegrator2-compile"/>
+    <property name="caintegrator.war.runtime.lib.dir" location="${lib.dir}/caintegrator2-runtime"/>
+
+    <property name="acceptance.lib.dir" location="${lib.dir}/test-acceptance"/>
+    <property name="checkstyle.lib.dir" location="${lib.dir}/test-checkstyle"/>
+    <property name="cobertura.lib.dir" location="${lib.dir}/test-cobertura"/>
+    <property name="findbugs.lib.dir" location="${lib.dir}/test-findbugs"/>
+    <property name="javancss.lib.dir" location="${lib.dir}/test-javancss"/>
+    <property name="junit.lib.dir" location="${lib.dir}/test-junit"/>
+    <property name="pmd.lib.dir" location="${lib.dir}/test-pmd"/>
+    <property name="selenium.lib.dir" location="${lib.dir}/test-selenium"/>
+    <property name="simian.lib.dir" location="${lib.dir}/test-simian"/>
+    <property name="integration.lib.dir" location="${lib.dir}/test-integration"/>
+
+    <target name="ivy:init">
+        <property name="ivy.dep.file" value="${ivy.def.file}"/>
+        <ivy:settings file="${ivy.settings.file}" />
+    </target>
+
+    <target name="ivy:clean" depends="clean:dependencies" description="Clean">
+        <ivy:settings file="${ivy.settings.file}" />
+        <ivy:cleancache />
+    </target>
+
+    <target name="clean:dependencies">
+        <delete dir="${caintegrator.war.compile.lib.dir}" />
+        <delete dir="${caintegrator.war.runtime.lib.dir}" />
+        <delete dir="${acceptance.lib.dir}" />
+        <delete dir="${checkstyle.lib.dir}" />
+        <delete dir="${cobertura.lib.dir}" />
+        <delete dir="${findbugs.lib.dir}" />
+        <delete dir="${javancss.lib.dir}" />
+        <delete dir="${junit.lib.dir}" />
+        <delete dir="${pmd.lib.dir}" />
+        <delete dir="${selenium.lib.dir}" />
+        <delete dir="${simian.lib.dir}" />
+        <delete dir="${integration.lib.dir}" />
+    </target>
+
+    <target name="ivy:setup" depends="ivy:setup-runtime,
+        ivy:setup-compile,
+        ivy:setup-test,
+        ivy:setup-static-analysis"
+        description="Updates the local ivy repository for all build and test dependencies."/>
+
+    <target name="ivy:setup-runtime" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="runtime" />
+        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="runtime" />
+    </target>
+
+    <target name="ivy:setup-compile" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="compile" />
+        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="compile" />
+    </target>
+
+    <target name="ivy:setup-test" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="test-selenium" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-selenium" />
+        <path id="selenium.classpath">
+            <fileset dir="${selenium.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-junit" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-junit" />
+        <path id="junit.classpath">
+            <fileset dir="${junit.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-integration" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-integration" />
+        <path id="integration.classpath">
+            <fileset dir="${integration.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-cobertura" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-cobertura" />
+        <path id="cobertura.classpath">
+            <fileset dir="${cobertura.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+    </target>
+
+    <target name="ivy:setup-static-analysis" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="test-javancss" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-javancss" />
+        <path id="javancss.classpath">
+            <fileset dir="${lib.dir}/test-javancss">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-checkstyle" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-checkstyle" />
+        <path id="project.test.checkstyle.classpath">
+            <fileset dir="${lib.dir}/test-checkstyle">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-pmd" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-pmd" />
+        <path id="project.test.pmd.classpath">
+            <fileset dir="${lib.dir}/test-pmd">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-simian" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-simian" />
+        <path id="project.test.simian.classpath">
+            <fileset dir="${lib.dir}/test-simian">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+    </target>
+
+
+    <!-- ******************************************************************* -->
+    <!-- ** MAIN TARGETS                                                  ** -->
+    <!-- ******************************************************************* -->
+
+    <target name="continuous-integration"
+        depends="clean,build,static-analysis,test:unit"
+        description="Cleans, builds, checks and tests the codebase. This should be run prior to every commit." />
+
+    <target name="nightly-build"
+        depends="continuous-integration,database:reinitialize,test:integration"
+        description="Builds and deploys caIntegrator and performs the complete suite of tests." />
+
+    <target name="clean"
+        depends="clean:caintegrator.war,
+        clean:dependencies,
+        clean:reports"
+        description="Removes all generated artifacts from the working directory." />
+
+    <target name="build"
+        depends="caintegrator.war"
+        description="Compiles all production source code and assembles artifacts." />
+
+    <target name="database"
+        depends="database:reinitialize"
+        description="Drops any exisisting instance of the caintegrator database; creates and populates a new instance." />
+
+    <target name="test"
+        depends="test:unit,test:integration"
+        description="Executes all unit and functional tests." />
+
+    <target name="deploy"
+        depends="deploy:jboss"
+        description="Deploys the caIntegrator application to JBoss." />
+
+    <target name="static-analysis" description="Performs static analysis"
+        depends="
+        static-analysis:simian,
+        static-analysis:pmd,
+        static-analysis:checkstyle,
+        static-analysis:javancss">
+            <fail if="checkstyle.failure" message="There were Checkstyle failures." />
+    </target>
+    
+    <target name="git:getinfo" description="obtain git revision info" unless="nogit">
+        <exec executable="git" outputproperty="git.url" failifexecutionfails="true" errorproperty="">
+            <arg value="config"/>
+            <arg value="--get"/>
+            <arg value="remote.origin.url"/>
+        </exec>
+        <exec executable="git" outputproperty="git.caintegrator.version" failifexecutionfails="true" errorproperty="">
+            <arg value="rev-parse"/>
+            <arg value="--abbrev-ref"/>
+            <arg value="HEAD"/>
+        </exec>
+        <exec executable="git" outputproperty="git.revision" failifexecutionfails="true" errorproperty="">
+            <arg value="show"/>
+            <arg value="-s"/>
+            <arg value="--format=%h"/>
+         </exec>
+         <echo message="found git info: ${git.url} ${git.revision} ${git.caintegrator.version}" />
+    </target>
+
+    <target name="cleanbdautil" description="prepare for info and delete bda util">
+        <delete includeEmptyDirs="true">
+          <fileset dir="${user.home}/.ivy2-bda-utils" includes="**/*" />
+        </delete>
+    </target>
+
+
+
+    <!-- ******************************************************************* -->
+    <!-- ** EXTERNAL DEPENDENCY PROPERTIES                                ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="genepattern-service.jar.dir" location="${software.dir}/genepattern-service-jar" />
+    <property name="genepattern-service.jar.target.dir" location="${genepattern-service.jar.dir}/target" />
+    <property name="genepattern-service.jar" location="${genepattern-service.jar.target.dir}/genepattern-service.jar" />
+    <property name="genepattern-service.jar.compile.lib.dir" location="${genepattern-service.jar.dir}/lib/compile"/>
+
+    <property name="kaplan-meier.jar.dir" location="${software.dir}/kaplan-meier-jar" />
+    <property name="kaplan-meier.jar.target.dir" location="${kaplan-meier.jar.dir}/target" />
+    <property name="kaplan-meier.jar" location="${kaplan-meier.jar.target.dir}/kaplan-meier.jar" />
+    <property name="kaplan-meier.jar.compile.lib.dir" location="${kaplan-meier.jar.dir}/lib/compile"/>
+
+    <property name="cbs-to-heatmap.jar.dir" location="${software.dir}/cbs-to-heatmap-jar" />
+    <property name="cbs-to-heatmap.jar.resources.bins.dir" location="${cbs-to-heatmap.jar.dir}/resources/bins" />
+    <property name="cbs-to-heatmap.jar.target.dir" location="${cbs-to-heatmap.jar.dir}/target" />
+    <property name="cbs-to-heatmap.jar" location="${cbs-to-heatmap.jar.target.dir}/cbs-to-heatmap.jar" />
+    <property name="cbs-to-heatmap.jar.compile.lib.dir" location="${cbs-to-heatmap.jar.dir}/lib/compile"/>
+
+
+    <!-- ******************************************************************* -->
+    <!-- ** caintegrator.WAR                                             ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="caintegrator.war.dir" location="${software.dir}/caintegrator-war" />
+    <property name="caintegrator.war.java.src.dir" location="${caintegrator.war.dir}/src" />
+    <property name="caintegrator.war.web.src.dir" location="${caintegrator.war.dir}/web" />
+    <property name="caintegrator.war.test.src.dir" location="${caintegrator.war.dir}/test/src" />
+    <property name="caintegrator.war.resources.test.dir" location="${caintegrator.war.dir}/test/resources" />
+    <property name="caintegrator.war.target.dir" location="${caintegrator.war.dir}/target" />
+    <property name="caintegrator.war.resources.src.dir" location="${caintegrator.war.dir}/resources" />
+    <property name="caintegrator.war.resources.target.dir" location="${caintegrator.war.target.dir}/resources" />
+    <property name="caintegrator.war.java.classes.dir" location="${caintegrator.war.target.dir}/classes" />
+    <property name="caintegrator.war.instrumented.unit.classes.dir" location="${caintegrator.war.target.dir}/instrumented-classes/unit" />
+    <property name="caintegrator.war.instrumented.integration.classes.dir" location="${caintegrator.war.target.dir}/instrumented-classes/integration" />
+    <property name="caintegrator.war.test.classes.dir" location="${caintegrator.war.target.dir}/test-classes" />
+    <property name="caintegrator.war" location="${caintegrator.war.target.dir}/caintegrator.war" />
+    <property name="caintegrator.jar" location="${caintegrator.war.target.dir}/caintegrator.jar" />
+    <property name="caintegrator.xml.dir" location="${caintegrator.war.target.dir}/xml" />
+
+    <target name="path:caintegrator.war.dependencies" depends="ivy:setup-compile">
+        <path id="caintegrator.war.dependencies.path">
+            <pathelement location="${caintegrator.war.java.classes.dir}" />
+            <pathelement location="${genepattern-service.jar}" />
+            <pathelement location="${kaplan-meier.jar}" />
+            <pathelement location="${cbs-to-heatmap.jar}" />
+            <fileset dir="${caintegrator.war.compile.lib.dir}">
+                <include name="*.jar" />
+                <exclude name="log4j*.jar" />
+            </fileset>
+            <fileset dir="${external.runtime.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${genepattern-service.jar.compile.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${kaplan-meier.jar.compile.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${cbs-to-heatmap.jar.compile.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+    </target>
+
+    <target name="path:caintegrator.war.test.dependencies" depends="path:caintegrator.war.dependencies,ivy:setup-test">
+        <path id="caintegrator.war.test.dependencies.path">
+            <pathelement location="${caintegrator.war.test.classes.dir}" />
+            <path refid="caintegrator.war.dependencies.path" />
+            <pathelement location="${caintegrator.war.resources.src.dir}" />
+            <pathelement location="${caintegrator.war.resources.test.dir}" />
+            <path refid="junit.classpath" />
+        </path>
+        <path id="caintegrator.war.integration.dependencies.path">
+            <pathelement location="${caintegrator.war.test.classes.dir}" />
+            <path refid="caintegrator.war.dependencies.path" />
+            <pathelement location="${caintegrator.war.resources.src.dir}" />
+            <pathelement location="${caintegrator.war.resources.test.dir}" />
+            <path refid="junit.classpath" />
+            <path refid="integration.classpath" />
+        </path>
+        <property name="caintegrator.war.test.dependencies.path" refid="caintegrator.war.test.dependencies.path" />
+        <property name="caintegrator.war.integration.dependencies.path" refid="caintegrator.war.integration.dependencies.path" />
+    </target>
+
+    <target name="clean:caintegrator.war">
+        <delete dir="${caintegrator.war.target.dir}" />
+    </target>
+
+    <property name="web-inf.working.dir" location="${caintegrator.war.target.dir}" />
+
+    <target name="caintegrator.war" depends="git:getinfo,ivy:setup-runtime,compile:caintegrator.war,caintegrator.csm.xml.deploy,hibernate.cfg.xml.deploy,struts.properties.deploy">
+        <copy todir="${caintegrator.xml.dir}" file="${caintegrator.war.web.src.dir}/WEB-INF/web.xml" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="caintegrator.version" value="${caintegrator.version}" />
+                <filter token="git.url" value="${git.url}"/>
+                <filter token="git.revision" value="${git.revision}"/>
+                <filter token="git.caintegrator.version" value="${git.caintegrator.version}"/>
+                <filter token="caintegrator.builddate" value="${build.date}"/>
+                <filter token="cas.server.hostname" value="${cas.server.hostname}"/>
+                <filter token="cas.server.post" value="${cas.server.port}"/>
+            </filterset>
+        </copy>
+        <copy todir="${web-inf.working.dir}" file="${caintegrator.war.web.src.dir}/WEB-INF/web.xml" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="caintegrator.version" value="${caintegrator.version}" />
+                <filter token="git.url" value="${git.url}"/>
+                <filter token="git.revision" value="${git.revision}"/>
+                <filter token="git.caintegrator.version" value="${git.caintegrator.version}"/>
+                <filter token="caintegrator.builddate" value="${build.date}"/>
+                <filter token="cas.server.hostname" value="${cas.server.hostname}"/>
+                <filter token="cas.server.post" value="${cas.server.port}"/>
+            </filterset>
+        </copy>
+
+        <if>
+            <equals arg1="${jboss.ssl.enable}" arg2="true"/>
+            <then>
+                <property name="jboss.protocol" value="https"/>
+            </then>
+            <else>
+                <property name="jboss.protocol" value="http"/>
+            </else>
+        </if>
+
+        <copy todir="${caintegrator.xml.dir}" file="${caintegrator.war.resources.src.dir}/application-config-cas-security.xml" overwrite="true"/>
+
+        <copy file="${caintegrator.war.resources.src.dir}/application-config-cas-security.xml"
+            todir="${caintegrator.war.resources.target.dir}" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="cas.server.hostname" value="${cas.server.hostname}" />
+                <filter token="cas.server.port" value="${cas.server.port}"/>
+                <filter token="cas.ticket.key" value="${cas.ticket.key}"/>
+                <filter token="jboss.protocol" value="${jboss.protocol}"/>
+                <filter token="jboss.server.hostname" value="${jboss.server.hostname}"/>
+                <filter token="jboss.server.port" value="${jboss.server.port}"/>
+            </filterset>
+        </copy>
+
+        <copy file="${caintegrator.war.resources.src.dir}/caintegrator-config.xml"
+            todir="${caintegrator.war.resources.target.dir}" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="single.sign.on.install" value="${single.sign.on.install}"/>
+            </filterset>
+        </copy>
+
+        <!-- Uncomment the correct context configuration for CAS SSO or not-->
+        <if>
+            <equals arg1="${single.sign.on.install}" arg2="true" />
+            <then>
+                <xmltask source="${web-inf.working.dir}/web.xml" dest="${web-inf.working.dir}/web.xml">
+                    <uncomment path="//:context-param[:param-name/text()='contextConfigLocation']/:param-value/comment()[2]"/>
+                </xmltask>
+            </then>
+            <else>
+                <xmltask source="${web-inf.working.dir}/web.xml" dest="${web-inf.working.dir}/web.xml">
+                    <uncomment path="//:context-param[:param-name/text()='contextConfigLocation']/:param-value/comment()[4]"/>
+                    <remove path="//:context-param[:param-name/text()='ssoEnabled']"/>
+                    <remove path="//:context-param[:param-name/text()='casServerLogoutUrl']"/>
+                </xmltask>
+            </else>
+        </if>
+
+        <war destfile="${caintegrator.war}" webxml="${web-inf.working.dir}/web.xml" duplicate="preserve">
+            <fileset dir="${caintegrator.war.web.src.dir}">
+                <exclude name="WEB-INF/**" />
+            </fileset>
+            <lib dir="${caintegrator.war.runtime.lib.dir}" includes="*.jar"/>
+            <lib dir="${genepattern-service.jar.target.dir}" includes="*.jar"/>
+            <lib dir="${genepattern-service.jar.compile.lib.dir}" includes="*.jar">
+                <exclude name="activation-*.jar"/>
+            </lib>
+            <lib dir="${kaplan-meier.jar.target.dir}" includes="*.jar"/>
+            <lib dir="${kaplan-meier.jar.compile.lib.dir}" includes="*.jar">
+                <exclude name="log4j*.jar"/>
+            </lib>
+            <lib dir="${cbs-to-heatmap.jar.target.dir}" includes="*.jar"/>
+            <lib dir="${external.runtime.lib.dir}" includes="*.jar"/>
+            <classes dir="${caintegrator.war.java.classes.dir}" />
+            <classes dir="${caintegrator.war.resources.target.dir}"/>
+            <classes dir="${caintegrator.war.resources.src.dir}">
+                <exclude name="*hibernate.cfg.xml" />
+                <exclude name="struts.properties" />
+            </classes>
+            <classes dir="${cbs-to-heatmap.jar.resources.bins.dir}" />
+
+            <webinf dir="${caintegrator.war.resources.src.dir}">
+                <include name="tiles.xml"/>
+            </webinf>
+            <webinf dir="${caintegrator.war.web.src.dir}/WEB-INF">
+                <exclude name="web.xml"/>
+            </webinf>
+            <webinf dir="${caintegrator.war.target.dir}">
+                   <include name="xml/*"/>
+            </webinf>
+        </war>
+    </target>
+
+    <!-- I believe this target is no longer necessary. -->
+    <target name="caintegrator.jar" depends="compile:caintegrator.war,hibernate.cfg.xml.test">
+        <delete file="${caintegrator.jar}"/>
+        <copy file="${hibernate.cfg.xml.test}" tofile="${hibernate.cfg.xml.deploy}" overwrite="true" />
+        <jar destfile="${caintegrator.jar}" basedir="${caintegrator.war.java.classes.dir}" >
+            <fileset dir="${caintegrator.war.resources.src.dir}" excludes="*hibernate.cfg.xml"/>
+        </jar>
+    </target>
+
+    <target name="compile:caintegrator.war" depends="path:caintegrator.war.dependencies">
+        <mkdir dir="${caintegrator.war.java.classes.dir}" />
+        <javac srcdir="${caintegrator.war.java.src.dir}" destdir="${caintegrator.war.java.classes.dir}" classpathref="caintegrator.war.dependencies.path" includeantruntime="false" debug="true" />
+    </target>
+
+    <target name="test:unit:caintegrator.war" depends="test:compile:caintegrator.war.test.classes,test:instrument:unit:caintegrator.war,test:unpack-test-data">
+        <run-junit-tests-increased-memory test.src.dir="${caintegrator.war.test.src.dir}"
+            xml.output.dir="${caintegrator.war.target.dir}/junit"
+            instrumented.classes="${caintegrator.war.instrumented.unit.classes.dir}"
+            classpath="${caintegrator.war.test.dependencies.path}" />
+    </target>
+
+    <target name="test:unpack-test-data">
+        <for param="zipfile">
+            <path>
+                <fileset dir="${caintegrator.war.resources.test.dir}">
+                    <include name="**/*.zip" />
+                    <exclude name="pipelines/*.zip" />
+                </fileset>
+            </path>
+            <sequential>
+                <unzip overwrite="false" src="@{zipfile}" dest="@{zipfile}/.." />
+            </sequential>
+        </for>
+    </target>
+
+    <target name="test:integration:caintegrator.war" depends="test:compile:caintegrator.war.test.classes,
+        test:instrument:integration:caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test,
+        database:reinitialize">
+        <run-integration-junit-tests test.src.dir="${caintegrator.war.test.src.dir}"
+            xml.output.dir="${caintegrator.war.target.dir}/junit"
+            instrumented.classes="${caintegrator.war.instrumented.integration.classes.dir}"
+            classpath="${caintegrator.war.integration.dependencies.path}" />
+    </target>
+
+    <target name="test:integration:master.build" depends="test:compile:caintegrator.war.test.classes,
+        test:instrument:integration:caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test">
+        <run-integration-junit-tests test.src.dir="${caintegrator.war.test.src.dir}"
+            xml.output.dir="${caintegrator.war.target.dir}/junit"
+            instrumented.classes="${caintegrator.war.instrumented.integration.classes.dir}"
+            classpath="${caintegrator.war.integration.dependencies.path}" />
+    </target>
+
+    <target name="test:nondeploy-integration" depends="test:compile:caintegrator.war.test.classes,
+        test:instrument:integration:caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test">
+        <run-nondeploy-integration-junit-tests test.src.dir="${caintegrator.war.test.src.dir}"
+            xml.output.dir="${caintegrator.war.target.dir}/junit"
+            instrumented.classes="${caintegrator.war.instrumented.integration.classes.dir}"
+            classpath="${caintegrator.war.integration.dependencies.path}" />
+    </target>
+
+    <target name="test:instrument:unit:caintegrator.war" depends="compile:caintegrator.war,ivy:setup-test">
+         <cobertura-instrument todir="${caintegrator.war.instrumented.unit.classes.dir}" datafile="${cobertura.file}">
+             <fileset  dir="${caintegrator.war.java.classes.dir}">
+                 <include name="gov/nih/nci/caintegrator/**" />
+                 <!-- Excludes for classes that can only be tested in integration tests -->
+                 <exclude name="gov/nih/nci/caintegrator/data/CaIntegrator2DaoImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator/data/CopyNumberAlterationCriterionConverter.class" />
+                 <exclude name="gov/nih/nci/caintegrator/application/geneexpression/BoxAndWhiskerCoinPlotRenderer.class"/>
+                 <exclude name="gov/nih/nci/caintegrator/application/analysis/CaIntegrator2GPClientImpl.class"/>
+                 <exclude name="gov/nih/nci/caintegrator/external/aim/AIMSearchServiceImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator/external/aim/AIMServiceFactoryImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator/external/ncia/NCIASearchServiceImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator/external/ncia/NCIAServiceFactoryImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator/external/ncia/NCIADicomJobRunnerImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator/external/ncia/NBIAVersionUtil.class" />
+                 <exclude name="gov/nih/nci/caintegrator/application/registration/RegistrationServiceImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator/common/GenericEnumUserType.class" />
+                 <exclude name="gov/nih/nci/caintegrator/common/ConfigurationHelperImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator/common/CaGridUtil.class" />
+                 <exclude name="gov/nih/nci/caintegrator/common/EmailUtil.class" />
+                 <!-- Because the Gene Pattern Grid jobs are grid transfer-based, doing integration tests and not unit -->
+                 <exclude name="gov/nih/nci/caintegrator/application/analysis/grid/GenePatternGridRunnerImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator/application/analysis/grid/pca/PCAGridRunner.class" />
+                 <exclude name="gov/nih/nci/caintegrator/application/analysis/grid/preprocess/PreprocessDatasetGridRunner.class" />
+                 <exclude name="gov/nih/nci/caintegrator/application/analysis/grid/preprocess/PreprocessDatasetParameters.class" />
+                 <exclude name="gov/nih/nci/caintegrator/application/analysis/grid/comparativemarker/ComparativeMarkerSelectionGridRunner.class" />
+                 <exclude name="gov/nih/nci/caintegrator/application/analysis/grid/comparativemarker/ComparativeMarkerSelectionParameters.class" />
+                 <exclude name="gov/nih/nci/caintegrator/application/analysis/grid/gistic/GisticGridRunner.class" />
+                 <exclude name="gov/nih/nci/caintegrator/application/analysis/grid/gistic/GisticParameters.class" />
+                 <exclude name="gov/nih/nci/caintegrator/domain/analysis/MarkerResult.class" />
+                 <exclude name="gov/nih/nci/caintegrator/security/SecurityHelper.class" />
+             </fileset>
+         </cobertura-instrument>
+     </target>
+
+    <target name="test:instrument:integration:caintegrator.war" depends="compile:caintegrator.war,ivy:setup-test">
+         <cobertura-instrument todir="${caintegrator.war.instrumented.integration.classes.dir}" datafile="${cobertura.file}">
+             <fileset dir="${caintegrator.war.java.classes.dir}">
+                 <include name="gov/nih/nci/caintegrator/**" />
+             </fileset>
+         </cobertura-instrument>
+     </target>
+
+    <target name="test:compile:caintegrator.war.test.classes" depends="compile:caintegrator.war,path:caintegrator.war.test.dependencies">
+        <mkdir dir="${caintegrator.war.test.classes.dir}" />
+        <copy todir="${caintegrator.war.test.classes.dir}">
+            <filterset refid="caintegrator.filterset" />
+            <fileset dir="${cbs-to-heatmap.jar.resources.bins.dir}" includes="*.dat" />
+        </copy>
+        <javac srcdir="${caintegrator.war.test.src.dir}" destdir="${caintegrator.war.test.classes.dir}" classpathref="caintegrator.war.test.dependencies.path" includeantruntime="false" debug="true" />
+    </target>
+
+    <property name="struts.properties.src" value="${caintegrator.war.resources.src.dir}/struts.properties" />
+    <property name="struts.properties.deploy" value="${caintegrator.war.java.classes.dir}/struts.properties" />
+
+    <target name="struts.properties.deploy">
+        <copy file="${struts.properties.src}" tofile="${struts.properties.deploy}" overwrite="true">
+            <filterset refid="caintegrator.filterset" />
+        </copy>
+    </target>
+
+
+    <!-- ******************************************************************* -->
+    <!-- ** DATABASE TARGETS                                              ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="caintegratordb.dir" location="${software.dir}/common/resources/db-install/mysql" />
+    <property name="caintegratordb.sql.upgrade.src.dir" location="${software.dir}/common/resources/db-upgrade/mysql" />
+    <property name="caintegratordb.sql.upgrade.target.dir" location="${caintegratordb.sql.upgrade.src.dir}/target/sql" />
+    <property name="caintegratordb.sql.src.dir" location="${caintegratordb.dir}" />
+    <property name="caintegratordb.sql.target.dir" location="${caintegratordb.dir}/target/sql" />
+    <property name="comment.start" value="&lt;!-- " />
+    <property name="comment.end" value=" -->" />
+
+    <target name="database:init-sql">
+        <mkdir dir="${caintegratordb.sql.target.dir}" />
+        <copy todir="${caintegratordb.sql.target.dir}">
+            <filterset refid="caintegrator.filterset" />
+            <fileset dir="${caintegratordb.sql.src.dir}" includes="*.sql" />
+        </copy>
+    </target>
+
+    <target name="database:upgrade" depends="database:init-sql" description="Reload configuration table">
+        <mkdir dir="${caintegratordb.sql.upgrade.target.dir}" />
+        <copy todir="${caintegratordb.sql.upgrade.target.dir}" overwrite="true">
+            <fileset dir="${caintegratordb.sql.upgrade.src.dir}" includes="**/*.sql" />
+        </copy>
+        <!-- "replace" command for grid.index.url -->
+        <replace file="${caintegratordb.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@grid.index.url@" value="${grid.index.url}" />
+        <replace file="${caintegratordb.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@user.admin.email.address.to@" value="${user.admin.email.address.to}" />
+        <replace file="${caintegratordb.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@user.admin.email.address.from@" value="${user.admin.email.address.from}" />
+        <replace file="${caintegratordb.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@upt.url@" value="${upt.url}" />
+        <run-sql-script onerror="continue" sql.file="${caintegratordb.sql.upgrade.target.dir}/db-init-application-properties.sql" />
+    </target>
+
+    <target name="database:drop-tables" depends="database:init-sql" description="Drop caintegrator schema">
+        <run-sql-script onerror="continue" sql.file="${caintegratordb.sql.target.dir}/drop-tables.sql" />
+        <run-sql-script onerror="continue" sql.file="${caintegratordb.sql.target.dir}/drop-csm-tables.sql" />
+    </target>
+
+    <target name="database:create-tables" depends="database:init-sql" description="Create caIntegrator schema">
+        <run-sql-script sql.file="${caintegratordb.sql.target.dir}/create-tables.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.target.dir}/create-csm-tables.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.target.dir}/prime-csm-tables.sql" />
+    </target>
+
+    <target name="database:create-tables-generated" depends="database:generate-sql">
+        <run-sql-script sql.file="${caintegratordb.sql.target.dir}/create-tables-generated.sql" />
+    </target>
+
+    <target name="database:reinitialize-tables" depends="database:drop-tables,database:create-tables" description="Drop &amp; recreate caIntegrator schema" />
+
+    <target name="database:reinitialize" depends="database:init-sql" description="Completely reset caIntegrator by dropping database, recreating, and creating schema, and populating with initial data">
+        <antcall target="database:recreate-database" />
+        <antcall target="database:create-tables" />
+        <antcall target="database:upgrade" />
+        <antcall target="database:run-upgrades" />
+    </target>
+
+    <target name="database:run-upgrades" description="Run upgrade scripts">
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.1.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.2.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.3.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.4.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.4.1.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.5.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.6.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.7.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.8.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.9.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.10.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.11.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.12.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.13.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.14.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.15.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.15.2.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.16.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.17.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.20.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.21.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.22.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.23.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.24.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.25.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.26.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.27.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.28.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.29.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.30.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.31.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.32.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.33.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.34.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/upgrade-1.1.35.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.01.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.02.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.03.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.04.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.05.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.06.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.07.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.08.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.09.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.10.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.11.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.12.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.13.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.14.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.15.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.16.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.17.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.2/upgrade-1.2.18.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.01.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.02.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.03.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.04.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.05.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.06.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.07.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.08.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.09.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.10.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.3/upgrade-1.3.11.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4/upgrade-1.4.1.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4/upgrade-1.4.2.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4/upgrade-1.4.3.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4/upgrade-1.4.4.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4/upgrade-1.4.5.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4/upgrade-1.4.6.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4/upgrade-1.4.7.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4/upgrade-1.4.8.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4/upgrade-1.4.9.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4.1/CAINT-1132.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/application-rename.sql" />
+    </target>
+
+
+        <target name="database:reinitialize-generated" depends="database:init-sql" description="Completely reset caIntegrator by dropping database, recreating, and creating schema (from generated files), and populating with initial data">
+            <antcall target="database:recreate-database" />
+            <antcall target="database:create-tables-generated" />
+        </target>
+
+    <target name="database:recreate-database" description="Drops and recreates caintegrator database">
+        <run-sql-script database.url="${database.system.url}"
+            database.user="${database.system.user}"
+            database.password="${database.system.password}"
+            sql.file="${caintegratordb.sql.target.dir}/create-database-and-user.sql" />
+    </target>
+
+    <target name="database:generate-sql" depends="compile:caintegrator.war, database:init-sql">
+        <!-- Hibernate tool-->
+        <path id="hibernatetool.classpath">
+            <fileset dir="${caintegrator.war.compile.lib.dir}">
+                <include name="commons-logging-1.1.1.jar"/>
+                <include name="ejb3-persistence-1.0.1.GA.jar" />
+                <include name="hibernate-annotations-3.2.0.ga.jar" />
+                <include name="hibernate-commons-annotations-3.0.0.GA.jar" />
+                <include name="mysql-connector-java-5.1.13.jar" />
+                <include name="commons-collections-3.2.jar" />
+                <include name="hibernate-3.2.0.ga.jar" />
+                <include name="dom4j-1.6.jar" />
+            </fileset>
+            <fileset dir="${lib.dir}/hibernatetool">
+                <include name="hibernate-tools-3.2.2.beta1.jar" />
+            </fileset>
+        </path>
+        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.classpath" />
+        <hibernatetool destdir="${caintegratordb.sql.target.dir}">
+            <configuration configurationfile="${caintegrator.war.resources.src.dir}/hibernate.cfg.xml" />
+            <hbm2ddl drop="false" create="true" export="false" outputfilename="create-tables-generated.sql" />
+            <hbm2ddl drop="true" create="false" export="false" outputfilename="drop-tables-generated.sql" />
+            <classpath>
+                <pathelement location="${caintegrator.war.java.classes.dir}" />
+                <pathelement location="${caintegrator.war.resources.src.dir}" />
+            </classpath>
+        </hibernatetool>
+    </target>
+
+    <target name="database:test-data" depends="database:reinitialize,test:compile:caintegrator.war.test.classes,hibernate.cfg.xml.test, caintegrator.csm.xml.test">
+        <java classname="gov.nih.nci.caintegrator.data.DataGenerator" classpathref="caintegrator.war.test.dependencies.path" />
+    </target>
+
+    <property name="hibernate.cfg.xml.src" value="${caintegrator.war.resources.src.dir}/hibernate.cfg.xml" />
+    <property name="hibernate.cfg.xml.test" value="${caintegrator.war.test.classes.dir}/hibernate.cfg.xml" />
+    <property name="hibernate.cfg.xml.deploy" value="${caintegrator.war.java.classes.dir}/hibernate.cfg.xml" />
+
+    <target name="hibernate.cfg.xml.test">
+        <copy file="${hibernate.cfg.xml.src}" tofile="${hibernate.cfg.xml.test}" overwrite="true">
+            <filterset refid="caintegrator.filterset" />
+            <filterset>
+                <filter token="HIBERNATE_CONFIG_START" value="${comment.end}" />
+                <filter token="HIBERNATE_CONFIG_END" value="${comment.start}" />
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="hibernate.cfg.xml.deploy">
+        <copy file="${hibernate.cfg.xml.src}" tofile="${hibernate.cfg.xml.deploy}" overwrite="true">
+            <filterset refid="caintegrator.filterset" />
+            <filterset>
+                <filter token="DATASOURCE_CONFIG_START" value="${comment.end}" />
+                <filter token="DATASOURCE_CONFIG_END" value="${comment.start}" />
+            </filterset>
+        </copy>
+    </target>
+
+
+    <property name="caintegrator.csm.xml.src" value="${caintegrator.war.resources.src.dir}/caintegrator.csm.new.hibernate.cfg.xml" />
+    <property name="caintegrator.csm.xml.deploy" value="${caintegrator.war.java.classes.dir}/caintegrator.csm.new.hibernate.cfg.xml" />
+    <property name="caintegrator.csm.xml.test" value="${caintegrator.war.test.classes.dir}/caintegrator.csm.new.hibernate.cfg.xml" />
+
+    <target name="caintegrator.csm.xml.test">
+        <copy file="${caintegrator.csm.xml.src}" tofile="${caintegrator.csm.xml.test}" overwrite="true">
+            <filterset refid="caintegrator.filterset" />
+            <filterset>
+                <filter token="HIBERNATE_CONFIG_START" value="${comment.end}" />
+                <filter token="HIBERNATE_CONFIG_END" value="${comment.start}" />
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="caintegrator.csm.xml.deploy">
+        <copy file="${caintegrator.csm.xml.src}" tofile="${caintegrator.csm.xml.deploy}" overwrite="true">
+            <filterset refid="caintegrator.filterset" />
+            <filterset>
+                <filter token="DATASOURCE_CONFIG_START" value="${comment.end}" />
+                <filter token="DATASOURCE_CONFIG_END" value="${comment.start}" />
+            </filterset>
+        </copy>
+    </target>
+
+    <!-- ******************************************************************* -->
+    <!-- ** CLASSPATHS                                                    ** -->
+    <!-- ******************************************************************* -->
+
+    <path id="caintegrator.full.classpath">
+        <path refid="caintegrator.war.dependencies.path" />
+        <pathelement location="${caintegrator.war.java.classes.dir}" />
+    </path>
+
+    <!-- ******************************************************************* -->
+    <!-- ** TEST TARGETS                                                  ** -->
+    <!-- ******************************************************************* -->
+
+    <!-- JUnit Test Targets -->
+    <target name="test:unit" depends="test:unit:caintegrator.war,
+      test:junit-report,
+      test:cobertura-report,
+      test:cobertura-check">
+        <fail if="junit.failure" message="There were JUnit failures." />
+        <fail if="cobertura.failure" message="Test coverage was insufficient (see Cobertura report)." />
+    </target>
+
+    <target name="test:integration:rembrandt-ncri" depends="deploy:rembrandt-ncri,
+        test:junit-report-integration">
+        <fail if="junit.failure" message="There were JUnit failures." />
+    </target>
+
+    <target name="test:integration" depends="test:integration:caintegrator.war,
+        test:junit-report-integration">
+        <fail if="junit.failure" message="There were JUnit failures." />
+    </target>
+
+    <target name="test:integration:from-master" depends="test:integration:master.build,
+        test:junit-report-integration">
+        <fail if="junit.failure" message="There were JUnit failures." />
+    </target>
+
+    <target name="test:junit-report">
+        <mkdir dir="${reports.dir}/junit/unit" />
+        <junitreport todir="${reports.dir}/junit/unit">
+            <fileset dir="${caintegrator.war.target.dir}/junit">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${reports.dir}/junit/unit" />
+        </junitreport>
+    </target>
+
+    <target name="test:junit-report-integration">
+        <mkdir dir="${reports.dir}/junit/integration" />
+        <junitreport todir="${reports.dir}/junit/integration">
+            <fileset dir="${caintegrator.war.target.dir}/junit">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${reports.dir}/junit/integration" />
+        </junitreport>
+    </target>
+
+    <!-- Cobertura Test Targets -->
+    <target name="test:cobertura-report" depends="ivy:setup-test">
+        <cobertura-report format="xml" destdir="${cobertura.dir}/unit" datafile="${cobertura.file}">
+            <fileset dir="${caintegrator.war.java.src.dir}" />
+        </cobertura-report>
+        <cobertura-report format="html" destdir="${cobertura.dir}/unit" datafile="${cobertura.file}">
+            <fileset dir="${caintegrator.war.java.src.dir}" />
+        </cobertura-report>
+    </target>
+
+    <target name="test:cobertura-check" depends="ivy:setup-test">
+        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0"
+            packagebranchrate="0" packagelinerate="0" totalbranchrate="${cobertura.branchcoverage}" totallinerate="${cobertura.linecoverage}" />
+    </target>
+
+    <!-- ******************************************************************* -->
+    <!-- ** STATIC ANALYSIS TARGETS                                       ** -->
+    <!-- ******************************************************************* -->
+
+    <!-- Creates paths and  directories -->
+    <target name="clean:reports">
+        <delete dir="${reports.dir}"/>
+    </target>
+
+    <!-- One target and one macro have been written for each static-analysis tool.  The macro runs static-analysis on an one set of values. The target then calls the macro with values for each sub-project.  If a user wanted to add options to the static-analysis tool in the the macro, they could add an attribute, refer to that attribute in the static-analysis call and then add the option to each of the calls to the marco in the wrapper target.-->
+
+    <!-- Runs Simian a code duplication reporter.
+        You can find additional information about simian at:
+        http://www.redhillconsulting.com.au/products/simian/installation.html
+        -->
+    <target name="static-analysis:simian" depends="ivy:setup-static-analysis" description="Performs code duplication analysis">
+        <mkdir dir="${reports.simian.dir}"/>
+        <static-analysis-simian
+            simian.src.dir="${caintegrator.war.java.src.dir}"
+            simian.rpt.dir="${reports.simian.dir}"
+            simian.report-xsl.file="${common.dir}/simian/simian.xsl"
+            simian.xml.name="simian-caintegrator-war.xml"
+            simian.html.name="simian-caintegrator-war.html"
+            />
+    </target>
+
+    <target name="static-analysis:pmd" depends="ivy:setup-static-analysis">
+        <mkdir dir="${reports.pmd.dir}"/>
+        <static-analysis-pmd
+            pmd.src.dir="${caintegrator.war.java.src.dir}"
+            pmd.rpt.dir="${reports.pmd.dir}"
+            pmd.root-dir.name="software"
+            pmd.sub-project.name="caintegrator-war"
+            pmd.report-xsl.file="${common.dir}/pmd/pmd-report-per-class.xslt"
+            pmd.report-preprocessor.file="${common.dir}/pmd/pmd-hudson-preprocessor.xlst"
+            pmd.rule-set.file="${common.dir}/pmd/pmd-ruleset.xml"
+            pmd.xml.name="pmd-report.xml"
+            pmd.html.name="pmd-report.html"
+            />
+    </target>
+
+    <!-- Runs JavaNCSS a tool that identifies code Cyclomatic Complexity.
+        You can find additional information about JavaNCSS at:
+        http://www.kclee.de/clemens/java/javancss/
+        -->
+    <target name="static-analysis:javancss" depends="ivy:setup-static-analysis">
+        <mkdir dir="${reports.javancss.dir}"/>
+        <static-analysis-javancss
+            javancss.src.dir="${caintegrator.war.java.src.dir}"
+            javancss.rpt.dir="${reports.javancss.dir}"
+            javancss.report-xsl.file="${common.dir}/javancss/javancss2methodhtml.xsl"
+            javancss.xml.name="javancss_metrics_caintegrator-war.xml"
+            javancss.html.name="javancss_report_caintegrator-war.html"
+            />
+    </target>
+
+    <!-- Runs CheckStyle is a codeing standard violation reporter.
+        You can find additional information about checkstyle at:
+        http://checkstyle.sourceforge.net/
+        -->
+    <target name="static-analysis:checkstyle" depends="ivy:setup-static-analysis,path:caintegrator.war.dependencies">
+        <mkdir dir="${reports.checkstyle.dir}"/>
+        <static-analysis-checkstyle
+            checkstyle.src.dir="${caintegrator.war.java.src.dir}"
+            checkstyle.rpt.dir="${reports.checkstyle.dir}"
+            checkstyle.report-xsl.file="${common.dir}/checkstyle/checkstyle-frames.xsl"
+            checkstyle.config.file="${checkstyle.config}"
+            checkstyle.xml.name="checkstyle.xml"
+            checkstyle.html.name="checkstyle.html"
+            checkstyle.classpath.ref.name="caintegrator.full.classpath"
+            />
+    </target>
+
+    <target name="pmd:update-eclipse-projects">
+        <copy file="${resource.dir}/pmd/pmd-ruleset.xml" tofile="${root.dir}/.ruleset" />
+    </target>
+
+    <!-- ******************************************************************* -->
+    <!-- ** DEPLOYMENT TARGETS                                            ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="jboss.home" location="${env.JBOSS_HOME}" />
+    <property name="jboss.server.name" value="default" />
+    <property name="jboss.server.dir" location="${jboss.home}/server/${jboss.server.name}" />
+    <property name="jboss.deploy.dir" location="${jboss.server.dir}/deploy" />
+    <property name="caintegrator.datasource" location="${software.dir}/common/resources/jboss-conf/caintegrator-mysql-ds.xml" />
+    <property name="caintegrator.mail.service.file" value="${software.dir}/common/resources/jboss-conf/mail-service.xml" />
+    <property name="caintegrator.jms.destinations.file" location="${software.dir}/common/resources/jboss-conf/caintegrator-jms-destinations-service.xml" />
+
+    <target name="deploy:jboss" depends="caintegrator.war">
+        <copy file="${caintegrator.datasource}" todir="${jboss.deploy.dir}">
+            <filterset refid="caintegrator.filterset" />
+        </copy>
+        <copy file="${caintegrator.mail.service.file}" todir="${jboss.deploy.dir}">
+            <filterset refid="caintegrator.filterset" />
+        </copy>
+        <copy file="${caintegrator.jms.destinations.file}" todir="${jboss.deploy.dir}/jms" />
+        <delete file="${jboss.server.dir}/lib/mysql-connector-java-5.0.5.jar" />
+        <copy file="${caintegrator.war.compile.lib.dir}/mysql-connector-java-5.1.13.jar" todir="${jboss.server.dir}/lib" />
+        <copy file="${caintegrator.war}" todir="${jboss.deploy.dir}" />
+    </target>
+
+    <target name="deploy:jsp" description="Copies all current JSP code to the deployed application for quick update">
+        <for param="toDir">
+            <path>
+                <dirset dir="${jboss.deploy.dir}/../tmp" includes="**/caintegrator.war" />
+            </path>
+            <sequential>
+                <copy todir="@{toDir}">
+                    <fileset dir="${caintegrator.war.web.src.dir}">
+                        <include name="**/*.jsp" />
+                        <include name="**/*.jspf" />
+                        <include name="**/*.css" />
+                        <include name="**/*.js" />
+                        <include name="**/*.jpg" />
+                        <include name="**/*.gif" />
+                        <include name="**/*.png" />
+                        <include name="**/*.faces" />
+                        <include name="**/*.tag" />
+                        <include name="**/*.tagf" />
+                    </fileset>
+                </copy>
+            </sequential>
+        </for>
+    </target>
+
+    <target name="deploy:vasari" depends="test:compile:caintegrator.war.test.classes,
+        caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test,
+        database:reinitialize">
+        <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+            <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
+             <classpath>
+                 <pathelement path="${caintegrator.war.integration.dependencies.path}" />
+             </classpath>
+             <formatter type="xml" />
+             <batchtest todir="${caintegrator.war.target.dir}/junit">
+                 <fileset dir="${caintegrator.war.test.src.dir}">
+                     <include name="**/DeployVasariTestIntegration.java" />
+                 </fileset>
+             </batchtest>
+         </junit>
+    </target>
+
+    <target name="deploy:dc-lung-public" depends="test:compile:caintegrator.war.test.classes,
+        caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test,
+        database:reinitialize">
+        <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+            <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
+             <classpath>
+                 <pathelement path="${caintegrator.war.integration.dependencies.path}" />
+             </classpath>
+             <formatter type="xml" />
+             <batchtest todir="${caintegrator.war.target.dir}/junit">
+                 <fileset dir="${caintegrator.war.test.src.dir}">
+                     <include name="**/DeployPublicDCLungStudyTestIntegration.java" />
+                 </fileset>
+             </batchtest>
+         </junit>
+    </target>
+
+    <target name="deploy:rembrandt-ncri" depends="test:compile:caintegrator.war.test.classes,
+        caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test">
+        <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+             <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
+             <classpath>
+                 <pathelement path="${caintegrator.war.integration.dependencies.path}" />
+             </classpath>
+             <formatter type="xml" />
+             <batchtest todir="${caintegrator.war.target.dir}/junit">
+                 <fileset dir="${caintegrator.war.test.src.dir}">
+                     <include name="**/DeployStudyRembrandtNcriTestIntegration.java" />
+                 </fileset>
+             </batchtest>
+         </junit>
+    </target>
+
+    <target name="deploy:rembrandt-copy-number" depends="test:compile:caintegrator.war.test.classes,
+        caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test,
+        database:reinitialize">
+        <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+            <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
+             <classpath>
+                 <pathelement path="${caintegrator.war.integration.dependencies.path}" />
+             </classpath>
+             <formatter type="xml" />
+             <batchtest todir="${caintegrator.war.target.dir}/junit">
+                 <fileset dir="${caintegrator.war.test.src.dir}">
+                     <include name="**/DeployStudyRembrandtWithCopyNumberDataTestIntegration.java" />
+                 </fileset>
+             </batchtest>
+         </junit>
+    </target>
+
+    <target name="deploy:small-copy-number" depends="test:compile:caintegrator.war.test.classes,
+        caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test,
+        database:reinitialize">
+        <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+            <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
+             <classpath>
+                 <pathelement path="${caintegrator.war.integration.dependencies.path}" />
+             </classpath>
+             <formatter type="xml" />
+             <batchtest todir="${caintegrator.war.target.dir}/junit">
+                 <fileset dir="${caintegrator.war.test.src.dir}">
+                     <include name="**/DeploySmallCopyNumberDataTestIntegration.java" />
+                 </fileset>
+             </batchtest>
+         </junit>
+    </target>
+
+    <target name="deploy:affy-designs" depends="test:compile:caintegrator.war.test.classes,
+        caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test,
+        database:reinitialize">
+        <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+             <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
+             <classpath>
+                 <pathelement path="${caintegrator.war.integration.dependencies.path}" />
+             </classpath>
+             <formatter type="xml" />
+             <batchtest todir="${caintegrator.war.target.dir}/junit">
+                 <fileset dir="${caintegrator.war.test.src.dir}">
+                     <include name="**/LoadAffymetrixDesignsTestIntegration.java" />
+                 </fileset>
+             </batchtest>
+         </junit>
+    </target>
+
+
+    <!-- ******************************************************************* -->
+    <!-- ** DOCUMENTATION TARGETS                                         ** -->
+    <!-- ******************************************************************* -->
+
+    <target name="javadoc" depends="javadoc:full" description="Generates javadoc for all source code" />
+
+    <target name="javadoc:full">
+        <mkdir dir="${reports.dir}/docs/api" />
+        <javadoc destdir="${reports.dir}/docs/api" classpathref="caintegrator.full.classpath">
+            <packageset dir="${caintegrator.war.java.src.dir}" />
+        </javadoc>
+    </target>
+
+
+    <!-- ******************************************************************* -->
+    <!-- ** MACRODEFS                                                     ** -->
+    <!-- ******************************************************************* -->
+
+    <macrodef name="run-integration-junit-tests">
+        <attribute name="test.src.dir" />
+        <attribute name="xml.output.dir" />
+        <attribute name="classpath" default="" />
+        <attribute name="instrumented.classes" default="" />
+        <attribute name="includedTestFiles" default="**/*TestIntegration.java" />
+        <attribute name="excludedTestFiles" default="**/Abstract*TestIntegration.java" />
+
+        <sequential>
+            <mkdir dir="@{xml.output.dir}" />
+            <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="2048m">
+                <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.file}" />
+                <sysproperty key="server.hostname" value="${jboss.server.hostname}" />
+                <sysproperty key="server.port" value="${jboss.server.port}" />
+                <sysproperty key="server.jndi.port" value="${jboss.server.jndi.port}" />
+                <sysproperty key="selenium.server.port" value="${selenium.server.port}" />
+
+                <classpath>
+                    <pathelement path="@{instrumented.classes}" />
+                    <pathelement path="@{classpath}" />
+                    <path refid="cobertura.classpath" />
+                </classpath>
+                <formatter type="xml" />
+                <batchtest todir="@{xml.output.dir}">
+                    <fileset dir="@{test.src.dir}">
+                        <exclude name="@{excludedTestFiles}" />
+                        <include name="@{includedTestFiles}" />
+                    </fileset>
+                </batchtest>
+            </junit>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="run-junit-tests-increased-memory">
+        <attribute name="test.src.dir" />
+        <attribute name="xml.output.dir" />
+        <attribute name="classpath" default="" />
+        <attribute name="instrumented.classes" default="" />
+        <attribute name="includedTestFiles" default="**/*Test.java" />
+        <attribute name="excludedTestFiles" default="**/Abstract*Test.java" />
+
+        <sequential>
+            <mkdir dir="@{xml.output.dir}" />
+            <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+                <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.file}" />
+                <sysproperty key="server.hostname" value="${jboss.server.hostname}" />
+                <sysproperty key="server.port" value="${jboss.server.port}" />
+                <sysproperty key="server.jndi.port" value="${jboss.server.jndi.port}" />
+                <sysproperty key="selenium.server.port" value="${selenium.server.port}" />
+                <!--
+                <jvmarg value="-d64" />
+                -->
+                <classpath>
+                    <pathelement path="@{instrumented.classes}" />
+                    <pathelement path="@{classpath}" />
+                    <path refid="cobertura.classpath" />
+                </classpath>
+                <formatter type="xml" />
+                <batchtest todir="@{xml.output.dir}">
+                    <fileset dir="@{test.src.dir}">
+                        <include name="@{includedTestFiles}" />
+                        <exclude name="@{excludedTestFiles}" />
+                    </fileset>
+                </batchtest>
+            </junit>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="run-nondeploy-integration-junit-tests">
+        <attribute name="test.src.dir" />
+        <attribute name="xml.output.dir" />
+        <attribute name="classpath" default="" />
+        <attribute name="instrumented.classes" default="" />
+
+        <sequential>
+            <mkdir dir="@{xml.output.dir}" />
+            <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+                <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.file}" />
+                <sysproperty key="server.hostname" value="${jboss.server.hostname}" />
+                <sysproperty key="server.port" value="${jboss.server.port}" />
+                <sysproperty key="server.jndi.port" value="${jboss.server.jndi.port}" />
+                <sysproperty key="selenium.server.port" value="${selenium.server.port}" />
+
+                <classpath>
+                    <pathelement path="@{instrumented.classes}" />
+                    <pathelement path="@{classpath}" />
+                    <path refid="cobertura.classpath" />
+                </classpath>
+                <formatter type="xml" />
+                <batchtest todir="@{xml.output.dir}">
+                    <fileset dir="@{test.src.dir}">
+                        <include name="**/*TestIntegration.java" />
+                        <exclude name="**/Abstract*TestIntegration.java" />
+                        <exclude name="**/LoadAffymetrixDesignsTestIntegration.java" />
+                        <exclude name="**/Deploy*TestIntegration.java" />
+                        <exclude name="**/CaArrayCopyNumberFacadeTestIntegration.java" />
+                    </fileset>
+                </batchtest>
+            </junit>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="static-analysis-simian">
+        <attribute name="simian.src.dir"/>
+        <attribute name="simian.rpt.dir"/>
+        <attribute name="simian.report-xsl.file"/>
+        <attribute name="simian.xml.name" default="simian.xml"/>
+        <attribute name="simian.html.name" default="simian.html"/>
+        <sequential>
+            <taskdef resource="simiantask.properties" classpathref="project.test.simian.classpath" />
+            <simian
+                failureProperty="simian.failure"
+                failOnDuplication="failse"
+                >
+                <fileset dir="@{simian.src.dir}" includes="**/*.java"/>
+                <formatter type="xml" toFile="@{simian.rpt.dir}/@{simian.xml.name}"/>
+            </simian>
+            <xslt in="@{simian.rpt.dir}/@{simian.xml.name}" out="@{simian.rpt.dir}/@{simian.html.name}" style="@{simian.report-xsl.file}" />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="static-analysis-pmd">
+        <attribute name="pmd.src.dir"/>
+        <attribute name="pmd.rpt.dir"/>
+        <attribute name="pmd.root-dir.name"/>
+        <attribute name="pmd.sub-project.name"/>
+        <attribute name="pmd.report-preprocessor.file"/>
+        <attribute name="pmd.report-xsl.file"/>
+        <attribute name="pmd.rule-set.file"/>
+        <attribute name="pmd.xml.name" default="pmd.xml"/>
+        <attribute name="pmd.html.name" default="pmd.html"/>
+        <sequential>
+            <property name="pmd.sub-project.rpt.dir" value="@{pmd.rpt.dir}/@{pmd.sub-project.name}/target"/>
+            <mkdir dir="${pmd.sub-project.rpt.dir}"/>
+            <taskdef name="pmd"
+                classname="net.sourceforge.pmd.ant.PMDTask"
+                classpathref="project.test.pmd.classpath"/>
+            <pmd rulesetfiles="@{pmd.rule-set.file}"
+                 shortFilenames="true"
+                 failonerror="true"
+                 failOnRuleViolation="true"
+                 targetjdk="1.5"
+                 maxRuleViolations="${pmd.maxRuleViolations}">
+                <formatter type="xml" toFile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" />
+                <formatter type="html" toFile="${pmd.sub-project.rpt.dir}/@{pmd.html.name}" />
+                <fileset dir="@{pmd.src.dir}">
+                    <include name="**/*.java"/>
+                </fileset>
+            </pmd>
+            <move file="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" tofile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"/>
+            <xslt taskname="pmd"
+                in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
+                out="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}"
+                style="@{pmd.report-preprocessor.file}">
+                <param name="relative.path" expression="@{pmd.root-dir.name}/@{pmd.sub-project.name}"/>
+            </xslt>
+
+            <xslt taskname="pmd"
+                in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
+                out="${pmd.sub-project.rpt.dir}/@{pmd.html.name}"
+                style="@{pmd.report-xsl.file}"/>
+
+        </sequential>
+    </macrodef>
+
+    <macrodef name="static-analysis-javancss">
+        <attribute name="javancss.src.dir"/>
+        <attribute name="javancss.rpt.dir"/>
+        <attribute name="javancss.report-xsl.file"/>
+        <attribute name="javancss.xml.name" default="javancss.xml"/>
+        <attribute name="javancss.html.name" default="javancss.html"/>
+        <sequential>
+            <taskdef name="javancss" classpathref="javancss.classpath" classname="javancss.JavancssAntTask" />
+            <javancss
+                srcdir="@{javancss.src.dir}"
+                includes="**/*.java"
+                excludes="**/*test*/*"
+                generatereport="true"
+                outputfile="@{javancss.rpt.dir}/@{javancss.xml.name}"
+                ccnPerFuncMax="10"
+                format="xml">
+            </javancss>
+            <xslt taskname="javancss"
+                in="@{javancss.rpt.dir}/@{javancss.xml.name}"
+                out="@{javancss.rpt.dir}/@{javancss.html.name}"
+                style="@{javancss.report-xsl.file}"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="static-analysis-findbugs">
+        <attribute name="findbugs.home.dir"/>
+        <attribute name="findbugs.src.dir"/>
+        <attribute name="findbugs.rpt.dir"/>
+        <attribute name="findbugs.classes.dir"/>
+        <attribute name="findbugs.report-xsl.file"/>
+        <attribute name="findbugs.app.classpath.ref"/>
+        <attribute name="findbugs.xml.name" default="findbugs.xml"/>
+        <attribute name="findbugs.html.name" default="findbugs.html"/>
+        <sequential>
+            <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="project.test.findbugs.classpath"/>
+
+            <findbugs home="@{findbugs.home.dir}"
+                output="xml:withMessages"
+                outputFile="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
+                jvmargs="-Xms128m -Xmx512m"
+                >
+                <auxClasspath>
+                    <!--
+                    <fileset dir="@{findbugs.app.classpath.dir}">
+                        <include name="**/*.jar" />
+                    </fileset>
+                    -->
+                    <fileset refid="@{findbugs.app.classpath.ref}"/>
+                </auxClasspath>
+
+                <sourcePath path="@{findbugs.src.dir}" />
+                <class location="@{findbugs.classes.dir}" />
+            </findbugs>
+            <xslt taskname="findbugs"
+                in="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
+                out="@{findbugs.rpt.dir}/@{findbugs.html.name}"
+                style="@{findbugs.report-xsl.file}"
+                />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="static-analysis-checkstyle">
+        <attribute name="checkstyle.src.dir"/>
+        <attribute name="checkstyle.rpt.dir"/>
+        <attribute name="checkstyle.report-xsl.file"/>
+        <attribute name="checkstyle.config.file"/>
+        <attribute name="checkstyle.xml.name" default="checkstyle.xml"/>
+        <attribute name="checkstyle.html.name" default="checkstyle.html"/>
+        <attribute name="checkstyle.classpath.ref.name" />
+        <sequential>
+            <taskdef resource="checkstyletask.properties"
+                uri="antlib:com.puppycrawl.tools.checkstyle"
+                classpathref="project.test.checkstyle.classpath"/>
+            <cs:checkstyle config="@{checkstyle.config.file}"
+                failureProperty="checkstyle.failure"
+                failOnViolation="false"
+                maxerrors="0"
+                maxwarnings="0"
+                classpathref="@{checkstyle.classpath.ref.name}"
+                >
+                <formatter type="xml"
+                    tofile="@{checkstyle.rpt.dir}/@{checkstyle.xml.name}"/>
+                <fileset dir="@{checkstyle.src.dir}">
+                    <include name="**/*.java"/>
+                </fileset>
+            </cs:checkstyle>
+            <xslt taskname="checkstyle"
+                in="@{checkstyle.rpt.dir}/@{checkstyle.xml.name}"
+                out="@{checkstyle.rpt.dir}/@{checkstyle.html.name}"
+                style="@{checkstyle.report-xsl.file}"
+                >
+                <param name="output.dir" expression="@{checkstyle.rpt.dir}" />
+            </xslt>
+
+        </sequential>
+    </macrodef>
+
+
+
+</project>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator.application.study">
+	<class name="ImageDataSourceConfiguration" table="IMAGE_DATA_SOURCE_CONFIGURATION" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+        
+        <many-to-one name="studyConfiguration" 
+            class="gov.nih.nci.caintegrator.application.study.StudyConfiguration" 
+            column="STUDY_CONFIGURATION_ID"
+            not-null="true"
+            insert="false"
+            update="false"/>
+        
+        <many-to-one name="imageAnnotationConfiguration" 
+            class="gov.nih.nci.caintegrator.application.study.ImageAnnotationConfiguration" 
+            column="IMAGE_ANNOTATION_CONFIGURATION_ID"
+            unique="true" not-null="false" lazy="proxy" cascade="all" />
+        
+        <many-to-one name="serverProfile"
+            class="gov.nih.nci.caintegrator.external.ServerConnectionProfile"
+            column="SERVER_CONNECTION_PROFILE_ID"
+            lazy="proxy" cascade="all" />
+                   
+        <list name="imageSeriesAcquisitions" lazy="true" cascade="all">
+            <cache usage="read-write" />
+            <key column="IMAGE_DATA_SOURCE_CONFIGURATION_ID" />
+            <list-index column="IMAGE_DATA_SOURCE_CONFIGURATION_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator.domain.imaging.ImageSeriesAcquisition" />
+        </list>
+            
+        <property name="collectionName" type="string" column="COLLECTION_NAME"/>
+        <property name="mappingFileName" type="string" column="MAPPING_FILE_NAME"/>
+        <property name="status" type="Status" column="STATUS"/>
+        <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
+        <property name="lastModifiedDate" type="java.util.Date" column="LAST_MODIFIED_DATE"/>
+        
+	</class>
+</hibernate-mapping>
