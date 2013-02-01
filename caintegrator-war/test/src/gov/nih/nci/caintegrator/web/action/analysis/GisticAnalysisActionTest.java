@@ -20,6 +20,7 @@ import gov.nih.nci.caintegrator.domain.application.Query;
 import gov.nih.nci.caintegrator.domain.application.QueryResult;
 import gov.nih.nci.caintegrator.domain.application.ResultRow;
 import gov.nih.nci.caintegrator.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator.domain.genomic.Array;
 import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator.domain.genomic.Platform;
@@ -32,7 +33,7 @@ import gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.GisticAnalysisAction;
+import gov.nih.nci.caintegrator.web.ajax.DwrUtilFactory;
 import gov.nih.nci.caintegrator.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.HashSet;
@@ -52,6 +53,7 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
     public void setUp() throws Exception {
         super.setUp();
         subscription = new StudySubscription();
+        subscription.setUserWorkspace(new UserWorkspace());
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
@@ -90,7 +92,13 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         action.setAnalysisService(analysisService);
         action.setQueryManagementService(queryManagementService);
         action.setWorkspaceService(workspaceService);
-        action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
+
+        PersistedAnalysisJobAjaxUpdater updater = new PersistedAnalysisJobAjaxUpdater();
+        updater.setAnalysisService(analysisService);
+        updater.setWorkspaceService(workspaceService);
+        updater.setDwrUtilFactory(new DwrUtilFactory());
+
+        action.setAjaxUpdater(updater);
         action.getGisticAnalysisForm().setGisticParameters(new GisticParameters());
         action.setConfigurationHelper(configurationHelper);
         action.getPlatformsInStudy().add("Platform 1");
@@ -129,6 +137,7 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
     public void execute() {
         testOpen();
         action.setSelectedAction(GisticAnalysisAction.EXECUTE_ACTION);
+        action.getCurrentGisticAnalysisJob().setId(1L);
         when(analysisService.validateGenePatternConnection(any(ServerConnectionProfile.class))).thenReturn(Boolean.TRUE);
         assertEquals("status", action.execute());
     }
@@ -140,6 +149,7 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         when(queryManagementService.execute(any(Query.class))).thenReturn(getValidQueryResult());
         action.setSelectedAction(GisticAnalysisAction.EXECUTE_ACTION);
         action.getGisticAnalysisForm().setSelectedQuery("[Q]-query1");
+        action.getCurrentGisticAnalysisJob().setId(1L);
         assertEquals("status", action.execute());
     }
 

@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -45,6 +46,7 @@ import com.google.common.collect.Collections2;
 public class EditAuthorizedGroupAction extends AbstractStudyAction {
     private static final long serialVersionUID = 1L;
     private static final int MAX_QUERY_NAME_LENGTH = 70;
+    private static final Logger LOGGER = Logger.getLogger(EditAuthorizedGroupAction.class);
     private SecurityManager securityManager;
     private AuthorizedStudyElementsGroup authorizedGroup = new AuthorizedStudyElementsGroup();
     private Collection<Group> unauthorizedGroups = new ArrayList<Group>();
@@ -75,7 +77,7 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
             setUnauthorizedGroups(getSecurityManager().getUnauthorizedGroups(getStudyConfiguration()));
         } catch (CSException e) {
             addActionError("Error retrieving listing of unauthorized groups: " + e.getMessage());
-            LOG.error("Error retrieving listing of unauthorized groups.", e);
+            LOGGER.error("Error retrieving listing of unauthorized groups.", e);
             return ERROR;
         }
         return SUCCESS;
@@ -100,7 +102,7 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
             getStudyManagementService().addAuthorizedStudyElementsGroup(getStudyConfiguration(), group);
         } catch (CSException e) {
             addActionError("Error adding group authorization: " + e.getMessage());
-            LOG.error("Error adding group authorization", e);
+            LOGGER.error("Error adding group authorization", e);
             return ERROR;
         }
         return SUCCESS;
@@ -123,7 +125,7 @@ public class EditAuthorizedGroupAction extends AbstractStudyAction {
             }
         } catch (CSException e) {
             addActionError("Error deleting authorized group: " + e.getMessage());
-            LOG.error("Error deleting authorized group.", e);
+            LOGGER.error("Error deleting authorized group.", e);
             return ERROR;
         }
         return SUCCESS;

@@ -8,10 +8,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/classes/application-config-common-security.xml
-        <!-- Configuration for CAS SSO-->
-        <!-- /WEB-INF/classes/application-config-cas-security.xml -->
-        <!-- Configuration for non SSO-->
-        <!-- /WEB-INF/classes/application-config-non-cas-security.xml -->
+            @application.config.security.file@
             /WEB-INF/classes/caintegrator-config.xml
          </param-value>
     </context-param>
@@ -19,7 +16,7 @@
     <context-param>
         <description>This parameter indicates to the application that single sign on is enabled and it should not show login fields.</description>
         <param-name>ssoEnabled</param-name>
-        <param-value>true</param-value>
+        <param-value>@single.sign.on.install@</param-value>
     </context-param>
     
     <context-param>

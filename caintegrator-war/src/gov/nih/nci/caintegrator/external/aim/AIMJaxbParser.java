@@ -15,13 +15,11 @@ import org.xml.sax.InputSource;
 
 import edu.northwestern.radiology.aim.jaxb.ImageAnnotation;
 
-
-
 /**
  * Converts an XML String to jaxb.ImageAnnotation.
  * This class is used with the JaxB beans because of the following issue (Tony Pan explains):
  * 
- * The problem is that ImageReference is an abstract xsd type that is mapped to a java bean that’s abstract (can’t be 
+ * The problem is that ImageReference is an abstract xsd type that is mapped to a java bean that's abstract (can't be 
  * instantiated).  Apache Axis apparently is unable to parse the xsi:type and instantiate the correct subclass of 
  * ImageReference.
  */

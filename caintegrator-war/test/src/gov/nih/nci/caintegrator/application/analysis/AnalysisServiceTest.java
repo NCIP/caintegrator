@@ -405,7 +405,7 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         subscription.setId(1L);
         String IGVDownloadUrl = ConfigurationParameter.BROAD_HOSTED_IGV_URL.getDefaultValue();
         IGVParameters igvParameters = new IGVParameters();
-        igvParameters.setUrlPrefix("http://localhost:8080/caintegrator2/igv/runIgv.do?JSESSIONID=sessionId&file=");
+        igvParameters.setUrlPrefix("http://localhost:8080/caintegrator/igv/runIgv.do?JSESSIONID=sessionId&file=");
         igvParameters.setSessionId("sessionId");
         igvParameters.setQuery(query);
         igvParameters.setStudySubscription(subscription);
@@ -428,7 +428,7 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
                 anyCollectionOf(ResultColumn.class), any(CopyNumberCriterionTypeEnum.class));
         verify(analysisFileManager, times(1)).createIGVSessionFile(any(IGVParameters.class), any(IGVResult.class));
         assertEquals(
-                IGVDownloadUrl + "http://localhost:8080/caintegrator2/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
+                IGVDownloadUrl + "http://localhost:8080/caintegrator/igv/runIgv.do%3FJSESSIONID%3DsessionId%26file%3DigvSession.xml",
                 resultURL);
 
         // Now test the All Platforms way.
@@ -470,7 +470,7 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
         subscription.setStudy(study);
         query.setSubscription(subscription);
         HeatmapParameters heatmapParameters = new HeatmapParameters();
-        heatmapParameters.setUrlPrefix("http://localhost:8080/caintegrator2/viewer/runViewer.do?JSESSIONID=sessionId&file=");
+        heatmapParameters.setUrlPrefix("http://localhost:8080/caintegrator/viewer/runViewer.do?JSESSIONID=sessionId&file=");
         heatmapParameters.setSessionId("sessionId");
         heatmapParameters.setQuery(query);
         heatmapParameters.setStudySubscription(subscription);
@@ -489,7 +489,7 @@ public class AnalysisServiceTest extends AbstractMockitoTest {
                 anyString(), anyCollectionOf(ResultColumn.class));
         verify(analysisFileManager, times(1)).createHeatmapJnlpFile(any(HeatmapParameters.class), any(HeatmapResult.class));
         assertEquals(
-                "http://localhost:8080/caintegrator2/viewer/runViewer.do?JSESSIONID=sessionId&file=heatmapLaunch.jnlp",
+                "http://localhost:8080/caintegrator/viewer/runViewer.do?JSESSIONID=sessionId&file=heatmapLaunch.jnlp",
                 resultURL);
 
         heatmapParameters.setUseCGHCall(true);

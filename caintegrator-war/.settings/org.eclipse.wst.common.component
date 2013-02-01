@@ -6,6 +6,16 @@
 <wb-resource deploy-path="/WEB-INF/classes" source-path="/test/src"/>
 <wb-resource deploy-path="/WEB-INF/classes" source-path="/test/resources"/>
 <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/jboss-config"/>
+        <dependent-module archiveName="cbs-to-heatmap-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cbs-to-heatmap/cbs-to-heatmap">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="genepattern-service-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/genepattern-service/genepattern-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="kaplan-meier-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/kaplan-meier/kaplan-meier">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
 <property name="java-output-path" value="build/classes"/>
 <property name="context-root" value="caintegrator2"/>
 </wb-module>

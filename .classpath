@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="caintegrator2-war/src"/>
-	<classpathentry kind="src" path="caintegrator2-war/test/src"/>
 	<classpathentry kind="src" path="cbs-to-heatmap-jar/src"/>
+	<classpathentry kind="src" path="caintegrator-war/test/src"/>
+	<classpathentry kind="src" path="caintegrator-war/src"/>
 	<classpathentry kind="src" path="genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="kaplan-meier-jar/src"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/acegi-security-1.0.7.jar"/>

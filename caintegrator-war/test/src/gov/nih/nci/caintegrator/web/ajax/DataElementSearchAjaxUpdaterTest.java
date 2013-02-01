@@ -8,11 +8,11 @@ package gov.nih.nci.caintegrator.web.ajax;
 
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
+import gov.nih.nci.caintegrator.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.ajax.DataElementSearchAjaxUpdater;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -133,10 +133,18 @@ public class DataElementSearchAjaxUpdaterTest extends AbstractSessionBasedTest {
             }
             super.getMatchingDefinitions(keywords);
             List<AnnotationDefinition> annotationDefinitions = new ArrayList<AnnotationDefinition>();
-            annotationDefinitions.add(new AnnotationDefinition());
-            annotationDefinitions.add(new AnnotationDefinition());
+            AnnotationDefinition ad = new AnnotationDefinition();
+            ad.setDataType(AnnotationTypeEnum.STRING);
+            annotationDefinitions.add(ad);
+
+            ad = new AnnotationDefinition();
+            ad.setDataType(AnnotationTypeEnum.DATE);
+            annotationDefinitions.add(ad);
+
+            ad = new AnnotationDefinition();
+            ad.setDataType(AnnotationTypeEnum.NUMERIC);
+            annotationDefinitions.add(ad);
             return annotationDefinitions;
         }
     }
-
 }

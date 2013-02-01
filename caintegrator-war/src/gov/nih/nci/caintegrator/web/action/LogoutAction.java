@@ -4,13 +4,12 @@
  * Distributed under the OSI-approved BSD 3-Clause License.
  * See https://github.com/NCIP/caintegrator/blob/master/LICENSE for details.
  */
-
 package gov.nih.nci.caintegrator.web.action;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
-
 /**
  * Action for logging out of the application.
  *
@@ -19,12 +18,14 @@ import com.opensymphony.xwork2.ActionSupport;
 public class LogoutAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
     private final String casServerLogoutUrl;
+    private final boolean singleSignOn;
 
     /**
      * Default class constructor.
      */
     public LogoutAction() {
         casServerLogoutUrl = ServletActionContext.getServletContext().getInitParameter("casServerLogoutUrl");
+        singleSignOn = BooleanUtils.toBoolean(ServletActionContext.getServletContext().getInitParameter("ssoEnabled"));
     }
 
     /**
@@ -35,8 +36,9 @@ public class LogoutAction extends ActionSupport {
         if (ServletActionContext.getRequest().getSession() != null) {
             ServletActionContext.getRequest().getSession().invalidate();
         }
-        return (casServerLogoutUrl != null) ? "casLogout" : SUCCESS;
+        return singleSignOn ? "casLogout" : SUCCESS;
     }
+
 
     /**
      * @return the casLogoutUrl

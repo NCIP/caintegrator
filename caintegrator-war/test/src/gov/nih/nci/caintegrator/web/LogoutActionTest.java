@@ -73,6 +73,7 @@ public class LogoutActionTest {
     @Test
     public void ssoLogout() {
         when(servletContext.getInitParameter("casServerLogoutUrl")).thenReturn("https://localhost:8443/cas/logout");
+        when(servletContext.getInitParameter("ssoEnabled")).thenReturn("true");
         action = new LogoutAction();
         assertEquals("https://localhost:8443/cas/logout", action.getCasServerLogoutUrl());
         assertEquals("casLogout", action.logout());

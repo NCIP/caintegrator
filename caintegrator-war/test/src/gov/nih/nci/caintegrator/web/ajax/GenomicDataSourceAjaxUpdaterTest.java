@@ -16,8 +16,6 @@ import gov.nih.nci.caintegrator.data.StudyHelper;
 import gov.nih.nci.caintegrator.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.ajax.DwrUtilFactory;
-import gov.nih.nci.caintegrator.web.ajax.GenomicDataSourceAjaxUpdater;
 
 import java.io.IOException;
 

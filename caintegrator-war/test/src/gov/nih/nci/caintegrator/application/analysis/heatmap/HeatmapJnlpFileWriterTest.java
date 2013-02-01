@@ -26,16 +26,16 @@ public class HeatmapJnlpFileWriterTest {
 
     @Test
     public void testWriteSessionFile() throws IOException {
-        String urlPrefix = "http://caintegrator2.nci.nih.gov/caintegrator2/heatmap/retrieveFile.jnlp?JSESSIONID=12345&file=";
-        String heatmapDirectoryUrl = "http://caintegrator2.nci.nih.gov/caintegrator2/common/";
+        String urlPrefix = "http://caintegrator.nci.nih.gov/caintegrator/heatmap/retrieveFile.jnlp?JSESSIONID=12345&file=";
+        String heatmapDirectoryUrl = "http://caintegrator.nci.nih.gov/caintegrator/common/";
         File tempDirectory = new File(System.getProperty("java.io.tmpdir") + File.separator + "heatmapTmp");
         tempDirectory.mkdir();
         HeatmapResult heatmapResult = new HeatmapResult();
         heatmapResult.setGenomicDataFile(TestDataFiles.VALID_FILE);
         heatmapResult.setLayoutFile(TestDataFiles.VALID_FILE);
         heatmapResult.setSampleAnnotationFile(TestDataFiles.VALID_FILE);
-        
-        HeatmapJnlpFileWriter.writeJnlpFile(tempDirectory, 
+
+        HeatmapJnlpFileWriter.writeJnlpFile(tempDirectory,
                 urlPrefix, heatmapDirectoryUrl, heatmapResult);
         File sessionFile = heatmapResult.getJnlpFile();
         assertTrue(sessionFile.exists());
@@ -43,11 +43,11 @@ public class HeatmapJnlpFileWriterTest {
         FileUtils.deleteDirectory(tempDirectory);
     }
 
-    private void checkFile(File sessionFile) 
+    private void checkFile(File sessionFile)
         throws FileNotFoundException, IOException {
         BufferedReader reader = new BufferedReader(new FileReader(sessionFile));
         assertEquals(reader.readLine(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        assertEquals(reader.readLine(), "<jnlp spec=\"1.5+\" codebase=\"http://caintegrator2.nci.nih.gov/caintegrator2/common/\">");
+        assertEquals(reader.readLine(), "<jnlp spec=\"1.5+\" codebase=\"http://caintegrator.nci.nih.gov/caintegrator/common/\">");
         assertEquals(reader.readLine(), "<information>");
         assertEquals(reader.readLine(), "<title>Heatmap</title>");
         assertEquals(reader.readLine(), "<vendor>National Cancer Institute, NIH/NCI/CCR/LPG</vendor>");
@@ -66,11 +66,11 @@ public class HeatmapJnlpFileWriterTest {
         assertEquals(reader.readLine(), "</resources>");
         assertEquals(reader.readLine(), "<application-desc main-class=\"TCGA.Heatmap6\">");
         assertEquals(reader.readLine(), "<argument>-url-gm</argument>");
-        assertEquals(reader.readLine(), "<argument>http://caintegrator2.nci.nih.gov/caintegrator2/heatmap/retrieveFile.jnlp?JSESSIONID=12345&amp;file=" + HeatmapFileTypeEnum.GENOMIC_DATA.getFilename() +  "</argument>");
+        assertEquals(reader.readLine(), "<argument>http://caintegrator.nci.nih.gov/caintegrator/heatmap/retrieveFile.jnlp?JSESSIONID=12345&amp;file=" + HeatmapFileTypeEnum.GENOMIC_DATA.getFilename() +  "</argument>");
         assertEquals(reader.readLine(), "<argument>-url-set</argument>");
-        assertEquals(reader.readLine(), "<argument>http://caintegrator2.nci.nih.gov/caintegrator2/heatmap/retrieveFile.jnlp?JSESSIONID=12345&amp;file=" + HeatmapFileTypeEnum.LAYOUT.getFilename() +  "</argument>");
+        assertEquals(reader.readLine(), "<argument>http://caintegrator.nci.nih.gov/caintegrator/heatmap/retrieveFile.jnlp?JSESSIONID=12345&amp;file=" + HeatmapFileTypeEnum.LAYOUT.getFilename() +  "</argument>");
         assertEquals(reader.readLine(), "<argument>-url-annot</argument>");
-        assertEquals(reader.readLine(), "<argument>http://caintegrator2.nci.nih.gov/caintegrator2/heatmap/retrieveFile.jnlp?JSESSIONID=12345&amp;file=" + HeatmapFileTypeEnum.ANNOTATIONS.getFilename() +  "</argument>");
+        assertEquals(reader.readLine(), "<argument>http://caintegrator.nci.nih.gov/caintegrator/heatmap/retrieveFile.jnlp?JSESSIONID=12345&amp;file=" + HeatmapFileTypeEnum.ANNOTATIONS.getFilename() +  "</argument>");
         assertEquals(reader.readLine(), "<argument>-binary</argument>");
         assertEquals(reader.readLine(), "<argument>0</argument>");
         assertEquals(reader.readLine(), "<argument>-url-gz</argument>");

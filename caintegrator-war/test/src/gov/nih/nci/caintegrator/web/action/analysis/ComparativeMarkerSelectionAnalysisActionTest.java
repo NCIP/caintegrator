@@ -19,12 +19,13 @@ import gov.nih.nci.caintegrator.domain.application.Query;
 import gov.nih.nci.caintegrator.domain.application.QueryResult;
 import gov.nih.nci.caintegrator.domain.application.ResultRow;
 import gov.nih.nci.caintegrator.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.ComparativeMarkerSelectionAnalysisAction;
+import gov.nih.nci.caintegrator.web.ajax.DwrUtilFactory;
 import gov.nih.nci.caintegrator.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.HashSet;
@@ -45,6 +46,7 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
     public void setUp() throws Exception {
         super.setUp();
         subscription = new StudySubscription();
+        subscription.setUserWorkspace(new UserWorkspace());
 
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -73,7 +75,12 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         action.setAnalysisService(analysisService);
         action.setQueryManagementService(queryManagementService);
         action.setWorkspaceService(workspaceService);
-        action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
+
+        PersistedAnalysisJobAjaxUpdater updater = new PersistedAnalysisJobAjaxUpdater();
+        updater.setWorkspaceService(workspaceService);
+        updater.setDwrUtilFactory(new DwrUtilFactory());
+
+        action.setAjaxUpdater(updater);
         action.prepare();
     }
 
@@ -130,6 +137,7 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.OPEN_ACTION);
         assertEquals(ActionSupport.SUCCESS, action.execute());
         action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
+        action.getCurrentComparativeMarkerSelectionAnalysisJob().setId(1L);
         assertEquals("status", action.execute());
     }
 
@@ -140,6 +148,7 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
 
         when(queryManagementService.execute(any(Query.class))).thenReturn(getValidQueryResults());
         action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
+        action.getCurrentComparativeMarkerSelectionAnalysisJob().setId(1L);
         action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query1");
         action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryNames().add("[Q]-query2");
         assertEquals("status", action.execute());

@@ -198,7 +198,9 @@ public abstract class AbstractMockitoTest {
                 return generateArrayDataValues(request);
             }
         });
-        when(arrayDataService.loadArrayDesign(any(PlatformConfiguration.class))).thenReturn(new PlatformConfiguration());
+        PlatformConfiguration loadedPlatformConfiguration = new PlatformConfiguration();
+        loadedPlatformConfiguration.setId(1L);
+        when(arrayDataService.loadArrayDesign(any(PlatformConfiguration.class))).thenReturn(loadedPlatformConfiguration);
         when(arrayDataService.getFoldChangeValues(any(DataRetrievalRequest.class), anyListOf(ArrayDataValues.class),
                 any(PlatformChannelTypeEnum.class))).thenAnswer(new Answer<ArrayDataValues>() {
                     @Override
@@ -228,14 +230,14 @@ public abstract class AbstractMockitoTest {
 
         List<PlatformConfiguration> platformConfigurations = new ArrayList<PlatformConfiguration>();
         PlatformConfiguration config1 = new PlatformConfiguration();
-        config1.setId(1l);
+        config1.setId(1L);
         config1.setName("name");
         config1.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         config1.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         config1.setStatus(Status.PROCESSING);
         config1.setDeploymentStartDate(new Date());
         PlatformConfiguration config2 = new PlatformConfiguration();
-        config2.setId(1l);
+        config2.setId(2L);
         config2.setName("name2");
         config2.setStatus(Status.LOADED);
         config2.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
@@ -250,7 +252,7 @@ public abstract class AbstractMockitoTest {
         when(arrayDataService.getPlatformConfigurations()).thenReturn(platformConfigurations);
 
         PlatformConfiguration config = new PlatformConfiguration();
-        config.setId(1l);
+        config.setId(1L);
         config.setName("name");
         config.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         config.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
@@ -300,6 +302,13 @@ public abstract class AbstractMockitoTest {
         jobInfo.setJobInfo(new JobInfo());
         when(analysisService.executeGenePatternJob(any(ServerConnectionProfile.class), any(AnalysisMethodInvocation.class))).thenReturn(jobInfo);
         when(analysisService.createKMPlot(any(StudySubscription.class), any(AbstractKMParameters.class))).thenReturn(new KMPlotImpl());
+        when(analysisService.getRefreshedStudySubscription(any(StudySubscription.class))).thenAnswer(new Answer<StudySubscription>() {
+            @Override
+            public StudySubscription answer(InvocationOnMock invocation) throws Throwable {
+                StudySubscription subscription = (StudySubscription) invocation.getArguments()[0];
+                return subscription;
+            }
+        });
     }
 
     private void setUpDeploymentService() {
