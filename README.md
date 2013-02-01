@@ -15,7 +15,6 @@ You will find more details about caIntegrator in the following links:
  * Issue Tracker: https://tracker.nci.nih.gov/browse/CAINT
  * Documentation:https://wiki.nci.nih.gov/display/caIntegrator/caIntegrator+Documentation
  * Mailing List: TBA
- * NCI OSDI: https://wiki.nci.nih.gov/display/caBIGCommunityCode/CBIIT+Open+Source+Development+Initiative
 
 
 Please join us in further developing and improving caIntegrator.
