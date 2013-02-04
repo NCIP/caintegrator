@@ -14,5 +14,6 @@ You will find more details about caIntegrator in the following links:
  * Code Repository: http://github.com/NCIP/caintegrator
  * Issue Tracker: https://tracker.nci.nih.gov/browse/CAINT
  * Documentation: https://wiki.nci.nih.gov/x/JgUuAQ
+ * Installer Downloads: https://gforge.nci.nih.gov/frs/?group_id=507
 
 Please join us in further developing and improving caIntegrator.
