@@ -10,12 +10,10 @@ Please see the NOTICE and LICENSE files for details.
 
 You will find more details about caIntegrator in the following links:
 
- * Home Page:https://wiki.nci.nih.gov/display/caIntegrator/caIntegrator
- * Code Repository: http://github.com/NCIP/caintegrator-data
+ * Home Page: https://wiki.nci.nih.gov/x/c4b3Ag
+ * Code Repository: http://github.com/NCIP/caintegrator
  * Issue Tracker: https://tracker.nci.nih.gov/browse/CAINT
- * Documentation:https://wiki.nci.nih.gov/display/caIntegrator/caIntegrator+Documentation
- * Mailing List: TBA
- * NCI OSDI: https://wiki.nci.nih.gov/display/caBIGCommunityCode/CBIIT+Open+Source+Development+Initiative
-
+ * Documentation: https://wiki.nci.nih.gov/x/JgUuAQ
+ * Installer Downloads: https://gforge.nci.nih.gov/frs/?group_id=507
 
 Please join us in further developing and improving caIntegrator.
