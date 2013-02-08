@@ -128,11 +128,6 @@
                 <s:textfield name="preprocessDatasetParameterSet.numExclude" label="Num Exclude" size="50" required="true" theme="css_xhtml"/> <br>
                 <s:checkbox name="preprocessDatasetParameterSet.logBaseTwo" label="Log Base Two" labelposition="left" theme="css_xhtml"/> <br>
                 <s:textfield name="preprocessDatasetParameterSet.numberOfColumnsAboveThreshold" label="Number Of Columns Above Threshold" size="50" required="true" theme="css_xhtml"/> <br>
-                <!-- Currently we don't want the user to choose this options, use default rows.  If we do, uncomment this -->
-                <!-- 
-                <s:select name="pcaParameters.clusterBy" label="Cluster By"
-                    list="pcaParameters.clusterByOptions" required="true" />
-                -->
             <br>
             <br>
             <br>

@@ -85,8 +85,8 @@
     
                 <s:actionerror/>
                 <s:form id="dnaAnalysisDataConfigurationForm" name="dnaAnalysisDataConfigurationForm"
-                    action="saveDnaAnalysisDataConfiguration"
-                    method="post" enctype="multipart/form-data" theme="css_xhtml">
+                    action="saveDnaAnalysisDataConfiguration" method="post" enctype="multipart/form-data" theme="css_xhtml">
+                    <s:token />
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="genomicSource.id" />
                     <s:hidden name="useGlad" value="false"/>

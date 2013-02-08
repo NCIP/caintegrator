@@ -39,6 +39,7 @@
                     <s:if test="editOn">
                         <s:form id="editGeneListForm" name="editGeneListForm" action="editGeneList"
                             method="post" enctype="multipart/form-data" theme="css_xhtml">
+                            <s:token />
                             <s:hidden name="selectedAction" />
                             <s:hidden name="listOldName" />
                             <s:hidden name="globalList" />

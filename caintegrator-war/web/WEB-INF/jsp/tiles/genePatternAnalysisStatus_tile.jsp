@@ -29,7 +29,9 @@
     <s:set name="displayableWorkspace" value="#session['displayableWorkspace']" />
     <div id="errors" style="color: red;"> </div>
     <br><br>
-        <s:form action="selectAnalysis" theme="simple"><table><tr>
+        <s:form action="selectAnalysis" theme="simple">
+            <s:token />
+        <table><tr>
         <td>
             <s:select id="analysisType" name="analysisType" label="Analysis Type"
                 list="analysisTypes" />

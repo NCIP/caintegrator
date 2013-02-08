@@ -3,7 +3,7 @@
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:form name="kaplanMeierAnnotationInputForm" id="kaplanMeierAnnotationInputForm" theme="simple">
-                
+    <s:token />                
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
        

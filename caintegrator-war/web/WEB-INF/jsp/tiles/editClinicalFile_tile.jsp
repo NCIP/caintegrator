@@ -24,11 +24,10 @@
 
             <tr>
                 <td colspan="2" style="padding: 5px;">
-
-                <s:form id="subjectAnnotationsForm" name="subjectAnnotationsForm"
-                action="saveClinicalSource" method="post" enctype="multipart/form-data">
-                <s:hidden name="studyConfiguration.id" />
-                <s:hidden name="clinicalSource.id" />
+                <s:form id="subjectAnnotationsForm" name="subjectAnnotationsForm" action="saveClinicalSource" method="post" enctype="multipart/form-data">
+                    <s:token />
+                    <s:hidden name="studyConfiguration.id" />
+                    <s:hidden name="clinicalSource.id" />
                 <table class="data">
                     <tr>
                         <th>Annotation Group</th>

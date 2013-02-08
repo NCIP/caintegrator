@@ -107,7 +107,7 @@
                 <td colspan="2" style="padding: 5px;">    
 
                 <s:form id="imagingSourceForm" name="imagingSourceForm" 
-                    action="saveImagingSource" method="post" enctype="multipart/form-data" >  <!-- action="saveImagingSource" -->
+                    action="saveImagingSource" method="post" enctype="multipart/form-data" >
                 <table>
                 <tr>
                     <td colspan="2">

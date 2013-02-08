@@ -46,6 +46,7 @@
                     
                 <s:form id="imagingSourceForm" name="imagingSourceForm" action="saveImagingSourceAnnotations"
                     method="post" enctype="multipart/form-data" theme="css_xhtml">
+                <s:token />
                 <s:hidden name="studyConfiguration.id" />
                 <s:hidden name="imageSourceConfiguration.id" />
                 

@@ -115,6 +115,7 @@
 
                     <s:actionerror/>
                     <s:form id="managePlatformForm" name="managePlatformForm" method="post" enctype="multipart/form-data" theme="css_xhtml">
+                        <s:token />
                         <s:hidden name="selectedAction" />
                         <s:select id="platformType" name="platformType" label="Platform Type"
                             list="@gov.nih.nci.caintegrator.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"

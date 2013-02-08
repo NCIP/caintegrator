@@ -96,6 +96,7 @@
                 <td colspan="2" style="padding: 0 0 1em 1em;"> 
 
             	<s:form name="fieldDescriptorTypeForm" action="%{saveFieldDescriptorTypeAction}">
+                    <s:token />
             	    <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="sourceId" />
                     <s:hidden name="groupId" />
@@ -108,6 +109,7 @@
                 <br>
                 
                 <s:form id="updateDefinition" cssClass="currentAnnotationDefinition">
+                    <s:token />
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="sourceId" />
                     <s:hidden name="groupId" />
@@ -210,9 +212,9 @@
             <tr>
                 <td colspan="2" style="padding: 5px;">     
 
-                <s:form name="keywordSearchForm" id="keywordSearchForm" 
-                        theme="simple" 
-                        onsubmit="runSearch('%{entityTypeForSearch}'); return false;">
+                <s:form name="keywordSearchForm" id="keywordSearchForm" theme="simple" 
+                    onsubmit="runSearch('%{entityTypeForSearch}'); return false;">
+                    <s:token />
                     <s:hidden id="searchFormStudyConfigurationId" name="studyConfiguration.id" />
                     <s:hidden name="sourceId" />
                     <s:hidden name="groupId" />

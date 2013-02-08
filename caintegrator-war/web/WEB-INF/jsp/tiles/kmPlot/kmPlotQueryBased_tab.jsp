@@ -3,6 +3,7 @@
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:form name="kaplanMeierQueryInputForm" id="kaplanMeierQueryInputForm" theme="simple">
+    <s:token />
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="resetSelected" value="false" />
           

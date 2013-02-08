@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="caintegrator2-war/src"/>
-	<classpathentry kind="src" path="caintegrator2-war/test/src"/>
+	<classpathentry kind="src" path="caintegrator-war/src"/>
+	<classpathentry kind="src" path="caintegrator-war/test/src"/>
 	<classpathentry kind="src" path="cbs-to-heatmap-jar/src"/>
 	<classpathentry kind="src" path="genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="kaplan-meier-jar/src"/>
@@ -156,5 +156,6 @@
 	<classpathentry kind="lib" path="lib/external-runtime/NCIACoreService-client.jar"/>
 	<classpathentry kind="lib" path="genepattern-service-jar/lib/compile/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="kaplan-meier-jar/lib/compile/weka-3.4.13.jar"/>
+	<classpathentry kind="lib" path="lib/test-junit/javassist-3.9.0.GA.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

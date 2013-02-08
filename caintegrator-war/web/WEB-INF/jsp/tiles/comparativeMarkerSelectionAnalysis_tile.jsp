@@ -35,7 +35,7 @@
     <div class="whitebg">   
         <s:actionerror/>
         <s:form id="comparativeMarkerSelectionAnalysisForm" action="comparativeMarkerSelectionAnalysis">
-        
+            <s:token />
             <s:hidden name="selectedAction" />
             
             <s:textfield name="currentComparativeMarkerSelectionAnalysisJob.name" label="Job Name" size="50" required="true" />

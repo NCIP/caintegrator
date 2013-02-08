@@ -7,7 +7,6 @@
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <script type="text/javascript" src="/caintegrator/common/js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="/caintegrator/common/js/jTruncate.js"></script>
 <script language="javascript">
 
     jQuery.noConflict();
@@ -169,6 +168,7 @@
     </s:div>
     <h2>Save Subject List</h2>
     <s:form id="myform">
+        <s:token />
         <tr><td colspan="2">
             <s:if test="%{anonymousUser}">
                 <font color="red"><strong>Must be registered to use this feature.</strong></font>

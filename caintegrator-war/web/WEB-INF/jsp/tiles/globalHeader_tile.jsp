@@ -61,7 +61,7 @@
         <s:if test="%{displayableWorkspace != null}">
         <div id="mystudies">
                <s:form action="workspace" theme="simple">
-
+                    <s:token />
                     <label for="currentStudySubscriptionId">
 	                    <s:if test="anonymousUser"> 
 	                        Public 

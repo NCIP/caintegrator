@@ -51,6 +51,7 @@
 
                     <s:actionerror/>
                     <s:form id="manageList" name="manageList" method="post" enctype="multipart/form-data" theme="simple">
+                        <s:token />
                         <s:hidden name="selectedAction" />
                         <table>
                             <tr>

@@ -3,6 +3,7 @@
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:form name="geneExpressionClinicalQueryInputForm" id="geneExpressionClinicalQueryInputForm" theme="simple">
+    <s:token />
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="resetSelected" value="false" />
     <!-- For caBio to know which form element to publish gene symbols to. -->

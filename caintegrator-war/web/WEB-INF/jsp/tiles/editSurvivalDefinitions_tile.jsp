@@ -34,6 +34,7 @@
                 <s:actionerror/>
             
                 <s:form name="survivalDefinitionForm" theme="simple">
+                    <s:token />
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="actionType" />
                     
@@ -60,6 +61,7 @@
                 <h1>Properties for New Survival Value Definition</h1>
                 </s:else>
                 <s:form name="editSurvivalDefinitionForm" theme="css_xhtml">
+                    <s:token />
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="survivalValueDefinition.id" />
                     <br />

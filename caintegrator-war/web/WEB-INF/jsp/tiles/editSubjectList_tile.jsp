@@ -39,8 +39,9 @@
                     <s:actionmessage/>
                     <s:actionerror/>
                     <s:if test="editOn">
-                        <s:form id="editListForm" name="editListForm" action="editSubjectList"
-                            method="post" enctype="multipart/form-data" theme="css_xhtml">
+                        <s:form id="editListForm" name="editListForm" action="editSubjectList" method="post" 
+                            enctype="multipart/form-data" theme="css_xhtml">
+                            <s:token />
                             <s:hidden name="selectedAction" />
                             <s:hidden name="listOldName" />
                             <s:hidden name="globalList" />

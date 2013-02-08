@@ -27,8 +27,8 @@
         <tr>
             <td colspan="2" style="padding: 5px;">    
 
-                <s:form id="annotationGroupForm" name="annotationGroupForm" 
-                    action="saveAnnotationGroup" method="post" enctype="multipart/form-data" >
+                <s:form id="annotationGroupForm" name="annotationGroupForm"  action="saveAnnotationGroup" 
+                    method="post" enctype="multipart/form-data" >
                     <s:hidden name="studyConfiguration.id" />
                     <s:hidden name="selectedAction" />
                     <s:hidden name="annotationGroup.id" />
@@ -73,6 +73,7 @@
             <tr>
                 <td colspan="2" style="padding: 5px;"> 
 	            <s:form action="saveFieldDescriptorsForGroup" method="post" enctype="multipart/form-data">
+                    <s:token />
 	                <s:hidden name="studyConfiguration.id" />
 	                <s:hidden name="annotationGroup.id" />
 	                <table class="data">

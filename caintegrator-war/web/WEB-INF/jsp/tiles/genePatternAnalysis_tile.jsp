@@ -18,7 +18,7 @@
     <div class="box2">   
     <div class="whitebg">   
         <s:form id="genePatternAnalysisForm" action="genePatternAnalysis">
-        
+            <s:token />
             <s:hidden name="selectedAction" />
         
             <s:textfield name="genePatternAnalysisForm.url" label="GenePattern Server URL" size="50" required="true" />

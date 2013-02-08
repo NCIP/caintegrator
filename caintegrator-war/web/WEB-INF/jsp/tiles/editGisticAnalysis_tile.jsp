@@ -38,6 +38,7 @@
                     <s:actionerror/>
                         <s:form id="editGisticAnalysisForm" name="editGisticAnalysisForm" action="editGisticAnalysis"
                             method="post" enctype="multipart/form-data" theme="css_xhtml">
+                            <s:token />
                             <s:hidden name="selectedAction" />
                             <s:hidden name="gisticAnalysis.id" />
                             <s:textfield name="gisticAnalysis.name" label="Gistic Analysis Name"

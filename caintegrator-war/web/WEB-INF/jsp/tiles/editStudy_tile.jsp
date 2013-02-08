@@ -164,6 +164,7 @@
                     <td>
 
                         <s:form cssStyle="text-align: center; display: inline-block" action="addStudyLogo" method="post" enctype="multipart/form-data" theme="css_xhtml">
+                            <s:token />
                             <s:hidden name="studyConfiguration.id"  />
                             
                             <!--Study Logo-->

@@ -73,8 +73,8 @@
             </s:div>
         
         <s:form id="gisticAnalysisForm" action="gisticAnalysis" method="post" enctype="multipart/form-data" theme="css_xhtml">
-        
-           <s:hidden name="selectedAction" />
+            <s:token />
+            <s:hidden name="selectedAction" />
             
             <s:textfield name="currentGisticAnalysisJob.name" label="Job Name" size="50" required="true" />
             <br />
