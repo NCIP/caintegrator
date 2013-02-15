@@ -1,5 +1,36 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+
+<script type="text/javascript" src="/caintegrator/common/js/jquery.editable-select.js"></script>
+<script type="text/javascript">
+    function toggleAll(idPrefix) {
+        var inputs = $('input[id^=' + idPrefix +']');
+        inputs.each(function () {
+            $(this).checked = $('#selectAll_' + idPrefix)[0].checked;
+        });
+    }
+    
+    function initToggleAll(idPrefix) {
+        var allSelected = true;
+        var inputs = $('input[id^=' + idPrefix +']');
+        inputs.each(function() {
+            if (!$(this).checked) {
+                allSelected = false;
+                return false;
+            }
+        });
+        $('#selectAll_' + idPrefix)[0].checked = allSelected;
+    }
+    $(document).ready(function() {
+        $('#selectAll_shownInBrowseCheckBox').click(function() {
+            toggleAll('shownInBrowseCheckBox');
+        });
+        initToggleAll('shownInBrowseCheckBox');
+        $('#selectAll_showInAuthorizationCheckBox').click(function() {
+            toggleAll('showInAuthorizationCheckBox');
+        });
+        initToggleAll('showInAuthorizationCheckBox');
+    });
+</script> 
 
 <div id="content">
 
@@ -31,8 +62,8 @@
                 <table class="data">
                     <tr>
                         <th>Annotation Group</th>
-                        <th>Visible <input type="checkbox" id="selectAll_shownInBrowseCheckBox" onclick="toggleAll('shownInBrowseCheckBox');"/></th>
-                        <th>Authorized <input type="checkbox" id="selectAll_showInAuthorizationCheckBox" onclick="toggleAll('showInAuthorizationCheckBox');"/></th>
+                        <th>Visible <input type="checkbox" id="selectAll_shownInBrowseCheckBox"/></th>
+                        <th>Authorized <input type="checkbox" id="selectAll_showInAuthorizationCheckBox"/></th>
                         <th>Annotation Definition</th>
                         <th>Annotation Header from File</th>
                         <th colspan="3" />Data from File</th>
@@ -120,32 +151,3 @@
 </div>
 
 <div class="clear"><br /></div>
-
-<script type="text/javascript" >
-    var authAllSelected = {};
-    function toggleAll(idPrefix) {
-        var form = $("subjectAnnotationsForm");
-        var inputs = form.getInputs("checkbox");
-        authAllSelected[idPrefix] = !authAllSelected[idPrefix];
-        inputs.each(function (elem) {
-            if (elem.id.indexOf(idPrefix) == 0) {
-                elem.checked = authAllSelected[idPrefix];
-            }
-        });
-    }
-
-    function initToggleAll(idPrefix) {
-        authAllSelected[idPrefix] = true;
-        var form = $("subjectAnnotationsForm");
-        var inputs = form.getInputs("checkbox");
-        inputs.each(function (elem) {
-            if (elem.id.indexOf(idPrefix) == 0) {
-                authAllSelected[idPrefix] &= elem.checked;
-            }
-        });
-        $("selectAll_" + idPrefix).checked = authAllSelected[idPrefix];
-    }
-
-    initToggleAll("shownInBrowseCheckBox");
-    initToggleAll("showInAuthorizationCheckBox");
-</script>

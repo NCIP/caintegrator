@@ -1,4 +1,3 @@
-<%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script type='text/javascript' src='dwr/interface/DicomRetrievalAjaxUpdater.js'></script>

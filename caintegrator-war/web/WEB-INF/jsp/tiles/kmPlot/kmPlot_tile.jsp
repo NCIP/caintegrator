@@ -1,8 +1,3 @@
-<%@ page language="java"
-    import="java.util.*, 
-    com.opensymphony.xwork2.ActionContext"
-    pageEncoding="ISO-8859-1"%>
-
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 <script type="text/javascript">

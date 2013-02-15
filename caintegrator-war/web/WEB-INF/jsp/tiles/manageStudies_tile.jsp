@@ -4,11 +4,7 @@
 <script type='text/javascript' src='dwr/interface/StudyDeploymentAjaxUpdater.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-<script type="text/javascript" src="/caintegrator/common/js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="/caintegrator/common/js/jTruncate.js"></script>
-<script type="text/javascript">
-    jQuery.noConflict();
-</script>
 
 <div id="content">
 
@@ -20,7 +16,7 @@
     }
     
     function truncateDescriptionDiv(divId) {
-        jQuery("#" + divId).jTruncate();
+        $("#" + divId).jTruncate();
     }
     
 </script>

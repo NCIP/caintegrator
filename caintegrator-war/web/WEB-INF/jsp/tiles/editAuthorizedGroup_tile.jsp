@@ -1,5 +1,4 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<script type="text/javascript" src="/caintegrator/common/js/dynatree/jquery.min.js"></script>
 <script type="text/javascript" src="/caintegrator/common/js/dynatree/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="/caintegrator/common/js/dynatree/jquery.cookie.js"></script>
 <link href="/caintegrator/common/js/dynatree/skin/ui.dynatree.css" rel="stylesheet" type="text/css" id="skinSheet">

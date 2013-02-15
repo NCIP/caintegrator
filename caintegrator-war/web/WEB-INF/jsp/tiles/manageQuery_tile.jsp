@@ -1,15 +1,6 @@
-<%@ page language="java"
-    import="java.util.*, 
-    com.opensymphony.xwork2.ActionContext"
-    pageEncoding="ISO-8859-1"%>
-
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
-
-<script type="text/javascript" src="/caintegrator/common/js/jquery-1.3.2.min.js"></script>
 <script language="javascript">
-
-    jQuery.noConflict();
 
     function setGroupAnnotations(onOff, size, checkboxListNum){
         for(i=1;i<=size;i++){
@@ -50,7 +41,7 @@
 
     function runSearch() {
         var isPotentiallyLargeQuery = '<s:property value="queryForm.isPotentiallyLargeQuery()"/>';
-        if (isPotentiallyLargeQuery == "true" || jQuery(':text[value=""][id^=FoldChangeGeneSymbol]').length != 0) {
+        if (isPotentiallyLargeQuery == "true" || $(':text[value=""][id^=FoldChangeGeneSymbol]').length != 0) {
             if (confirm("This query includes all genes and will potentially take many minutes to complete.\n"
                     + "Please confirm that you want to continue?")) {
             	showBusyDialog();
@@ -92,7 +83,7 @@
     }
     
     function openExportLink() {
-        var exportLink = jQuery("div.exportlinks");
+        var exportLink = $("div.exportlinks");
         if (exportLink.length == 1) {
             window.location.href = exportLink[0].getElementsByTagName("a")[0].href;
         }

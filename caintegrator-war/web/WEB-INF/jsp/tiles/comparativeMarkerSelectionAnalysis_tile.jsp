@@ -1,13 +1,10 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script type="text/javascript" src="/caintegrator/common/js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="/caintegrator/common/js/jquery.editable-select.js"></script>
 <script type="text/javascript">
-    jQuery.noConflict();
 
-    jQuery(function() {
-      jQuery('.editable-select').editableSelect(
+    $(function() {
+      $('.editable-select').editableSelect(
         {
           bg_iframe: true,
           onSelect: false,

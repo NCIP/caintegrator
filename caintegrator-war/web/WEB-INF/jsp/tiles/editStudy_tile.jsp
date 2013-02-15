@@ -22,6 +22,14 @@
         document.studyDeploymentForm.deployButton.disabled = false;
     }
     
+    $(document).ready(function() {
+         $('#addClinicalFile_clinicalFile').click(function() {
+             $('#add_clinical').slideToggle();
+         });
+         $('#addExternalLinks_externalLinksFile').click(function() {
+             $('#add_external_links').slideToggle();
+         })
+    });
     </script>
 
     <s:if test="%{studyConfiguration.id != null}">    
@@ -295,7 +303,7 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                            <li><a name="action:addClinicalFile_clinicalFile" id="addClinicalFile_clinicalFile" onclick="new Effect.toggle($('add_clinical'),'blind')" class="btn" style="margin: 0pt;" href="javascript://"><span class="btn_img"><span class="add">Add New</span></span></a></li>
+                            <li><a name="action:addClinicalFile_clinicalFile" id="addClinicalFile_clinicalFile" class="btn" style="margin: 0pt;" href="javascript://"><span class="btn_img"><span class="add">Add New</span></span></a></li>
                                 <s:url id="editSurvivalValueDefinitions" action="editSurvivalValueDefinitions" includeParams="none">
                                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                                         <s:param name="struts.token.name">struts.token</s:param>
@@ -428,7 +436,7 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                            <li><a name="action:addExternalLinks_externalLinksFile" id="addExternalLinks_externalLinksFile" onclick="new Effect.toggle($('add_external_links'),'blind')" class="btn" style="margin: 0pt;" href="javascript://"><span class="btn_img"><span class="add">Add New</span></span></a></li>
+                            <li><a name="action:addExternalLinks_externalLinksFile" id="addExternalLinks_externalLinksFile" class="btn" style="margin: 0pt;" href="javascript://"><span class="btn_img"><span class="add">Add New</span></span></a></li>
                         </ul>   
                     </del>
                 </th>
