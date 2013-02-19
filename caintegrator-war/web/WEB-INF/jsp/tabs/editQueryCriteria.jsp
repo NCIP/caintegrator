@@ -27,9 +27,10 @@
             <s:actionerror />
         </tr>
         <tr>
+            <td class="tableheader" style="width: 100px; padding: 20px;"><label for="searchcriteriaadd1">Search Criterion:</label></td>
             <td colspan="4" class="tableheader">
                 <s:select name="queryForm.criteriaGroup.criterionTypeName" id="searchcriteriaadd1"
-                    list="queryForm.criteriaTypeOptions" theme="simple"
+                    list="queryForm.criteriaTypeOptions" theme="simple" label="Search Criterion" 
                     cssStyle="margin-top: 10px; margin-left: 5px; width: 200px" />
                 <ul class="btnrow" style="margin: -22px 0 0 200px; height: 32px">
                 <li><s:a href="#" cssClass="btn" cssStyle="margin:0 5px;"
@@ -48,14 +49,14 @@
                 <tr>
                     <td class="label_inline"><s:property value="rowType" /></td>
                     <td class="value_inline">
-                        <s:select name="queryForm.criteriaGroup.rows[%{#rowStatus.index}].fieldName" 
+                        <s:select name="queryForm.criteriaGroup.rows[%{#rowStatus.index}].fieldName"
+                            id="criteriaGroup_%{#rowStatus.index}" 
                             headerKey=""
                             headerValue="-- Please Select --" 
                             list="availableFieldNames"
                             value="fieldName"
-                            label="Criterion" 
-                            onchange="submitForm('updateCriteria')"
-                            theme="simple" />
+                            theme="simple" 
+                            onchange="submitForm('updateCriteria')"/>
                     </td>
                     <td class="value_inline">
                         <table class="criterion">

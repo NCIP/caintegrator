@@ -1,6 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="authz" uri="http://acegisecurity.org/authz" %>
 
 <!--NCI/NIH Header-->
             
@@ -72,7 +70,8 @@
 	                       Studies:
                     </label>
                     <s:select label="My Studies" 
-                        name="currentStudySubscriptionId" 
+                        name="currentStudySubscriptionId"
+                        id="currentStudySubscriptionId" 
                         value="displayableWorkspace.currentStudySubscriptionId" 
                         headerKey="%{@gov.nih.nci.caintegrator.web.DisplayableUserWorkspace@NO_STUDY_SELECTED_ID}" 
                         headerValue="-- Please Select --"

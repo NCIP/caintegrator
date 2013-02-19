@@ -29,7 +29,7 @@
     <definition name="editSurvivalValueDefinitions" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSurvivalDefinitions_tile.jsp" />
         <put-attribute name="subTitle" value="Survival Value Definitions" />
-        <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
+        <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyNormal_tile.jsp" />
     </definition>
     
     <definition name="editClinicalFile" extends="cssBaseDef">
@@ -110,6 +110,7 @@
     
     <definition name="homepage" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/homepage_tile.jsp" />
+        <put-attribute name="subTitle" value="Login" />
     </definition>
     
     <definition name="browseStudy" extends="cssBaseDef">

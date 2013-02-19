@@ -157,7 +157,7 @@
             href="%{createAnnotationBasedGEPlot}" 
             formId="geneExpressionAnnotationInputForm" 
             showLoadingText="true"
-            loadingText="<img src='images/ajax-loader-processing.gif'/>"
+            loadingText="<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>"
             listenTopics="createAnnotationPlot" refreshOnShow="true" />
         
     </center>

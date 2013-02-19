@@ -147,7 +147,7 @@
                             <span class="wwctrl"></span>
                         </s:div>
                         <s:div id="addFileButtonDiv" cssStyle="%{addButtonDisplay}">
-                            <div class="wwlbl"><label class="label">&nbsp</label></div>
+                            <div class="wwlbl">&nbsp</div>
                             <div class="wwctrl">
                             <s:submit id="addFileButton" name="addFileButton" value="Add Annotation File" align="center"
                                 action="addAnnotationFile" onclick="setSelectedAction('addAnnotationFile')" theme="css_xhtml" />
@@ -156,7 +156,7 @@
                                 disabled="true" rows="3" cols="50" theme="css_xhtml" /><br>
                         </s:div>
                         <div class="wwgrp">
-                        <div class="wwlbl"><label class="label">&nbsp</label></div>
+                        <div class="wwlbl">&nbsp;</div>
                         <div class="wwctrl"><s:submit value="Create Platform" align="center" action="createPlatform"
                             onclick="return setSelectedAction('createPlatform', this.form.platformType.value);" theme="css_xhtml" /></div>
                         </div><br>
@@ -172,7 +172,7 @@
     <table class="form_wrapper_table">
         <tr>
             <th class="title" style="height: 2.5em;">Existing Platforms<span id="platformLoader">
-                 <img src="images/ajax-loader.gif"/></span></th>
+                 <img src="images/ajax-loader.gif" alt="ajax icon indicating loading process"/></span></th>
             <th class="alignright">&nbsp;</th>
         </tr>
         <tr>

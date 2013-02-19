@@ -102,9 +102,9 @@
                 <td><s:property value="authorizedGroup.authorizedGroup.groupDesc"/></td>
             </tr>
             <tr>
-                <td class="title">Group Members:</td>
+                <td class="title"><label for="groupMembers">Group Members:</label></td>
                 <td>
-                    <s:select list="groupMembers" listKey="loginName" listValue="%{lastName + ', ' + firstName}" size="10" disabled="true"/>
+                    <s:select list="groupMembers" id="groupMembers" listKey="loginName" listValue="%{lastName + ', ' + firstName}" size="10" disabled="true"/>
                 </td>
             </tr>
         </table>

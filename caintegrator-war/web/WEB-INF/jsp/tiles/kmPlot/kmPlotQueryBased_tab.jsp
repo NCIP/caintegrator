@@ -109,7 +109,7 @@
             href="%{createQueryBasedKMPlot}" 
             formId="kaplanMeierQueryInputForm" 
             showLoadingText="true"
-            loadingText="<img src='images/ajax-loader-processing.gif'/>"
+            loadingText="<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>"
             listenTopics="createQueryBasedKMPlot" refreshOnShow="true" />
         
     </center>

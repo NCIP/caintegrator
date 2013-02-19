@@ -98,8 +98,8 @@
                     <br/>
                     <s:textfield label="caArray Server Hostname" name="tempGenomicSource.serverProfile.hostname" id="caArrayHost" />
                     <br/>
-                    <s:div cssClass="wwlbl">
-                    	<label class="label">(Note:  caArray v 2.3 or newer is required) </label>
+                    <s:div cssClass="wwlbl label">
+                    	(Note:  caArray v 2.3 or newer is required)
                     </s:div>
                     <br />
                     <s:textfield label="caArray Server JNDI Port" name="tempGenomicSource.serverProfile.port" id="caArrayPort" />

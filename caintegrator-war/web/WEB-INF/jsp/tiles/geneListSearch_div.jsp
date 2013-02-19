@@ -30,7 +30,7 @@
             href="geneListSearch.action" 
             formId="geneListSearchForm" 
             showLoadingText="true"
-            loadingText="<img src='images/ajax-loader.gif'/>"
+            loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
             listenTopics="searchGeneList" 
             refreshOnShow="false" />
     </s:if>
