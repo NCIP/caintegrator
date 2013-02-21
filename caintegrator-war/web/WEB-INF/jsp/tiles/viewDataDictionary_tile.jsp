@@ -1,4 +1,3 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script language="javascript">
@@ -30,7 +29,7 @@
                 <tr>
                 <td>
 					<div class="wwgrp">
-					<div class="wwlbl" style="width: 7em; text-align: left;padding: 0 5px 0 5px;"><label class="label" for="annotationGroupForm_groupName" style="font-weight: normal;">Group Name:</label></div>
+					<div class="wwlbl" style="width: 7em; text-align: left;padding: 0 5px 0 5px;">Group Name:</div>
 					<div class="wwctrl" style="font-weight: bold;"><s:property value="name" /></div>
 					</div>
 				</td>
@@ -38,7 +37,7 @@
                 <tr>
                 <td>
                     <div class="wwgrp">
-                    <div class="wwlbl" style="width: 7em; text-align: left;padding: 0 5px 0 5px;"><label class="label" for="annotationGroupForm_groupName" style="font-weight: normal;">Description:</label></div>
+                    <div class="wwlbl" style="width: 7em; text-align: left;padding: 0 5px 0 5px;">Description:</div>
                     <div class="wwctrl" style="font-weight: bold;"><s:property value="description" /></div>
                     </div>
                 </td>

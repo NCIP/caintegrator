@@ -1,7 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="authz" uri="http://acegisecurity.org/authz" %>
-
 
 <!--NCI/NIH Header-->
             

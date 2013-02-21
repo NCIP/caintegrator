@@ -1,16 +1,6 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
             
 <div id="content">                      
-    <script language="javascript">
-        // This function is called at body onload because IE 7 puts the footer in the middle of the page
-        // sporadically, and this toggles it to go to the proper position.
-        function initializeJsp() {
-            var tbody = document.getElementById('survivalTypeDiv');
-            tbody.style.display = "none";
-            tbody.style.display = "";
-        }
-    </script>
     <h1 style="color: #FFFFFF; background: #263D6B; padding: 5px;">editing: <strong><s:property value="studyConfiguration.study.shortTitleText" /></strong></h1>    
     
     <!--Page Help-->
@@ -39,9 +29,11 @@
                     <s:hidden name="actionType" />
                     
             	    <s:select name="survivalDefinitionFormValues.survivalValueDefinitionId" 
+                              id="survivalDefinitions"
             	              list="survivalValueDefinitions" 
             	              listValue="value.name"
-                              label="Definitions"
+                              label="Survival Definitions"
+                              labelposition="top"
             	              size="5"/>
             	    <br> <br>
             	    <s:url id="newSurvivalValueDefinition" action="newSurvivalValueDefinition">
@@ -66,7 +58,7 @@
                     <s:hidden name="survivalValueDefinition.id" />
                     <br />
 		            <s:div cssStyle="padding: 1em 0 0 0;" id="survivalTypeDiv">
-		                <s:div cssClass="wwlbl"><label class="label">Survival Definition Type: </label></s:div>
+		                <s:div cssClass="wwlbl label">Survival Definition Type:</s:div>
 		                <s:div>
 		                    <s:radio theme="css_xhtml" name="survivalDefinitionFormValues.survivalValueType" list="#{'By Date':'By Date'}" onclick="document.getElementById('lengthOfTimeInputParams').style.display = 'none'; document.getElementById('dateInputParams').style.display = 'block';" />
 		                    <s:radio theme="css_xhtml" name="survivalDefinitionFormValues.survivalValueType" list="#{'By Length of time in study':'By Length of time in study'}" onclick="document.getElementById('dateInputParams').style.display = 'none'; document.getElementById('lengthOfTimeInputParams').style.display = 'block';" />
@@ -110,7 +102,7 @@
                     </s:div>
                     
                     <div style="position: relative; white-space: nowrap;">
-					<div class="wwlbl" id="wwlbl_webServiceUrl"><label class="label" for="editSurvivalValueDefinition_survivalDefinitionFormValues_lastFollowupDateId"></label>
+					<div class="wwlbl" id="wwlbl_webServiceUrl">&nbsp;
 					</div>
 					<div class="wwctrl" id="wwlbl_webServiceUrl">
 					   <s:submit value="Save" action="saveSurvivalValueDefinition" />

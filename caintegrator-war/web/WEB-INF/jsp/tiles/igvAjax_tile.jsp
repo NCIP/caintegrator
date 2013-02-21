@@ -17,7 +17,7 @@
     <h2>Current Status:</h2> 
 	<div id="overallStatusDiv">
 	
-	<br><img src="images/ajax-loader.gif" id="loading"/> <span id="currentStatus"> </span> 
+	<br><img src="images/ajax-loader.gif" id="loading" alt="ajax icon indicating loading process"/> <span id="currentStatus"> </span> 
 	</div>
 	
 	<div id="finalizedText"> </div>

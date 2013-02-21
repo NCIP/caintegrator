@@ -14,13 +14,12 @@
     <table class="form">
 
         <tr>
-            <td class="label"><label for="searchname">Query Name:</label></td>
-            <td class="value"><s:textfield id="saveName" label="Search Name" name="queryForm.query.name" length="100" theme="simple" /></td>
+            <td class="label"><label for="saveName">Query Name:</label></td>
+            <td class="value"><s:textfield id="saveName" name="queryForm.query.name" length="100" theme="simple" /></td>
         </tr>
         <tr>
-            <td class="label"><label for="searchdesc">Query Description:</label></td>
-            <td class="value"><s:textarea label="Search Description" name="queryForm.query.description" cols="40" rows="2"
-                theme="simple" /></td>
+            <td class="label"><label for="description">Query Description:</label></td>
+            <td class="value"><s:textarea id="description" name="queryForm.query.description" cols="40" rows="2" theme="simple" /></td>
 
         </tr>
 

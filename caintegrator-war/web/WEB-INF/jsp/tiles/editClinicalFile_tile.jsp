@@ -4,16 +4,16 @@
 <script type="text/javascript">
     function toggleAll(idPrefix) {
         var inputs = $('input[id^=' + idPrefix +']');
-        inputs.each(function () {
-            $(this).checked = $('#selectAll_' + idPrefix)[0].checked;
+        inputs.each(function(index, element) {
+            element.checked = $('#selectAll_' + idPrefix)[0].checked;
         });
     }
     
     function initToggleAll(idPrefix) {
         var allSelected = true;
         var inputs = $('input[id^=' + idPrefix +']');
-        inputs.each(function() {
-            if (!$(this).checked) {
+        inputs.each(function(index, element) {
+            if (!element.checked) {
                 allSelected = false;
                 return false;
             }
@@ -30,7 +30,7 @@
         });
         initToggleAll('showInAuthorizationCheckBox');
     });
-</script> 
+</script>
 
 <div id="content">
 

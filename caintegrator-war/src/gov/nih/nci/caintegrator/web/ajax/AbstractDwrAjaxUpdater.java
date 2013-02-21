@@ -27,7 +27,8 @@ public abstract class AbstractDwrAjaxUpdater {
     /**
      * Used to show a loading symbol.
      */
-    protected static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
+    protected static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\" "
+            + "alt=\"ajax icon indicating loading process\" />";
     private WorkspaceService workspaceService;
     private DwrUtilFactory dwrUtilFactory;
 

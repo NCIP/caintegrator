@@ -1,4 +1,3 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script type='text/javascript' src='dwr/interface/GenomicDataSourceAjaxUpdater.js'></script>
@@ -85,47 +84,47 @@
                         <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" cssStyle="width: 280px;"/>
                         <tr>
                             <td class="tdLabel" align="right">
-                                <label class="label">Allow public or Authorized Groups to browse this study:</label>
+                                <label class="label" for="publiclyAccessible">Allow public or Authorized Groups to browse this study:</label>
                             </td>
                             <td>
-                                <s:checkbox name="studyConfiguration.study.publiclyAccessible" theme="simple"/>
+                                <s:checkbox name="studyConfiguration.study.publiclyAccessible" id="publiclyAccessible" theme="simple"/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="tdLabel" align="right">
-                                <label class="label">Status:</label>
+                            <td class="tdLabel label" align="right">
+                                Status:
                             </td>
                             <td>
                                 <s:property value="studyConfiguration.status.value"/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="tdLabel" align="right">
-                                <label class="label">Status Description:</label>
+                            <td class="tdLabel label" align="right">
+                                Status Description:
                             </td>
                             <td>
                                 <s:property value="studyConfiguration.statusDescription"/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="tdLabel" align="right">
-                                <label class="label">Owner:</label>
+                            <td class="tdLabel label" align="right">
+                                Owner:
                             </td>
                             <td>
                                 <s:property value="studyConfiguration.userWorkspace.username"/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="tdLabel" align="right">
-                                <label class="label">Last Modified By:</label>
+                            <td class="tdLabel label" align="right">
+                                Last Modified By:
                             </td>
                             <td>
                                 <s:property value="studyConfiguration.lastModifiedBy.username"/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="tdLabel" align="right">
-                                <label class="label">Last Modified Date:</label>
+                            <td class="tdLabel label" align="right">
+                                Last Modified Date:
                             </td>
                             <td>
                                 <s:property value="studyConfiguration.displayableLastModifiedDate"/>
@@ -145,8 +144,8 @@
                                     <s:param name="struts.token" value="%{struts.token}" />
                                 </s:url>
                             <tr>
-                                <td class="tdLabel" align="right">
-	                                <label class="label">Study Log:</label>
+                                <td class="tdLabel label" align="right">
+	                                Study Log:
 	                            </td>
 	                            <td>
 	                               <s:a href="%{viewStudyLog}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="search">View Log</span></span></s:a> 
@@ -299,7 +298,7 @@
                 
         <table class="form_wrapper_table">
             <tbody><tr>
-                <th class="title">Subject Annotation Data Sources<span id="subjectSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
+                <th class="title">Subject Annotation Data Sources<span id="subjectSourceLoader"> <img src="images/ajax-loader.gif" alt="ajax icon indicating loading process"/> </span></th>
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
@@ -352,7 +351,7 @@
         
         <table class="form_wrapper_table">
             <tbody><tr>
-                <th class="title">Genomic Data Sources<span id="genomicSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
+                <th class="title">Genomic Data Sources<span id="genomicSourceLoader"> <img src="images/ajax-loader.gif" alt="ajax icon indicating loading process"/> </span></th>
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
@@ -393,7 +392,7 @@
 
         <table class="form_wrapper_table">
             <tbody><tr>
-                <th class="title">Imaging Data Sources<span id="imagingSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
+                <th class="title">Imaging Data Sources<span id="imagingSourceLoader"> <img src="images/ajax-loader.gif" alt="ajax icon indicating loading process"/> </span></th>
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">

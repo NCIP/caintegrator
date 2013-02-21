@@ -128,23 +128,23 @@
 
             	            <tr>
 	                            <td class="tdLabel" align="right">
-	                                <label class="label">Apply Max Number Mask:</label>
+	                                <label class="label" for="hasMaxNumberMask">Apply Max Number Mask:</label>
 	                            </td>
 	                            <td>
-	                                <s:checkbox name="maskForm.hasMaxNumberMask" theme="simple" disabled="%{numericMaskDisabled}"/>
-	                                <s:textfield name="maskForm.maxNumberMask.maxNumber" theme = "simple" disabled="%{numericMaskDisabled}"/>
-	                                <label class="label">(Max Number)</label>
+	                                <s:checkbox name="maskForm.hasMaxNumberMask" id="hasMaxNumberMask" theme="simple" disabled="%{numericMaskDisabled}"/>
+	                                <s:textfield name="maskForm.maxNumberMask.maxNumber"  id="maxNumber" theme = "simple" disabled="%{numericMaskDisabled}"/>
+	                                <label class="label" for="maxNumber">(Max Number)</label>
 	                            </td>
                             </tr>
             	            
             	            <tr>
                                 <td class="tdLabel" align="right">
-                                    <label class="label">Apply Numeric Range Mask:</label>
+                                    <label class="label" for="hasNumericRangeMask">Apply Numeric Range Mask:</label>
                                 </td>
                                 <td>
-                                    <s:checkbox name="maskForm.hasNumericRangeMask" theme="simple" disabled="%{numericMaskDisabled}"/>
-                                    <s:textfield name="maskForm.numericRangeMask.numericRange" theme = "simple" disabled="%{numericMaskDisabled}"/>
-                                    <label class="label">(Numeric Range)</label>
+                                    <s:checkbox name="maskForm.hasNumericRangeMask" id="hasNumericRangeMask" theme="simple" disabled="%{numericMaskDisabled}"/>
+                                    <s:textfield name="maskForm.numericRangeMask.numericRange" id="numericRange" theme = "simple" disabled="%{numericMaskDisabled}"/>
+                                    <label class="label" for="numericRange">(Numeric Range)</label>
                                 </td>
                             </tr>
             	            
@@ -206,7 +206,7 @@
     <s:set name="entityTypeForSearch" value="entityTypeForSearch" />
     <table class="form_wrapper_table">
             <tr>
-                <th class="title" style="height: 2.5em;">Search for an Annotation Definition: </th>
+                <th class="title" style="height: 2.5em;"><label for="keywordsForSearch">Search for an Annotation Definition:</label></th>
                 <th class="alignright">&nbsp;</th>
             </tr>
             <tr>

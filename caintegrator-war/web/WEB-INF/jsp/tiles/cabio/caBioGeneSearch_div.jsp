@@ -56,7 +56,7 @@
         href="%{caBioSearch}" 
         formId="caBioGeneSearchForm" 
         showLoadingText="true"
-        loadingText="<img src='images/ajax-loader.gif'/>"
+        loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
         listenTopics="searchCaBio" 
         refreshOnShow="false"
         cssStyle="padding: 0 0 0 5px;" />

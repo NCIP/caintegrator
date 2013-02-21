@@ -146,9 +146,6 @@
                         var origPassword = document.imagingSourceForm.nbiaPassword.value;
                     </script>
                 <tr>
-                		<!-- 
-                		  <s:file name="imageAnnotationFile" label="Image Series Annotation File" /> 
-                		-->
                 		<s:if test="imageSourceConfiguration.mappingFileName != null">
                 		<tr>
                 		    <td class="tdLabel">

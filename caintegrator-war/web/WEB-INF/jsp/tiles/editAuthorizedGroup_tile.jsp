@@ -1,9 +1,8 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<script type="text/javascript" src="/caintegrator/common/js/dynatree/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="/caintegrator/common/js/dynatree/jquery.cookie.js"></script>
 <link href="/caintegrator/common/js/dynatree/skin/ui.dynatree.css" rel="stylesheet" type="text/css" id="skinSheet">
 <link href="/caintegrator/common/js/dynatree/custom/custom.css" rel="stylesheet" type="text/css" >
-<script type="text/javascript" src="/caintegrator/common/js/dynatree/jquery.dynatree.js"></script>
+<script type="text/javascript" src="/caintegrator/common/js/dynatree/jquery.dynatree-1.2.4.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $("#left_tree").dynatree({
@@ -11,6 +10,7 @@
             generateIds: true,
             clickFolderMode: 2,
             activeVisible: true,
+            debugLevel: 1,
             onSelect: function(select, dtnode) {
                 dtnode.visit(function(dtnode) {
                     $("#descriptor-" + dtnode.data.key).attr("checked", select);
@@ -28,6 +28,7 @@
             generateIds: true,
             clickFolderMode: 2,
             activeVisible: true,
+            debugLevel: 1,
             onSelect: function(select, dtnode) {
                 dtnode.visit(function(dtnode) {
                     $("#datasource-" + dtnode.data.key).attr("checked", select);
@@ -46,6 +47,7 @@
             generateIds: true,
             clickFolderMode: 2,
             activeVisible: true,
+            debugLevel: 1,
             onSelect: function(select, dtnode) {
                 dtnode.visit(function(dtnode) {
                     $("#definition-id-" + dtnode.data.key).attr("checked", select);
@@ -102,9 +104,9 @@
                 <td><s:property value="authorizedGroup.authorizedGroup.groupDesc"/></td>
             </tr>
             <tr>
-                <td class="title">Group Members:</td>
+                <td class="title"><label for="groupMembers">Group Members:</label></td>
                 <td>
-                    <s:select list="groupMembers" listKey="loginName" listValue="%{lastName + ', ' + firstName}" size="10" disabled="true"/>
+                    <s:select list="groupMembers" id="groupMembers" listKey="loginName" listValue="%{lastName + ', ' + firstName}" size="10" disabled="true"/>
                 </td>
             </tr>
         </table>
