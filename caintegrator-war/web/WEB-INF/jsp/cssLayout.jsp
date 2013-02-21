@@ -19,15 +19,64 @@
 		<link rel="address bar icon" href="/caintegrator/images/favicon.ico" />
 		<link rel="icon" href="/caintegrator/images/favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="/caintegrator/images/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" href="/caintegrator/common/css/ui-lightness/jquery-ui-1.10.1.custom.css" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/caintegrator2.css" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/cai2modal.css" />
         
-        <sx:head parseContent="true" />
         <script type="text/javascript" src="/caintegrator/common/js/pde.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/caintegrator2.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/cai2modal.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/onlinehelp.js"></script>
-        <script type="text/javascript" src="/caintegrator/common/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/jquery-ui-1.10.1.custom.min.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/jquery.idletimer.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/jquery.idletimeout.js"></script>
+        <s:if test="%{!anonymousUser}"> 
+            <script type="text/javascript">
+            $(document).ready(function() {
+                $("#dialog").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 400,
+                    height: 200,
+                    closeOnEscape: false,
+                    draggable: false,
+                    resizable: false,
+                    buttons: {
+                        'Yes, Keep Working': function(){
+                            $(this).dialog('close');
+                            },
+                        'No, Logoff': function(){
+                            window.location = "login.jsp";
+                            }
+                    },
+                    dialogClass: 'no-close'
+                });
+                // cache a reference to the countdown element so we don't have to query the DOM for it on each ping.
+                var $countdown = $("#dialog-countdown");
+
+                // start the idle timer plugin
+                $.idleTimeout('#dialog', 'div.ui-dialog-buttonpane button:first', {
+                    //Idle after 29.5 minutes
+                    idleAfter: 1770,
+                    //Poll every 30 minutes
+                    pollingInterval: 1800,
+                    keepAliveURL: 'keepAlive.jsp',
+                    serverResponseEquals: 'OK',
+                    onTimeout: function(){
+                        window.location = "sessionTimeout.jsp";
+                    },
+                    onIdle: function(){
+                        $(this).dialog("open");
+                    },
+                    onCountdown: function(counter){
+                        $countdown.html(counter);
+                    }
+                });
+            });
+            </script>
+        </s:if>
+        <sx:head parseContent="true" />
 	</head>
 	
 	
@@ -46,6 +95,16 @@
 			<!--Work Area-->
 				
 			<div id="main">	
+                <s:if test="%{!anonymousUser}"> 
+                    <div id="dialog" title="Your session is about to expire!">
+                        <p>
+                            <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+                            You will be logged off in <span id="dialog-countdown" style="font-weight:bold"></span> seconds.
+                        </p>
+                        <p>Do you want to continue your session?</p>
+                    </div>
+                </s:if>
+        
                 <sx:div id="TB_overlay" cssClass="TB_overlayBG"/>
                 <!-- Begin hidden busyDialogDiv -->
                 <s:div id="busyDialogDiv">
