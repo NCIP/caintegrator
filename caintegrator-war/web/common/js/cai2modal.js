@@ -46,62 +46,36 @@
     	hideGeneListInputForm(document.geneListSearchForm);
     }
     
-//********************//
-// CaBio Modal Dialog //
-//********************//
     
-    function showCaBioInputForm(geneSymbolElementIdValue) {
+    function showBioDbNetInputForm(geneSymbolElementIdValue) {
         document.getElementById('TB_overlay').style.display = 'block';
-        document.getElementById('caBioGeneSearchInputDiv').style.display = 'block';
-        document.getElementById('caBioGeneSearchInputDiv').style.visibility = 'visible';
-        if (document.caBioGeneSearchForm.caBioGeneSearchTopicPublished.value == 'false') {
-            document.caBioGeneSearchForm.caBioGeneSearchTopicPublished.value = true;
-            dojo.event.topic.publish('caBioGeneSearchTopic');    
-        } else {
-            hideCaBioSearchResults();
-        }
-        document.caBioGeneSearchForm.geneSymbolElementId.value = geneSymbolElementIdValue;        
+        document.getElementById('bioDbNetSearchInputDiv').style.display = 'block';
+        document.getElementById('bioDbNetSearchInputDiv').style.visibility = 'visible';
+        dojo.event.topic.publish('bioDbNetSearchTopic');    
+        document.bioDbNetSearchForm.geneSymbolElementId.value = geneSymbolElementIdValue;        
     }
     
-    function runCaBioSearch() {
-        document.caBioGeneSearchForm.runSearchSelected.value = 'true';
-        document.caBioGeneSearchForm.runCaBioGeneSearchFromPathways.value = 'false';
-        dojo.event.topic.publish('searchCaBio'); 
-        document.getElementById('caBioGeneSearchResultsDiv').style.display = 'block';
-        document.getElementById('caBioGeneSearchResultsDiv').style.visibility = 'visible';
-    }
-    
-    function runCaBioPathwayGeneSearch(numberPathways) {
-        var checkedBoxesString = "";
-        for(i=0; i<numberPathways; i++) {
-            if (document.getElementById("caBioPathwayCkBox_" + i).checked) {
-                checkedBoxesString += i + " ";
-            }
-        }
-        document.caBioGeneSearchForm.checkedPathwayBoxes.value = checkedBoxesString;
-        document.caBioGeneSearchForm.runSearchSelected.value = 'false';
-        document.caBioGeneSearchForm.runCaBioGeneSearchFromPathways.value = 'true';
-        dojo.event.topic.publish('searchCaBio'); 
-        document.getElementById('caBioGeneSearchResultsDiv').style.display = 'block';
-        document.getElementById('caBioGeneSearchResultsDiv').style.visibility = 'visible';
-    }
-    
-    
-    function hideCaBioInputForm() {
+    function hideBioDbNetInputForm() {
         document.getElementById('TB_overlay').style.display = 'none';
-        document.getElementById('caBioGeneSearchInputDiv').style.visibility = 'hidden';
-        hideCaBioSearchResults();
+        document.getElementById('bioDbNetSearchInputDiv').style.visibility = 'hidden';
+        hideBioDbNetSearchResults();
     }
     
-    function hideCaBioSearchResults() {
-        document.getElementById('caBioGeneSearchResultsDiv').style.display = 'none';
-        document.getElementById('caBioGeneSearchResultsDiv').style.visibility = 'hidden';
+    function hideBioDbNetSearchResults() {
+        document.getElementById('bioDbNetSearchResultsDiv').style.display = 'none';
+        document.getElementById('bioDbNetSearchResultsDiv').style.visibility = 'hidden';
     }
     
-    function captureCaBioCheckBoxes(geneSymbolsTextbox) {
-        var inputForm = document.caBioGeneSearchForm;
+    function runBioDbNetSearch() {
+        dojo.event.topic.publish('searchBioDbNet'); 
+        document.getElementById('bioDbNetSearchResultsDiv').style.display = 'block';
+        document.getElementById('bioDbNetSearchResultsDiv').style.visibility = 'visible';
+    }
+    
+    function captureBioDbNetCheckBoxes(geneSymbolsTextbox) {
+        var inputForm = document.bioDbNetSearchForm;
         captureCheckBoxes(inputForm, geneSymbolsTextbox);
-        hideCaBioInputForm(inputForm);
+        hideBioDbNetInputForm();
     }
     
     function captureCheckBoxes(inputForm, geneSymbolsTextbox) {

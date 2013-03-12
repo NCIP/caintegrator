@@ -77,6 +77,9 @@ import gov.nih.nci.caintegrator.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator.external.biodbnet.BioDbNetRemoteService;
+import gov.nih.nci.caintegrator.external.biodbnet.domain.Db2DbParams;
+import gov.nih.nci.caintegrator.external.biodbnet.domain.DbWalkParams;
 import gov.nih.nci.caintegrator.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator.external.ncia.NCIADicomJob;
@@ -102,6 +105,7 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.genepattern.gistic.Marker;
 import org.genepattern.webservice.JobInfo;
@@ -114,6 +118,11 @@ import org.mockito.stubbing.Answer;
  *
  */
 public abstract class AbstractMockitoTest {
+    private static final String GENE_ID_RESULTS_FILE_LOCATION = "/bioDbNet/gene_id_search.txt";
+    private static final String GENE_SYMBOL_RESULTS_FILE_LOCATION = "/bioDbNet/gene_by_id_search.txt";
+    private static final String GENE_ALIAS_RESULTS_FILE_LOCATION = "/bioDbNet/gene_alias_search.txt";
+    private static final String PATHWAY_RESULTS_FILE_LOCATION = "/bioDbNet/gene_pathway_search.txt";
+
     protected CaArrayFacade caArrayFacade;
     protected CaIntegrator2Dao dao;
     protected ArrayDataService arrayDataService;
@@ -126,6 +135,7 @@ public abstract class AbstractMockitoTest {
     protected FileManager fileManager;
     protected QueryManagementService queryManagementService;
     protected KMPlotService kmPlotService;
+    protected BioDbNetRemoteService bioDbNetRemoteService;
     private StudySubscription studySubscription;
 
     /**
@@ -146,6 +156,7 @@ public abstract class AbstractMockitoTest {
         setUpFileManager();
         setUpQueryManagementService();
         setUpKmPlotService();
+        setUpBioDbNetRemoteService();
     }
 
     /**
@@ -585,6 +596,44 @@ public abstract class AbstractMockitoTest {
                 }
                 valuesList.add(values);
                 return valuesList;
+            }
+        });
+    }
+
+    private void setUpBioDbNetRemoteService() {
+        final File geneIdResultsFile = new File(this.getClass().getResource(GENE_ID_RESULTS_FILE_LOCATION).getFile());
+        final File geneSymbolResultsFile =
+                new File(this.getClass().getResource(GENE_SYMBOL_RESULTS_FILE_LOCATION).getFile());
+        final File geneAliasResultsFile =
+                new File(this.getClass().getResource(GENE_ALIAS_RESULTS_FILE_LOCATION).getFile());
+        final File genePathwayResultsFile =
+                new File(this.getClass().getResource(PATHWAY_RESULTS_FILE_LOCATION).getFile());
+
+        bioDbNetRemoteService = mock(BioDbNetRemoteService.class);
+        when(bioDbNetRemoteService.db2db(any(Db2DbParams.class))).thenAnswer(new Answer<String>() {
+            @Override
+            public String answer(InvocationOnMock invocation) throws Throwable {
+                Db2DbParams params = (Db2DbParams) invocation.getArguments()[0];
+                String results = StringUtils.EMPTY;
+                if (StringUtils.equals("Gene ID", params.getOutputs())) {
+                    results = FileUtils.readFileToString(geneIdResultsFile);
+                } else if (StringUtils.equals("Gene ID", params.getInput())) {
+                    results = FileUtils.readFileToString(geneSymbolResultsFile);
+                } else if (StringUtils.equals("Biocarta Pathway Name", params.getInput())) {
+                    results = FileUtils.readFileToString(genePathwayResultsFile);
+                }
+                return results;
+            }
+        });
+        when(bioDbNetRemoteService.dbWalk(any(DbWalkParams.class))).thenAnswer(new Answer<String>() {
+            @Override
+            public String answer(InvocationOnMock invocation) throws Throwable {
+                DbWalkParams params = (DbWalkParams) invocation.getArguments()[0];
+                String results = StringUtils.EMPTY;
+                if (StringUtils.equals("Gene Symbol and Synonyms->Gene ID", params.getDbPath())) {
+                    results = FileUtils.readFileToString(geneAliasResultsFile);
+                }
+                return results;
             }
         });
     }

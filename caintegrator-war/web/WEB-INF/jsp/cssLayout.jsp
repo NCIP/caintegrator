@@ -96,7 +96,7 @@
 				
 			<div id="main">	
                 <s:if test="%{!anonymousUser}"> 
-                    <div id="dialog" title="Your session is about to expire!">
+                    <div id="dialog" title="Your session is about to expire!" style="display: none;">
                         <p>
                             <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
                             You will be logged off in <span id="dialog-countdown" style="font-weight:bold"></span> seconds.
@@ -128,20 +128,18 @@
                 </s:form>
                 <!-- End geneListSearchForm -->
                 
-                <!-- Begin hidden caBioGeneSearchForm -->
-                <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;" theme="css_xhtml">
-                    <!-- For caBio to know which form element to publish gene symbols to. -->
+                <!-- Begin hidden bioDbNetSearchForm -->
+                <s:form name="bioDbNetSearchForm" id="bioDbNetSearchForm" onsubmit="runBioDbNetSearch(); return false;" theme="css_xhtml">
+                    <!-- For bioDbNet to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
-                    <s:hidden name="caBioGeneSearchTopicPublished" value="false" />
-                    <sx:div id="caBioGeneSearchInputDiv"
-                        href="caBioSearchInput.action"
+                    <sx:div id="bioDbNetSearchInputDiv"
+                        href="bioDbNetSearchInput.action"
                         showLoadingText="true"
                         loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
-                        listenTopics="caBioGeneSearchTopic"
+                        listenTopics="bioDbNetSearchTopic"
                         refreshOnShow="false" 
-                        cssStyle="display:none;visibility:hidden;margin-top:-62px;width:830px;max-height: 300px; overflow:auto;"/>
+                        cssStyle="display:none;visibility:hidden;margin-top:-62px;width:830px;max-height: 500px; overflow:auto;"/>
                 </s:form>
-                <!-- End caBioGeneSearchForm -->
 				<div id="contentwrapper">
 				    
 				    <!--Content-->

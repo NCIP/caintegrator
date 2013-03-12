@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="caintegrator-war/src"/>
+	<classpathentry kind="src" path="caintegrator-war/test/resources"/>
 	<classpathentry kind="src" path="caintegrator-war/test/src"/>
 	<classpathentry kind="src" path="cbs-to-heatmap-jar/src"/>
 	<classpathentry kind="src" path="genepattern-service-jar/src"/>
@@ -91,7 +92,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/nci-commons-core-1.2.18.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ognl-3.0.5.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ojdbc14-10.2.0.3.0.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/opencsv-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/puretls-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/quartz-1.6.1.jar"/>
@@ -134,7 +134,6 @@
 	<classpathentry kind="lib" path="lib/external-runtime/ComparativeMarkerSelMAGESvc-service.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/gpCabigUtil.jar"/>
 	<classpathentry kind="lib" path="kaplan-meier-jar/lib/compile/jfreechart-1.0.9.jar"/>
-	<classpathentry kind="lib" path="lib/external-runtime/cabio43-client-framework.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/CaCGHcall-common.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/CaCGHcall-client.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/CaCGHcall-stubs.jar"/>
@@ -151,11 +150,11 @@
 	<classpathentry kind="lib" path="lib/external-runtime/PreprocessDatasetMAGEService-service.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/PreprocessDatasetMAGEService-stubs.jar"/>
 	<classpathentry kind="lib" path="cbs-to-heatmap-jar/lib/compile/commons-cli-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/external-runtime/cabio43-beans.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/ncia-beans.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/NCIACoreService-client.jar"/>
 	<classpathentry kind="lib" path="genepattern-service-jar/lib/compile/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="kaplan-meier-jar/lib/compile/weka-3.4.13.jar"/>
 	<classpathentry kind="lib" path="lib/test-junit/javassist-3.9.0.GA.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-runtime/opencsv-2.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

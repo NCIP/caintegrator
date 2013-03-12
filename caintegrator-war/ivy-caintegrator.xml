@@ -70,7 +70,7 @@
     <dependency org="org.hibernate" name="hibernate-search" rev="3.1.0.GA" conf="compile->master"/>
     <dependency org="bouncycastle" name="bcprov-jdk15" rev="140" conf="compile,runtime->master"/>
     <dependency org="ucar" name="nccore" rev="4.0.34" conf="runtime->master"/>
-    <dependency org="net.sf.opencsv" name="opencsv" rev="1.8" conf="runtime->master"/>
+    <dependency org="net.sf.opencsv" name="opencsv" rev="2.3" conf="runtime->master"/>
     <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.4.7" conf="runtime->master"/>
     <dependency org="cglib" name="cglib" rev="2.1_3" conf="runtime->default" transitive="false"/>
     <dependency org="dom4j" name="dom4j" rev="1.6" conf="runtime->master"/>
@@ -145,6 +145,11 @@
     <dependency org="org.directwebremoting" name="dwr" rev="2.0.6" conf="runtime->master" />
     <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" conf="runtime->master" />
     
+    <!--bioDbNet Web Services Libraries -->  
+    <dependency org="org.apache.axis" name="axis-jaxrpc" rev="1.4" conf="runtime->master"/>
+    <dependency org="org.apache.axis" name="axis-saaj" rev="1.4" conf="runtime->master"/>
+    <dependency org="wsdl4j" name="wsdl4j" rev="1.6.2" conf="runtime->master"/>
+        
     <!-- caGrid 1.4 stuff -->
     <dependency org="gov.nih.nci.cagrid" name="cagrid-data-utils" rev="1.4" conf="runtime->default" />
     <dependency org="cagrid" name="cagrid-data-stubs" rev="1.4" conf="runtime->master" />

@@ -6,7 +6,7 @@
     <s:token />
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="resetSelected" value="false" />
-    <!-- For caBio to know which form element to publish gene symbols to. -->
+    <!-- For bioDbNet to know which form element to publish gene symbols to. -->
     <s:hidden name="geneSymbolElementId" />
 
     <!-- Gene Expression Inputs -->

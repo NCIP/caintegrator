@@ -12,8 +12,8 @@
 
 <@s.a theme="simple" href="" 
     cssClass="caBioLogo" 
-    title="Click to search caBIO for genes based on keywords, symbols, or pathways." 
-    onclick="showCaBioInputForm('${parameters.textFieldId}')">
+    title="Click to search bioDbNet for genes based on ids, symbols, or pathways." 
+    onclick="showBioDbNetInputForm('${parameters.textFieldId}')">
     &nbsp;
 </@s.a>
 

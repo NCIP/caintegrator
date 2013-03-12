@@ -1469,16 +1469,18 @@
             <result name="error" type="tiles">managePlatforms</result>
         </action>
         
-        <!-- CaBio Actions -->
-        <action name="caBioSearchInput" method="input" class="caBioSearchAction">
-            <result>/WEB-INF/jsp/tiles/cabio/caBioGeneSearch_div.jsp</result>
+        <!-- bioDbNEt Actions -->
+        <action name="bioDbNetSearchInput" method="input" class="bioDbNetSearchAction">
+            <result>/WEB-INF/jsp/tiles/bioDbNet/bioDbNetSearch.jsp</result>
         </action>
         
-        <action name="caBioSearch" method="searchCaBio" class="caBioSearchAction">
-            <result>/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
-            <result name="input">/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
-            <result name="error">/WEB-INF/jsp/tiles/cabio/caBioGeneSearchResults_div.jsp</result>
+        <action name="bioDbNetSearch" method="search" class="bioDbNetSearchAction">
+            <result>/WEB-INF/jsp/tiles/bioDbNet/bioDbNetSearchResults.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/bioDbNet/bioDbNetSearchResults.jsp</result>
+            <result name="error">/WEB-INF/jsp/tiles/bioDbNet/bioDbNetSearchResults.jsp</result>
         </action>
+        
+        
     </package>
     
     <package name="registration" namespace="/registration" extends="caintegrator">

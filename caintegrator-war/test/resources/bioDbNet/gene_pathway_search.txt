@@ -1,0 +1,1 @@
+Biocarta Pathway Name	Biocarta Pathway Titleh_bard1Pathway	BRCA1-dependent Ub-ligase activityh_carm-erPathway	CARM1 and Regulation of the Estrogen Receptorh_atmPathway	ATM Signaling Pathwayh_g2Pathway	Cell Cycle: G2/M Checkpointh_atrbrcaPathway	"Role of BRCA1,  BRCA2 and ATR in Cancer Susceptibility"

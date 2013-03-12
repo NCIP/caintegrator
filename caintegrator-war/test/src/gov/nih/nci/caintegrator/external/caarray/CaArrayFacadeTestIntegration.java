@@ -24,8 +24,6 @@ import gov.nih.nci.caintegrator.domain.genomic.Sample;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator.external.caarray.CaArrayFacadeImpl;
-import gov.nih.nci.caintegrator.external.caarray.ExperimentNotFoundException;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -41,14 +39,15 @@ import affymetrix.fusion.cdf.FusionCDFData;
 public class CaArrayFacadeTestIntegration {
 
     private CaArrayFacadeImpl caArrayFacade;
-    
+
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml", CaArrayFacadeTestIntegration.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml",
+                CaArrayFacadeTestIntegration.class);
         caArrayFacade = (CaArrayFacadeImpl) context.getBean("CaArrayFacadeIntegration");
         caArrayFacade.setDao(new LocalCaIntegrator2DaoStub());
     }
-    
+
     @Test
     public void testGetSamples() throws ConnectionException, ExperimentNotFoundException {
         ServerConnectionProfile profile = new ServerConnectionProfile();
@@ -57,15 +56,15 @@ public class CaArrayFacadeTestIntegration {
         List<Sample> samples = caArrayFacade.getSamples("jagla-00034", profile);
         assertFalse(samples.isEmpty());
     }
-    
+
     @Test (expected=ExperimentNotFoundException.class)
     public void testGetSamplesInvalidExperiment() throws ConnectionException, ExperimentNotFoundException {
         ServerConnectionProfile profile = new ServerConnectionProfile();
         profile.setHostname("ncias-d227-v.nci.nih.gov");
         profile.setPort(31099);
-        caArrayFacade.getSamples("INVALID EXPERIMENT ID", profile);        
+        caArrayFacade.getSamples("INVALID EXPERIMENT ID", profile);
     }
-    
+
     @Test
     public void testRetrieveFile() throws FileNotFoundException, ConnectionException {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
@@ -112,7 +111,7 @@ public class CaArrayFacadeTestIntegration {
 
             return platform;
         }
-        
+
     }
 
 }

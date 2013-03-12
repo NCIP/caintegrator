@@ -73,20 +73,6 @@ public class SearchGeneListAction extends AbstractCaIntegrator2Action {
     }
 
     /**
-     * @return the caBioGeneSearchTopicPublished
-     */
-    public boolean isCaBioGeneSearchTopicPublished() {
-        return geneListSearchTopicPublished;
-    }
-
-    /**
-     * @param caBioGeneSearchTopicPublished the caBioGeneSearchTopicPublished to set
-     */
-    public void setCaBioGeneSearchTopicPublished(boolean caBioGeneSearchTopicPublished) {
-        this.geneListSearchTopicPublished = caBioGeneSearchTopicPublished;
-    }
-
-    /**
      * @return the geneListName
      */
     public String getGeneListName() {

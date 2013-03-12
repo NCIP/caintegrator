@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-    <!-- Begin caBIO -->
-    <!-- Import the files for each remote service -->
-    <import resource="gov/nih/nci/caintegrator/external/cabio/application-config-client.xml"/>
-    
-    <!-- Quick access to the server URL -->
-    <bean id="CaBioRemoteServerURL" class="java.lang.String">
-        <constructor-arg><value>http://cabioapi.nci.nih.gov/cabio43</value></constructor-arg>
-    </bean>
-    <!-- /End caBIO -->
     <!-- Begin caDSR -->
     <bean id="CaDsrServiceInfo" class="java.util.HashMap">
         <constructor-arg>

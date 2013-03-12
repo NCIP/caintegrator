@@ -596,6 +596,9 @@
             <filterset refid="caintegrator.filterset" />
             <fileset dir="${cbs-to-heatmap.jar.resources.bins.dir}" includes="*.dat" />
         </copy>
+        <copy todir="${caintegrator.war.test.classes.dir}">
+            <fileset dir="${caintegrator.war.resources.test.dir}/bioDbNet" includes="*.txt" />
+        </copy>
         <javac srcdir="${caintegrator.war.test.src.dir}" destdir="${caintegrator.war.test.classes.dir}" classpathref="caintegrator.war.test.dependencies.path" includeantruntime="false" debug="true" />
     </target>
 
