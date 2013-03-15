@@ -7,6 +7,8 @@
 package gov.nih.nci.caintegrator.application.analysis.grid;
 
 import static org.junit.Assert.assertFalse;
+import gov.nih.nci.caintegrator.application.analysis.grid.GridDiscoveryClientImpl;
+import gov.nih.nci.caintegrator.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
 import org.junit.Before;
@@ -19,7 +21,7 @@ public class GridDiscoveryServiceJobTestIntegration extends AbstractMockitoTest 
     private GridDiscoveryClientImpl gridDiscoveryClientImpl = new GridDiscoveryClientImpl();
 
     /**
-     * {@inheritDoc}
+     * @throws java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {

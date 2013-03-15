@@ -6,23 +6,18 @@
  */
 package gov.nih.nci.caintegrator.domain.genomic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
+import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator.domain.genomic.ChromosomalLocation;
+import gov.nih.nci.caintegrator.domain.genomic.SegmentData;
 
 import java.util.Iterator;
 
 import org.junit.Test;
 
-/**
- * Segment data tests.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
- */
 public class SegmentDataTest {
 
-    /**
-     * Compare to tests.
-     */
     @Test
     public void testCompareTo() {
         SegmentData segmentData1 = new SegmentData();

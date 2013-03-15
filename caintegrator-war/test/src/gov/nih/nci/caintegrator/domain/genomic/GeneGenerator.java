@@ -7,22 +7,16 @@
 package gov.nih.nci.caintegrator.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 
 import java.util.Locale;
 import java.util.Set;
 
-/**
- * Gene generator.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
- */
+import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator.domain.genomic.Gene;
+
 public class GeneGenerator extends AbstractTestDataGenerator<Gene> {
 
-    /**
-     * The instance.
-     */
     public static final GeneGenerator INSTANCE = new GeneGenerator();;
 
     @Override

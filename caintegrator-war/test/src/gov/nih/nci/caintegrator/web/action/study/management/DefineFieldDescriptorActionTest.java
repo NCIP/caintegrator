@@ -21,6 +21,7 @@ import gov.nih.nci.caintegrator.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator.domain.annotation.mask.MaxNumberMask;
 import gov.nih.nci.caintegrator.domain.annotation.mask.NumericRangeMask;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.study.management.DefineClinicalFieldDescriptorAction;
 
 import java.text.ParseException;
 import java.util.ArrayList;

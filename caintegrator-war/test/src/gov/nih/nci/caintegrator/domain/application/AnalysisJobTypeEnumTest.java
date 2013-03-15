@@ -7,8 +7,9 @@
 package gov.nih.nci.caintegrator.domain.application;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+import gov.nih.nci.caintegrator.domain.application.AnalysisJobTypeEnum;
 
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class AnalysisJobTypeEnumTest {
         assertEquals(AnalysisJobTypeEnum.GENE_PATTERN, AnalysisJobTypeEnum.getByValue("Gene Pattern"));
         assertNull(AnalysisJobTypeEnum.getByValue(null));
     }
-
+    
     @Test
     public void testCheckType() {
         assertFalse(AnalysisJobTypeEnum.checkType("no match"));

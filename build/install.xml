@@ -195,9 +195,6 @@ properties.list="jboss.server.jndi.port,jboss.server.port,jboss.cobraorb.port,jb
             <filter token="env.LOGNAME" value="${env.LOGNAME}"/>
             <filter token="env.JAVA_HOME" value="${env.JAVA_HOME}"/>
             <filter token="project.name" value="project.name"/>
-            <!-- LDAP settings -->
-            <filter token="ldap.url" value="${ldap.url}"/>
-            <filter token="ldap.basedn" value="${ldap.basedn}"/>
         </filterset>
 
         <!--OS Temp dir -->

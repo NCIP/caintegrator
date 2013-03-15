@@ -13,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.study.management.AddClinicalFileAction;
 
 import javax.swing.filechooser.FileSystemView;
 

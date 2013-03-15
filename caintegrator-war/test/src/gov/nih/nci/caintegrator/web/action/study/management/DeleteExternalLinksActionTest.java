@@ -11,6 +11,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.study.management.DeleteExternalLinksAction;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class DeleteExternalLinksActionTest extends AbstractSessionBasedTest {
     public void testPrepare() {
         action.prepare();
         assertFalse(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-        action.getExternalLinkList().setId(1L);
+        action.getExternalLinkList().setId(1l);
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
 

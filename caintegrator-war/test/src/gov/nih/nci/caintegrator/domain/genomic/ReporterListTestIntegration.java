@@ -8,11 +8,10 @@ package gov.nih.nci.caintegrator.domain.genomic;
 
 import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator.data.AbstractHibernateMappingTestIntegration;
+import gov.nih.nci.caintegrator.domain.genomic.ReporterList;
 
 /**
- * Reporter list integration tests.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * 
  */
 public class ReporterListTestIntegration extends AbstractHibernateMappingTestIntegration<ReporterList> {
 

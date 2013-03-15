@@ -30,6 +30,7 @@ import gov.nih.nci.caintegrator.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator.web.action.query.DisplayableQueryResult;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +38,7 @@ import java.util.Date;
 import org.junit.Test;
 
 public class DisplayableQueryResultTest {
-
+    
     private static StudySubjectAssignment assignment1 = new StudySubjectAssignment();
     private static StudySubjectAssignment assignment2 = new StudySubjectAssignment();
 
@@ -51,7 +52,7 @@ public class DisplayableQueryResultTest {
         assertFalse(result.getHasSamples());
         assertEquals("value1", result.getRows().get(0).getValues().get(0).toString());
         assertEquals("2", result.getRows().get(0).getValues().get(1).toString());
-
+        
         assertTrue(result.getSelectAll());
         result.setSelectAll(false);
         assertFalse(result.getSelectAll());
@@ -67,7 +68,9 @@ public class DisplayableQueryResultTest {
         row1.setSubjectAssignment(assignment1);
         row1.getSubjectAssignment().setStudy(query.getSubscription().getStudy());
         sourceResult.getRowCollection().add(row1);
-        return new DisplayableQueryResult(sourceResult);
+        
+        DisplayableQueryResult result = new DisplayableQueryResult(sourceResult);
+        return result;
     }
 
     /**
@@ -76,9 +79,9 @@ public class DisplayableQueryResultTest {
     private static Query createQuery() {
         Query query = new Query();
         query.setColumnCollection(new ArrayList<ResultColumn>());
-
+        
         createStudy(query);
-
+        
         ResultColumn column1 = new ResultColumn();
         AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
         AnnotationDefinition annotationDefinition1 = new AnnotationDefinition();
@@ -87,9 +90,9 @@ public class DisplayableQueryResultTest {
         column1.setAnnotationFieldDescriptor(afd1);
         column1.setColumnIndex(0);
         query.getColumnCollection().add(column1);
-
+        
         loadAnnotation(query, annotationDefinition1);
-
+        
         ResultColumn column2 = new ResultColumn();
         AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
         AnnotationDefinition annotationDefinition2 = new AnnotationDefinition();
@@ -98,9 +101,9 @@ public class DisplayableQueryResultTest {
         column2.setAnnotationFieldDescriptor(afd2);
         column2.setColumnIndex(1);
         query.getColumnCollection().add(column2);
-
+        
         loadAnnotation(query, annotationDefinition2);
-
+        
         ResultColumn column3 = new ResultColumn();
         AnnotationDefinition annotationDefinition3 = new AnnotationDefinition();
         annotationDefinition3.setDisplayName("Column3");
@@ -109,43 +112,43 @@ public class DisplayableQueryResultTest {
         column3.setAnnotationFieldDescriptor(afd3);
         column3.setColumnIndex(2);
         query.getColumnCollection().add(column3);
-
+        
         loadAnnotation(query, annotationDefinition3);
 
-
+        
         AnnotationDefinition annotationDefinition4 = new AnnotationDefinition();
         annotationDefinition4.setDisplayName("InVisible");
         loadAnnotation(query, annotationDefinition4, false);
-
+        
         return query;
     }
-
+    
     @SuppressWarnings("deprecation")
     private static void createStudy(Query query) {
         Study study = new Study();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         study.setStudyConfiguration(studyConfiguration);
-
+        
         DelimitedTextClinicalSourceConfiguration clinicalConf = new DelimitedTextClinicalSourceConfiguration();
         studyConfiguration.getClinicalConfigurationCollection().add(clinicalConf);
         AnnotationFile annotationFile = new AnnotationFile();
         clinicalConf.setAnnotationFile(annotationFile);
-
+        
         ImageDataSourceConfiguration imagingSourceConf = new ImageDataSourceConfiguration();
         studyConfiguration.getImageDataSources().add(imagingSourceConf);
         ImageAnnotationConfiguration imageConf = new ImageAnnotationConfiguration();
         imagingSourceConf.setImageAnnotationConfiguration(imageConf);
         AnnotationFile imageAnnotationFile = new AnnotationFile();
         imageConf.setAnnotationFile(imageAnnotationFile);
-
+        
         query.setSubscription(new StudySubscription());
         query.getSubscription().setStudy(study);
     }
-
+    
     private static void loadAnnotation(Query query, AnnotationDefinition annotationDefinition) {
         loadAnnotation(query, annotationDefinition, true);
     }
-
+    
     private static void loadAnnotation(Query query, AnnotationDefinition annotationDefinition,
             boolean visible) {
         FileColumn column = new FileColumn();
@@ -177,14 +180,14 @@ public class DisplayableQueryResultTest {
         sourceResult.setRowCollection(new ArrayList<ResultRow>());
         ResultRow row = new ResultRow();
         row.setValueCollection(new ArrayList<ResultValue>());
-
+        
         ResultValue row1Value1 = new ResultValue();
         row1Value1.setColumn(column1);
         StringAnnotationValue annotationValue1 = new StringAnnotationValue();
         annotationValue1.setStringValue("value1");
         row1Value1.setValue(annotationValue1);
         row.getValueCollection().add(row1Value1);
-
+        
         ResultValue row1Value2 = new ResultValue();
         row1Value2.setColumn(column2);
         NumericAnnotationValue annotationValue2 = new NumericAnnotationValue();
@@ -198,7 +201,7 @@ public class DisplayableQueryResultTest {
         annotationValue3.setDateValue(new Date());
         row1Value3.setValue(annotationValue3);
         row.getValueCollection().add(row1Value3);
-
+        
         assignment1.setId(Long.valueOf(1));
         row.setSubjectAssignment(assignment1);
         ImageSeries imageSeries = new ImageSeries();
@@ -206,7 +209,7 @@ public class DisplayableQueryResultTest {
         row.setImageSeries(imageSeries);
         return row;
     }
-
+    
     private static ResultRow retrieveImageStudyRow(QueryResult sourceResult, Query query) {
         ResultColumn column1 = null;
         ResultColumn column2 = null;
@@ -241,8 +244,8 @@ public class DisplayableQueryResultTest {
         row.getSubjectAssignment().getImageStudyCollection().add(acquisition);
         return row;
     }
-
-
+    
+    
     public static DisplayableQueryResult getImagingSeriesResult() {
         QueryResult sourceResult = new QueryResult();
         Query query = createQuery();
@@ -252,10 +255,11 @@ public class DisplayableQueryResultTest {
         row1.setSubjectAssignment(assignment1);
         row1.getSubjectAssignment().setStudy(query.getSubscription().getStudy());
         sourceResult.getRowCollection().add(row1);
-
-        return new DisplayableQueryResult(sourceResult);
+        
+        DisplayableQueryResult result = new DisplayableQueryResult(sourceResult);
+        return result;
     }
-
+    
     public static DisplayableQueryResult getImageStudyResult() {
         QueryResult sourceResult = new QueryResult();
         Query query = createQuery();
@@ -270,15 +274,16 @@ public class DisplayableQueryResultTest {
         row2.setSubjectAssignment(assignment2);
         row2.getSubjectAssignment().setStudy(query.getSubscription().getStudy());
         sourceResult.getRowCollection().add(row2);
-
-        return new DisplayableQueryResult(sourceResult);
+        
+        DisplayableQueryResult result = new DisplayableQueryResult(sourceResult);
+        return result;
     }
-
+    
     public static StudySubjectAssignment retrieveStudySubjectAssignment(Long id) {
         if (id.equals(assignment1.getId())) {
             return assignment1;
         } else if (id.equals(assignment2.getId())) {
-            return assignment2;
+            return assignment2;            
         }
         return null;
     }

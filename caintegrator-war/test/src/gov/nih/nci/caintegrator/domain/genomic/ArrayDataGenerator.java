@@ -7,27 +7,25 @@
 package gov.nih.nci.caintegrator.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
+
 import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator.domain.genomic.SegmentData;
 
 import java.util.Set;
 
-/**
- * Array data generator utility class.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
- */
+
 public final class ArrayDataGenerator extends AbstractTestDataGenerator<ArrayData> {
 
-    /**
-     * The data generator instance.
-     */
     public static final ArrayDataGenerator INSTANCE = new ArrayDataGenerator();
-
-    private ArrayDataGenerator() {
+    
+    private ArrayDataGenerator() { 
         super();
     }
-
+    
     @Override
     public void compareFields(ArrayData original, ArrayData retrieved) {
         assertEquals(original.getStudy(), retrieved.getStudy());
@@ -52,8 +50,7 @@ public final class ArrayDataGenerator extends AbstractTestDataGenerator<ArrayDat
             arrayData.getSegmentDatas().add(segmentData);
         }
         for (int i = 0; i < 3; i++) {
-            ReporterList reporterList =
-                    ReporterListGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
+            ReporterList reporterList = ReporterListGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
             reporterList.getArrayDatas().add(arrayData);
             arrayData.getReporterLists().add(reporterList);
             nonCascadedObjects.add(reporterList);

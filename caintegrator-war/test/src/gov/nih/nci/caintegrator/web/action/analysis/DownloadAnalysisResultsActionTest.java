@@ -15,6 +15,7 @@ import gov.nih.nci.caintegrator.domain.application.ComparativeMarkerSelectionAna
 import gov.nih.nci.caintegrator.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedStudyTest;
+import gov.nih.nci.caintegrator.web.action.analysis.DownloadAnalysisResultsAction;
 import gov.nih.nci.caintegrator.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import org.junit.Before;
@@ -44,7 +45,7 @@ public class DownloadAnalysisResultsActionTest extends AbstractSessionBasedStudy
         action.validate();
         assertTrue(action.hasActionErrors());
         action.clearActionErrors();
-        action.setJobId(1L);
+        action.setJobId(1l);
         action.validate();
         assertFalse(action.hasActionErrors());
 
@@ -80,20 +81,16 @@ public class DownloadAnalysisResultsActionTest extends AbstractSessionBasedStudy
         action.setType(PersistedAnalysisJobAjaxUpdater.DownloadType.INPUT.getType());
         assertEquals("downloadResultFile", action.execute());
 
-        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace()
-                .getTemporaryDownloadFile().getFilename().contains("cms"));
+        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile().getFilename().contains("cms"));
         job.setJobType(AnalysisJobTypeEnum.GENE_PATTERN);
         action.execute();
-        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile()
-                .getFilename().contains("genePattern"));
+        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile().getFilename().contains("genePattern"));
         job.setJobType(AnalysisJobTypeEnum.GISTIC);
         action.execute();
-        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile()
-                .getFilename().contains("gistic"));
+        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile().getFilename().contains("gistic"));
         job.setJobType(AnalysisJobTypeEnum.PCA);
         action.execute();
-        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile()
-                .getFilename().contains("pca"));
+        assertTrue(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile().getFilename().contains("pca"));
 
     }
 

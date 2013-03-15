@@ -23,6 +23,7 @@ import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.study.management.DefineSurvivalDefinitionAction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,16 +58,16 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         StudyConfiguration studyConfiguration = StudyConfigurationFactory.createNewStudyConfiguration();
         action.setStudyConfiguration(studyConfiguration);
         startDate = new AnnotationDefinition();
-        startDate.setId(100L);
+        startDate.setId(100l);
         startDate.setDataType(AnnotationTypeEnum.DATE);
         lastFollowup = new AnnotationDefinition();
-        lastFollowup.setId(101L);
+        lastFollowup.setId(101l);
         lastFollowup.setDataType(AnnotationTypeEnum.DATE);
         deathDate = new AnnotationDefinition();
-        deathDate.setId(102L);
+        deathDate.setId(102l);
         deathDate.setDataType(AnnotationTypeEnum.DATE);
         survivalLength = new AnnotationDefinition();
-        survivalLength.setId(103L);
+        survivalLength.setId(103l);
         survivalLength.setDataType(AnnotationTypeEnum.NUMERIC);
         annotationDefinitionMap.clear();
         annotationDefinitionMap.put(startDate.getId(), startDate);
@@ -78,7 +79,7 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
     @Test
     public void testPrepare() {
         SurvivalValueDefinition defaultDefinition = new SurvivalValueDefinition();
-        defaultDefinition.setId(1L);
+        defaultDefinition.setId(1l);
         action.getStudyConfiguration().setId(null);
         Study study = action.getStudyConfiguration().getStudy();
         study.getSurvivalValueDefinitionCollection().add(defaultDefinition);
@@ -87,7 +88,7 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         AnnotationFieldDescriptor dateAfd1 = new AnnotationFieldDescriptor();
         dateAfd1.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         AnnotationDefinition dateAd1 = new AnnotationDefinition();
-        dateAd1.setId(2L);
+        dateAd1.setId(2l);
         dateAd1.setDataType(AnnotationTypeEnum.DATE);
         dateAfd1.setDefinition(dateAd1);
         dateAfd1.setShownInBrowse(true);
@@ -95,7 +96,7 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         AnnotationFieldDescriptor numericAfd1 = new AnnotationFieldDescriptor();
         numericAfd1.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         AnnotationDefinition numericAd1 = new AnnotationDefinition();
-        numericAd1.setId(3L);
+        numericAd1.setId(3l);
         numericAd1.setDataType(AnnotationTypeEnum.NUMERIC);
         numericAfd1.setDefinition(numericAd1);
         numericAfd1.setShownInBrowse(true);
@@ -103,7 +104,7 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
         AnnotationFieldDescriptor statusAfd1 = new AnnotationFieldDescriptor();
         statusAfd1.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         AnnotationDefinition statusAd1 = new AnnotationDefinition();
-        statusAd1.setId(4L);
+        statusAd1.setId(4l);
         statusAd1.setDataType(AnnotationTypeEnum.STRING);
         PermissibleValue pv1 = new PermissibleValue();
         statusAd1.getPermissibleValueCollection().add(pv1);

@@ -8,14 +8,9 @@ package gov.nih.nci.caintegrator.domain.imaging;
 
 import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator.data.AbstractHibernateMappingTestIntegration;
+import gov.nih.nci.caintegrator.domain.imaging.ImageSeriesAcquisition;
 
-/**
- * Image series acquisition integration tests.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
- */
-public class ImageSeriesAcquisitionTestIntegration
-    extends AbstractHibernateMappingTestIntegration<ImageSeriesAcquisition> {
+public class ImageSeriesAcquisitionTestIntegration extends AbstractHibernateMappingTestIntegration<ImageSeriesAcquisition> {
 
 
     @Override

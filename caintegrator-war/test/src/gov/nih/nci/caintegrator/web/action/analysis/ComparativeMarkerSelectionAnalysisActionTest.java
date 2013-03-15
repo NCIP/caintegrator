@@ -24,6 +24,7 @@ import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.analysis.ComparativeMarkerSelectionAnalysisAction;
 import gov.nih.nci.caintegrator.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.HashSet;
@@ -62,7 +63,7 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         subscription.getQueryCollection().add(query2);
         query1.setSubscription(subscription);
         query2.setSubscription(subscription);
-        subscription.setId(100L);
+        subscription.setId(100l);
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
 
@@ -89,8 +90,7 @@ public class ComparativeMarkerSelectionAnalysisActionTest extends AbstractSessio
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources()
-            .add(new GenomicDataSourceConfiguration());
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();

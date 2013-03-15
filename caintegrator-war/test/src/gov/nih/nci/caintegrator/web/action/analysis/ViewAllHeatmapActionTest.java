@@ -18,6 +18,7 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.analysis.ViewAllHeatmapAction;
 
 import java.util.HashSet;
 import java.util.Set;

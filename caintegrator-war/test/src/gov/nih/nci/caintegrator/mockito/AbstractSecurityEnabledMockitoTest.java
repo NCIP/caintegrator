@@ -123,8 +123,7 @@ public abstract class AbstractSecurityEnabledMockitoTest extends AbstractMockito
                 return protectionElements;
             }
         });
-        when(authManager.getProtectionGroupRoleContextForGroup(anyString()))
-            .thenAnswer(new Answer<Set<ProtectionGroupRoleContext>>() {
+        when(authManager.getProtectionGroupRoleContextForGroup(anyString())).thenAnswer(new Answer<Set<ProtectionGroupRoleContext>>() {
             @Override
             public Set<ProtectionGroupRoleContext> answer(InvocationOnMock invocation) throws Throwable {
                 Set<ProtectionGroupRoleContext> pgrcs = new HashSet<ProtectionGroupRoleContext>();
@@ -159,8 +158,7 @@ public abstract class AbstractSecurityEnabledMockitoTest extends AbstractMockito
         when(secManager.getAuthorizationManager()).thenReturn(authManager);
         when(secManager.doesUserExist(eq(USER_EXISTS))).thenReturn(Boolean.TRUE);
         when(secManager.doesUserExist(eq(USERNAME))).thenReturn(Boolean.TRUE);
-        when(secManager.retrieveManagedStudyConfigurations(anyString(), anyCollectionOf(Study.class)))
-            .thenAnswer(new Answer<Set<StudyConfiguration>>() {
+        when(secManager.retrieveManagedStudyConfigurations(anyString(), anyCollectionOf(Study.class))).thenAnswer(new Answer<Set<StudyConfiguration>>() {
 
             @Override
             public Set<StudyConfiguration> answer(InvocationOnMock invocation) throws Throwable {
@@ -174,8 +172,7 @@ public abstract class AbstractSecurityEnabledMockitoTest extends AbstractMockito
                 return results;
             }
         });
-        when(secManager.retrieveAuthorizedStudyElementsGroupsForInvestigator(anyString(),
-                anySetOf(AuthorizedStudyElementsGroup.class)))
+        when(secManager.retrieveAuthorizedStudyElementsGroupsForInvestigator(anyString(), anySetOf(AuthorizedStudyElementsGroup.class)))
             .thenReturn(new HashSet<AuthorizedStudyElementsGroup>());
         when(secManager.getUnauthorizedGroups(any(StudyConfiguration.class))).thenReturn(new ArrayList<Group>());
     }

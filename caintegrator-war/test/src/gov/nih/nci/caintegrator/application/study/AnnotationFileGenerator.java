@@ -8,6 +8,10 @@ package gov.nih.nci.caintegrator.application.study;
 
 import static gov.nih.nci.caintegrator.TestDataFiles.VALID_FILE;
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator.application.study.FileColumn;
+import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator.application.study.ValidationException;
 import gov.nih.nci.caintegrator.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
@@ -15,15 +19,10 @@ import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
 import java.util.Set;
 
 /**
- * Annotation file generator.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * 
  */
 public final class AnnotationFileGenerator extends AbstractTestDataGenerator<AnnotationFile> {
 
-    /**
-     * The instance.
-     */
     public static final AnnotationFileGenerator INSTANCE = new AnnotationFileGenerator();
 
     private AnnotationFileGenerator() {
@@ -38,8 +37,8 @@ public final class AnnotationFileGenerator extends AbstractTestDataGenerator<Ann
         assertEquals(original.getTimepointColumn(), retrieved.getTimepointColumn());
         assertEquals(original.getColumns().size(), retrieved.getColumns().size());
         for (int x = 0; x < original.getColumns().size(); x++) {
-            FileColumn originalColumn = original.getColumns().get(x);
-            FileColumn retrievedColumn = retrieved.getColumns().get(x);
+            FileColumn originalColumn = (FileColumn) original.getColumns().get(x);
+            FileColumn retrievedColumn = (FileColumn) retrieved.getColumns().get(x);
             FileColumnGenerator.INSTANCE.compare(originalColumn, retrievedColumn);
         }
     }
@@ -48,8 +47,7 @@ public final class AnnotationFileGenerator extends AbstractTestDataGenerator<Ann
     @Override
     public AnnotationFile createPersistentObject() {
         try {
-            return AnnotationFile.load(VALID_FILE, new CaIntegrator2DaoStub(), new StudyConfiguration(),
-                    EntityTypeEnum.SUBJECT, false);
+            return AnnotationFile.load(VALID_FILE, new CaIntegrator2DaoStub(), new StudyConfiguration(), EntityTypeEnum.SUBJECT, false);
         } catch (ValidationException e) {
             return null;
         }

@@ -6,31 +6,25 @@
  */
 package gov.nih.nci.caintegrator.external;
 
-import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
-
 import java.util.Set;
 
-/**
- * Server connection profile generator.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
- */
+import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
+
+import static org.junit.Assert.assertEquals;
+
 public class ServerConnectionProfileGenerator extends AbstractTestDataGenerator<ServerConnectionProfile> {
 
-    /**
-     * The instance.
-     */
     public static final ServerConnectionProfileGenerator INSTANCE = new ServerConnectionProfileGenerator();
-
+    
     @Override
     public void compareFields(ServerConnectionProfile original, ServerConnectionProfile retrieved) {
-        assertEquals(original.getHostname(), retrieved.getHostname());
-        assertEquals(original.getPassword(), retrieved.getPassword());
-        assertEquals(original.getPort(), retrieved.getPort());
-        assertEquals(original.getUrl(), retrieved.getUrl());
-        assertEquals(original.getUsername(), retrieved.getUsername());
+        assertEquals(original.getHostname(), retrieved.getHostname());        
+        assertEquals(original.getPassword(), retrieved.getPassword());        
+        assertEquals(original.getPort(), retrieved.getPort());        
+        assertEquals(original.getUrl(), retrieved.getUrl());        
+        assertEquals(original.getUsername(), retrieved.getUsername());        
     }
 
     @Override

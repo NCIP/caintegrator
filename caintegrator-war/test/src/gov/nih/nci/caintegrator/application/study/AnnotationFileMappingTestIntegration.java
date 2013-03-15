@@ -6,13 +6,9 @@
  */
 package gov.nih.nci.caintegrator.application.study;
 
+import gov.nih.nci.caintegrator.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator.data.AbstractHibernateMappingTestIntegration;
 
-/**
- * Annotation file mapping integration tests.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
- */
 public class AnnotationFileMappingTestIntegration extends AbstractHibernateMappingTestIntegration<AnnotationFile> {
 
     @Override

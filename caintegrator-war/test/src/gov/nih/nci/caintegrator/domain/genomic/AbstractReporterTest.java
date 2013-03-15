@@ -6,7 +6,10 @@
  */
 package gov.nih.nci.caintegrator.domain.genomic;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import gov.nih.nci.caintegrator.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator.domain.genomic.Gene;
 
 import java.util.Locale;
 
@@ -14,9 +17,10 @@ import org.junit.Test;
 
 public class AbstractReporterTest {
 
+    @SuppressWarnings("serial")
     @Test
     public void testGetGeneSymbols() {
-        AbstractReporter reporter = new AbstractReporter() { };
+        AbstractReporter reporter = new AbstractReporter() {};
         assertEquals("", reporter.getGeneSymbols());
         reporter.getGenes().add(createGene("AAAA"));
         assertEquals("AAAA", reporter.getGeneSymbols());

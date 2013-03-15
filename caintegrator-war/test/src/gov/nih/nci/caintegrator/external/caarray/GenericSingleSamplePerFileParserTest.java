@@ -12,6 +12,8 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
+import gov.nih.nci.caintegrator.external.caarray.GenericSingleSamplePerFileParser;
+import gov.nih.nci.caintegrator.external.caarray.SupplementalDataFile;
 
 import java.util.List;
 import java.util.Map;

@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
+import gov.nih.nci.caintegrator.external.caarray.GenericMultiSamplePerFileParser;
 
 import java.io.IOException;
 import java.util.ArrayList;

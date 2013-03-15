@@ -14,6 +14,8 @@ import gov.nih.nci.caintegrator.domain.genomic.Gene;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.abstractlist.ManageListAction;
+import gov.nih.nci.caintegrator.web.action.abstractlist.SearchGeneListAction;
 
 import java.util.HashMap;
 

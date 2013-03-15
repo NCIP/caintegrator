@@ -27,6 +27,7 @@ import gov.nih.nci.caintegrator.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.analysis.geneexpression.GEPlotGenomicQueryBasedAction;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -102,8 +103,7 @@ public class GEPlotGenomicQueryBasedActionTest extends AbstractSessionBasedTest 
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
         action.setCreatePlotSelected(true);
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
-        verify(analysisService, atLeastOnce()).createGeneExpressionPlot(any(StudySubscription.class),
-                any(AbstractGEPlotParameters.class));
+        verify(analysisService, atLeastOnce()).createGeneExpressionPlot(any(StudySubscription.class), any(AbstractGEPlotParameters.class));
         assertTrue(action.isCreatable());
     }
 

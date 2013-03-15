@@ -11,6 +11,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import gov.nih.nci.caintegrator.application.analysis.grid.GridDiscoveryClient;
+import gov.nih.nci.caintegrator.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -27,7 +29,7 @@ public class GridDiscoveryServiceJobTest extends AbstractMockitoTest {
     private GridDiscoveryClient gridDiscoveryClient;
 
     /**
-     * {@inheritDoc}
+     * @throws java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {

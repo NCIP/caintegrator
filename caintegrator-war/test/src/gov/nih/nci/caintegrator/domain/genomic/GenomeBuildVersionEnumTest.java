@@ -7,38 +7,27 @@
 package gov.nih.nci.caintegrator.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator.domain.genomic.GenomeBuildVersionEnum;
 
 import org.junit.Test;
 
+
 /**
- * Genome build enum tests.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * 
  */
 public class GenomeBuildVersionEnumTest {
 
-    /**
-     * Tests enum get by value.
-     */
     @Test
     public void testGetByValue() {
-        assertEquals(GenomeBuildVersionEnum.HG16,
-                GenomeBuildVersionEnum.getByValue(GenomeBuildVersionEnum.HG16.getValue()));
-        assertEquals(GenomeBuildVersionEnum.HG18,
-                GenomeBuildVersionEnum.getByValue(GenomeBuildVersionEnum.HG18.getValue()));
+        assertEquals(GenomeBuildVersionEnum.HG16, GenomeBuildVersionEnum.getByValue(GenomeBuildVersionEnum.HG16.getValue()));
+        assertEquals(GenomeBuildVersionEnum.HG18, GenomeBuildVersionEnum.getByValue(GenomeBuildVersionEnum.HG18.getValue()));
     }
 
-    /**
-     * Check type tests.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void testCheckType() {
         GenomeBuildVersionEnum.checkType("not found");
     }
-
-    /**
-     * Enum version matching tests.
-     */
+    
     @Test
     public void testMatchGenomeVersion() {
         assertEquals(GenomeBuildVersionEnum.HG16, GenomeBuildVersionEnum.matchGenomVersion("hg16"));

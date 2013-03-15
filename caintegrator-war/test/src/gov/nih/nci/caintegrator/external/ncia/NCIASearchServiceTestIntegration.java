@@ -12,6 +12,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator.external.ncia.NCIASearchService;
+import gov.nih.nci.caintegrator.external.ncia.NCIAServiceFactoryImpl;
 import gov.nih.nci.ncia.domain.Image;
 import gov.nih.nci.ncia.domain.Patient;
 import gov.nih.nci.ncia.domain.Series;
@@ -25,22 +27,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
-/**
- * NCIA Search Service integration tests.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
- */
 public class NCIASearchServiceTestIntegration {
 
-    private NCIASearchService searchService;
+    NCIASearchService searchService;
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml",
-                NCIASearchServiceTestIntegration.class);
+        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class);
         ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaQaServerConnectionProfile");
-        NCIAServiceFactoryImpl nciaServiceClient =
-                (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
+        NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
         searchService = nciaServiceClient.createNCIASearchService(profile);
     }
 
@@ -56,9 +51,9 @@ public class NCIASearchServiceTestIntegration {
         List<Study> studies = searchService.retrieveStudyCollectionFromPatient(patients.get(0).getPatientId());
         assertNotNull(studies);
 
-        List<Series> series =
-                searchService.retrieveImageSeriesCollectionFromStudy(studies.get(0).getStudyInstanceUID());
+        List<Series> series = searchService.retrieveImageSeriesCollectionFromStudy(studies.get(0).getStudyInstanceUID());
         assertNotNull(series);
+
         assertFalse(searchService.validate("INVALID SERIES UID"));
     }
 

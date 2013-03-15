@@ -78,7 +78,7 @@ public class StudyHelper {
     private Platform platform = new Platform();
     private DelimitedTextClinicalSourceConfiguration clinicalConf;
     private UserWorkspace userWorkspace;
-    private static final String USER_NAME = "ncimanager";
+    private String USER_NAME = "ncimanager";
     StudySubscription studySubscription;
 
     @SuppressWarnings("deprecation")

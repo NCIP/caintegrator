@@ -7,13 +7,16 @@
 package gov.nih.nci.caintegrator.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator.domain.genomic.Gene;
+import gov.nih.nci.caintegrator.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator.domain.genomic.Platform;
+import gov.nih.nci.caintegrator.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator.domain.genomic.ReporterTypeEnum;
 
 import org.junit.Test;
 
 /**
- * Report list tests.
- *
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * 
  */
 public class ReporterListTest {
 
@@ -36,10 +39,9 @@ public class ReporterListTest {
         reporter4.setName("reporter4");
         GeneExpressionReporter reporter5 = new GeneExpressionReporter();
         reporter5.setName("reporter5");
-
+        
         Platform platform = new Platform();
-        ReporterList reporterList1 = platform.addReporterList("reporterList1",
-                ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ReporterList reporterList1 = platform.addReporterList("reporterList1", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList1.setId(1L);
         reporterList1.addReporter(reporter5);
         reporterList1.addReporter(reporter3);
@@ -57,25 +59,24 @@ public class ReporterListTest {
         assertEquals(3, (int) reporterList1.getReporters().get(3).getIndex());
         assertEquals(reporter5, reporterList1.getReporters().get(4));
         assertEquals(4, (int) reporterList1.getReporters().get(4).getIndex());
-
-        ReporterList reporterList0 = platform.addReporterList("reporterList0",
-                ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        
+        ReporterList reporterList0 = platform.addReporterList("reporterList0", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList0.setId(0L);
         GeneExpressionReporter reporter0 = new GeneExpressionReporter();
         reporter0.getGenes().add(gene1);
         reporter0.setName("reporter0");
         reporterList0.addReporter(reporter0);
         reporterList0.sortAndLoadReporterIndexes();
-
+        
         reporterList1.setPlatform(platform);
         reporterList0.setPlatform(platform);
 
-        assertEquals(0, reporterList0.getReporters().get(0).getDataStorageIndex());
-        assertEquals(1, reporterList1.getReporters().get(0).getDataStorageIndex());
-        assertEquals(2, reporterList1.getReporters().get(1).getDataStorageIndex());
-        assertEquals(3, reporterList1.getReporters().get(2).getDataStorageIndex());
-        assertEquals(4, reporterList1.getReporters().get(3).getDataStorageIndex());
-        assertEquals(5, reporterList1.getReporters().get(4).getDataStorageIndex());
+        assertEquals(0, (int) reporterList0.getReporters().get(0).getDataStorageIndex());
+        assertEquals(1, (int) reporterList1.getReporters().get(0).getDataStorageIndex());
+        assertEquals(2, (int) reporterList1.getReporters().get(1).getDataStorageIndex());
+        assertEquals(3, (int) reporterList1.getReporters().get(2).getDataStorageIndex());
+        assertEquals(4, (int) reporterList1.getReporters().get(3).getDataStorageIndex());
+        assertEquals(5, (int) reporterList1.getReporters().get(4).getDataStorageIndex());
     }
 
 }

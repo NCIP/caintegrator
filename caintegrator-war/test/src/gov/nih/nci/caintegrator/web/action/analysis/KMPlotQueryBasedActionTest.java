@@ -31,6 +31,8 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.analysis.DisplayableQuery;
+import gov.nih.nci.caintegrator.web.action.analysis.KMPlotQueryBasedAction;
 
 import java.awt.Color;
 
@@ -126,13 +128,11 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
         action.getKmPlotParameters().setSurvivalValueDefinition(new SurvivalValueDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setId(Long.valueOf(1));
         action.getKmPlotParameters().getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
-        action.getKmPlotParameters().getSurvivalValueDefinition().getSurvivalStartDate()
-            .setDataType(AnnotationTypeEnum.DATE);
+        action.getKmPlotParameters().getSurvivalValueDefinition().getSurvivalStartDate().setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().getSurvivalValueDefinition().setDeathDate(new AnnotationDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().getDeathDate().setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
-        action.getKmPlotParameters().getSurvivalValueDefinition().getLastFollowupDate()
-            .setDataType(AnnotationTypeEnum.DATE);
+        action.getKmPlotParameters().getSurvivalValueDefinition().getLastFollowupDate().setDataType(AnnotationTypeEnum.DATE);
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
         verify(analysisService, times(1)).createKMPlot(any(StudySubscription.class), any(AbstractKMParameters.class));
         assertTrue(action.isCreatable());
@@ -192,14 +192,10 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
         subscription.getQueryCollection().add(query2);
         action.getKmPlotForm().getQueryBasedForm().setAddPatientsNotInQueriesGroup(true);
         action.getKmPlotForm().getQueryBasedForm().setExclusiveGroups(true);
-        action.getKmPlotForm().getQueryBasedForm().getSelectedQueryNames()
-            .add(DisplayableQuery.getDisplayableQueryName(query1));
-        action.getKmPlotForm().getQueryBasedForm().getUnselectedQueryNames()
-            .add(DisplayableQuery.getDisplayableQueryName(query1));
-        action.getKmPlotForm().getQueryBasedForm().getSelectedQueries()
-            .put(DisplayableQuery.getDisplayableQueryName(query1), new DisplayableQuery(query1));
-        action.getKmPlotForm().getQueryBasedForm().getUnselectedQueries()
-            .put(DisplayableQuery.getDisplayableQueryName(query2), new DisplayableQuery(query2));
+        action.getKmPlotForm().getQueryBasedForm().getSelectedQueryNames().add(DisplayableQuery.getDisplayableQueryName(query1));
+        action.getKmPlotForm().getQueryBasedForm().getUnselectedQueryNames().add(DisplayableQuery.getDisplayableQueryName(query1));
+        action.getKmPlotForm().getQueryBasedForm().getSelectedQueries().put(DisplayableQuery.getDisplayableQueryName(query1), new DisplayableQuery(query1));
+        action.getKmPlotForm().getQueryBasedForm().getUnselectedQueries().put(DisplayableQuery.getDisplayableQueryName(query2), new DisplayableQuery(query2));
     }
 
 

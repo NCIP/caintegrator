@@ -8,12 +8,13 @@ package gov.nih.nci.caintegrator.web.action.abstractlist;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import gov.nih.nci.caintegrator.web.action.abstractlist.ListTypeEnum;
 
 import org.junit.Test;
 
 
 /**
- *
+ * 
  */
 public class ListTypeEnumTest {
 
@@ -27,7 +28,7 @@ public class ListTypeEnumTest {
     public void testCheckType() {
         assertFalse(ListTypeEnum.checkType("not found"));
     }
-
+    
     @Test
     public void testGetValueToDisplayableMap() {
         assertEquals(ListTypeEnum.GENE, ListTypeEnum.getValueToTypeMap().get(ListTypeEnum.GENE.getValue()));

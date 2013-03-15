@@ -29,6 +29,7 @@ import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator.external.bioconductor.BioconductorServiceImpl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,12 +50,11 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
     public BioconductorServiceTestIntegration() {
         setDefaultRollback(true);
     }
-
-    @Override
+    
     protected String[] getConfigLocations() {
         return new String[] {"classpath*:/**/service-test-integration-config.xml"};
     }
-
+    
     @Test
     public void testAddSegmentationData() throws ConnectionException, PlatformLoadingException, DataRetrievalException {
         Platform platform = getOrCreatePlatform();

@@ -15,6 +15,7 @@ import gov.nih.nci.caintegrator.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
+import gov.nih.nci.caintegrator.web.action.analysis.KMPlotResult;
 
 import java.io.IOException;
 import java.io.OutputStream;
