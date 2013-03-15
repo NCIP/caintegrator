@@ -7,9 +7,8 @@
 package gov.nih.nci.caintegrator.domain.application;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertFalse;
-import gov.nih.nci.caintegrator.domain.application.SegmentBoundaryTypeEnum;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -20,7 +19,7 @@ public class SegmentBoundaryTypeEnumTest {
         assertEquals(SegmentBoundaryTypeEnum.INCLUSIVE, SegmentBoundaryTypeEnum.getByValue("Inclusive"));
         assertNull(SegmentBoundaryTypeEnum.getByValue(null));
     }
-    
+
     @Test
     public void testCheckType() {
         assertFalse(SegmentBoundaryTypeEnum.checkType("no match"));

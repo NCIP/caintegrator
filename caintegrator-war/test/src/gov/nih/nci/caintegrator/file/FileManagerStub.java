@@ -15,7 +15,6 @@ import gov.nih.nci.caintegrator.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
-import gov.nih.nci.caintegrator.file.FileManager;
 
 import java.io.File;
 import java.io.IOException;

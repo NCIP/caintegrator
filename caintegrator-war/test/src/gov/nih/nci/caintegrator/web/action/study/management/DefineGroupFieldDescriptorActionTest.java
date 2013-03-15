@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.study.management.DefineGroupFieldDescriptorAction;
 import gov.nih.nci.caintegrator.web.ajax.DataElementSearchAjaxUpdater;
 
 import org.junit.Before;
@@ -44,7 +43,8 @@ public class DefineGroupFieldDescriptorActionTest extends AbstractSessionBasedTe
 
     @Test
     public void testGetEntityTypeForSearch() {
-        assertEquals(DataElementSearchAjaxUpdater.ReturnTypeEnum.GROUP_SOURCE.toString(), action.getEntityTypeForSearch());
+        assertEquals(DataElementSearchAjaxUpdater.ReturnTypeEnum.GROUP_SOURCE.toString(),
+                action.getEntityTypeForSearch());
     }
 
     @Test

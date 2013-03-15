@@ -32,7 +32,6 @@ import gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.GisticAnalysisAction;
 import gov.nih.nci.caintegrator.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.HashSet;
@@ -109,7 +108,8 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources()
+            .add(new GenomicDataSourceConfiguration());
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
@@ -129,14 +129,16 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
     public void execute() {
         testOpen();
         action.setSelectedAction(GisticAnalysisAction.EXECUTE_ACTION);
-        when(analysisService.validateGenePatternConnection(any(ServerConnectionProfile.class))).thenReturn(Boolean.TRUE);
+        when(analysisService.validateGenePatternConnection(any(ServerConnectionProfile.class)))
+            .thenReturn(Boolean.TRUE);
         assertEquals("status", action.execute());
     }
 
     @Test
     public void executeValidConnection() throws Exception {
         testOpen();
-        when(analysisService.validateGenePatternConnection(any(ServerConnectionProfile.class))).thenReturn(Boolean.TRUE);
+        when(analysisService.validateGenePatternConnection(any(ServerConnectionProfile.class)))
+            .thenReturn(Boolean.TRUE);
         when(queryManagementService.execute(any(Query.class))).thenReturn(getValidQueryResult());
         action.setSelectedAction(GisticAnalysisAction.EXECUTE_ACTION);
         action.getGisticAnalysisForm().setSelectedQuery("[Q]-query1");
@@ -147,7 +149,8 @@ public class GisticAnalysisActionTest extends AbstractSessionBasedTest {
     public void executeInvalidConnection() {
         testOpen();
         action.setSelectedAction(GisticAnalysisAction.EXECUTE_ACTION);
-        when(analysisService.validateGenePatternConnection(any(ServerConnectionProfile.class))).thenReturn(Boolean.FALSE);
+        when(analysisService.validateGenePatternConnection(any(ServerConnectionProfile.class)))
+            .thenReturn(Boolean.FALSE);
         assertEquals("input", action.execute());
     }
 

@@ -8,8 +8,6 @@ package gov.nih.nci.caintegrator.web.action.query;
 
 import static org.junit.Assert.assertEquals;
 
-import gov.nih.nci.caintegrator.web.action.query.NumericColumnDisplayTagComparator;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,12 +21,12 @@ public class NumericColumnDisplayTagComparatorTest {
 
     @Test
     public void testCompare() {
-        Object object1 = (Object) "100";
-        Object object2 = (Object) "String-101";
-        Object object3 = (Object) "1";
-        Object object4 = (Object) "3";
-        Object object5 = (Object) "Cell[staticValue=\r\n 0.2 \r\n]";
-        Object object6 = (Object) "Cell[staticValue=\r\n \r\n]";
+        Object object1 = "100";
+        Object object2 = "String-101";
+        Object object3 = "1";
+        Object object4 = "3";
+        Object object5 = "Cell[staticValue=\r\n 0.2 \r\n]";
+        Object object6 = "Cell[staticValue=\r\n \r\n]";
         List<Object> objects = new ArrayList<Object>();
         objects.add(object1);
         objects.add(object2);

@@ -6,15 +6,21 @@
  */
 package gov.nih.nci.caintegrator.application.study;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator.application.study.FileColumn;
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 
 import java.util.Set;
 
+/**
+ * File column generator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+public final class FileColumnGenerator extends AbstractTestDataGenerator<FileColumn> {
 
-public final class FileColumnGenerator extends AbstractTestDataGenerator <FileColumn> {
-
+    /**
+     * The instance.
+     */
     public static final FileColumnGenerator INSTANCE = new FileColumnGenerator();
 
     private FileColumnGenerator() {
@@ -28,7 +34,8 @@ public final class FileColumnGenerator extends AbstractTestDataGenerator <FileCo
         assertEquals(original.getPosition(), retrieved.getPosition());
         assertEquals(original.getFieldDescriptor(), retrieved.getFieldDescriptor());
         assertEquals(original.getAnnotationFile(), retrieved.getAnnotationFile());
-        AnnotationFieldDescriptorGenerator.INSTANCE.compare(original.getFieldDescriptor(), retrieved.getFieldDescriptor());
+        AnnotationFieldDescriptorGenerator.INSTANCE.compare(original.getFieldDescriptor(),
+                retrieved.getFieldDescriptor());
     }
 
 
@@ -44,9 +51,8 @@ public final class FileColumnGenerator extends AbstractTestDataGenerator <FileCo
         column.setPosition(getUniqueInt());
         if (column.getFieldDescriptor() == null) {
             column.setFieldDescriptor(AnnotationFieldDescriptorGenerator.INSTANCE.createPersistentObject());
-            }
+        }
         AnnotationFieldDescriptorGenerator.INSTANCE.setValues(column.getFieldDescriptor(), nonCascadedObjects);
-
     }
 
 }

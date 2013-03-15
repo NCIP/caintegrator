@@ -7,10 +7,6 @@
 package gov.nih.nci.caintegrator.domain.application;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator.domain.genomic.Sample;
 import gov.nih.nci.caintegrator.domain.genomic.SampleAcquisition;
@@ -35,24 +31,24 @@ public class GenomicDataQueryResultTest {
         assertEquals(2, result.getColumnCollection().size());
         assertEquals(2, result.getRowCollection().get(0).getValues().size());
         assertEquals(2, result.getRowCollection().get(1).getValues().size());
-        
+
         result.excludeSampleSet(null);
         assertEquals(2, result.getColumnCollection().size());
         assertEquals(2, result.getRowCollection().get(0).getValues().size());
         assertEquals(2, result.getRowCollection().get(1).getValues().size());
-        
+
         SampleSet excludedSampleSet = new SampleSet();
         result.excludeSampleSet(excludedSampleSet);
         assertEquals(2, result.getColumnCollection().size());
         assertEquals(2, result.getRowCollection().get(0).getValues().size());
         assertEquals(2, result.getRowCollection().get(1).getValues().size());
-        
+
         excludedSampleSet.getSamples().add(result.getColumnCollection().get(0).getSampleAcquisition().getSample());
         result.excludeSampleSet(excludedSampleSet);
         assertEquals(1, result.getColumnCollection().size());
         assertEquals(1, result.getRowCollection().get(0).getValues().size());
         assertEquals(1, result.getRowCollection().get(1).getValues().size());
-        
+
         Sample sample3 = new Sample();
         sample3.setName("sample3");
         excludedSampleSet.getSamples().add(sample3);
@@ -61,7 +57,7 @@ public class GenomicDataQueryResultTest {
         assertEquals(1, result.getRowCollection().get(0).getValues().size());
         assertEquals(1, result.getRowCollection().get(1).getValues().size());
     }
-    
+
     private SampleAcquisition createSampleAcquisition(String sampleName) {
         SampleAcquisition sa = new SampleAcquisition();
         Sample sample = new Sample();

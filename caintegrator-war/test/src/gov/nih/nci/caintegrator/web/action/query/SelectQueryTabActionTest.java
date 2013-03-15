@@ -14,10 +14,8 @@ import gov.nih.nci.caintegrator.domain.application.ResultsOrientationEnum;
 import gov.nih.nci.caintegrator.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.query.DisplayableCopyNumberQueryResult;
-import gov.nih.nci.caintegrator.web.action.query.DisplayableQueryResult;
-import gov.nih.nci.caintegrator.web.action.query.SelectQueryTabAction;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -26,6 +24,7 @@ import org.junit.Test;
 public class SelectQueryTabActionTest extends AbstractSessionBasedTest {
     private SelectQueryTabAction action;
 
+    @Before
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -63,8 +62,8 @@ public class SelectQueryTabActionTest extends AbstractSessionBasedTest {
         workspace.setCopyNumberQueryResult(null);
         assertEquals(10, action.getPageSize());
 
-        DisplayableCopyNumberQueryResult copyResults =
-                new DisplayableCopyNumberQueryResult(new GenomicDataQueryResult(), ResultsOrientationEnum.SUBJECTS_AS_ROWS);
+        DisplayableCopyNumberQueryResult copyResults = new DisplayableCopyNumberQueryResult(
+                new GenomicDataQueryResult(), ResultsOrientationEnum.SUBJECTS_AS_ROWS);
         copyResults.setPageSize(30);
         workspace.setQueryResult(null);
         workspace.setCopyNumberQueryResult(copyResults);

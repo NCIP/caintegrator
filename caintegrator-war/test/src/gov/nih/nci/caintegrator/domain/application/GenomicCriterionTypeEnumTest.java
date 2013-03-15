@@ -8,7 +8,6 @@ package gov.nih.nci.caintegrator.domain.application;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import gov.nih.nci.caintegrator.domain.application.GenomicCriterionTypeEnum;
 
 import org.junit.Test;
 

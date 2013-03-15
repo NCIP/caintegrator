@@ -7,10 +7,6 @@
 package gov.nih.nci.caintegrator.domain.application;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator.domain.genomic.GeneExpressionReporter;
 
 import java.util.List;
@@ -26,10 +22,10 @@ public class GenomicDataResultColumnTest {
         GenomicDataResultColumn column2 = result.addColumn();
         result.getRowCollection().add(createRow(1.1f, 2.2f, result.getColumnCollection()));
         result.getRowCollection().add(createRow(3.3f, 4.4f, result.getColumnCollection()));
-        assertEquals(1.1f, (float) column1.getValues().get(0).getValue(), 0.0f);
-        assertEquals(3.3f, (float) column1.getValues().get(1).getValue(), 0.0f);
-        assertEquals(2.2f, (float) column2.getValues().get(0).getValue(), 0.0f);
-        assertEquals(4.4f, (float) column2.getValues().get(1).getValue(), 0.0f);
+        assertEquals(1.1f, column1.getValues().get(0).getValue(), 0.0f);
+        assertEquals(3.3f, column1.getValues().get(1).getValue(), 0.0f);
+        assertEquals(2.2f, column2.getValues().get(0).getValue(), 0.0f);
+        assertEquals(4.4f, column2.getValues().get(1).getValue(), 0.0f);
     }
 
     private GenomicDataResultRow createRow(float float1, float float2, List<GenomicDataResultColumn> columns) {

@@ -11,7 +11,6 @@ import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.query.NCIADicomRetrievalAction;
 
 import org.junit.Before;
 import org.junit.Test;

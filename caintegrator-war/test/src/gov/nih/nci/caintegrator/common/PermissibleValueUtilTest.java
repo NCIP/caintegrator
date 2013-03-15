@@ -9,8 +9,6 @@ package gov.nih.nci.caintegrator.common;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator.common.DateUtil;
-import gov.nih.nci.caintegrator.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.DateAnnotationValue;
@@ -29,32 +27,35 @@ import java.util.Set;
 import org.junit.Test;
 
 /**
- * 
+ * Permissible value utility tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class PermissibleValueUtilTest {
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator.common.PermissibleValueUtil#getDisplayString(gov.nih.nci.caintegrator.domain.annotation.PermissibleValue)}.
-     * @throws ParseException 
+     * Test display string presentation.
+     *
+     * @throws ParseException on parse exception
      */
     @Test
     public void testGetDisplayString() throws ParseException {
         PermissibleValue val1 = new PermissibleValue();
         val1.setValue("ABC");
         assertTrue("ABC".equalsIgnoreCase(val1.toString()));
-        
+
         PermissibleValue val2 = new PermissibleValue();
         val2.setValue("123");
-        assertEquals("123",val2.toString());
-        
+        assertEquals("123", val2.toString());
+
         PermissibleValue val3 = new PermissibleValue();
-        Date date = DateUtil.createDate("10-11-2008");  
+        Date date = DateUtil.createDate("10-11-2008");
         val3.setValue(DateUtil.toString(date));
         assertEquals("10/11/2008", val3.toString());
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator.common.PermissibleValueUtil#getDisplayPermissibleValue(java.util.Collection)}.
+     * Test displaying of permissible values.
      */
     @Test
     public void testGetDisplayPermissibleValue() {
@@ -70,8 +71,9 @@ public class PermissibleValueUtilTest {
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator.common.PermissibleValueUtil#addNewValues(java.util.Collection, java.util.List)}.
-     * @throws ParseException 
+     * Tests adding new values.
+     *
+     * @throws ParseException on parse exception
      */
     @Test
     public void testAddNewValues() throws ParseException {
@@ -89,7 +91,7 @@ public class PermissibleValueUtilTest {
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, stringValues);
         assertTrue(permissibleValueCollection.size() == 2);
-        
+
         // Test NumericPermissibleValue
         permissibleValueCollection = new HashSet<PermissibleValue>();
         stringValues = new ArrayList<String>();
@@ -98,13 +100,13 @@ public class PermissibleValueUtilTest {
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.NUMERIC.getValue(),
                 permissibleValueCollection, stringValues);
         assertTrue(permissibleValueCollection.size() == 2);
-        
+
         List<String> stringValues2 = new ArrayList<String>();
         stringValues2.add("456.1");
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.NUMERIC.getValue(),
                 permissibleValueCollection, stringValues2);
         assertTrue(permissibleValueCollection.size() == 2);
-        
+
         // Test DatePermissibleValue
         permissibleValueCollection = new HashSet<PermissibleValue>();
         stringValues = new ArrayList<String>();
@@ -113,7 +115,7 @@ public class PermissibleValueUtilTest {
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.DATE.getValue(),
                 permissibleValueCollection, stringValues);
         assertTrue(permissibleValueCollection.size() == 2);
-        
+
         List<String> stringValues4 = new ArrayList<String>();
         stringValues4.add(getDisplayDate("11-10-2008"));
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.DATE.getValue(),
@@ -122,8 +124,9 @@ public class PermissibleValueUtilTest {
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator.common.PermissibleValueUtil#removeValues(java.util.Collection, java.util.List)}.
-     * @throws ParseException 
+     * Tests value removal.
+     *
+     * @throws ParseException on parse exception
      */
     @Test
     public void testRemoveValues() throws ParseException {
@@ -135,12 +138,12 @@ public class PermissibleValueUtilTest {
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, annotationValues);
         assertTrue(permissibleValueCollection.size() == 2);
-        
+
         List<String> removePermissibleValues = new ArrayList<String>();
         removePermissibleValues.add("ABC");
         PermissibleValueUtil.removeValue(permissibleValueCollection, removePermissibleValues);
         assertTrue(permissibleValueCollection.size() == 1);
-        
+
         // Test NumericPermissibleValue
         permissibleValueCollection = new HashSet<PermissibleValue>();
         annotationValues = new ArrayList<String>();
@@ -149,12 +152,12 @@ public class PermissibleValueUtilTest {
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.NUMERIC.getValue(),
                 permissibleValueCollection, annotationValues);
         assertTrue(permissibleValueCollection.size() == 2);
-        
+
         removePermissibleValues = new ArrayList<String>();
         removePermissibleValues.add("456.1");
         PermissibleValueUtil.removeValue(permissibleValueCollection, removePermissibleValues);
         assertTrue(permissibleValueCollection.size() == 1);
-        
+
         // Test NumericPermissibleValue
         permissibleValueCollection = new HashSet<PermissibleValue>();
         annotationValues = new ArrayList<String>();
@@ -163,7 +166,7 @@ public class PermissibleValueUtilTest {
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.DATE.getValue(),
                 permissibleValueCollection, annotationValues);
         assertTrue(permissibleValueCollection.size() == 2);
-        
+
         removePermissibleValues = new ArrayList<String>();
         removePermissibleValues.add(DateUtil.toString(DateUtil.createDate("12-01-2007")));
         PermissibleValueUtil.removeValue(permissibleValueCollection, removePermissibleValues);
@@ -174,7 +177,7 @@ public class PermissibleValueUtilTest {
     public void testUpdate() throws ParseException {
         Collection<PermissibleValue> permissibleValueCollection;
         List<String> newStringValues;
-        
+
         permissibleValueCollection = createStringPermissible();
         newStringValues = new ArrayList<String>();
         newStringValues.add("ABC");
@@ -182,7 +185,7 @@ public class PermissibleValueUtilTest {
         PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
-        
+
         // Test NumericPermissibleValue
         permissibleValueCollection = createNumericPermissible();
         newStringValues = new ArrayList<String>();
@@ -191,7 +194,7 @@ public class PermissibleValueUtilTest {
         PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
-        
+
         // Test DatePermissibleValue
         permissibleValueCollection = createDatePermissible();
         newStringValues = new ArrayList<String>();
@@ -201,7 +204,7 @@ public class PermissibleValueUtilTest {
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
     }
-    
+
     @Test
     public void testRetrieveValuesNotPermissible() throws ParseException {
         AnnotationDefinition annotationDefinition1 = new AnnotationDefinition();
@@ -212,14 +215,14 @@ public class PermissibleValueUtilTest {
         validValue.setNumericValue(123.0);
         validValue.setAnnotationDefinition(annotationDefinition1);
         annotationDefinition1.getAnnotationValueCollection().add(validValue);
-        
-        Set<String> invalidValues = 
+
+        Set<String> invalidValues =
             PermissibleValueUtil.retrieveValuesNotPermissible(retrieveValues(annotationDefinition1), annotationDefinition1);
         assertTrue(invalidValues.isEmpty());
 
         annotationDefinition1.setDataType(null);
         try {
-            invalidValues = 
+            invalidValues =
                 PermissibleValueUtil.retrieveValuesNotPermissible(retrieveValues(annotationDefinition1), annotationDefinition1);
         } catch (Exception e) {
             assertEquals("Data Type for the Annotation Definition is unknown.", e.getMessage());
@@ -230,28 +233,28 @@ public class PermissibleValueUtilTest {
         invalidValue.setNumericValue(1234.0);
         invalidValue.setAnnotationDefinition(annotationDefinition1);
         annotationDefinition1.getAnnotationValueCollection().add(invalidValue);
-        invalidValues = 
+        invalidValues =
             PermissibleValueUtil.retrieveValuesNotPermissible(retrieveValues(annotationDefinition1), annotationDefinition1);
         assertTrue(invalidValues.size() == 1);
         assertTrue(invalidValues.iterator().next().equals("1234.0"));
-        
+
         AnnotationDefinition annotationDefinition2 = new AnnotationDefinition();
         annotationDefinition2.setDataType(AnnotationTypeEnum.STRING);
         annotationDefinition2.getPermissibleValueCollection().addAll(createStringPermissible());
-        
+
         StringAnnotationValue validValue2 = new StringAnnotationValue();
         validValue2.setStringValue("ABC");
         validValue2.setAnnotationDefinition(annotationDefinition2);
         annotationDefinition2.getAnnotationValueCollection().add(validValue2);
-        invalidValues = 
+        invalidValues =
             PermissibleValueUtil.retrieveValuesNotPermissible(retrieveValues(annotationDefinition2), annotationDefinition2);
         assertTrue(invalidValues.isEmpty());
-        
+
         StringAnnotationValue invalidValue2 = new StringAnnotationValue();
         invalidValue2.setStringValue("ABCDEF");
         invalidValue2.setAnnotationDefinition(annotationDefinition2);
         annotationDefinition2.getAnnotationValueCollection().add(invalidValue2);
-        invalidValues = 
+        invalidValues =
             PermissibleValueUtil.retrieveValuesNotPermissible(retrieveValues(annotationDefinition2), annotationDefinition2);
         assertTrue(invalidValues.size() == 1);
         assertTrue(invalidValues.iterator().next().equals("ABCDEF"));
@@ -263,11 +266,11 @@ public class PermissibleValueUtilTest {
         validValue3.setDateValue(new Date());
         validValue3.setAnnotationDefinition(annotationDefinition3);
         annotationDefinition3.getAnnotationValueCollection().add(validValue3);
-        invalidValues = 
+        invalidValues =
             PermissibleValueUtil.retrieveValuesNotPermissible(retrieveValues(annotationDefinition3), annotationDefinition3);
         assertTrue(invalidValues.size() == 1);
     }
-    
+
     private Set<Object> retrieveValues(AnnotationDefinition annotationDefinition) {
         Set<Object> objectValues = new HashSet<Object>();
         for (AbstractAnnotationValue value : annotationDefinition.getAnnotationValueCollection()) {
@@ -277,7 +280,7 @@ public class PermissibleValueUtilTest {
                 objectValues.add(((NumericAnnotationValue) value).getNumericValue());
             } else if (value instanceof DateAnnotationValue) {
                 objectValues.add(((DateAnnotationValue) value).getDateValue());
-            } 
+            }
         }
         return objectValues;
     }
@@ -292,7 +295,7 @@ public class PermissibleValueUtilTest {
                 permissibleValueCollection, stringValues);
         return permissibleValueCollection;
     }
-    
+
     private Collection<PermissibleValue> createNumericPermissible() throws ParseException {
         Collection<PermissibleValue> permissibleValueCollection = new HashSet<PermissibleValue>();
         List<String> stringValues = new ArrayList<String>();
@@ -303,7 +306,7 @@ public class PermissibleValueUtilTest {
                 permissibleValueCollection, stringValues);
         return permissibleValueCollection;
     }
-    
+
     private Collection<PermissibleValue> createDatePermissible() throws ParseException {
         Collection<PermissibleValue> permissibleValueCollection = new HashSet<PermissibleValue>();
         List<String> stringValues = new ArrayList<String>();
@@ -314,7 +317,7 @@ public class PermissibleValueUtilTest {
                 permissibleValueCollection, stringValues);
         return permissibleValueCollection;
     }
-    
+
     private String getDisplayDate(String date) throws ParseException {
         return DateUtil.toString(DateUtil.createDate(date));
     }

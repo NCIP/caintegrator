@@ -8,7 +8,6 @@ package gov.nih.nci.caintegrator.domain.application;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import gov.nih.nci.caintegrator.domain.application.WildCardTypeEnum;
 
 import org.junit.Test;
 
@@ -19,7 +18,7 @@ public class WildCardTypeEnumTest {
         assertEquals(WildCardTypeEnum.NOT_EQUAL_TO, WildCardTypeEnum.getByValue("notEqualTo"));
         assertNull(WildCardTypeEnum.getByValue(null));
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void testCheckType() {
         WildCardTypeEnum.checkType("no match");

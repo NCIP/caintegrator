@@ -21,8 +21,6 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.application.SubjectList;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.abstractlist.ListTypeEnum;
-import gov.nih.nci.caintegrator.web.action.abstractlist.ManageListAction;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;

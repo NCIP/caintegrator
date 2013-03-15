@@ -20,7 +20,6 @@ import gov.nih.nci.caintegrator.domain.application.SubjectList;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.abstractlist.EditSubjectListAction;
 
 import java.util.HashMap;
 

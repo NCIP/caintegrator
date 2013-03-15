@@ -14,8 +14,6 @@ import gov.nih.nci.caintegrator.domain.application.Query;
 import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator.domain.translational.Study;
-import gov.nih.nci.caintegrator.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
 
 import java.util.HashMap;
@@ -26,10 +24,14 @@ import org.junit.Test;
 
 import com.opensymphony.xwork2.ActionContext;
 
-
+/**
+ * Displayable user workspace tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class DisplayableUserWorkspaceTest extends AbstractSessionBasedTest {
     private UserWorkspace userWorkspace;
-    private static Integer ID = 1;
+    private Integer id = 1;
 
     @Override
     @Before
@@ -71,7 +73,7 @@ public class DisplayableUserWorkspaceTest extends AbstractSessionBasedTest {
         study.setShortTitleText(studyName);
         study.setEnabled(!isDisabled);
         studySubscription.setStudy(study);
-        studySubscription.setId(Long.valueOf(ID++));
+        studySubscription.setId(Long.valueOf(id++));
         Query query1 = new Query();
         Query query2 = new Query();
         studySubscription.getQueryCollection().add(query1);

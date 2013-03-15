@@ -6,19 +6,24 @@
  */
 package gov.nih.nci.caintegrator.application.study;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator.application.study.AnnotationFieldType;
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 
 import java.util.Set;
 
-public final class AnnotationFieldDescriptorGenerator extends AbstractTestDataGenerator <AnnotationFieldDescriptor> {
+/**
+ * Annoation Field Description generator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+public final class AnnotationFieldDescriptorGenerator extends AbstractTestDataGenerator<AnnotationFieldDescriptor> {
 
-    
+    /**
+     * The instance.
+     */
     public static final AnnotationFieldDescriptorGenerator INSTANCE = new AnnotationFieldDescriptorGenerator();
 
-    
+
     private AnnotationFieldDescriptorGenerator() {
         super();
     }
@@ -38,10 +43,10 @@ public final class AnnotationFieldDescriptorGenerator extends AbstractTestDataGe
 
 
     @Override
-    public void setValues(AnnotationFieldDescriptor annotationFieldDescriptor, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+    public void setValues(AnnotationFieldDescriptor annotationFieldDescriptor,
+            Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         annotationFieldDescriptor.setName(getUniqueString());
-        annotationFieldDescriptor.setType(getNewEnumValue(annotationFieldDescriptor.getType(), AnnotationFieldType.values()));
-
+        annotationFieldDescriptor.setType(getNewEnumValue(annotationFieldDescriptor
+                .getType(), AnnotationFieldType.values()));
     }
-
 }

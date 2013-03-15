@@ -6,29 +6,26 @@
  */
 package gov.nih.nci.caintegrator.domain.application;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator.domain.application.ExpressionLevelCriterion;
-import gov.nih.nci.caintegrator.domain.application.FoldChangeCriterion;
-import gov.nih.nci.caintegrator.domain.application.GeneNameCriterion;
-import gov.nih.nci.caintegrator.domain.application.RangeTypeEnum;
 
 import org.junit.Test;
 
-
 /**
- * 
+ * Compound criterion tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class CompoundCriterionTest {
 
     @Test
     public void testValidate() {
-        
+
         boolean getException = false;
         FoldChangeCriterion foldChange1 = new FoldChangeCriterion();
         FoldChangeCriterion foldChange2 = new FoldChangeCriterion();
-        
+
         // Test valid FoldChange
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.getCriterionCollection().add(foldChange1);
@@ -80,7 +77,7 @@ public class CompoundCriterionTest {
             getException = true;
         }
         assertTrue(getException);
-        
+
         // Test invalid expression level criterion
         compoundCriterion = new CompoundCriterion();
         ExpressionLevelCriterion expressionLevelCriterion = new ExpressionLevelCriterion();

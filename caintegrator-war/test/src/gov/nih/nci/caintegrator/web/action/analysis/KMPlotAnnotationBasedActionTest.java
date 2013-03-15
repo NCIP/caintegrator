@@ -34,8 +34,6 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.KMPlotAnnotationBasedAction;
-import gov.nih.nci.caintegrator.web.action.analysis.KMPlotAnnotationBasedActionForm;
 
 import java.awt.Color;
 
@@ -84,9 +82,9 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         group.setName("subjectAnnotations");
         study.getAnnotationGroups().add(group);
         AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
-        afd1.setId(1l);
+        afd1.setId(1L);
         AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
-        afd2.setId(2l);
+        afd2.setId(2L);
         group.getAnnotationFieldDescriptors().add(afd1);
         group.getAnnotationFieldDescriptors().add(afd2);
         AnnotationDefinition subjectDef1 = new AnnotationDefinition();
@@ -134,7 +132,8 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         action.validate();
         assertTrue(action.getActionErrors().size() > 0);
         action.clearErrorsAndMessages();
-        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources()
+            .add(new GenomicDataSourceConfiguration());
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
@@ -187,13 +186,16 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         action.getKmPlotParameters().setSurvivalValueDefinition(new SurvivalValueDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setId(Long.valueOf(1));
         action.getKmPlotParameters().getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
-        action.getKmPlotParameters().getSurvivalValueDefinition().getSurvivalStartDate().setDataType(AnnotationTypeEnum.DATE);
+        action.getKmPlotParameters().getSurvivalValueDefinition().getSurvivalStartDate()
+            .setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().getSurvivalValueDefinition().setDeathDate(new AnnotationDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().getDeathDate().setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
-        action.getKmPlotParameters().getSurvivalValueDefinition().getLastFollowupDate().setDataType(AnnotationTypeEnum.DATE);
+        action.getKmPlotParameters().getSurvivalValueDefinition().getLastFollowupDate()
+            .setDataType(AnnotationTypeEnum.DATE);
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
-        verify(analysisService, atLeastOnce()).createKMPlot(any(StudySubscription.class), any(AbstractKMParameters.class));
+        verify(analysisService, atLeastOnce()).createKMPlot(any(StudySubscription.class),
+                any(AbstractKMParameters.class));
         assertFalse(action.isCreatable());
 
         action.getKmPlotForm().getAnnotationBasedForm().setSelectedAnnotationId("1");
@@ -253,7 +255,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
         selectedAnnotation.setDataType(AnnotationTypeEnum.STRING);
         selectedAnnotation.setId(Long.valueOf(1));
         selectedAnnotationFieldDescriptor.setDefinition(selectedAnnotation);
-        selectedAnnotationFieldDescriptor.setId(1l);
+        selectedAnnotationFieldDescriptor.setId(1L);
         action.getKmPlotParameters().setSelectedAnnotation(selectedAnnotationFieldDescriptor);
     }
 

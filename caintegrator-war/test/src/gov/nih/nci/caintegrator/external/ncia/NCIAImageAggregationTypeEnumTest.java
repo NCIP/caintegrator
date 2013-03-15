@@ -8,7 +8,6 @@ package gov.nih.nci.caintegrator.external.ncia;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import gov.nih.nci.caintegrator.external.ncia.NCIAImageAggregationTypeEnum;
 
 import org.junit.Test;
 
@@ -29,7 +28,7 @@ public class NCIAImageAggregationTypeEnumTest {
     public void testCheckType() {
         NCIAImageAggregationTypeEnum.checkType("no match");
     }
-    
+
     @Test
     public void testCheckTypeValid() {
         NCIAImageAggregationTypeEnum.checkType("imageSeries");

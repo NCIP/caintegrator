@@ -9,8 +9,6 @@ package gov.nih.nci.caintegrator.domain.genomic;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
-import gov.nih.nci.caintegrator.domain.genomic.Platform;
-import gov.nih.nci.caintegrator.domain.genomic.ReporterTypeEnum;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +16,9 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * 
+ * Platform tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class PlatformTest {
 

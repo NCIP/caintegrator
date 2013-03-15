@@ -57,9 +57,6 @@ import gov.nih.nci.caintegrator.domain.genomic.Sample;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator.external.caarray.CaArrayFacadeImpl;
-import gov.nih.nci.caintegrator.external.caarray.CaArrayServiceFactory;
-import gov.nih.nci.caintegrator.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
 import java.io.ByteArrayInputStream;
@@ -96,8 +93,7 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
     private SearchService searchService;
 
     /**
-     * Sets up objects necessary for unit testing.
-     * @throws Exception on error
+     * {@inheritDoc}
      */
     @Before
     public void setUp() throws Exception {
@@ -127,7 +123,8 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
                 return result;
             }
         });
-        when(dataService.streamFileContents(any(CaArrayEntityReference.class), anyBoolean())).thenAnswer(new Answer<FileStreamableContents>() {
+        when(dataService.streamFileContents(any(CaArrayEntityReference.class), anyBoolean()))
+            .thenAnswer(new Answer<FileStreamableContents>() {
 
             @Override
             public FileStreamableContents answer(InvocationOnMock invocation) throws Throwable {
@@ -151,7 +148,8 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
         });
 
         searchService = mock(SearchService.class);
-        when(searchService.searchForExperiments(any(ExperimentSearchCriteria.class), any(LimitOffset.class))).thenAnswer(new Answer<SearchResult<Experiment>>() {
+        when(searchService.searchForExperiments(any(ExperimentSearchCriteria.class), any(LimitOffset.class)))
+            .thenAnswer(new Answer<SearchResult<Experiment>>() {
 
             @Override
             public SearchResult<Experiment> answer(InvocationOnMock invocation) throws Throwable {
@@ -167,7 +165,8 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
                 return result;
             }
         });
-        when(searchService.searchForBiomaterials(any(BiomaterialSearchCriteria.class), any(LimitOffset.class))).thenAnswer(new Answer<SearchResult<Biomaterial>>() {
+        when(searchService.searchForBiomaterials(any(BiomaterialSearchCriteria.class), any(LimitOffset.class)))
+            .thenAnswer(new Answer<SearchResult<Biomaterial>>() {
             @Override
             public SearchResult<Biomaterial> answer(InvocationOnMock invocation) throws Throwable {
                 Biomaterial sample = new Biomaterial();
@@ -179,7 +178,8 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
                 return result;
             }
         });
-        when(searchService.searchForFiles(any(FileSearchCriteria.class), any(LimitOffset.class))).then(new Answer<SearchResult<File>>() {
+        when(searchService.searchForFiles(any(FileSearchCriteria.class), any(LimitOffset.class)))
+            .then(new Answer<SearchResult<File>>() {
             @Override
             public SearchResult<File> answer(InvocationOnMock invocation) throws Throwable {
                 SearchResult<File> result = new SearchResult<File>();
@@ -190,7 +190,8 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
                 return result;
             }
         });
-        when(searchService.searchForHybridizations(any(HybridizationSearchCriteria.class), any(LimitOffset.class))).thenAnswer(new Answer<SearchResult<Hybridization>>() {
+        when(searchService.searchForHybridizations(any(HybridizationSearchCriteria.class), any(LimitOffset.class)))
+            .thenAnswer(new Answer<SearchResult<Hybridization>>() {
             @Override
             public SearchResult<Hybridization> answer(InvocationOnMock invocation) throws Throwable {
                 ArrayDesign design = new ArrayDesign();
@@ -204,16 +205,19 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
                 return result;
             }
         });
-        when(searchService.searchByExample(any(ExampleSearchCriteria.class), any(LimitOffset.class))).then(new Answer<SearchResult<AbstractCaArrayEntity>>() {
+        when(searchService.searchByExample(any(ExampleSearchCriteria.class), any(LimitOffset.class)))
+            .then(new Answer<SearchResult<AbstractCaArrayEntity>>() {
             @Override
             public SearchResult<AbstractCaArrayEntity> answer(InvocationOnMock invocation) throws Throwable {
-                ExampleSearchCriteria<AbstractCaArrayEntity> crit = (ExampleSearchCriteria<AbstractCaArrayEntity>) invocation.getArguments()[0];
+                ExampleSearchCriteria<AbstractCaArrayEntity> crit =
+                        (ExampleSearchCriteria<AbstractCaArrayEntity>) invocation.getArguments()[0];
                 SearchResult<AbstractCaArrayEntity> result = new SearchResult<AbstractCaArrayEntity>();
                 result.getResults().add(crit.getExample());
                 return result;
             }
         });
-        when(searchService.searchForQuantitationTypes(any(QuantitationTypeSearchCriteria.class))).thenAnswer(new Answer<List<QuantitationType>>() {
+        when(searchService.searchForQuantitationTypes(any(QuantitationTypeSearchCriteria.class)))
+            .thenAnswer(new Answer<List<QuantitationType>>() {
             @Override
             public List<QuantitationType> answer(InvocationOnMock invocation) throws Throwable {
                 List<QuantitationType> results = new ArrayList<QuantitationType>();
@@ -262,8 +266,10 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
         assertNotNull(values);
         assertEquals(1, values.getArrayDatas().size());
         for (ArrayData arrayData : values.getArrayDatas()) {
-            assertEquals((float) 1.1, values.getFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
-            assertEquals((float) 2.2, values.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
+            assertEquals((float) 1.1, values.getFloatValue(arrayData, reporter1,
+                    ArrayDataValueType.EXPRESSION_SIGNAL), 0);
+            assertEquals((float) 2.2, values.getFloatValue(arrayData, reporter2,
+                    ArrayDataValueType.EXPRESSION_SIGNAL), 0);
         }
     }
 
@@ -289,7 +295,8 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
      */
     @Test
     public void checkForSampleUpdates() throws ConnectionException, ExperimentNotFoundException {
-       Map<String, Date> updates = caArrayFacade.checkForSampleUpdates("sample-exp", mock(ServerConnectionProfile.class));
+       Map<String, Date> updates = caArrayFacade.checkForSampleUpdates("sample-exp",
+               mock(ServerConnectionProfile.class));
        assertFalse(updates.isEmpty());
        assertEquals(1, updates.size());
        for (Date modifiedDate  : updates.values()) {

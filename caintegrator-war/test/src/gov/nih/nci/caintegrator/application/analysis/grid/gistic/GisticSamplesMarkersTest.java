@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import edu.wustl.icr.asrv1.segment.ChromosomalSegment;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
-import gov.nih.nci.caintegrator.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator.data.StudyHelper;
 import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator.domain.genomic.ArrayDataType;
@@ -29,7 +28,7 @@ public class GisticSamplesMarkersTest {
 
     private Study study;
     private GisticSamplesMarkers gisticSamplesMarkers;
-    
+
     @Before
     public void setUp() throws Exception {
         StudyHelper studyHelper = new StudyHelper();
@@ -41,7 +40,7 @@ public class GisticSamplesMarkersTest {
     @Test
     public void testAddReporterListToGisticMarkers() {
         ReporterList reporterList = getArrayData().getReporterLists().iterator().next();
-        
+
         gisticSamplesMarkers.addReporterListToGisticMarkers(reporterList);
         Marker marker = gisticSamplesMarkers.getMarkers()[0];
         assertEquals("1", marker.getChromosome());

@@ -17,7 +17,6 @@ import gov.nih.nci.caintegrator.application.geneexpression.PlotCalculationTypeEn
 import gov.nih.nci.caintegrator.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.geneexpression.GEPlotResult;
 
 import java.io.IOException;
 import java.io.OutputStream;

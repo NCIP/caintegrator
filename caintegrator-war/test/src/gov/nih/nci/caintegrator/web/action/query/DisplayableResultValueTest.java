@@ -14,7 +14,6 @@ import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator.domain.application.ResultValue;
-import gov.nih.nci.caintegrator.web.action.query.DisplayableResultValue;
 
 import org.junit.Test;
 

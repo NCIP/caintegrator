@@ -7,19 +7,26 @@
 package gov.nih.nci.caintegrator.domain.genomic;
 
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator.domain.genomic.GeneExpressionReporter;
 
 import java.util.Set;
 
 
+/**
+ * Gene expression data generator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public final class GeneExpressionReporterGenerator extends AbstractReporterGenerator<GeneExpressionReporter> {
 
+    /**
+     * The instance.
+     */
     public static final GeneExpressionReporterGenerator INSTANCE = new GeneExpressionReporterGenerator();
-    
-    private GeneExpressionReporterGenerator() { 
+
+    private GeneExpressionReporterGenerator() {
         super();
     }
-    
+
     @Override
     public void compareFields(GeneExpressionReporter original, GeneExpressionReporter retrieved) {
         super.compareFields(original, retrieved);
@@ -31,7 +38,8 @@ public final class GeneExpressionReporterGenerator extends AbstractReporterGener
     }
 
     @Override
-    public void setValues(GeneExpressionReporter geneExpressionReporter, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+    public void setValues(GeneExpressionReporter geneExpressionReporter,
+            Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         super.setValues(geneExpressionReporter, nonCascadedObjects);
     }
 

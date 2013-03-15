@@ -8,14 +8,13 @@ package gov.nih.nci.caintegrator.external.caarray;
 
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator.external.caarray.CaArrayServiceFactoryImpl;
 
 import org.junit.Test;
 
 public class CaArrayServiceFactoryImplTest {
 
 
-    @Test(expected=ConnectionException.class)
+    @Test(expected = ConnectionException.class)
     public void testCreateSearchService() throws ConnectionException {
         CaArrayServiceFactoryImpl factoryImpl = new CaArrayServiceFactoryImpl();
         ServerConnectionProfile profile = new ServerConnectionProfile();

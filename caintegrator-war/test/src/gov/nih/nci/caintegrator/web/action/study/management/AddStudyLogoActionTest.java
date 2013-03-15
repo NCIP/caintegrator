@@ -14,7 +14,6 @@ import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.study.management.AddStudyLogoAction;
 
 import org.junit.Before;
 import org.junit.Test;

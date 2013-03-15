@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.study.management.BrowseStudyAction;
 
 import org.junit.Before;
 import org.junit.Test;

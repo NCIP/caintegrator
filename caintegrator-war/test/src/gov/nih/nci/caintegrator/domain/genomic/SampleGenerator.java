@@ -9,14 +9,19 @@ package gov.nih.nci.caintegrator.domain.genomic;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator.domain.genomic.Array;
-import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator.domain.genomic.Sample;
 
 import java.util.Set;
 
+/**
+ * Sample generator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class SampleGenerator extends AbstractTestDataGenerator<Sample> {
-    
+
+    /**
+     * The instance.
+     */
     public static final SampleGenerator INSTANCE = new SampleGenerator();
 
     @Override
@@ -24,7 +29,8 @@ public class SampleGenerator extends AbstractTestDataGenerator<Sample> {
         assertEquals(original.getName(), retrieved.getName());
         assertEquals(original.getArrayDataCollection().size(), retrieved.getArrayDataCollection().size());
         assertEquals(original.getArrayCollection().size(), retrieved.getArrayCollection().size());
-        compareCollections(original.getArrayDataCollection(), retrieved.getArrayDataCollection(), ArrayDataGenerator.INSTANCE);
+        compareCollections(original.getArrayDataCollection(),
+                retrieved.getArrayDataCollection(), ArrayDataGenerator.INSTANCE);
     }
 
     @Override

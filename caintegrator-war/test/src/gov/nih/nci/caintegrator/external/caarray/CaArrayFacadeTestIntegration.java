@@ -35,7 +35,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import affymetrix.fusion.cdf.FusionCDFData;
 
-
+/**
+ * caArray facade integration tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class CaArrayFacadeTestIntegration {
 
     private CaArrayFacadeImpl caArrayFacade;
@@ -57,7 +61,7 @@ public class CaArrayFacadeTestIntegration {
         assertFalse(samples.isEmpty());
     }
 
-    @Test (expected=ExperimentNotFoundException.class)
+    @Test (expected = ExperimentNotFoundException.class)
     public void testGetSamplesInvalidExperiment() throws ConnectionException, ExperimentNotFoundException {
         ServerConnectionProfile profile = new ServerConnectionProfile();
         profile.setHostname("ncias-d227-v.nci.nih.gov");
@@ -95,9 +99,11 @@ public class CaArrayFacadeTestIntegration {
         public Platform getPlatform(String name) {
             Platform platform = new Platform();
             platform.setName("HG-U133_Plus_2");
-            ReporterList reporterList = platform.addReporterList("HG-U133_Plus_2", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            ReporterList reporterList = platform.addReporterList("HG-U133_Plus_2",
+                    ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             try {
-                AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(TestArrayDesignFiles.HG_U133_PLUS_2_CDF_FILE);
+                AffymetrixCdfReader cdfReader =
+                        AffymetrixCdfReader.create(TestArrayDesignFiles.HG_U133_PLUS_2_CDF_FILE);
                 FusionCDFData fusionCDFData = cdfReader.getCdfData();
                 for (int i = 0; i < fusionCDFData.getHeader().getNumProbeSets(); i++) {
                     GeneExpressionReporter reporter = new GeneExpressionReporter();

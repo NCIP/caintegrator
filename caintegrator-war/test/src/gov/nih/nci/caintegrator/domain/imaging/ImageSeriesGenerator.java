@@ -9,14 +9,21 @@ package gov.nih.nci.caintegrator.domain.imaging;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator.domain.imaging.ImageSeries;
 
 import java.util.Set;
 
+/**
+ * Image series generator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public final class ImageSeriesGenerator extends AbstractTestDataGenerator<ImageSeries> {
 
+    /**
+     * The instance.
+     */
     public static final ImageSeriesGenerator INSTANCE = new ImageSeriesGenerator();
-    
+
     private ImageSeriesGenerator() {
         super();
     }
@@ -47,7 +54,8 @@ public final class ImageSeriesGenerator extends AbstractTestDataGenerator<ImageS
         imageSeries.getImageCollection().clear();
 
         for (int i = 0; i < 3; i++) {
-            imageSeries.getImageCollection().add(ImageGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
+            imageSeries.getImageCollection().add(
+                    ImageGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
         }
     }
 

@@ -8,7 +8,6 @@ package gov.nih.nci.caintegrator.domain.application;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.application.query.GenomicCriteriaMatchTypeEnum;
-import gov.nih.nci.caintegrator.domain.application.GenomicDataResultValue;
 
 import org.junit.Test;
 
@@ -23,7 +22,7 @@ public class GenomicDataResultValueTest {
         assertEquals("#CC3333", value.getHighlightColor());
         value.setCriteriaMatchType(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE);
         assertEquals("#CC3333", value.getHighlightColor());
-        
+
         value.setValue(-1f);
         assertEquals("#0066CC", value.getHighlightColor());
         value.setCriteriaMatchType(GenomicCriteriaMatchTypeEnum.UNDER);

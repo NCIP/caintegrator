@@ -7,20 +7,25 @@
 package gov.nih.nci.caintegrator.domain.application;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertFalse;
-import gov.nih.nci.caintegrator.domain.application.GenomicIntervalTypeEnum;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+/**
+ * Genomic interval type test.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class GenomicIntervalTypeEnumTest {
 
     @Test
     public void testGetByValue() {
-        assertEquals(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES, GenomicIntervalTypeEnum.getByValue("Chromosome Coordinates"));
+        assertEquals(GenomicIntervalTypeEnum.CHROMOSOME_COORDINATES,
+                GenomicIntervalTypeEnum.getByValue("Chromosome Coordinates"));
         assertNull(GenomicIntervalTypeEnum.getByValue(null));
     }
-    
+
     @Test
     public void testCheckType() {
         assertFalse(GenomicIntervalTypeEnum.checkType("no match"));

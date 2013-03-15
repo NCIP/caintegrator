@@ -13,11 +13,11 @@ import gov.nih.nci.caintegrator.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.study.management.SaveStudyAction;
 
 import java.util.HashMap;
 
 import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,10 +55,8 @@ public class SaveStudyActionTest extends AbstractSessionBasedTest {
 
     @Test
     public void testValidate() {
-        StringBuffer longName = new StringBuffer();
-        for (int i =0; i<210; i++) {
-            longName.append('A');
-        }
+        String longName = RandomStringUtils.randomAlphabetic(210);
+
         action.getStudyConfiguration().getStudy().setShortTitleText("name");
         action.getStudyConfiguration().getStudy().setLongTitleText("Description");
         action.validate();
@@ -79,12 +77,12 @@ public class SaveStudyActionTest extends AbstractSessionBasedTest {
         action.getStudyConfiguration().getStudy().setLongTitleText("Description");
         action.validate();
         assertTrue(action.hasFieldErrors());
-        action.getStudyConfiguration().getStudy().setShortTitleText(longName.toString());
+        action.getStudyConfiguration().getStudy().setShortTitleText(longName);
         action.getStudyConfiguration().getStudy().setLongTitleText("Description");
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.getStudyConfiguration().getStudy().setShortTitleText("name");
-        action.getStudyConfiguration().getStudy().setLongTitleText(longName.toString());
+        action.getStudyConfiguration().getStudy().setLongTitleText(longName);
         action.validate();
         assertTrue(action.hasFieldErrors());
 

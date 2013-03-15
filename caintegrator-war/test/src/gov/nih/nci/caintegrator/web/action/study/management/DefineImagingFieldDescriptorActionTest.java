@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.study.management.DefineImagingFieldDescriptorAction;
 import gov.nih.nci.caintegrator.web.ajax.DataElementSearchAjaxUpdater;
 
 import org.junit.Before;
@@ -42,7 +41,8 @@ public class DefineImagingFieldDescriptorActionTest extends AbstractSessionBased
 
     @Test
     public void testGetEntityTypeForSearch() {
-        assertEquals(DataElementSearchAjaxUpdater.ReturnTypeEnum.IMAGING_SOURCE.toString(), action.getEntityTypeForSearch());
+        assertEquals(DataElementSearchAjaxUpdater.ReturnTypeEnum.IMAGING_SOURCE.toString(),
+                action.getEntityTypeForSearch());
     }
 
     @Test

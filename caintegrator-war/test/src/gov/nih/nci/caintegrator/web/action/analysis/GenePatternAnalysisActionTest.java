@@ -31,8 +31,6 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.AbstractAnalysisFormParameter;
-import gov.nih.nci.caintegrator.web.action.analysis.GenePatternAnalysisAction;
 import gov.nih.nci.caintegrator.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.Arrays;
@@ -165,7 +163,8 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources()
+            .add(new GenomicDataSourceConfiguration());
         action.validate();
         assertFalse(action.hasErrors());
         action.clearErrorsAndMessages();
@@ -181,11 +180,13 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
         action.getGenePatternAnalysisForm().getParameters().get(0).setValue("value");
         action.validate();
         assertFalse(action.hasErrors());
-        action.getGenePatternAnalysisForm().getParameters().get(0).getParameterValue().getParameter().setType(AnalysisParameterType.INTEGER);
+        action.getGenePatternAnalysisForm().getParameters().get(0).getParameterValue().getParameter()
+            .setType(AnalysisParameterType.INTEGER);
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getGenePatternAnalysisForm().getParameters().get(0).getParameterValue().getParameter().setType(AnalysisParameterType.FLOAT);
+        action.getGenePatternAnalysisForm().getParameters().get(0).getParameterValue().getParameter()
+            .setType(AnalysisParameterType.FLOAT);
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
@@ -236,7 +237,8 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
         authConfig.setGenomicDataSourceConfiguration(gdsc);
         authGroup.getAuthorizedGenomicDataSourceConfigurations().add(authConfig);
         action.getCurrentStudy().getStudyConfiguration().getAuthorizedStudyElementsGroups().add(authGroup);
-        when(studyManagementService.getAuthorizedStudyElementsGroups(anyString(), anyLong())).thenReturn(Arrays.asList(authGroup));
+        when(studyManagementService.getAuthorizedStudyElementsGroups(anyString(), anyLong()))
+            .thenReturn(Arrays.asList(authGroup));
 
         assertEquals(3, action.getAnalysisTypes().size());
         assertTrue(action.getAnalysisTypes().containsKey("gistic"));
@@ -261,7 +263,8 @@ public class GenePatternAnalysisActionTest extends AbstractSessionBasedTest {
         authConfig.setGenomicDataSourceConfiguration(gdsc);
         authGroup.getAuthorizedGenomicDataSourceConfigurations().add(authConfig);
         action.getCurrentStudy().getStudyConfiguration().getAuthorizedStudyElementsGroups().add(authGroup);
-        when(studyManagementService.getAuthorizedStudyElementsGroups(anyString(), anyLong())).thenReturn(Arrays.asList(authGroup));
+        when(studyManagementService.getAuthorizedStudyElementsGroups(anyString(), anyLong()))
+            .thenReturn(Arrays.asList(authGroup));
 
         assertEquals(2, action.getAnalysisTypes().size());
         assertFalse(action.getAnalysisTypes().containsKey("gistic"));

@@ -9,8 +9,6 @@ package gov.nih.nci.caintegrator.domain.application;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator.domain.analysis.GisticAnalysis;
-import gov.nih.nci.caintegrator.domain.application.GeneList;
-import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.genomic.AmplificationTypeEnum;
 import gov.nih.nci.caintegrator.domain.genomic.Gene;
 import gov.nih.nci.caintegrator.domain.genomic.GisticGenomicRegionReporter;
@@ -43,14 +41,14 @@ public class StudySubscriptionTest {
         // Add Gistic
         GisticAnalysis analysis = createGisticAnalysis(gene1, gene2);
         subscription.getCopyNumberAnalysisCollection().add(analysis);
-        
+
         assertEquals(4, subscription.getAllGeneListNames().size());
         assertEquals(gene1, subscription.getSelectedGeneList("myGeneList").iterator().next());
         assertEquals(gene2, subscription.getSelectedGeneList("[Global]-global-GeneList").iterator().next());
         assertEquals(gene1, subscription.getSelectedGeneList("[GISTIC-Amplified]-Gistic 1").iterator().next());
         assertEquals(gene2, subscription.getSelectedGeneList("[GISTIC-Deleted]-Gistic 1").iterator().next());
     }
-    
+
     private GisticAnalysis createGisticAnalysis(Gene ampGene, Gene delGene) {
         GisticAnalysis analysis = new GisticAnalysis();
         analysis.setName("Gistic 1");

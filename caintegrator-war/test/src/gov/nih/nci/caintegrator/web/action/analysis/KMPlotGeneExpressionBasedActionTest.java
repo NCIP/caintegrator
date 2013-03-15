@@ -30,7 +30,6 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.KMPlotGeneExpressionBasedAction;
 
 import java.awt.Color;
 
@@ -129,14 +128,17 @@ public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTes
         action.getKmPlotParameters().setSurvivalValueDefinition(new SurvivalValueDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setId(Long.valueOf(1));
         action.getKmPlotParameters().getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
-        action.getKmPlotParameters().getSurvivalValueDefinition().getSurvivalStartDate().setDataType(AnnotationTypeEnum.DATE);
+        action.getKmPlotParameters().getSurvivalValueDefinition().getSurvivalStartDate()
+            .setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().getSurvivalValueDefinition().setDeathDate(new AnnotationDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().getDeathDate().setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
-        action.getKmPlotParameters().getSurvivalValueDefinition().getLastFollowupDate().setDataType(AnnotationTypeEnum.DATE);
+        action.getKmPlotParameters().getSurvivalValueDefinition().getLastFollowupDate()
+        .setDataType(AnnotationTypeEnum.DATE);
         action.getKmPlotParameters().setControlSampleSetName("controls");
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
-        verify(analysisService, atLeastOnce()).createKMPlot(any(StudySubscription.class), any(AbstractKMParameters.class));
+        verify(analysisService, atLeastOnce()).createKMPlot(any(StudySubscription.class),
+                any(AbstractKMParameters.class));
 
         assertTrue(action.isCreatable());
     }
