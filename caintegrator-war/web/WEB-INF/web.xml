@@ -265,7 +265,7 @@
     </mime-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>welcome.action</welcome-file>
     </welcome-file-list>
 
     <listener>
