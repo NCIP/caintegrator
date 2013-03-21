@@ -11,7 +11,7 @@
 &nbsp;
 
 <@s.a theme="simple" href="" 
-    cssClass="caBioLogo" 
+    cssClass="bioDbNetLogo" 
     title="Click to search bioDbNet for genes based on ids, symbols, or pathways." 
     onclick="showBioDbNetInputForm('${parameters.textFieldId}')">
     &nbsp;

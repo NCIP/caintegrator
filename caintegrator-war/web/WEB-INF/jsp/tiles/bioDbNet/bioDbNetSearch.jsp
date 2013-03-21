@@ -8,7 +8,7 @@
         </s:a>
 </s:div>
 
-<h2><img style="vertical-align: middle" src="/caintegrator/images/cabiologo.gif" alt="caBIO logo">Biological Database Network Search</h2>
+<h2><img style="vertical-align: middle" src="/caintegrator/images/bioDbNet.gif" alt="bioDbNet logo"> Biological Database Network Search</h2>
 
 <s:div cssStyle="padding: 1px 0px 0px 5px;">
     <tr><s:actionerror /></tr>

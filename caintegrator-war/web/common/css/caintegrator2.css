@@ -877,9 +877,13 @@ A.geneListIcon
 A.cgapLogo
 { visibility: visible; cursor: pointer; background:transparent url('/caintegrator/images/cgaplogo.gif') no-repeat scroll center top; padding:1px 35px 1px 35px;}
 
-/** style for link to caBio site **/
-A.caBioLogo
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator/images/cabiologo.gif') no-repeat scroll center top; padding:8px 10px 18px 10px;}
+/** style for link to bioDbNet **/
+a.bioDbNetLogo { 
+    visibility: visible; 
+    cursor: pointer; 
+    background:transparent url('/caintegrator/images/bioDbNet.gif') no-repeat scroll center top; 
+    padding:20px 45px 18px 10px;
+}
 /** Styles when using struts css_xhtml theme **/
 .wwgrp
 {position: relative; white-space: nowrap; min-width: 600px; margin-top: 10px; margin-bottom: 10px; display:inline;}
