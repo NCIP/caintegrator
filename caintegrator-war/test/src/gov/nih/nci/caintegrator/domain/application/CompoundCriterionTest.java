@@ -6,123 +6,188 @@
  */
 package gov.nih.nci.caintegrator.domain.application;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator.domain.application.ExpressionLevelCriterion;
-import gov.nih.nci.caintegrator.domain.application.FoldChangeCriterion;
-import gov.nih.nci.caintegrator.domain.application.GeneNameCriterion;
-import gov.nih.nci.caintegrator.domain.application.RangeTypeEnum;
+
+import java.util.Set;
 
 import org.junit.Test;
 
-
 /**
- * 
+ * Tests validation of various compound criteria.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class CompoundCriterionTest {
 
+    /**
+     * Tests valid fold change.
+     *
+     * @throws InvalidCriterionException on unexpected error
+     */
     @Test
-    public void testValidate() {
-        
-        boolean getException = false;
-        FoldChangeCriterion foldChange1 = new FoldChangeCriterion();
-        FoldChangeCriterion foldChange2 = new FoldChangeCriterion();
-        
-        // Test valid FoldChange
+    public void validFoldChange() throws InvalidCriterionException {
+        FoldChangeCriterion allGenesCriterion = new FoldChangeCriterion();
+
         CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.getCriterionCollection().add(foldChange1);
-        try {
-            compoundCriterion.validateGeneExpressionCriterion();
-        } catch (InvalidCriterionException e) {
-            getException = true;
-        }
-        assertFalse(getException);
+        compoundCriterion.getCriterionCollection().add(allGenesCriterion);
+        compoundCriterion.validateGeneExpressionCriterion();
+    }
 
-        // Test invalid 2 FoldChange with duplicate all genes
-        compoundCriterion.getCriterionCollection().add(foldChange2);
-        getException = false;
-        try {
-            compoundCriterion.validateGeneExpressionCriterion();
-        } catch (InvalidCriterionException e) {
-            getException = true;
-        }
-        assertTrue(getException);
+    /**
+     *  Tests that duplicate all genes fold change criterion result in a validation exception.
+     *
+     * @throws InvalidCriterionException on expected invalid criterion exception
+     */
+    @Test(expected = InvalidCriterionException.class)
+    public void invalidDuplicateAllGenesFoldChangeCriterion() throws InvalidCriterionException {
+        FoldChangeCriterion allGenesCriterion = new FoldChangeCriterion();
+        FoldChangeCriterion otherAllGeneCriterion = new FoldChangeCriterion();
 
-        // Test invalid 2 FoldChange with a gene and all genes
-        foldChange1.setGeneSymbol("egfr");
-        getException = false;
-        try {
-            compoundCriterion.validateGeneExpressionCriterion();
-        } catch (InvalidCriterionException e) {
-            getException = true;
-        }
-        assertTrue(getException);
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.getCriterionCollection().add(allGenesCriterion);
+        compoundCriterion.getCriterionCollection().add(otherAllGeneCriterion);
+        compoundCriterion.validateGeneExpressionCriterion();
+    }
 
-        // Test valid 2 FoldChange with different genes
-        foldChange2.setGeneSymbol("brac1");
-        getException = false;
-        try {
-            compoundCriterion.validateGeneExpressionCriterion();
-        } catch (InvalidCriterionException e) {
-            getException = true;
-        }
-        assertFalse(getException);
+    /**
+     *  Tests that a fold change criterion with a single gene and one with all genes result in a validation exception.
+     *
+     * @throws InvalidCriterionException on expected invalid criterion exception
+     */
+    @Test(expected = InvalidCriterionException.class)
+    public void invalidAllGenesAndOneGeneFoldChangeCriterion() throws InvalidCriterionException {
+        FoldChangeCriterion allGenesCriterion = new FoldChangeCriterion();
+        FoldChangeCriterion singleGeneCriterion = new FoldChangeCriterion();
+        singleGeneCriterion.setGeneSymbol("egfr");
 
-        // Test invalid FoldChange and Gene Name
-        compoundCriterion = new CompoundCriterion();
-        compoundCriterion.getCriterionCollection().add(foldChange1);
-        compoundCriterion.getCriterionCollection().add(new GeneNameCriterion());
-        getException = false;
-        try {
-            compoundCriterion.validateGeneExpressionCriterion();
-        } catch (InvalidCriterionException e) {
-            getException = true;
-        }
-        assertTrue(getException);
-        
-        // Test invalid expression level criterion
-        compoundCriterion = new CompoundCriterion();
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.getCriterionCollection().add(allGenesCriterion);
+        compoundCriterion.getCriterionCollection().add(singleGeneCriterion);
+        compoundCriterion.validateGeneExpressionCriterion();
+    }
+
+    /**
+     * Tests that two gene fold change criterion with different separate genes results is a valid criteria.
+     *
+     * @throws InvalidCriterionException on unexpected error
+     */
+    @Test
+    public void validTwoGeneFoldChangeCriterion() throws InvalidCriterionException {
+        FoldChangeCriterion brca1GenesCriterion = new FoldChangeCriterion();
+        brca1GenesCriterion.setGeneSymbol("brac1");
+        FoldChangeCriterion egfrGeneCriterion = new FoldChangeCriterion();
+        egfrGeneCriterion.setGeneSymbol("egfr");
+
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.getCriterionCollection().add(brca1GenesCriterion);
+        compoundCriterion.getCriterionCollection().add(egfrGeneCriterion);
+        compoundCriterion.validateGeneExpressionCriterion();
+    }
+
+    /**
+     * Tests that a gene game and fold change criterion cannot be mixed.
+     *
+     * @throws InvalidCriterionException on the expected invalid criterion exception
+     */
+    @Test(expected = InvalidCriterionException.class)
+    public void invalidFoldChangeAndGeneName() throws InvalidCriterionException {
+        FoldChangeCriterion egfrGeneCriterion = new FoldChangeCriterion();
+        egfrGeneCriterion.setGeneSymbol("egfr");
+        GeneNameCriterion nameCriterion = new GeneNameCriterion();
+
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.getCriterionCollection().add(egfrGeneCriterion);
+        compoundCriterion.getCriterionCollection().add(nameCriterion);
+        compoundCriterion.validateGeneExpressionCriterion();
+    }
+
+    /**
+     * Tests that an expression level criterion's (upper level > lower level) when using the inside range type.
+     *
+     * @throws InvalidCriterionException  on the expected invalid criterion exception
+     */
+    @Test(expected = InvalidCriterionException.class)
+    public void invalidInsideRangeExpressionLevelCriterion() throws InvalidCriterionException {
         ExpressionLevelCriterion expressionLevelCriterion = new ExpressionLevelCriterion();
-        compoundCriterion.getCriterionCollection().add(expressionLevelCriterion);
         expressionLevelCriterion.setLowerLimit(2.0f);
         expressionLevelCriterion.setUpperLimit(1.0f);
         expressionLevelCriterion.setRangeType(RangeTypeEnum.INSIDE_RANGE);
-        getException = false;
-        try {
-            compoundCriterion.validateGeneExpressionCriterion();
-        } catch (InvalidCriterionException e) {
-            getException = true;
-        }
-        assertTrue(getException);
-        // Now try invalid outside range type.
+
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.getCriterionCollection().add(expressionLevelCriterion);
+        compoundCriterion.validateGeneExpressionCriterion();
+    }
+
+    /**
+     * Tests that an expression level criterion's (upper level > lower level) when using the outside range type.
+     *
+     * @throws InvalidCriterionException  on the expected invalid criterion exception
+     */
+    @Test(expected = InvalidCriterionException.class)
+    public void invalidOutsideRangeExpressionLevelCriterion() throws InvalidCriterionException {
+        ExpressionLevelCriterion expressionLevelCriterion = new ExpressionLevelCriterion();
+        expressionLevelCriterion.setLowerLimit(2.0f);
+        expressionLevelCriterion.setUpperLimit(1.0f);
         expressionLevelCriterion.setRangeType(RangeTypeEnum.OUTSIDE_RANGE);
-        getException = false;
-        try {
-            compoundCriterion.validateGeneExpressionCriterion();
-        } catch (InvalidCriterionException e) {
-            getException = true;
-        }
-        assertTrue(getException);
-        // Valid greater or equal type
+
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.getCriterionCollection().add(expressionLevelCriterion);
+        compoundCriterion.validateGeneExpressionCriterion();
+    }
+
+    /**
+     * Tests that an expression level criterion's (upper level > lower level) doesn't matter
+     * when using the >= range type.
+     *
+     * @throws InvalidCriterionException on an unexpected validation error
+     */
+    @Test
+    public void validGreaterThanEqualToExpressionLevelCriterion() throws InvalidCriterionException {
+        ExpressionLevelCriterion expressionLevelCriterion = new ExpressionLevelCriterion();
+        expressionLevelCriterion.setLowerLimit(2.0f);
+        expressionLevelCriterion.setUpperLimit(1.0f);
         expressionLevelCriterion.setRangeType(RangeTypeEnum.GREATER_OR_EQUAL);
-        getException = false;
-        try {
-            compoundCriterion.validateGeneExpressionCriterion();
-        } catch (InvalidCriterionException e) {
-            getException = true;
-        }
-        assertFalse(getException);
-        // Valid outside range type.
-        getException = false;
+
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.getCriterionCollection().add(expressionLevelCriterion);
+        compoundCriterion.validateGeneExpressionCriterion();
+    }
+
+    /**
+     * Tests that an expression level criterion's (upper level > lower level) is valid for outside range types.
+     *
+     * @throws InvalidCriterionException on an unexpected validation error
+     */
+    @Test
+    public void validOutsideRangeExpressionLevelCriterion() throws InvalidCriterionException {
+        ExpressionLevelCriterion expressionLevelCriterion = new ExpressionLevelCriterion();
         expressionLevelCriterion.setLowerLimit(1.0f);
         expressionLevelCriterion.setUpperLimit(2.0f);
         expressionLevelCriterion.setRangeType(RangeTypeEnum.OUTSIDE_RANGE);
-        try {
-            compoundCriterion.validateGeneExpressionCriterion();
-        } catch (InvalidCriterionException e) {
-            getException = true;
-        }
-        assertFalse(getException);
+
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.getCriterionCollection().add(expressionLevelCriterion);
+        compoundCriterion.validateGeneExpressionCriterion();
+    }
+
+    /**
+     * Tests retrieval of compound criterion platform names.
+     */
+    @Test
+    public void allPlatformNames() {
+        FoldChangeCriterion brca1GenesCriterion = new FoldChangeCriterion();
+        brca1GenesCriterion.setGeneSymbol("brac1");
+        brca1GenesCriterion.setPlatformName("Test Platform");
+
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.getCriterionCollection().add(brca1GenesCriterion);
+
+        Set<String> platformNames = compoundCriterion.getAllPlatformNames(GenomicCriterionTypeEnum.GENE_EXPRESSION);
+        assertFalse(platformNames.isEmpty());
+        assertEquals(1, platformNames.size());
+        assertTrue(platformNames.contains("Test Platform"));
     }
 }

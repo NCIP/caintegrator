@@ -15,9 +15,11 @@ import gov.nih.nci.caintegrator.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator.domain.application.NumericComparisonOperatorEnum;
 
 /**
+ * Max Number Mask Handler.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class MaxNumberMaskHandler extends AbstractAnnotationMaskHandler {
+public class MaxNumberMaskHandler extends AbstractAnnotationMaskHandler<NumericComparisonCriterion> {
     private static final String PLUS_SYMBOL = "+";
     private final MaxNumberMask mask;
 
@@ -50,12 +52,8 @@ public class MaxNumberMaskHandler extends AbstractAnnotationMaskHandler {
      * {@inheritDoc}
      */
     @Override
-    protected AbstractCriterion createMaskedCriterion(AbstractCriterion originalCriterion) {
-        if (!(originalCriterion instanceof NumericComparisonCriterion)) {
-            throw new IllegalArgumentException(
-                    "Invalid type, must be NumericComparisonCriterion to apply the MaxNumberMask");
-        }
-        NumericComparisonCriterion abstractCriterion = (NumericComparisonCriterion) originalCriterion;
+    protected AbstractCriterion createMaskedCriterion(NumericComparisonCriterion originalCriterion) {
+        NumericComparisonCriterion abstractCriterion = originalCriterion;
         if (abstractCriterion.isFinalMaskApplied()) {
             return abstractCriterion;
         }
@@ -73,5 +71,4 @@ public class MaxNumberMaskHandler extends AbstractAnnotationMaskHandler {
         }
         return abstractCriterion;
     }
-
 }

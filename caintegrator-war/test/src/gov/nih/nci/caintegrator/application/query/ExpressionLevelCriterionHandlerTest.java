@@ -9,15 +9,13 @@ package gov.nih.nci.caintegrator.application.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anySetOf;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator.application.arraydata.DataRetrievalRequest;
-import gov.nih.nci.caintegrator.application.query.ExpressionLevelCriterionHandler;
-import gov.nih.nci.caintegrator.application.query.GenomicCriteriaMatchTypeEnum;
-import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.ExpressionLevelCriterion;
 import gov.nih.nci.caintegrator.domain.application.Query;
@@ -44,22 +42,30 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
 
+
+/**
+ * Tests for the expression level criterion handler.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class ExpressionLevelCriterionHandlerTest extends AbstractMockitoTest {
-    private CaIntegrator2DaoStub daoStub = new DaoStub();
     private Query query;
     private Study study;
-    private Gene gene;
-    GeneExpressionReporter reporter = new GeneExpressionReporter();
 
+    /**
+     * Set up unit tests.
+     */
     @Before
     public void setUp() {
-        Platform platform = daoStub.getPlatform("platformName");
-        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        gene = new Gene();
-        reporter.getGenes().add(gene);
+        Platform platform = dao.getPlatform("platformName");
+        ReporterList reporterList =
+                platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
 
-        daoStub.clear();
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporter.getGenes().add(new Gene());
+
         study = new Study();
         query = new Query();
         query.setGeneExpressionPlatform(platform);
@@ -86,71 +92,103 @@ public class ExpressionLevelCriterionHandlerTest extends AbstractMockitoTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         study.setStudyConfiguration(studyConfiguration);
+
+        when(dao.findReportersForGenes(anySetOf(String.class), any(ReporterTypeEnum.class), any(Study.class),
+                any(Platform.class))).thenReturn(Sets.<AbstractReporter>newHashSet(reporter));
     }
 
+    /**
+     * Tests expression level criterion results retrieval for >=.
+     *
+     * @throws InvalidCriterionException on invalid criterion error
+     */
     @Test
-    public void testGetMatches() throws InvalidCriterionException {
+    public void greaterThanOrEqualMatches() throws InvalidCriterionException {
         ExpressionLevelCriterion criterion = new ExpressionLevelCriterion();
         criterion.setRangeType(RangeTypeEnum.GREATER_OR_EQUAL);
         criterion.setLowerLimit(1.0f);
         criterion.setGeneSymbol("Tester");
+
         ExpressionLevelCriterionHandler handler = ExpressionLevelCriterionHandler.create(criterion);
-        Set<ResultRow> rows = new HashSet<ResultRow>();
-        rows = handler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
-        assertEquals(1, rows.size());
-        criterion.setRangeType(RangeTypeEnum.LESS_OR_EQUAL);
-        criterion.setUpperLimit(1.0f);
-        rows = handler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
-        assertEquals(0, rows.size());
+
+        Set<ResultRow> results = handler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
         verify(arrayDataService, atLeastOnce()).getData(any(DataRetrievalRequest.class));
+        assertEquals(1, results.size());
     }
 
+    /**
+     * Tests expression level criterion results retrieval for <=.
+     *
+     * @throws InvalidCriterionException on invalid criterion error
+     */
     @Test
-    public void testIsGenomicValueMatchCriterion() {
+    public void lessThanOrEqualMatches() throws InvalidCriterionException {
+        ExpressionLevelCriterion criterion = new ExpressionLevelCriterion();
+        criterion.setRangeType(RangeTypeEnum.LESS_OR_EQUAL);
+        criterion.setUpperLimit(1.0f);
+        criterion.setGeneSymbol("Tester");
+
+        ExpressionLevelCriterionHandler handler = ExpressionLevelCriterionHandler.create(criterion);
+
+        Set<ResultRow> results = handler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
+        verify(arrayDataService, atLeastOnce()).getData(any(DataRetrievalRequest.class));
+        assertEquals(0, results.size());
+    }
+
+    /**
+     * Tests determination of genomic criteria match types.
+     */
+    @Test
+    public void genomicCritrionTypes() {
         ExpressionLevelCriterion criterion = new ExpressionLevelCriterion();
         criterion.setRangeType(RangeTypeEnum.INSIDE_RANGE);
         criterion.setLowerLimit(1.0f);
-        criterion.setUpperLimit(2.0f);
-        ExpressionLevelCriterionHandler handler = ExpressionLevelCriterionHandler.create(criterion);
+        criterion.setUpperLimit(3.0f);
+
         Set<Gene> genes = new HashSet<Gene>();
         Gene gene = new Gene();
         gene.setSymbol("Gene");
         genes.add(gene);
-        assertEquals(GenomicCriteriaMatchTypeEnum.BETWEEN, handler.getGenomicValueMatchCriterionType(genes, 1.4f));
+
+        ExpressionLevelCriterionHandler handler = ExpressionLevelCriterionHandler.create(criterion);
+
+        assertEquals(GenomicCriteriaMatchTypeEnum.BETWEEN, handler.getGenomicValueMatchCriterionType(genes, 2f));
 
         criterion.setGeneSymbol("invalid");
-        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getGenomicValueMatchCriterionType(genes, 1.4f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getGenomicValueMatchCriterionType(genes, 2f));
         criterion.setGeneSymbol("Gene");
         criterion.setRangeType(RangeTypeEnum.OUTSIDE_RANGE);
-        assertEquals(GenomicCriteriaMatchTypeEnum.UNDER, handler.getGenomicValueMatchCriterionType(genes, .9f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.UNDER, handler.getGenomicValueMatchCriterionType(genes, 0f));
         assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getGenomicValueMatchCriterionType(genes, 1f));
 
         assertTrue(handler.hasReporterCriterion());
         assertTrue(handler.isReporterMatchHandler());
     }
 
+    /**
+     * Tests reporter match retrieval with a specified gene.
+     */
     @Test
-    public void testGetReporterMatches() {
+    public void reporterMatchesWithGeneSymbol() {
         ExpressionLevelCriterion criterion = new ExpressionLevelCriterion();
         criterion.setGeneSymbol("tester");
         ExpressionLevelCriterionHandler handler = ExpressionLevelCriterionHandler.create(criterion);
-        assertEquals(1, handler.getReporterMatches(daoStub, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, null).size());
 
-        criterion.setGeneSymbol("");
-        assertEquals(1, handler.getReporterMatches(daoStub, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, null).size());
-
+        Set<AbstractReporter> results =
+                handler.getReporterMatches(dao, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, null);
+        assertEquals(1, results.size());
     }
 
-    private class DaoStub extends CaIntegrator2DaoStub {
+    /**
+     * Tests reporter match retrieval without a specified gene.
+     */
+    @Test
+    public void reporterMatchesWithoutGeneSymbol() {
+        ExpressionLevelCriterion criterion = new ExpressionLevelCriterion();
+        ExpressionLevelCriterionHandler handler = ExpressionLevelCriterionHandler.create(criterion);
 
-        @Override
-        public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
-                ReporterTypeEnum reporterType, Study study, Platform platform) {
-            Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-            reporters.add(reporter);
-            return reporters;
-        }
-
+        Set<AbstractReporter> results =
+                handler.getReporterMatches(dao, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, null);
+        assertEquals(1, results.size());
     }
-
 }

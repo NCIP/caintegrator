@@ -6,37 +6,42 @@
  */
 package gov.nih.nci.caintegrator.application.query;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator.application.query.ResultColumnComparator;
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.domain.application.ResultColumn;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 
+/**
+ * Tests result row sorting via comparator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
+ */
 public class ResultColumnComparatorTest {
 
+    /**
+     * Tests comparison via comparator.
+     */
     @Test
-    public void testCompare() {
-        ResultColumn col1 = new ResultColumn();
-        ResultColumn col2 = new ResultColumn();
-        col1.setSortOrder(2);
-        col1.setId(Long.valueOf(1));
-        col2.setSortOrder(1);
-        col2.setId(Long.valueOf(2));
-        List<ResultColumn> columns = new ArrayList<ResultColumn>();
-        columns.add(col1);
-        columns.add(col2);
-        
-        Collections.sort(columns, new ResultColumnComparator());
-        
-        // Make sure they flip flopped
-        assertEquals(col2.getId(), columns.get(0).getId());
-        assertEquals(col1.getId(), columns.get(1).getId());
-        
-    }
+    public void compare() {
+        ResultColumn columnOne = new ResultColumn();
+        columnOne.setSortOrder(2);
+        columnOne.setId(1L);
 
+        ResultColumn columnTwo = new ResultColumn();
+        columnTwo.setSortOrder(1);
+        columnTwo.setId(2L);
+
+        List<ResultColumn> columns = Lists.newArrayList(columnOne, columnTwo);
+        Collections.sort(columns, new ResultColumnComparator());
+
+        // Make sure they flip flopped
+        assertEquals(columnTwo.getId(), columns.get(0).getId());
+        assertEquals(columnOne.getId(), columns.get(1).getId());
+    }
 }

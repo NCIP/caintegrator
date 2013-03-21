@@ -12,6 +12,7 @@ import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
 
     private static final String ALL_GENES = "-AllGenes-";
     private BooleanOperatorEnum booleanOperator;
-    private Collection<AbstractCriterion> criterionCollection = new HashSet<AbstractCriterion>();
+    private Collection<AbstractCriterion> criterionCollection = new LinkedHashSet<AbstractCriterion>();
 
     /**
      * @return the criterionCollection

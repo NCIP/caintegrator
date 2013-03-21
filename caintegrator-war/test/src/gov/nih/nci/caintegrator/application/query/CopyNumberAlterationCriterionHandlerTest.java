@@ -9,16 +9,14 @@ package gov.nih.nci.caintegrator.application.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator.application.query.CopyNumberAlterationCriterionHandler;
-import gov.nih.nci.caintegrator.application.query.GenomicCriteriaMatchTypeEnum;
-import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator.domain.application.CopyNumberAlterationCriterion;
 import gov.nih.nci.caintegrator.domain.application.CopyNumberCriterionTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator.domain.application.GenomicCriterionTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.Query;
 import gov.nih.nci.caintegrator.domain.application.ResultRow;
 import gov.nih.nci.caintegrator.domain.application.StudySubscription;
@@ -34,27 +32,32 @@ import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ * Tests for the copy number alteration criterion handler.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class CopyNumberAlterationCriterionHandlerTest extends AbstractMockitoTest {
-    private CaIntegrator2DaoStub daoStub = new DaoStub();
     private Query query;
     private Study study;
     private SegmentData segmentData;
 
+    /**
+     * Unit test setup.
+     * @throws Exception on error
+     */
     @Before
-    public void setUp() {
-        Platform platform = daoStub.getPlatform("platformName");
+    public void setUp() throws Exception {
+        Platform platform = dao.getPlatform("platformName");
         ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
 
-        daoStub.clear();
         study = new Study();
         query = new Query();
         query.setCopyNumberPlatform(platform);
@@ -83,109 +86,148 @@ public class CopyNumberAlterationCriterionHandlerTest extends AbstractMockitoTes
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         study.setStudyConfiguration(studyConfiguration);
+
+        when(dao.findMatchingSegmentDatas(any(CopyNumberAlterationCriterion.class), any(Study.class),
+                any(Platform.class))).thenReturn(Arrays.asList(segmentData));
+        when(dao.findMatchingSegmentDatasByLocation(anyListOf(SegmentData.class), any(Study.class),
+                any(Platform.class))).thenReturn(Arrays.asList(segmentData));
     }
 
+    /**
+     * Tests match retrieval.
+     *
+     * @throws InvalidCriterionException on unexpected invalid criterion error
+     */
     @Test
-    public void testGetMatches() throws InvalidCriterionException {
+    public void getMatches() throws InvalidCriterionException {
         CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
         CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
-        Set<ResultRow> rows = new HashSet<ResultRow>();
-        rows = handler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
+        Set<ResultRow> rows = handler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
         assertEquals(1, rows.size());
     }
 
+    /**
+     * Tests segment data retrieval.
+     *
+     * @throws InvalidCriterionException on unexpected invalid criterion error
+     */
     @Test
-    public void testGetSegmentDataMatches() throws InvalidCriterionException {
+    public void getSegmentDataMatches() throws InvalidCriterionException {
         CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
         CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
-        Set<SegmentData> segments = handler.getSegmentDataMatches(daoStub, study, null);
+        Set<SegmentData> segments = handler.getSegmentDataMatches(dao, study, null);
         assertEquals(1, segments.size());
         assertEquals(segmentData, segments.iterator().next());
     }
 
+    /**
+     * Tests that the handler doesn't attempt to deal with data is should not.
+     */
     @Test
-    public void testGetters() {
-        String platformName = "Test Platform";
+    public void capabilities() {
         CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
-        criterion.setPlatformName(platformName);
 
         CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
         assertFalse(handler.hasReporterCriterion());
         assertFalse(handler.isReporterMatchHandler());
         assertTrue(handler.hasCriterionSpecifiedSegmentValues());
         assertFalse(handler.hasCriterionSpecifiedReporterValues());
-        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));
+    }
+
+    /**
+     * Tests for various segment value match criterion.
+     */
+    @Test
+    public void matchCriterion() {
+        CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
+
+        CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE,
+                handler.getSegmentValueMatchCriterionType(2f));
 
         criterion.setLowerLimit(1f);
-        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));
-        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(.1f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE,
+                handler.getSegmentValueMatchCriterionType(2f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(0f));
 
         criterion.setLowerLimit(null);
         criterion.setUpperLimit(4f);
-        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(4f));
-        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(5f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE,
+                handler.getSegmentValueMatchCriterionType(4f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH,
+                handler.getSegmentValueMatchCriterionType(5f));
 
         criterion.setLowerLimit(2f);
-        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE,
+                handler.getSegmentValueMatchCriterionType(2f));
         assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(1f));
         assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(5f));
+    }
 
-        criterion.setCopyNumberCriterionType(CopyNumberCriterionTypeEnum.CALLS_VALUE);
+    /**
+     * Tests for handling calls value criterion type.
+     */
+    @Test
+    public void callsValues() {
         Set<Integer> callsValues = new HashSet<Integer>();
-        callsValues.add(Integer.decode("1"));
+        callsValues.add(1);
+
+        CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
+        criterion.setCopyNumberCriterionType(CopyNumberCriterionTypeEnum.CALLS_VALUE);
         criterion.setCallsValues(callsValues);
+
+        CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
+
         assertTrue(handler.hasCriterionSpecifiedSegmentValues());
         assertTrue(handler.hasCriterionSpecifiedSegmentCallsValues());
-        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentCallsValueMatchCriterionType(1));
-        assertFalse(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE.equals(handler.getSegmentCallsValueMatchCriterionType(2)));
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE,
+                handler.getSegmentCallsValueMatchCriterionType(1));
+        assertFalse(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE
+                .equals(handler.getSegmentCallsValueMatchCriterionType(2)));
+    }
 
-        // test for various upper and lower limits
+    /**
+     * Tests display of limits.
+     */
+    @Test
+    public void displayLimits() {
+        CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
+        CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
+
         criterion.setLowerLimit(2f);
-        assertEquals(String.valueOf(2f),criterion.getDisplayLowerLimit());
         criterion.setUpperLimit(1f);
-        assertEquals(String.valueOf(1f),criterion.getDisplayUpperLimit());
+        assertEquals("2.0", criterion.getDisplayLowerLimit());
+        assertEquals("1.0", criterion.getDisplayUpperLimit());
         assertFalse(criterion.isInsideBoundaryType());
-        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(2f));
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE,
+                handler.getSegmentValueMatchCriterionType(2f));
+
+    }
+
+    /**
+     * Ensures that boundaries can be determined correctly based on lower and upper limits.
+     */
+    @Test
+    public void insideBoundary() {
+        CopyNumberAlterationCriterion criterion = new CopyNumberAlterationCriterion();
+        CopyNumberAlterationCriterionHandler handler = CopyNumberAlterationCriterionHandler.create(criterion);
+
+        criterion.setLowerLimit(2f);
+        criterion.setUpperLimit(1f);
+
+        assertFalse(criterion.isInsideBoundaryType());
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE,
+                handler.getSegmentValueMatchCriterionType(2f));
+
         criterion.setLowerLimit(1f);
         criterion.setUpperLimit(2f);
         assertTrue(criterion.isInsideBoundaryType());
         assertEquals(GenomicCriteriaMatchTypeEnum.NO_MATCH, handler.getSegmentValueMatchCriterionType(3f));
+
         criterion.setLowerLimit(3f);
         criterion.setUpperLimit(1f);
-        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE, handler.getSegmentValueMatchCriterionType(4f));
-        // test rest of criterion value possibilities
-        criterion.setLowerLimit(1f);
-        criterion.setUpperLimit(3f);
-        assertEquals("",criterion.getDisplayChromosomeCoordinateHigh());
-        criterion.setChromosomeCoordinateHigh(Integer.valueOf("2000"));
-        assertEquals("2000",criterion.getDisplayChromosomeCoordinateHigh());
-        assertEquals("",criterion.getDisplayChromosomeCoordinateLow());
-        criterion.setChromosomeCoordinateLow(Integer.valueOf("2"));
-        assertEquals("2",criterion.getDisplayChromosomeCoordinateLow());
-        criterion.setChromosomeNumber("13");
-        assertEquals("13",criterion.getChromosomeNumber());
-        // test for platform name
-        assertEquals(platformName,criterion.getPlatformName(GenomicCriterionTypeEnum.COPY_NUMBER));
-        assertEquals(null,criterion.getPlatformName(GenomicCriterionTypeEnum.GENE_EXPRESSION));
+        assertFalse(criterion.isInsideBoundaryType());
+        assertEquals(GenomicCriteriaMatchTypeEnum.MATCH_POSITIVE_OR_NEGATIVE,
+                handler.getSegmentValueMatchCriterionType(4f));
     }
-
-    private class DaoStub extends CaIntegrator2DaoStub {
-
-
-        @Override
-        public List<SegmentData> findMatchingSegmentDatas(CopyNumberAlterationCriterion copyNumberCriterion,
-                Study study, Platform platform) {
-            List<SegmentData> segmentDatas = new ArrayList<SegmentData>();
-            segmentDatas.add(segmentData);
-            return segmentDatas;
-        }
-
-        @Override
-        public List<SegmentData> findMatchingSegmentDatasByLocation(List<SegmentData> segmentDatasToMatch,
-                Study study, Platform platform) {
-            return findMatchingSegmentDatas(null, study, platform);
-        }
-
-    }
-
 }

@@ -28,8 +28,6 @@ import gov.nih.nci.caintegrator.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator.domain.application.NumericComparisonOperatorEnum;
-import gov.nih.nci.caintegrator.domain.application.Query;
-import gov.nih.nci.caintegrator.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator.domain.application.StudySubscription;
@@ -72,19 +70,16 @@ public class StudyHelper {
     private AnnotationDefinition subjectAnnotationDefinition2;
     private PermissibleValue permval1;
     private PermissibleValue permval2;
-    private Timepoint defaultTimepoint;
     private ArrayDataType arrayDataType = ArrayDataType.GENE_EXPRESSION;
     private List<StudySubjectAssignment> studySubjects = new ArrayList<StudySubjectAssignment>();
     private Platform platform = new Platform();
     private DelimitedTextClinicalSourceConfiguration clinicalConf;
-    private UserWorkspace userWorkspace;
-    private String USER_NAME = "ncimanager";
-    StudySubscription studySubscription;
+    private StudySubscription studySubscription;
 
     @SuppressWarnings("deprecation")
     public StudySubscription populateAndRetrieveStudy() {
-        userWorkspace = new UserWorkspace();
-        userWorkspace.setUsername(USER_NAME);
+        UserWorkspace userWorkspace = new UserWorkspace();
+        userWorkspace.setUsername("ncimanager");
         Study myStudy = new Study();
         myStudy.setShortTitleText("Test Study");
 
@@ -110,7 +105,7 @@ public class StudyHelper {
         subjectAnnotationDefinition2.getCommonDataElement().setLongName("Gender");
         subjectAnnotationDefinition2.setDataType(AnnotationTypeEnum.STRING);
 
-        defaultTimepoint = new Timepoint();
+        Timepoint defaultTimepoint = new Timepoint();
         defaultTimepoint.setDescription("This is the default timepoint assuming none is given.");
         defaultTimepoint.setName("Default Timepoint");
         myStudy.setDefaultTimepoint(defaultTimepoint);
@@ -181,8 +176,8 @@ public class StudyHelper {
         studySubjects.add(studySubjectAssignment6);
 
         NumericAnnotationValue numval1 = new NumericAnnotationValue();
-        NumericAnnotationValue numval1_2 = new NumericAnnotationValue();
-        NumericAnnotationValue numval1_3 = new NumericAnnotationValue();
+        NumericAnnotationValue numval12 = new NumericAnnotationValue();
+        NumericAnnotationValue numval13 = new NumericAnnotationValue();
         NumericAnnotationValue numval2 = new NumericAnnotationValue();
         NumericAnnotationValue numval3 = new NumericAnnotationValue();
         NumericAnnotationValue numval4 = new NumericAnnotationValue();
@@ -210,8 +205,8 @@ public class StudyHelper {
 
 
         SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
-        SampleAcquisition sampleAcquisition1_2 = new SampleAcquisition();
-        SampleAcquisition sampleAcquisition1_3 = new SampleAcquisition();
+        SampleAcquisition sampleAcquisition12 = new SampleAcquisition();
+        SampleAcquisition sampleAcquisition13 = new SampleAcquisition();
         SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
         SampleAcquisition sampleAcquisition3 = new SampleAcquisition();
         SampleAcquisition sampleAcquisition4 = new SampleAcquisition();
@@ -276,12 +271,18 @@ public class StudyHelper {
         subjectAnnotation6.setStudySubjectAssignment(studySubjectAssignment6);
         studySubjectAssignment6.setSubject(subject6);
 
-        Collection<SubjectAnnotation> subjectAnnotationCollection1 = studySubjectAssignment1.getSubjectAnnotationCollection();
-        Collection<SubjectAnnotation> subjectAnnotationCollection2 = studySubjectAssignment2.getSubjectAnnotationCollection();
-        Collection<SubjectAnnotation> subjectAnnotationCollection3 = studySubjectAssignment3.getSubjectAnnotationCollection();
-        Collection<SubjectAnnotation> subjectAnnotationCollection4 = studySubjectAssignment4.getSubjectAnnotationCollection();
-        Collection<SubjectAnnotation> subjectAnnotationCollection5 = studySubjectAssignment5.getSubjectAnnotationCollection();
-        Collection<SubjectAnnotation> subjectAnnotationCollection6 = studySubjectAssignment6.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection1 =
+                studySubjectAssignment1.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection2 =
+                studySubjectAssignment2.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection3 =
+                studySubjectAssignment3.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection4 =
+                studySubjectAssignment4.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection5 =
+                studySubjectAssignment5.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection6 =
+                studySubjectAssignment6.getSubjectAnnotationCollection();
 
         subjectAnnotationCollection1.add(subjectAnnotation1);
         subjectAnnotationCollection2.add(subjectAnnotation2);
@@ -303,44 +304,37 @@ public class StudyHelper {
         numval1.setNumericValue(10.0);
         sampleAcquisition1.getAnnotationCollection().add(numval1);
         sampleAcquisition1.setAssignment(studySubjectAssignment1);
-//        sampleAcquisition1.setTimepoint(defaultTimepoint);
 
         // Add 2 more samples to Study Subject Assignment 1
-        numval1_2.setAnnotationDefinition(sampleAnnotationDefinition);
-        numval1_2.setNumericValue(100.0);
-        sampleAcquisition1_2.getAnnotationCollection().add(numval1_2);
-        sampleAcquisition1_2.setAssignment(studySubjectAssignment1);
-//        sampleAcquisition1_2.setTimepoint(defaultTimepoint);
+        numval12.setAnnotationDefinition(sampleAnnotationDefinition);
+        numval12.setNumericValue(100.0);
+        sampleAcquisition12.getAnnotationCollection().add(numval12);
+        sampleAcquisition12.setAssignment(studySubjectAssignment1);
 
-        numval1_3.setAnnotationDefinition(sampleAnnotationDefinition);
-        numval1_3.setNumericValue(1.0);
-        sampleAcquisition1_3.getAnnotationCollection().add(numval1_3);
-        sampleAcquisition1_3.setAssignment(studySubjectAssignment1);
-//        sampleAcquisition1_3.setTimepoint(defaultTimepoint);
+        numval13.setAnnotationDefinition(sampleAnnotationDefinition);
+        numval13.setNumericValue(1.0);
+        sampleAcquisition13.getAnnotationCollection().add(numval13);
+        sampleAcquisition13.setAssignment(studySubjectAssignment1);
 
         numval2.setAnnotationDefinition(sampleAnnotationDefinition);
         numval2.setNumericValue(11.0);
         sampleAcquisition2.getAnnotationCollection().add(numval2);
         sampleAcquisition2.setAssignment(studySubjectAssignment2);
-//        sampleAcquisition2.setTimepoint(defaultTimepoint);
 
         numval3.setAnnotationDefinition(sampleAnnotationDefinition);
         numval3.setNumericValue(12.0);
         sampleAcquisition3.getAnnotationCollection().add(numval3);
         sampleAcquisition3.setAssignment(studySubjectAssignment3);
-//        sampleAcquisition3.setTimepoint(defaultTimepoint);
 
         numval4.setAnnotationDefinition(sampleAnnotationDefinition);
         numval4.setNumericValue(13.0);
         sampleAcquisition4.getAnnotationCollection().add(numval4);
         sampleAcquisition4.setAssignment(studySubjectAssignment4);
-//        sampleAcquisition4.setTimepoint(defaultTimepoint);
 
         numval5.setAnnotationDefinition(sampleAnnotationDefinition);
         numval5.setNumericValue(14.0);
         sampleAcquisition5.getAnnotationCollection().add(numval5);
         sampleAcquisition5.setAssignment(studySubjectAssignment5);
-//        sampleAcquisition5.setTimepoint(defaultTimepoint);
 
         Collection<SampleAcquisition> saCollection1 = studySubjectAssignment1.getSampleAcquisitionCollection();
         Collection<SampleAcquisition> saCollection2 = studySubjectAssignment2.getSampleAcquisitionCollection();
@@ -351,19 +345,19 @@ public class StudyHelper {
         Array array = new Array();
         array.setPlatform(platform);
         saCollection1.add(sampleAcquisition1);
-        createGenomicData(sampleAcquisition1, 1, array, myStudy);
-        saCollection1.add(sampleAcquisition1_2);
-        createGenomicData(sampleAcquisition1_2, 12, array, myStudy);
-        saCollection1.add(sampleAcquisition1_3);
-        createGenomicData(sampleAcquisition1_3, 13, array, myStudy);
+        createGenomicData(sampleAcquisition1, 1, myStudy);
+        saCollection1.add(sampleAcquisition12);
+        createGenomicData(sampleAcquisition12, 12, myStudy);
+        saCollection1.add(sampleAcquisition13);
+        createGenomicData(sampleAcquisition13, 13, myStudy);
         saCollection2.add(sampleAcquisition2);
-        createGenomicData(sampleAcquisition2, 2, array, myStudy);
+        createGenomicData(sampleAcquisition2, 2, myStudy);
         saCollection3.add(sampleAcquisition3);
-        createGenomicData(sampleAcquisition3, 3, array, myStudy);
+        createGenomicData(sampleAcquisition3, 3, myStudy);
         saCollection4.add(sampleAcquisition4);
-        createGenomicData(sampleAcquisition4, 4, array, myStudy);
+        createGenomicData(sampleAcquisition4, 4, myStudy);
         saCollection5.add(sampleAcquisition5);
-        createGenomicData(sampleAcquisition5, 5, array, myStudy);
+        createGenomicData(sampleAcquisition5, 5, myStudy);
 
         /**
          * Add the 5 Image Series
@@ -404,27 +398,26 @@ public class StudyHelper {
         isAcquisition1.setSeriesCollection(isCollection1);
         isAcquisition1.setAssignment(studySubjectAssignment1);
         imageSeries1.setImageStudy(isAcquisition1);
-//        isAcquisition1.setTimepoint(defaultTimepoint);
+
         ImageSeriesAcquisition isAcquisition2 = new ImageSeriesAcquisition();
         isAcquisition2.setSeriesCollection(isCollection2);
         isAcquisition2.setAssignment(studySubjectAssignment2);
         imageSeries2.setImageStudy(isAcquisition2);
-//        isAcquisition2.setTimepoint(defaultTimepoint);
+
         ImageSeriesAcquisition isAcquisition3 = new ImageSeriesAcquisition();
         isAcquisition3.setSeriesCollection(isCollection3);
         isAcquisition3.setAssignment(studySubjectAssignment3);
         imageSeries3.setImageStudy(isAcquisition3);
-//        isAcquisition3.setTimepoint(defaultTimepoint);
+
         ImageSeriesAcquisition isAcquisition4 = new ImageSeriesAcquisition();
         isAcquisition4.setSeriesCollection(isCollection4);
         isAcquisition4.setAssignment(studySubjectAssignment4);
         imageSeries4.setImageStudy(isAcquisition4);
-//        isAcquisition4.setTimepoint(defaultTimepoint);
+
         ImageSeriesAcquisition isAcquisition5 = new ImageSeriesAcquisition();
         isAcquisition5.setSeriesCollection(isCollection5);
         isAcquisition5.setAssignment(studySubjectAssignment5);
         imageSeries5.setImageStudy(isAcquisition5);
-//        isAcquisition5.setTimepoint(defaultTimepoint);
 
         Collection<ImageSeriesAcquisition> isaCollection1 = studySubjectAssignment1.getImageStudyCollection();
         Collection<ImageSeriesAcquisition> isaCollection2 = studySubjectAssignment2.getImageStudyCollection();
@@ -461,7 +454,7 @@ public class StudyHelper {
     /**
      * @param sampleAcquisition1
      */
-    private void createGenomicData(SampleAcquisition sampleAcquisition, int sampleNum, Array array, Study study) {
+    private void createGenomicData(SampleAcquisition sampleAcquisition, int sampleNum, Study study) {
         Sample sample = new Sample();
         sample.getSampleAcquisitions().add(sampleAcquisition);
         sampleAcquisition.setSample(sample);
@@ -481,7 +474,8 @@ public class StudyHelper {
             createDnaReporter(sampleNum, reporterList);
             addSegmentationData(arrayData, sampleNum);
         } else {
-            reporterList = platform.addReporterList("reporterList" + sampleNum, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            reporterList = platform.addReporterList("reporterList" + sampleNum,
+                    ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             createGeneExpressionReporter(sampleNum, reporterList);
         }
         reporterList.getArrayDatas().add(arrayData);
@@ -559,8 +553,9 @@ public class StudyHelper {
         genomicDataSourceConfiguration.setSamples(samples);
         ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
         Set<ImageSeries> seriesCollection = new HashSet<ImageSeries>();
+        //For AIM annotations loading.
         ImageSeries imageSeries = new ImageSeries();
-        imageSeries.setIdentifier("1.3.6.1.4.1.9328.50.45.239261393324265132190998071373586264552"); // for AIM annotations loading.
+        imageSeries.setIdentifier("1.3.6.1.4.1.9328.50.45.239261393324265132190998071373586264552");
         seriesCollection.add(imageSeries);
         imageSeriesAcquisition.setSeriesCollection(seriesCollection);
         imageSeries.getImageCollection().add(new Image());
@@ -605,7 +600,6 @@ public class StudyHelper {
         return compoundCriterion;
     }
 
-
     public CompoundCriterion createCompoundCriterion2() {
         // Sample criterion (will return 2 Subjects: #1, #5)
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
@@ -644,58 +638,11 @@ public class StudyHelper {
         criterion.setAnnotationFieldDescriptor(getSampleAnnotationFieldDescriptor());
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
 
-
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion.getCriterionCollection().add(criterion);
         return compoundCriterion;
-    }
-
-    public CompoundCriterion createCompoundCriterion4() {
-        // Clinical criterion (Will return 3 subjects: #1, #2, #3)
-        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
-        criterion.setNumericValue(4.0);
-        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS);
-        criterion.setEntityType(EntityTypeEnum.SUBJECT);
-        criterion.setAnnotationFieldDescriptor(getSubjectAnnotationFieldDescriptor());
-
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
-        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion.getCriterionCollection().add(criterion);
-        return compoundCriterion;
-    }
-
-    public CompoundCriterion createCompoundCriterion5() {
-        // Image Series criterion (Will return 2 subject: #3, #4)
-        StringComparisonCriterion criterion = new StringComparisonCriterion();
-        criterion.setStringValue("string4");
-        criterion.setEntityType(EntityTypeEnum.IMAGESERIES);
-        criterion.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
-
-        StringComparisonCriterion criterion2 = new StringComparisonCriterion();
-        criterion2.setStringValue("string3");
-        criterion2.setEntityType(EntityTypeEnum.IMAGESERIES);
-        criterion2.setAnnotationFieldDescriptor(getImageSeriesAnnotationFieldDescriptor());
-
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR);
-        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion.getCriterionCollection().add(criterion);
-        compoundCriterion.getCriterionCollection().add(criterion2);
-        return compoundCriterion;
-    }
-
-    public Query createQuery(CompoundCriterion compoundCriterion,
-                             Collection<ResultColumn> columnCollection,
-                             StudySubscription subscription) {
-        Query query = new Query();
-        query.setName("Test Query");
-        query.setCompoundCriterion(compoundCriterion);
-        query.setSubscription(subscription);
-        query.setColumnCollection(columnCollection);
-        return query;
     }
 
     public AnnotationDefinition getSampleAnnotationDefinition() {
@@ -710,6 +657,7 @@ public class StudyHelper {
     public AnnotationDefinition getSubjectAnnotationDefinition2() {
         return subjectAnnotationDefinition2;
     }
+
     public AnnotationFieldDescriptor getSampleAnnotationFieldDescriptor() {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
         descriptor.setDefinition(getSampleAnnotationDefinition());
@@ -740,29 +688,9 @@ public class StudyHelper {
     public PermissibleValue getPermval1() {
         return permval1;
     }
-    public void setPermval1(PermissibleValue permval1) {
-        this.permval1 = permval1;
-    }
+
     public PermissibleValue getPermval2() {
         return permval2;
-    }
-    public void setPermval2(PermissibleValue permval2) {
-        this.permval2 = permval2;
-    }
-
-    public Timepoint getDefaultTimepoint() {
-        return defaultTimepoint;
-    }
-
-    public void setDefaultTimepoint(Timepoint defaultTimepoint) {
-        this.defaultTimepoint = defaultTimepoint;
-    }
-
-    /**
-     * @return the arrayDataType
-     */
-    public ArrayDataType getArrayDataType() {
-        return arrayDataType;
     }
 
     /**

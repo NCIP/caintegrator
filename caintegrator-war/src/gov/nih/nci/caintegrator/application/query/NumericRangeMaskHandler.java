@@ -16,9 +16,11 @@ import gov.nih.nci.caintegrator.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator.domain.application.NumericComparisonOperatorEnum;
 
 /**
+ * Numeric Range Mask Handler.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class NumericRangeMaskHandler extends AbstractAnnotationMaskHandler {
+public class NumericRangeMaskHandler extends AbstractAnnotationMaskHandler<NumericComparisonCriterion> {
     private static final String RANGE_SYMBOL = "-";
     private final NumericRangeMask mask;
 
@@ -58,12 +60,8 @@ public class NumericRangeMaskHandler extends AbstractAnnotationMaskHandler {
      * {@inheritDoc}
      */
     @Override
-    protected AbstractCriterion createMaskedCriterion(AbstractCriterion originalCriterion) {
-        if (!(originalCriterion instanceof NumericComparisonCriterion)) {
-            throw new IllegalArgumentException(
-                    "Invalid type, must be NumericComparisonCriterion to apply the MaxNumberMask");
-        }
-        NumericComparisonCriterion numericCriterion = (NumericComparisonCriterion) originalCriterion;
+    protected AbstractCriterion createMaskedCriterion(NumericComparisonCriterion originalCriterion) {
+        NumericComparisonCriterion numericCriterion = originalCriterion;
         if (numericCriterion.isFinalMaskApplied()) {
             return numericCriterion;
         }
@@ -71,8 +69,8 @@ public class NumericRangeMaskHandler extends AbstractAnnotationMaskHandler {
         Long lowNumber = retrieveLowNumber(numericCriterion.getNumericValue(),
                 numericRange);
         Long highNumber = (lowNumber + numericRange) - 1;
-        AbstractCriterion newCriterion = retrieveNewCriterion(originalCriterion, numericCriterion, lowNumber,
-                highNumber);
+        AbstractCriterion newCriterion =
+                retrieveNewCriterion(originalCriterion, numericCriterion, lowNumber, highNumber);
         newCriterion.setFinalMaskApplied(true);
         return newCriterion;
     }
@@ -152,7 +150,4 @@ public class NumericRangeMaskHandler extends AbstractAnnotationMaskHandler {
         compoundCriterion.getCriterionCollection().add(lowerThanLowNumberCriterion);
         return compoundCriterion;
     }
-
-
-
 }

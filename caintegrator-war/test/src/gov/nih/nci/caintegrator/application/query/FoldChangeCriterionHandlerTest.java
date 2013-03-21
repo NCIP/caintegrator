@@ -8,19 +8,17 @@ package gov.nih.nci.caintegrator.application.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anySetOf;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.caintegrator.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator.application.arraydata.PlatformChannelTypeEnum;
-import gov.nih.nci.caintegrator.application.query.FoldChangeCriterionHandler;
-import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator.domain.application.Query;
@@ -48,22 +46,30 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
 
+/**
+ * Tests for the fold change criterion handler.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class FoldChangeCriterionHandlerTest extends AbstractMockitoTest {
-    private CaIntegrator2DaoStub daoStub = new DaoStub();
+    private static final String SAMPLE_SET_NAME = "controlSampleSet";
     private Query query;
     private Study study;
-    private Gene gene;
-    GeneExpressionReporter reporter = new GeneExpressionReporter();
 
+    /**
+     * Unit test setup.
+     */
     @Before
     public void setUp() {
-        Platform platform = daoStub.getPlatform("platformName");
-        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        gene = new Gene();
-        reporter.getGenes().add(gene);
+        Platform platform = dao.getPlatform("platformName");
+        ReporterList reporterList =
+                platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
 
-        daoStub.clear();
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporter.getGenes().add(new Gene());
+
         study = new Study();
         query = new Query();
         query.setGeneExpressionPlatform(platform);
@@ -89,25 +95,92 @@ public class FoldChangeCriterionHandlerTest extends AbstractMockitoTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         study.setStudyConfiguration(studyConfiguration);
+
+        when(dao.findReportersForGenes(anySetOf(String.class), any(ReporterTypeEnum.class), any(Study.class),
+                any(Platform.class))).thenReturn(Sets.<AbstractReporter>newHashSet(reporter));
     }
 
-    @Test
-    public void testGetMatches() throws InvalidCriterionException {
+    /**
+     * Ensures that attempting to search by sample set with no existing sample set results in an error.
+     *
+     * @throws InvalidCriterionException on expected invalid criterion error
+     */
+    @Test(expected = InvalidCriterionException.class)
+    public void getMatchesNoSampleSet()  throws InvalidCriterionException {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
-        criterion.setRegulationType(RegulationTypeEnum.getByValue("Up"));
+        criterion.setRegulationType(RegulationTypeEnum.UP);
         criterion.setFoldsUp(1.0f);
         criterion.setGeneSymbol("Tester");
-        criterion.setControlSampleSetName("controlSampleSet1");
+        criterion.setControlSampleSetName(SAMPLE_SET_NAME);
+
         FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
-        Set<ResultRow> rows = new HashSet<ResultRow>();
-        try {
-            rows = handler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
-            fail();
-        } catch(InvalidCriterionException e) { }
-        SampleSet sampleSet1 = new SampleSet();
-        sampleSet1.setName("controlSampleSet1");
+        handler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
+    }
+
+    /**
+     * Tests retrieval of fold change results with type up.
+     *
+     * @throws InvalidCriterionException on unexpected
+     */
+    @Test
+    public void getMatchesRegulationTypeUp() throws InvalidCriterionException {
+        FoldChangeCriterion criterion = new FoldChangeCriterion();
+        criterion.setRegulationType(RegulationTypeEnum.UP);
+        criterion.setFoldsUp(1.0f);
+        criterion.setGeneSymbol("Tester");
+        criterion.setControlSampleSetName(SAMPLE_SET_NAME);
+        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
+
+        SampleSet sampleSet = generateSampleSet(SAMPLE_SET_NAME);
+        study.getStudyConfiguration().getGenomicDataSources().get(0).getControlSampleSetCollection().add(sampleSet);
+
+        Set<ResultRow> results = handler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
+        assertEquals(1, results.size());
+        verify(arrayDataService, atLeastOnce()).getFoldChangeValues(any(DataRetrievalRequest.class),
+                anyListOf(ArrayDataValues.class), any(PlatformChannelTypeEnum.class));
+    }
+
+    /**
+     * Tests retrieval of fold change results with type down.
+     *
+     * @throws InvalidCriterionException on unexpected
+     */
+    @Test
+    public void getMatchesRegulationTypeDown() throws InvalidCriterionException {
+        FoldChangeCriterion criterion = new FoldChangeCriterion();
+        criterion.setRegulationType(RegulationTypeEnum.DOWN);
+        criterion.setFoldsDown(1.0f);
+        criterion.setGeneSymbol("Tester");
+        criterion.setControlSampleSetName(SAMPLE_SET_NAME);
+        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
+
+        SampleSet sampleSet = generateSampleSet(SAMPLE_SET_NAME);
+        study.getStudyConfiguration().getGenomicDataSources().get(0).getControlSampleSetCollection().add(sampleSet);
+
+        Set<ResultRow> results = handler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>());
+        assertTrue(results.isEmpty());
+        verify(arrayDataService, atLeastOnce()).getFoldChangeValues(any(DataRetrievalRequest.class),
+                anyListOf(ArrayDataValues.class), any(PlatformChannelTypeEnum.class));
+    }
+
+    /**
+     * Test retrieval of reporter matches.
+     */
+    @Test
+    public void getReporterMatches() {
+        FoldChangeCriterion criterion = new FoldChangeCriterion();
+        criterion.setGeneSymbol("tester");
+        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
+        Set<AbstractReporter> results =
+                handler.getReporterMatches(dao, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, null);
+        assertEquals(1, results.size());
+    }
+
+    private SampleSet generateSampleSet(String sampleSetName) {
+        SampleSet sampleSet = new SampleSet();
+        sampleSet.setName(sampleSetName);
         Sample sample = new Sample();
-        sampleSet1.getSamples().add(sample);
+        sampleSet.getSamples().add(sample);
         ArrayData arrayData = new ArrayData();
         sample.getArrayDataCollection().add(arrayData);
         ReporterList reporterList = new ReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
@@ -115,45 +188,6 @@ public class FoldChangeCriterionHandlerTest extends AbstractMockitoTest {
         Array array = new Array();
         array.setPlatform(query.getGeneExpressionPlatform());
         arrayData.setArray(array);
-        study.getStudyConfiguration().getGenomicDataSources().get(0).getControlSampleSetCollection().add(sampleSet1);
-        rows = handler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
-        assertEquals(1, rows.size());
-        criterion.setRegulationType(RegulationTypeEnum.DOWN);
-        criterion.setFoldsDown(1.0f);
-        rows = handler.getMatches(daoStub, arrayDataService, query, new HashSet<EntityTypeEnum>());
-        assertEquals(0, rows.size());
-        verify(arrayDataService, atLeastOnce()).getFoldChangeValues(any(DataRetrievalRequest.class), anyListOf(ArrayDataValues.class),
-                any(PlatformChannelTypeEnum.class));
+        return sampleSet;
     }
-
-    @Test
-    public void testGetters() {
-        FoldChangeCriterion criterion = new FoldChangeCriterion();
-        criterion.setRegulationType(RegulationTypeEnum.UP);
-        criterion.setFoldsUp(1.0f);
-        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
-        assertTrue(handler.hasReporterCriterion());
-        assertTrue(handler.isReporterMatchHandler());
-    }
-
-    @Test
-    public void testGetReporterMatches() {
-        FoldChangeCriterion criterion = new FoldChangeCriterion();
-        criterion.setGeneSymbol("tester");
-        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
-        assertEquals(1, handler.getReporterMatches(daoStub, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, null).size());
-    }
-
-    private class DaoStub extends CaIntegrator2DaoStub {
-
-        @Override
-        public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
-                ReporterTypeEnum reporterType, Study study, Platform platform) {
-            Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-            reporters.add(reporter);
-            return reporters;
-        }
-
-    }
-
 }

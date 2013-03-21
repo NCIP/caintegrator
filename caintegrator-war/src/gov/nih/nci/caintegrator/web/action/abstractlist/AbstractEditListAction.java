@@ -18,8 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Provides functionality to list and add array designs.
  */
-public abstract class EditAbstractListAction extends AbstractCaIntegrator2Action {
-
+public abstract class AbstractEditListAction extends AbstractCaIntegrator2Action {
     private static final long serialVersionUID = 1L;
     private static final int LIST_NAME_LENGTH = 100;
     private AbstractList abstractList;

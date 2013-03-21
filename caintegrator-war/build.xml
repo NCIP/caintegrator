@@ -25,9 +25,9 @@
     <property name="target.dir" location="${build.dir}/target" />
     <property name="common.dir" value="${software.dir}/common"/>
 
-    <property name="cobertura.linecoverage" value="80"/>
+    <property name="cobertura.linecoverage" value="81"/>
     <property name="cobertura.branchcoverage" value="70"/>
-    <property name="pmd.maxRuleViolations" value="187"/>
+    <property name="pmd.maxRuleViolations" value="185"/>
 
     <tstamp>
       <format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>

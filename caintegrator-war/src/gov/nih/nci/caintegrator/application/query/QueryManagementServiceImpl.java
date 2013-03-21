@@ -186,7 +186,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
                 && ((AbstractAnnotationCriterion) abstractCriterion).getAnnotationFieldDescriptor() != null
                 && !((AbstractAnnotationCriterion) abstractCriterion).getAnnotationFieldDescriptor()
                     .getAnnotationMasks().isEmpty()) {
-                return AbstractAnnotationMaskHandler.createMaskedCriterion(
+                return MaskHandlerUtils.createMaskedCriterion(
                         ((AbstractAnnotationCriterion) abstractCriterion).getAnnotationFieldDescriptor()
                                 .getAnnotationMasks(), abstractCriterion);
             }

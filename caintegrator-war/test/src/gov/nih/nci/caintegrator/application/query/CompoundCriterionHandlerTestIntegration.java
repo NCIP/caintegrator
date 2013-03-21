@@ -7,8 +7,6 @@
 package gov.nih.nci.caintegrator.application.query;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator.application.query.CompoundCriterionHandler;
-import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator.data.StudyHelper;
 import gov.nih.nci.caintegrator.domain.application.AbstractCriterion;
@@ -33,10 +31,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion
+ * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/**/dao-test-config.xml"})
+@ContextConfiguration(locations = { "classpath*:/**/dao-test-config.xml" })
 @Transactional
 public class CompoundCriterionHandlerTestIntegration extends AbstractMockitoTest {
     @Autowired
@@ -76,7 +74,8 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractMockitoTest
         assertEquals(0, compoundCriterionHandler2.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
 
         compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR);
-        assertEquals(11, compoundCriterionHandler2.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
+        assertEquals(11,
+                compoundCriterionHandler2.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
 
         // Try to combine criterion 1 and criterion 2 into a new compoundCriterion.
         CompoundCriterion compoundCriterion3 = new CompoundCriterion();
@@ -96,7 +95,8 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractMockitoTest
 
         // If we OR them together we should get 7 results, all 5 subjects, plus 2 more samples for subject1.
         compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR);
-        Set<ResultRow> mostComplexRows = compoundCriterionHandler3.getMatches(dao, arrayDataService, query, entityTypesInQuery);
+        Set<ResultRow> mostComplexRows =
+                compoundCriterionHandler3.getMatches(dao, arrayDataService, query, entityTypesInQuery);
         assertEquals(14, mostComplexRows.size());
 
         // Test out the selected value criterion on the permissible value's for Samples.

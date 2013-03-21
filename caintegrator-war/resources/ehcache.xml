@@ -150,20 +150,6 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.caintegrator.domain.application.SampleList"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.caintegrator.domain.application.SampleList.sampleCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
 	<cache name="gov.nih.nci.caintegrator.domain.annotation.PermissibleValue"
 		maxElementsInMemory="500"
 		eternal="false"

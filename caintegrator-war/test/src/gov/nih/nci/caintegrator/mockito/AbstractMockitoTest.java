@@ -174,6 +174,23 @@ public abstract class AbstractMockitoTest {
         dao = mock(CaIntegrator2Dao.class);
         when(dao.getStudies(anyString())).thenReturn(Arrays.asList(study));
         when(dao.getAllGenomicDataSources()).thenReturn(Arrays.asList(dataSource));
+        when(dao.getPlatform(anyString())).thenAnswer(new Answer<Platform>() {
+            @Override
+            public Platform answer(InvocationOnMock invocation) throws Throwable {
+                String platformName = (String) invocation.getArguments()[0];
+                Platform platform = new Platform();
+                platform.setName(platformName);
+                platform.setPlatformConfiguration(new PlatformConfiguration());
+                platform.getPlatformConfiguration().setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
+                platform.getPlatformConfiguration().setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
+
+                ReporterList reporterList = new ReporterList("reporterName", ReporterTypeEnum.GENE_EXPRESSION_GENE);
+                reporterList.setGenomeVersion(platformName);
+                reporterList.setPlatform(platform);
+                platform.addReporterList(reporterList);
+                return platform;
+            }
+        });
     }
 
     /**
@@ -183,22 +200,27 @@ public abstract class AbstractMockitoTest {
         caArrayFacade = mock(CaArrayFacade.class);
         Sample sample = new Sample();
         sample.setName("testSample");
-        when(caArrayFacade.getSamples(anyString(), any(ServerConnectionProfile.class))).thenReturn(Arrays.asList(sample));
-        when(caArrayFacade.retrieveFile(any(GenomicDataSourceConfiguration.class), anyString())).thenReturn(ArrayUtils.EMPTY_BYTE_ARRAY);
-        when(caArrayFacade.retrieveFilesForGenomicSource(any(GenomicDataSourceConfiguration.class))).thenReturn(Collections.<gov.nih.nci.caarray.external.v1_0.data.File>emptyList());
-        when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class))).thenReturn(new Date());
+        when(caArrayFacade.getSamples(anyString(), any(ServerConnectionProfile.class)))
+            .thenReturn(Arrays.asList(sample));
+        when(caArrayFacade.retrieveFile(any(GenomicDataSourceConfiguration.class), anyString()))
+            .thenReturn(ArrayUtils.EMPTY_BYTE_ARRAY);
+        when(caArrayFacade.retrieveFilesForGenomicSource(any(GenomicDataSourceConfiguration.class)))
+            .thenReturn(Collections.<gov.nih.nci.caarray.external.v1_0.data.File>emptyList());
+        when(caArrayFacade.getLastDataModificationDate(any(GenomicDataSourceConfiguration.class)))
+            .thenReturn(new Date());
 
         Map<String, Date> updateMap = new HashMap<String, Date>();
         updateMap.put("test1", new Date());
         updateMap.put("test2", new Date());
         updateMap.put("test3", new Date());
-        when(caArrayFacade.checkForSampleUpdates(anyString(), any(ServerConnectionProfile.class))).thenReturn(updateMap);
+        when(caArrayFacade.checkForSampleUpdates(anyString(), any(ServerConnectionProfile.class)))
+            .thenReturn(updateMap);
         setUpCaArrayFacadeRetrieveData();
         setUpCaArrayFacadeRetrieveDnaAnalysisData();
     }
 
     /**
-     * Sets up the Array Data Service mock object
+     * Sets up the Array Data Service mock object.
      */
     private void setUpArrayDataService() throws Exception {
         arrayDataService = mock(ArrayDataService.class);
@@ -239,14 +261,14 @@ public abstract class AbstractMockitoTest {
 
         List<PlatformConfiguration> platformConfigurations = new ArrayList<PlatformConfiguration>();
         PlatformConfiguration config1 = new PlatformConfiguration();
-        config1.setId(1l);
+        config1.setId(1L);
         config1.setName("name");
         config1.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         config1.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         config1.setStatus(Status.PROCESSING);
         config1.setDeploymentStartDate(new Date());
         PlatformConfiguration config2 = new PlatformConfiguration();
-        config2.setId(1l);
+        config2.setId(1L);
         config2.setName("name2");
         config2.setStatus(Status.LOADED);
         config2.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
@@ -261,7 +283,7 @@ public abstract class AbstractMockitoTest {
         when(arrayDataService.getPlatformConfigurations()).thenReturn(platformConfigurations);
 
         PlatformConfiguration config = new PlatformConfiguration();
-        config.setId(1l);
+        config.setId(1L);
         config.setName("name");
         config.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         config.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
@@ -278,6 +300,7 @@ public abstract class AbstractMockitoTest {
                 String platformName = (String) invocation.getArguments()[0];
                 Platform platform = new Platform();
                 platform.setName(platformName);
+
                 ReporterList reporterList = new ReporterList("reporterName", ReporterTypeEnum.GENE_EXPRESSION_GENE);
                 reporterList.setGenomeVersion(platformName);
                 reporterList.setPlatform(platform);

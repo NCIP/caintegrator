@@ -13,7 +13,7 @@ import gov.nih.nci.caintegrator.domain.genomic.Gene;
 /**
  * Provides functionality to list and add array designs.
  */
-public class EditGeneListAction extends EditAbstractListAction {
+public class EditGeneListAction extends AbstractEditListAction {
 
     private static final long serialVersionUID = 1L;
 

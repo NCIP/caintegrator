@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -25,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 public final class PermissibleValueUtil {
 
     private PermissibleValueUtil() {
-
+        //Intentionally left blank.
     }
 
     /**
@@ -189,18 +191,17 @@ public final class PermissibleValueUtil {
      */
     public static Set<String> retrieveValuesNotPermissible(Set<Object> uniqueValues,
             AnnotationDefinition annotationDefinition) {
-        return retrieveValuesNotInPermissibleValues(
-                retrieveUniquePermissibleValues(annotationDefinition), uniqueValues);
+        return retrieveValuesNotInPermissibleValues(retrieveUniquePermissibleValues(annotationDefinition),
+                uniqueValues);
     }
 
     private static <T> Set<String> retrieveValuesNotInPermissibleValues(Set<T> permissibleValues,
             Collection<T> uniqueValues) {
         Set<String> valuesNotInPemissibleList = new HashSet<String>();
-        if (uniqueValues != null && !uniqueValues.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(permissibleValues)) {
             for (T uniqueValue : uniqueValues) {
                 if (!permissibleValues.contains(uniqueValue)
-                     && uniqueValue != null
-                     && !StringUtils.isBlank(String.valueOf(uniqueValue))) {
+                     && StringUtils.isNotBlank(ObjectUtils.toString(uniqueValue))) {
                     valuesNotInPemissibleList.add(uniqueValue.toString());
                 }
             }

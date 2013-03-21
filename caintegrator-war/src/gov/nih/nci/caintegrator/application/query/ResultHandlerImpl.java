@@ -199,6 +199,6 @@ public class ResultHandlerImpl implements ResultHandler {
     private AbstractAnnotationValue retrieveValue(AnnotationFieldDescriptor fieldDescriptor,
             AbstractAnnotationValue value) {
         return fieldDescriptor.getAnnotationMasks().isEmpty() ? value
-            : AbstractAnnotationMaskHandler.retrieveMaskedValue(fieldDescriptor.getAnnotationMasks(), value);
+            : MaskHandlerUtils.retrieveMaskedValue(fieldDescriptor.getAnnotationMasks(), value);
     }
 }

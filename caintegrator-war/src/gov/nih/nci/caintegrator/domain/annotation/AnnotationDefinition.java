@@ -14,21 +14,21 @@ import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
- * 
+ *
  */
 public class AnnotationDefinition extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String keywords;
-    
+
     private CommonDataElement commonDataElement = new CommonDataElement();
-    private Set<AbstractAnnotationValue> annotationValueCollection = new HashSet<AbstractAnnotationValue>();
+    private Set<AbstractAnnotationValue> annotationValueCollection = new LinkedHashSet<AbstractAnnotationValue>();
 
     /**
      * Set default data type as string and commonDataElement.longName the same as the keyword.
@@ -46,35 +46,35 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     public String getKeywords() {
         return keywords;
     }
-    
+
     /**
      * @param keywords the keywords to set
      */
     public void setKeywords(String keywords) {
         this.keywords = keywords;
     }
-    
+
     /**
      * @return the commonDataElement
      */
     public CommonDataElement getCommonDataElement() {
         return commonDataElement;
     }
-    
+
     /**
      * @param commonDataElement the commonDataElement to set
      */
     public void setCommonDataElement(CommonDataElement commonDataElement) {
         this.commonDataElement = commonDataElement;
     }
-    
+
     /**
      * @return the annotationValueCollection
      */
     public Set<AbstractAnnotationValue> getAnnotationValueCollection() {
         return annotationValueCollection;
     }
-    
+
     /**
      * @param annotationValueCollection the annotationValueCollection to set
      */
@@ -82,7 +82,7 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     private void setAnnotationValueCollection(Set<AbstractAnnotationValue> annotationValueCollection) {
         this.annotationValueCollection = annotationValueCollection;
     }
-    
+
     /**
      * Validates that all the values associated with definition match the type.
      * @throws ValidationException if invalid values for type.
@@ -102,7 +102,7 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     public AnnotationTypeEnum getDataType() {
         return commonDataElement.getValueDomain().getDataType();
     }
-    
+
     /**
      * Sets the data type of the valueDomain.
      * @param dataType to set.
@@ -110,7 +110,7 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     public void setDataType(AnnotationTypeEnum dataType) {
         commonDataElement.getValueDomain().setDataType(dataType);
     }
-    
+
     /**
      * Gets the permissible values from the value domain.
      * @return permissible values.
@@ -118,7 +118,7 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     public Set<PermissibleValue> getPermissibleValueCollection() {
         return commonDataElement.getValueDomain().getPermissibleValueCollection();
     }
-    
+
     /**
      * Gets the sorted permissible values from the value domain.
      * @return permissible values.
@@ -129,7 +129,7 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
         Collections.sort(permissibleValues);
         return permissibleValues;
     }
-    
+
     /**
      * The display name.
      * @return display name.
@@ -137,14 +137,14 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     public String getDisplayName() {
         return commonDataElement.getLongName();
     }
-    
+
     /**
      * @param displayName to set the name to.
      */
     public void setDisplayName(String displayName) {
         commonDataElement.setLongName(displayName);
     }
-    
+
     private String retrieveValidationError() {
         return "Values for '" + commonDataElement.getLongName() + "' must be of the " + getDataType() + " type.";
     }

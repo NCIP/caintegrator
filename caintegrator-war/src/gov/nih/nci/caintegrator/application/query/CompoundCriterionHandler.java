@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,11 +53,11 @@ import org.apache.commons.lang3.StringUtils;
  */
 final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
-    private final Collection <AbstractCriterionHandler> handlers;
+    private final Collection<AbstractCriterionHandler> handlers;
     private final CompoundCriterion compoundCriterion;
     private final ResultTypeEnum resultType;
 
-    private CompoundCriterionHandler(Collection <AbstractCriterionHandler> handlers,
+    private CompoundCriterionHandler(Collection<AbstractCriterionHandler> handlers,
                                      CompoundCriterion compoundCriterion,
                                      ResultTypeEnum resultType) {
         this.handlers = handlers;
@@ -71,7 +72,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @return CompoundCriterionHandler object returned, with the handlers collection filled.
      */
     static CompoundCriterionHandler create(CompoundCriterion compoundCriterion, ResultTypeEnum resultType) {
-        Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
+        Collection<AbstractCriterionHandler> handlers = new LinkedHashSet<AbstractCriterionHandler>();
         if (compoundCriterion != null && compoundCriterion.getCriterionCollection() != null) {
             for (AbstractCriterion abstractCriterion : compoundCriterion.getCriterionCollection()) {
                 if (abstractCriterion instanceof AbstractAnnotationCriterion) {

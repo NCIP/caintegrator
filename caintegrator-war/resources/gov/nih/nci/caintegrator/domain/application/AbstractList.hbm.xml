@@ -40,14 +40,5 @@
 				<one-to-many class="SubjectIdentifier" />
 			</set>
 		</joined-subclass>
-		<joined-subclass name="SampleList" table="SAMPLE_LIST" lazy="false">
-			<key column="ID" />
-			<!-- Associations mapping for the SampleList class -->
-			<set name="sampleCollection" table="SAMPLE_LIST_SAMPLE" lazy="true" cascade="save-update,merge" >
-				<cache usage="read-write" />
-				<key column="SAMPLE_LIST_ID" />
-				<many-to-many class="gov.nih.nci.caintegrator.domain.genomic.Sample" column="SAMPLE_ID" />
-			</set>
-		</joined-subclass>
 	</class>
 </hibernate-mapping>

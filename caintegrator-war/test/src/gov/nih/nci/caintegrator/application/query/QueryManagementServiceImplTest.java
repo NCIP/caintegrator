@@ -11,10 +11,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator.application.query.QueryManagementServiceImpl;
-import gov.nih.nci.caintegrator.application.query.ResultHandler;
-import gov.nih.nci.caintegrator.application.query.ResultHandlerImpl;
 import gov.nih.nci.caintegrator.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator.application.study.AnnotationGroup;
@@ -93,7 +89,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test class for QueryManagementServiceImpl
+ * Test cases for the Query Management Service.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class QueryManagementServiceImplTest extends AbstractMockitoTest {
 
@@ -109,6 +107,9 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
     private SegmentData segmentData2;
     private UserWorkspace userWorkspace;
 
+    /**
+     * Sets up the unit tests.
+     */
     @Before
     public void setup() {
         dao = new GenomicDataTestDaoStub();
@@ -168,77 +169,172 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
         segmentData2.setLocation(location);
     }
 
-
+    /**
+     * Tests execution of subject query that has masked values.
+     *
+     * @throws Exception on unexpected error
+     */
     @Test
-    public void testExecute() throws InvalidCriterionException {
+    public void executeWithoutMaskedValues() throws Exception {
         QueryResult queryResult = queryManagementService.execute(query);
         assertNotNull(queryResult.getRowCollection());
         assertFalse(query.isHasMaskedValues());
-        NumericComparisonCriterion numericCrit = new NumericComparisonCriterion();
-        numericCrit.setEntityType(EntityTypeEnum.SUBJECT);
-        numericCrit.setNumericValue(12d);
-        numericCrit.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL);
+    }
 
+
+    /**
+     * Tests execution of subject query that has masked values.
+     *
+     * @throws Exception on unexpected error
+     */
+    @Test
+    public void executeWithMaskedValues() throws Exception {
         AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
         afd.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
         afd.setMaxNumber(10d);
         afd.setNumericRange(4);
         afd.setDefinition(new AnnotationDefinition());
-        numericCrit.setAnnotationFieldDescriptor(afd);
+
         ResultColumn column = new ResultColumn();
         column.setAnnotationFieldDescriptor(afd);
         query.getColumnCollection().add(column);
+
+        NumericComparisonCriterion numericCrit = new NumericComparisonCriterion();
+        numericCrit.setEntityType(EntityTypeEnum.SUBJECT);
+        numericCrit.setNumericValue(12d);
+        numericCrit.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL);
+        numericCrit.setAnnotationFieldDescriptor(afd);
         query.getCompoundCriterion().getCriterionCollection().add(numericCrit);
-        queryManagementService.execute(query);
-        assertTrue(query.isHasMaskedValues());
-
-        // Test SubjectList with all matches
-        SubjectList sl1 = new SubjectList();
-        SubjectIdentifier subjectIdentifier = new SubjectIdentifier();
-        subjectIdentifier.setIdentifier("real");
-        sl1.getSubjectIdentifiers().add(subjectIdentifier);
-
-        StudySubjectAssignment subject1 = new StudySubjectAssignment();
-        subject1.setIdentifier("real");
-        query.getSubscription().getStudy().getAssignmentCollection().add(subject1);
-        query.getCompoundCriterion().getCriterionCollection().clear();
-        SubjectListCriterion subjectListCriterion = new SubjectListCriterion();
-        subjectListCriterion.getSubjectListCollection().add(sl1);
-        query.getCompoundCriterion().getCriterionCollection().add(subjectListCriterion);
-        queryResult = queryManagementService.execute(query);
-        assertTrue(queryResult.getQuery().getSubjectIdsNotFound().isEmpty());
-
-        // Test 2 subject lists, one matches, and one doesn't.
-        SubjectList sl2 = new SubjectList();
-        SubjectIdentifier subjectIdentifier2 = new SubjectIdentifier();
-        subjectIdentifier2.setIdentifier("fake");
-        sl2.getSubjectIdentifiers().add(subjectIdentifier2);
-        subjectListCriterion.getSubjectListCollection().add(sl2);
-        queryResult = queryManagementService.execute(query);
-        assertTrue(queryResult.getQuery().getSubjectIdsNotFound().contains("fake"));
-
-
-        // Test 1 subject list, where neither matches.
-        subjectListCriterion.getSubjectListCollection().clear();
-        subjectListCriterion.getSubjectListCollection().add(sl2);
-        try {
-            queryResult = queryManagementService.execute(query);
-            fail("Should catch invalid criterion exception because there are no valid subject IDs in query.");
-        } catch (InvalidCriterionException e) {
-            // noop - expect it to come here.
-        }
-
     }
 
+    /**
+     * Tests querying of subjects with one matching criterion.
+     *
+     * @throws Exception on unexpected error
+     */
+    @Test
+    public void subjectListMatch() throws Exception {
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        afd.setMaxNumber(10d);
+        afd.setNumericRange(4);
+        afd.setDefinition(new AnnotationDefinition());
+
+        ResultColumn column = new ResultColumn();
+        column.setAnnotationFieldDescriptor(afd);
+        query.getColumnCollection().add(column);
+
+        SubjectIdentifier subjectIdentifier = new SubjectIdentifier();
+        subjectIdentifier.setIdentifier("1");
+
+        SubjectList subjectList = new SubjectList();
+        subjectList.getSubjectIdentifiers().add(subjectIdentifier);
+
+        StudySubjectAssignment subject = new StudySubjectAssignment();
+        subject.setIdentifier("1");
+        query.getSubscription().getStudy().getAssignmentCollection().add(subject);
+
+        SubjectListCriterion subjectListCriterion = new SubjectListCriterion();
+        subjectListCriterion.getSubjectListCollection().add(subjectList);
+
+        query.getCompoundCriterion().getCriterionCollection().add(subjectListCriterion);
+        QueryResult queryResult = queryManagementService.execute(query);
+        assertEquals(1, queryResult.getRowCollection().size());
+        assertTrue(queryResult.getQuery().getSubjectIdsNotFound().isEmpty());
+    }
+
+    /**
+     * Tests querying of subjects with one matching criterion and one non matching criterion.
+     *
+     * @throws Exception on unexpected error
+     */
+    @Test
+    public void subjectListPartialMatch() throws Exception {
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        afd.setMaxNumber(10d);
+        afd.setNumericRange(4);
+        afd.setDefinition(new AnnotationDefinition());
+
+        ResultColumn column = new ResultColumn();
+        column.setAnnotationFieldDescriptor(afd);
+        query.getColumnCollection().add(column);
+
+        SubjectIdentifier subjectIdentifier = new SubjectIdentifier();
+        subjectIdentifier.setIdentifier("1");
+
+        SubjectIdentifier otherSubjectIdentifier = new SubjectIdentifier();
+        otherSubjectIdentifier.setIdentifier("2");
+
+        SubjectList subjectList = new SubjectList();
+        subjectList.getSubjectIdentifiers().add(subjectIdentifier);
+
+        SubjectList otherSubjectList = new SubjectList();
+        otherSubjectList.getSubjectIdentifiers().add(otherSubjectIdentifier);
+
+        StudySubjectAssignment subject = new StudySubjectAssignment();
+        subject.setIdentifier("1");
+        query.getSubscription().getStudy().getAssignmentCollection().add(subject);
+
+        SubjectListCriterion subjectListCriterion = new SubjectListCriterion();
+        subjectListCriterion.getSubjectListCollection().add(subjectList);
+        subjectListCriterion.getSubjectListCollection().add(otherSubjectList);
+
+        query.getCompoundCriterion().getCriterionCollection().add(subjectListCriterion);
+        QueryResult queryResult = queryManagementService.execute(query);
+
+        queryResult = queryManagementService.execute(query);
+        assertEquals(1, queryResult.getRowCollection().size());
+        assertTrue(queryResult.getQuery().getSubjectIdsNotFound().contains("2"));
+    }
+
+    /**
+     * Tests execution of the query without any matching criteria.
+     *
+     * @throws InvalidCriterionException on invalid criteria
+     */
+    @Test(expected = InvalidCriterionException.class)
+    public void testExecute() throws InvalidCriterionException {
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setAnnotationEntityType(EntityTypeEnum.SUBJECT);
+        afd.setMaxNumber(10d);
+        afd.setNumericRange(4);
+        afd.setDefinition(new AnnotationDefinition());
+
+        ResultColumn column = new ResultColumn();
+        column.setAnnotationFieldDescriptor(afd);
+        query.getColumnCollection().add(column);
+
+        StudySubjectAssignment subject = new StudySubjectAssignment();
+        subject.setIdentifier("1");
+        query.getSubscription().getStudy().getAssignmentCollection().add(subject);
+
+        // Test SubjectList with all matches
+        SubjectIdentifier subjectIdentifier = new SubjectIdentifier();
+        subjectIdentifier.setIdentifier("2");
+
+        SubjectList subjectList = new SubjectList();
+        subjectList.getSubjectIdentifiers().add(subjectIdentifier);
+
+        SubjectListCriterion subjectListCriterion = new SubjectListCriterion();
+        subjectListCriterion.getSubjectListCollection().add(subjectList);
+
+        query.getCompoundCriterion().getCriterionCollection().add(subjectListCriterion);
+        queryManagementService.execute(query);
+    }
+
+    /**
+     * Tests execution of genomic data queries.
+     *
+     * @throws InvalidCriterionException on invalid criteria
+     */
     @Test
     public void testExecuteGenomicDataQuery() throws InvalidCriterionException {
         Platform platform = dao.getPlatform("platformName");
         Study study = query.getSubscription().getStudy();
-        UserWorkspace userWorkspace = new UserWorkspace();
-        userWorkspace.setUsername(USER_EXISTS);
-        study.getStudyConfiguration().setUserWorkspace(userWorkspace);
-        query.getSubscription().setUserWorkspace(userWorkspace);
-        StudySubjectAssignment assignment = query.getSubscription().getStudy().getAssignmentCollection().iterator().next();
+
+        StudySubjectAssignment assignment =
+                query.getSubscription().getStudy().getAssignmentCollection().iterator().next();
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
         acquisition.setAssignment(assignment);
@@ -287,7 +383,8 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
         Gene gene = new Gene();
         gene.setSymbol("GENE");
         reporter = new GeneExpressionReporter();
-        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ReporterList reporterList =
+                platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporter.setReporterList(reporterList);
         reporter.getGenes().add(gene);
         geneNameCriterion.setGeneSymbol("GENE");
@@ -412,6 +509,9 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
     }
 
 
+    /**
+     * Tests query saving.
+     */
     @Test
     public void testSave() {
        queryManagementService.save(query);
@@ -421,12 +521,18 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
        assertTrue(dao.mergeCalled);
     }
 
+    /**
+     * Tests query deletion.
+     */
     @Test
     public void testDelete() {
        queryManagementService.delete(query);
        assertTrue(dao.deleteCalled);
     }
 
+    /**
+     * Tests Dicom Job creation.
+     */
     @Test
     public void testCreateDicomJob() {
         queryManagementService.setDao(new ImageStudyTestDaoStub());
@@ -442,9 +548,12 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
                                                         getRows());
         assertEquals(NCIAImageAggregationTypeEnum.IMAGESTUDY, dicomJob.getImageAggregationType());
         assertTrue(dicomJob.getImageSeriesIDs().isEmpty());
-        assertTrue(!dicomJob.getImageStudyIDs().isEmpty());
+        assertFalse(dicomJob.getImageStudyIDs().isEmpty());
     }
 
+    /**
+     * Tests NCIA Basket creation.
+     */
     @Test
     public void testCreateNciaBasket() {
         queryManagementService.setDao(new ImageStudyTestDaoStub());
@@ -500,16 +609,19 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
     }
 
     private void authorizeStudyElements(StudyConfiguration studyConfiguration)
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException, CSException {
+    throws ConnectionException, DataRetrievalException, ValidationException,
+        IOException, InvalidCriterionException, CSException {
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup1","Gender", "F");
+            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,
+                    "IntegrationTestAuthorizedStudyElementsGroup1", "Gender", "F");
             List<AuthorizedStudyElementsGroup> list = new ArrayList<AuthorizedStudyElementsGroup>();
             list.add(authorizedStudyElementsGroup1);
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
 
             AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,"IntegrationTestAuthorizedStudyElementsGroup2","Age", StringUtils.EMPTY);
+            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,
+                    "IntegrationTestAuthorizedStudyElementsGroup2", "Age", StringUtils.EMPTY);
             list.add(authorizedStudyElementsGroup2);
             studyConfiguration.setAuthorizedStudyElementsGroups(list);
     }
@@ -523,13 +635,14 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
      * @param annotationValue
      * @return authorizedStudyElementsGroup
      */
-    protected AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
+    private AuthorizedStudyElementsGroup createAuthorizedStudyElementsGroup(StudyConfiguration studyConfiguration,
                                                                                 String authorizedStudyElementsGroupName,
                                                                                 String fieldDescriptorName,
                                                                                 String annotationValue) {
         AuthorizedStudyElementsGroup authorizedStudyElementsGroup = new AuthorizedStudyElementsGroup();
         authorizedStudyElementsGroup.setStudyConfiguration(studyConfiguration);
-        String desc = "Created by integration test for study named: " + studyConfiguration.getStudy().getShortTitleText();
+        String desc = "Created by integration test for study named: "
+                + studyConfiguration.getStudy().getShortTitleText();
         Group group = new Group();
         group.setGroupName(authorizedStudyElementsGroupName);
         group.setGroupDesc(desc);
@@ -538,15 +651,19 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
         // add AuthorizedAnnotationFieldDescriptor
         AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
         annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(fieldDescriptorName);
-        AuthorizedAnnotationFieldDescriptor authorizedAnnotationFieldDescriptor = new AuthorizedAnnotationFieldDescriptor();
+        AuthorizedAnnotationFieldDescriptor authorizedAnnotationFieldDescriptor =
+                new AuthorizedAnnotationFieldDescriptor();
         authorizedAnnotationFieldDescriptor.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedAnnotationFieldDescriptor.setAnnotationFieldDescriptor(annotationFieldDescriptor);
         authorizedStudyElementsGroup.getAuthorizedAnnotationFieldDescriptors().add(authorizedAnnotationFieldDescriptor);
         // add AuthorizedGenomicDataSourceConfigurations
-        AuthorizedGenomicDataSourceConfiguration authorizedGenomicDataSourceConfiguration = new AuthorizedGenomicDataSourceConfiguration();
+        AuthorizedGenomicDataSourceConfiguration authorizedGenomicDataSourceConfiguration =
+                new AuthorizedGenomicDataSourceConfiguration();
         authorizedGenomicDataSourceConfiguration.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
-        authorizedGenomicDataSourceConfiguration.setGenomicDataSourceConfiguration(studyConfiguration.getGenomicDataSources().get(0));
-        authorizedStudyElementsGroup.getAuthorizedGenomicDataSourceConfigurations().add(authorizedGenomicDataSourceConfiguration);
+        authorizedGenomicDataSourceConfiguration.setGenomicDataSourceConfiguration(
+                studyConfiguration.getGenomicDataSources().get(0));
+        authorizedStudyElementsGroup.getAuthorizedGenomicDataSourceConfigurations().add(
+                authorizedGenomicDataSourceConfiguration);
         // add AuthorizedQuery
         Query query = new Query();
         query.setName("TestAuthorizationQuery");
@@ -557,7 +674,6 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
                 query.setSubscription(studySubscription);
             }
         }
-
         query.setLastModifiedDate(new Date());
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
@@ -575,5 +691,4 @@ public class QueryManagementServiceImplTest extends AbstractMockitoTest {
         authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery);
         return authorizedStudyElementsGroup;
     }
-
 }

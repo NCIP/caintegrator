@@ -7,9 +7,6 @@
 package gov.nih.nci.caintegrator.application.query;
 
 import gov.nih.nci.caintegrator.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator.application.query.QueryTranslator;
-import gov.nih.nci.caintegrator.application.query.ResultHandlerImpl;
 import gov.nih.nci.caintegrator.data.CaIntegrator2DaoImpl;
 import gov.nih.nci.caintegrator.data.StudyHelper;
 import gov.nih.nci.caintegrator.domain.annotation.AbstractAnnotationValue;
@@ -84,7 +81,11 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
         CompoundCriterion compoundCriterion = studyHelper.createCompoundCriterion1();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR);
 
-        Query query = studyHelper.createQuery(compoundCriterion, columnCollection, studySubscription);
+        Query query = new Query();
+        query.setName("Test Query");
+        query.setCompoundCriterion(compoundCriterion);
+        query.setSubscription(studySubscription);
+        query.setColumnCollection(columnCollection);
 
         QueryTranslator queryTranslator = new QueryTranslator(query, dao, arrayDataService, resultHandler);
 

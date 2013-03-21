@@ -13,7 +13,7 @@ import gov.nih.nci.caintegrator.domain.application.SubjectList;
 /**
  * Provides functionality to list and add array designs.
  */
-public class EditSubjectListAction extends EditAbstractListAction {
+public class EditSubjectListAction extends AbstractEditListAction {
 
     private static final long serialVersionUID = 1L;
 
