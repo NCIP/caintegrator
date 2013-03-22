@@ -7,7 +7,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-AddingorEditingGenomicData')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', 'id-2-CreatingaNewStudy-AddingorEditingGenomicData')" class="help">
    &nbsp;</a>
     </div>
 

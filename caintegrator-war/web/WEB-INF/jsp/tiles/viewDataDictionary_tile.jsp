@@ -15,7 +15,7 @@
 
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-DataDictionary')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('ngPTAg', 'id-1-GettingStartedwithcaIntegrator-DataDictionary')" class="help">
    &nbsp;</a>
     </div>
 

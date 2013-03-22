@@ -6,7 +6,7 @@
 
 <!--Page Help-->
 
-<div class="pagehelp"><a href="javascript:openWikiHelp('FoDnAg', '5-ViewingQueryResults-EditingaGeneorSubjectList')" class="help">
+<div class="pagehelp"><a href="javascript:openWikiHelp('FoDnAg', 'id-5-ViewingQueryResults-EditingaGeneorSubjectList')" class="help">
 &nbsp;</a>
 </div>
 

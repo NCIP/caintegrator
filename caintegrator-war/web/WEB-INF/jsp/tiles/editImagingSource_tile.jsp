@@ -83,7 +83,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-AddingorEditingImagingDataFilesfromNBIA')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', 'id-2-CreatingaNewStudy-AddingorEditingImagingDataFilesfromNBIA')" class="help">
    </a>
     </div>
 

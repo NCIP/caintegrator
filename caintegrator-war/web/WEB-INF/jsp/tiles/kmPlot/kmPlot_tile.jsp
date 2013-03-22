@@ -37,7 +37,7 @@
 <div id="content">
         <!--Page Help-->
 
-        <div class="pagehelp"><a href="javascript:openWikiHelp('DYDnAg', '6-AnalyzingStudies-CreatingKaplanMeierPlots')" class="help">
+        <div class="pagehelp"><a href="javascript:openWikiHelp('DYDnAg', 'id-6-AnalyzingStudies-CreatingKaplan-MeierPlots')" class="help">
        &nbsp;</a>
         </div>
 

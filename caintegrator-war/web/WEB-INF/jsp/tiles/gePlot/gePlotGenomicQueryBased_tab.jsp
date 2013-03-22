@@ -13,7 +13,7 @@
     
     <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
         <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
-           <a href="javascript:openWikiHelp('DYDnAg', '6-AnalyzingStudies-GeneExpressionValuePlotforGenomicQueries')" class="help">
+           <a href="javascript:openWikiHelp('DYDnAg', 'id-6-AnalyzingStudies-GeneExpressionValuePlotforGenomicQueries')" class="help">
             &nbsp;</a>
         </div>
     </div>

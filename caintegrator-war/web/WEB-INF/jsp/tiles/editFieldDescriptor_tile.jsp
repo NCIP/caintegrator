@@ -71,7 +71,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-AssigninganIdentifierorAnnotation')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', 'id-2-CreatingaNewStudy-AssigninganIdentifierorAnnotation')" class="help">
    &nbsp;</a>
     </div>
     
@@ -207,7 +207,13 @@
     <table class="form_wrapper_table">
             <tr>
                 <th class="title" style="height: 2.5em;"><label for="keywordsForSearch">Search for an Annotation Definition:</label></th>
-                <th class="alignright">&nbsp;</th>
+                <th class="alignright">
+                    <div class="pagehelp">
+                        <a href="javascript:openWikiHelp('CIDnAg', 'id-2-CreatingaNewStudy-SearchingforAnnotationDefinitions')" class="help">
+                        &nbsp;
+                        </a>
+                    </div>
+                </th>
             </tr>
             <tr>
                 <td colspan="2" style="padding: 5px;">     

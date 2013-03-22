@@ -5,7 +5,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openWikiHelp('DYDnAg', '6-AnalyzingStudies-AnalyzingDatawithGenePattern')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('DYDnAg', 'id-6-AnalyzingStudies-AnalyzingDatawithGenePattern')" class="help">
    &nbsp;</a>
     </div>
 

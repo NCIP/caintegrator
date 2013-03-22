@@ -5,7 +5,7 @@
     </h1>
     
     <div class="pagehelp">
-        <a href="javascript:openWikiHelp('3xeSB', '3-ManagingaStudyorPlatform-ManagingStudyAccess')" class="help">
+        <a href="javascript:openWikiHelp('3xeSB', 'id-3-ManagingaStudyorPlatform-ManagingStudyAccess')" class="help">
             &nbsp;
         </a>
     </div>

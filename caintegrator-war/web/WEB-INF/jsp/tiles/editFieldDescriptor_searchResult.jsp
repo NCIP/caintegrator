@@ -1,9 +1,4 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-        <div class="pagehelp">
-            <a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-SearchingforAnnotationDefinitions')" class="help">
-                &nbsp;
-            </a>
-        </div>
         <table class="data">
             <tr>
                 <th colspan="5">Matching Annotation Definitions from caIntegrator</th>

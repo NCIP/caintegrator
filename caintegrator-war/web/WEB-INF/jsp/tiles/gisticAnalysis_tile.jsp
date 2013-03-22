@@ -46,7 +46,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openWikiHelp('DYDnAg', '6-AnalyzingStudies-GISTICSupportedAnalysis')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('DYDnAg', 'id-6-AnalyzingStudies-GISTIC-SupportedAnalysis')" class="help">
    &nbsp;</a>
     </div>
 

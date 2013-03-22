@@ -7,9 +7,16 @@
     <!--Page Help-->
 
     <div class="tabhelp" style="margin-right: 0.5em;margin-top: 1.75em;">
-        <a href="javascript:openWikiHelp('ngPTAg', '1-GettingStartedwithcaIntegrator-WelcometothecaIntegratorWorkspace')" class="help">
+         <s:if test="%{#session['sessionHelper'].authenticated}">
+             <a href="javascript:openWikiHelp('ngPTAg', 'id-1-GettingStartedwithcaIntegrator-WelcometothecaIntegratorWorkspace')" class="help">
+                &nbsp;
+             </a>
+         </s:if>
+         <s:else>
+            <a href="javascript:openWikiHelp('ngPTAg', 'id-1-GettingStartedwithcaIntegrator-loginLoggingIn')" class="help">
             &nbsp;
-        </a>
+            </a>
+         </s:else>
     </div>
 
     <!--/Page Help-->

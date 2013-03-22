@@ -10,7 +10,7 @@
 
 <!--Page Help-->
 
-<div class="pagehelp"><a href="javascript:openWikiHelp('3xeSB', '3-ManagingaStudyorPlatform-ManagingPlatforms')" class="help">
+<div class="pagehelp"><a href="javascript:openWikiHelp('3xeSB', 'id-3-ManagingaStudyorPlatform-ManagingPlatforms')" class="help">
 &nbsp;</a>
 </div>
 

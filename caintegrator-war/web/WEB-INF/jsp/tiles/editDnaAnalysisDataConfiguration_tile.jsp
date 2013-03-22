@@ -62,7 +62,7 @@
     
     <!--Page Help-->
 
-    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-ConfiguringCopyNumberData')" class="help">
+    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', 'id-2-CreatingaNewStudy-ConfiguringCopyNumberData')" class="help">
    &nbsp;</a>
     </div>
 

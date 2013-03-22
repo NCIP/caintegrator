@@ -7,10 +7,13 @@
 
     
     <!--Page Help-->
-
-    <div class="pagehelp"><a href="javascript:openWikiHelp('CIDnAg', '2-CreatingaNewStudy-AddinganAnnotationGroup')" class="help">
-   </a>
-    </div>
+     <div class="pagehelp">
+    <s:if test="existingGroup">
+        <a href="javascript:openWikiHelp('CIDnAg', 'id-2-CreatingaNewStudy-EditinganAnnotationGroup')" class="help"></a>
+    </s:if>
+    <s:else>
+        <a href="javascript:openWikiHelp('CIDnAg', 'id-2-CreatingaNewStudy-AddinganAnnotationGroup')" class="help"></a>
+    </s:else>
 
     <!--/Page Help-->
     
