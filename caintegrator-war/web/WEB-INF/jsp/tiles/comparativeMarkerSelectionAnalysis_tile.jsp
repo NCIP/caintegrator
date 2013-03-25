@@ -1,22 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script type="text/javascript" src="/caintegrator/common/js/jquery.editable-select.js"></script>
-<script type="text/javascript">
-
-    $(function() {
-      $('.editable-select').editableSelect(
-        {
-          bg_iframe: true,
-          onSelect: false,
-          case_sensitive: false, // If set to true, the user has to type in an exact
-                                 // match for the item to get highlighted
-          items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
-        }
-      );
-    });
-
-</script>   
-
 <div id="content">                      
     
     <!--Page Help-->

@@ -17,7 +17,7 @@
     };
     var settings = $.extend(defaults, options);
     // Only do bg_iframe for browsers that need it
-    if(settings.bg_iframe && !$.browser.msie) {
+    if(settings.bg_iframe && !$.support.hrefNormalized) {
       settings.bg_iframe = false;
     };
     var instance = false;

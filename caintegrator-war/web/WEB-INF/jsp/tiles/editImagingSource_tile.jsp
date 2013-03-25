@@ -1,20 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script type="text/javascript" src="/caintegrator/common/js/jquery.editable-select.js"></script>
 <script type="text/javascript">
-    $(function() {
-	  $('.editable-select').editableSelect(
-	    {
-	      bg_iframe: true,
-	      onSelect: false,
-	      case_sensitive: false, // If set to true, the user has to type in an exact
-	                             // match for the item to get highlighted
-	      items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
-	    }
-	  );
-      document.getElementById("nbiaUrl").value = document.imagingSourceForm.serverProfileUrl.value;
-	});
+    $(document).ready(function() {
+        $('#nbiaUrl').val($('#serverProfileUrl').val()); 
+    });
 
     function saveDatasource() {
     	document.imagingSourceForm.serverProfileUrl.value = document.getElementById("nbiaUrl").value; // The value isn't set without doing this.

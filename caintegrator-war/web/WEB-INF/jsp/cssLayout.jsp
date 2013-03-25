@@ -28,6 +28,7 @@
         <script type="text/javascript" src="/caintegrator/common/js/cai2modal.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/onlinehelp.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/jquery.editable-select.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery-ui-1.10.1.custom.min.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery.idletimer.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery.idletimeout.js"></script>
@@ -73,6 +74,10 @@
                         $countdown.html(counter);
                     }
                 });
+                
+                $('.editable-select').editableSelect({
+                    bg_iframe: true,
+                    });
             });
             </script>
         </s:if>

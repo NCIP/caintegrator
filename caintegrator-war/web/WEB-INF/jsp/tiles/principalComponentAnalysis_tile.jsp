@@ -1,19 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script type="text/javascript" src="/caintegrator/common/js/jquery.editable-select.js"></script>
 <script type="text/javascript">
-    $(function() {
-      $('.editable-select').editableSelect(
-        {
-          bg_iframe: true,
-          onSelect: false,
-          case_sensitive: false, // If set to true, the user has to type in an exact
-                                 // match for the item to get highlighted
-          items_then_scroll: 10 // If there are more than 10 items, display a scrollbar
-        }
-      );
-    });
-
     // This function is called at body onload because to get editable-select to work it needs to show the div first and then hide it by default.
     function initializeJsp() {
         var div = document.getElementById('principalComponentAnalysisForm_collapsiblediv');

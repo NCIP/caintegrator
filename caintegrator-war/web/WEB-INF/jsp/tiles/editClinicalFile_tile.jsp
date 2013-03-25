@@ -1,6 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script type="text/javascript" src="/caintegrator/common/js/jquery.editable-select.js"></script>
 <script type="text/javascript">
     function toggleAll(idPrefix) {
         var inputs = $('input[id^=' + idPrefix +']');
