@@ -8,7 +8,6 @@ package gov.nih.nci.caintegrator.application.geneexpression;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import gov.nih.nci.caintegrator.application.geneexpression.PlotCalculationTypeEnum;
 
 import org.junit.Test;
 
@@ -16,9 +15,10 @@ public class PlotCalculationTypeEnumTest {
 
     @Test
     public void testGetByValue() {
-        assertEquals(PlotCalculationTypeEnum.MEAN, PlotCalculationTypeEnum.getByValue(PlotCalculationTypeEnum.MEAN.getValue()));
+        assertEquals(PlotCalculationTypeEnum.MEAN,
+                PlotCalculationTypeEnum.getByValue(PlotCalculationTypeEnum.MEAN.getValue()));
     }
-    
+
     @Test
     public void testCheckType() {
         assertFalse(PlotCalculationTypeEnum.checkType("not found"));

@@ -8,7 +8,6 @@ package gov.nih.nci.caintegrator.application.geneexpression;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import gov.nih.nci.caintegrator.application.geneexpression.GenomicValueResultsTypeEnum;
 
 import org.junit.Test;
 
@@ -16,9 +15,10 @@ public class GenomicValueResultsTypeEnumTest {
 
     @Test
     public void testGetByValue() {
-        assertEquals(GenomicValueResultsTypeEnum.GENE_EXPRESSION, GenomicValueResultsTypeEnum.getByValue(GenomicValueResultsTypeEnum.GENE_EXPRESSION.getValue()));
+        assertEquals(GenomicValueResultsTypeEnum.GENE_EXPRESSION,
+                GenomicValueResultsTypeEnum.getByValue(GenomicValueResultsTypeEnum.GENE_EXPRESSION.getValue()));
     }
-    
+
     @Test
     public void testCheckType() {
         assertFalse(GenomicValueResultsTypeEnum.checkType("not found"));

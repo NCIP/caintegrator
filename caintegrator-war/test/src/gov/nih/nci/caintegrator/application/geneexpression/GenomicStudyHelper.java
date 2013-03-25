@@ -59,7 +59,7 @@ public class GenomicStudyHelper {
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.setColumnCollection(new HashSet<ResultColumn>());
-        Platform platform= daoStub.getPlatform("platformName");
+        Platform platform = daoStub.getPlatform("platformName");
         query.setGeneExpressionPlatform(platform);
         query.setSubscription(new StudySubscription());
         query.getSubscription().setStudy(new Study());
@@ -107,7 +107,8 @@ public class GenomicStudyHelper {
         Gene gene = new Gene();
         gene.setSymbol("EGFR");
         reporter = new GeneExpressionReporter();
-        ReporterList reporterList = platform.addReporterList("reporterList1", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ReporterList reporterList =
+                platform.addReporterList("reporterList1", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporter.getGenes().add(gene);
         geneNameCriterion.setGeneSymbol("GENE");
         query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
@@ -118,7 +119,8 @@ public class GenomicStudyHelper {
         reporter.setName("Reporter1");
         arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
-        ReporterList reporterList2 = platform.addReporterList("reporterList2", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ReporterList reporterList2 =
+                platform.addReporterList("reporterList2", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         arrayData2.getReporterLists().add(reporterList2);
         reporterList2.getArrayDatas().add(arrayData2);
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
@@ -127,12 +129,11 @@ public class GenomicStudyHelper {
     }
 
     private class GenomicDataTestDaoStub extends CaIntegrator2DaoStub  {
-
         @Override
         public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
                 ReporterTypeEnum reporterType, Study study, Platform platform) {
             Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-            reporters.add(reporter );
+            reporters.add(reporter);
             return reporters;
         }
     }

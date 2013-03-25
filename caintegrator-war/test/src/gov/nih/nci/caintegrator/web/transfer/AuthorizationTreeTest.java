@@ -29,8 +29,6 @@ import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.application.Query;
 import gov.nih.nci.caintegrator.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator.domain.application.WildCardTypeEnum;
-import gov.nih.nci.caintegrator.web.transfer.AuthorizationTrees;
-import gov.nih.nci.caintegrator.web.transfer.TreeNode;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -45,15 +43,17 @@ import org.junit.Test;
  *
  */
 public class AuthorizationTreeTest {
-    private int NUM_ANNOTATION_GROUPS = 5;
-    private int NUM_ANNOTATION_DESCRIPTORS = 5;
-    private int NUM_DATA_SOURCES = 10;
+    private static final int NUM_ANNOTATION_GROUPS = 5;
+    private static final int NUM_ANNOTATION_DESCRIPTORS = 5;
+    private static final int NUM_DATA_SOURCES = 10;
     private StudyConfiguration studyConfig;
     private StudyManagementService studyManagementService;
     private List<String> availableValues = Arrays.asList("Value 1" , "Value 2", "Value 3");
 
     /**
      * Sets up the data for the unit test.
+     *
+     * @throws Exception on unexpected error
      */
     @Before
     public void setUp() throws Exception {
@@ -197,7 +197,8 @@ public class AuthorizationTreeTest {
      */
     @Test
     public void constructionValidationException() throws ValidationException {
-        when(studyManagementService.getAvailableValuesForFieldDescriptor(any(AnnotationFieldDescriptor.class))).thenThrow(new ValidationException("Error"));
+        when(studyManagementService.getAvailableValuesForFieldDescriptor(any(AnnotationFieldDescriptor.class)))
+        .thenThrow(new ValidationException("Error"));
         AuthorizationTrees tree = new AuthorizationTrees(studyConfig, new AuthorizedStudyElementsGroup());
         assertNotNull(tree);
     }

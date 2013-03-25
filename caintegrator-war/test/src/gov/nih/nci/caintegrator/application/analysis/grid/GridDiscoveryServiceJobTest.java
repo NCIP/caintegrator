@@ -11,8 +11,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import gov.nih.nci.caintegrator.application.analysis.grid.GridDiscoveryClient;
-import gov.nih.nci.caintegrator.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -23,18 +21,22 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.quartz.JobExecutionException;
 
+/**
+ * Grid Discovery Service tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class GridDiscoveryServiceJobTest extends AbstractMockitoTest {
-
     private GridDiscoveryServiceJob job;
-    private GridDiscoveryClient gridDiscoveryClient;
 
     /**
-     * @throws java.lang.Exception
+     * Setup unit tests.
+     *
+     * @throws Exception on error
      */
     @Before
     public void setUp() throws Exception {
-        gridDiscoveryClient = mock(GridDiscoveryClient.class);
-
+        GridDiscoveryClient gridDiscoveryClient = mock(GridDiscoveryClient.class);
         EndpointReferenceType[] serviceEndpoints = new EndpointReferenceType[4];
         serviceEndpoints[0] = buildEndpoint("http://broad/PreprocessDatasetMAGEService");
         serviceEndpoints[1] = buildEndpoint("http://broad/ComparativeMarkerSelectionMAGEService");
@@ -60,7 +62,6 @@ public class GridDiscoveryServiceJobTest extends AbstractMockitoTest {
             }
         });
         when(gridDiscoveryClient.getHostinCenter(any(EndpointReferenceType.class))).thenReturn("NCI");
-
         job = new GridDiscoveryServiceJob();
         job.setConfigurationHelper(configurationHelper);
         job.setGridDiscoveryClient(gridDiscoveryClient);

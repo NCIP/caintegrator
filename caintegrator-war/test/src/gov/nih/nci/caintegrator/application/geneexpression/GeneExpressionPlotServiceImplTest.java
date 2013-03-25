@@ -8,12 +8,6 @@ package gov.nih.nci.caintegrator.application.geneexpression;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import gov.nih.nci.caintegrator.application.geneexpression.GeneExpressionPlotConfiguration;
-import gov.nih.nci.caintegrator.application.geneexpression.GeneExpressionPlotConfigurationFactory;
-import gov.nih.nci.caintegrator.application.geneexpression.GeneExpressionPlotGroup;
-import gov.nih.nci.caintegrator.application.geneexpression.GeneExpressionPlotServiceImpl;
-import gov.nih.nci.caintegrator.application.geneexpression.GenomicValueResultsTypeEnum;
-import gov.nih.nci.caintegrator.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator.domain.application.Query;
@@ -26,19 +20,27 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * Gene Expression Plot service tests.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class GeneExpressionPlotServiceImplTest extends AbstractMockitoTest {
-
     private GenomicStudyHelper studyHelper;
 
-
+    /**
+     * Unit test setup.
+     */
     @Before
     public void setup() {
         studyHelper = new GenomicStudyHelper();
         studyHelper.getQueryManagementService().setArrayDataService(arrayDataService);
     }
 
+    /**
+     * Tests plot generation.
+     *
+     * @throws InvalidCriterionException on unexpected invalid criterion error
+     */
     @Test
     public void testGeneratePlots() throws InvalidCriterionException {
         Query query = studyHelper.createQuery();

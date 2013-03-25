@@ -24,8 +24,6 @@ import gov.nih.nci.caintegrator.domain.genomic.Sample;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator.external.caarray.CaArrayFacadeImpl;
-import gov.nih.nci.caintegrator.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
 import java.io.FileNotFoundException;
@@ -40,14 +38,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class AbstractCaArrayCopyNumberFacadeTestIntegration extends AbstractMockitoTest {
 
     private CaArrayFacadeImpl caArrayFacade;
-    private static String HOSTNAME = "array-stage.nci.nih.gov";
-    private static int PORT = 8080;
-    private static String PLATFORM_NAME = "022522_D_F_20090107";
-    private static String EXPERIMENT = "EXP-475";
+    private static final String HOSTNAME = "array-stage.nci.nih.gov";
+    private static final int PORT = 8080;
+    private static final String PLATFORM_NAME = "022522_D_F_20090107";
+    private static final String EXPERIMENT = "EXP-475";
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml", CaArrayFacadeTestIntegration.class);
+        ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml",
+                CaArrayFacadeTestIntegration.class);
         caArrayFacade = (CaArrayFacadeImpl) context.getBean("CaArrayFacadeIntegration");
         caArrayFacade.setDao(new LocalCaIntegrator2DaoStub());
     }
@@ -61,7 +60,7 @@ public class AbstractCaArrayCopyNumberFacadeTestIntegration extends AbstractMock
         assertFalse(samples.isEmpty());
     }
 
-    @Test (expected=ExperimentNotFoundException.class)
+    @Test (expected = ExperimentNotFoundException.class)
     public void testGetSamplesInvalidExperiment() throws ConnectionException, ExperimentNotFoundException {
         ServerConnectionProfile profile = new ServerConnectionProfile();
         profile.setHostname(HOSTNAME);
@@ -104,7 +103,7 @@ public class AbstractCaArrayCopyNumberFacadeTestIntegration extends AbstractMock
             Platform platform = new Platform();
             platform.setName(PLATFORM_NAME);
 
-            AgilentCnPlatformSource agilentCnPlatformSource = new AgilentCnPlatformSource (
+            AgilentCnPlatformSource agilentCnPlatformSource = new AgilentCnPlatformSource(
                     TestArrayDesignFiles.AGILENT_22522_XML_ANNOTATION_FILE,
                     PLATFORM_NAME,
                     TestArrayDesignFiles.AGILENT_22522_XML_ANNOTATION_FILE_PATH);

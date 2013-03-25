@@ -14,8 +14,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator.common.Cai2Util;
-import gov.nih.nci.caintegrator.common.DateUtil;
 import gov.nih.nci.caintegrator.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueDefinition;
@@ -322,7 +320,7 @@ public class Cai2UtilTest extends AbstractMockitoTest {
     @Test
     public void testGetHeapSize() {
         long heapSize = Cai2Util.getHeapSizeMB();
-        System.out.println("Heap size = " + heapSize);
+        assertTrue(heapSize > 0);
     }
 
 }
