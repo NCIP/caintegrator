@@ -66,13 +66,14 @@ public class BioDbNetSearchServiceTestIntegration {
     }
 
     /**
-     * Tests gene retrieval and parsing.
+     * Tests gene retrieval and parsing of genes with case sensitivity enabled.
      */
     @Test
     public void retrieveGenes() {
         SearchParameters params = new SearchParameters();
         params.setInputValues(StringUtils.join(GENE_IDS, ','));
         params.setTaxon(Taxon.ALL);
+        params.setCaseSensitiveSearch(true);
 
         Set<GeneResults> results = bioDbNetService.retrieveGenesById(params);
         assertFalse(results.isEmpty());
@@ -87,17 +88,55 @@ public class BioDbNetSearchServiceTestIntegration {
     }
 
     /**
-     * Tests retrieval of gene ids from gene aliases.
+     * Tests gene retrieval and parsing with case sensitivity disabled.
+     */
+    @Test
+    public void retrieveGenesCaseInsensitive() {
+        SearchParameters params = new SearchParameters();
+        params.setInputValues(StringUtils.join(GENE_IDS, ','));
+        params.setTaxon(Taxon.ALL);
+        params.setCaseSensitiveSearch(false);
+
+        Set<GeneResults> results = bioDbNetService.retrieveGenesById(params);
+        assertFalse(results.isEmpty());
+        assertEquals(GENE_IDS.size(), results.size());
+
+        GeneResults gene = results.iterator().next();
+        assertEquals(gene.getGeneId(), BRCA1_GENE_ID);
+        assertEquals(BRCA1_GENE_NAME, gene.getSymbol());
+        assertEquals("breast cancer 1, early onset", gene.getDescription());
+        assertEquals("human", gene.getTaxon());
+        assertEquals("PSCP,RNF53,IRIS,PNCA4,BRCAI,BRCC1,PPP1R53,BROVCA1", gene.getAliases());
+    }
+
+    /**
+     * Tests retrieval of gene ids from gene aliases with case sensitivity enabled.
      */
     @Test
     public void retrieveGeneIdsFromAliases() {
         SearchParameters params = new SearchParameters();
         params.setTaxon(Taxon.HUMAN);
         params.setInputValues("PNCA4,BRCA1,brca1,BRCC1");
+        params.setCaseSensitiveSearch(true);
 
         Set<String> geneIds = bioDbNetService.retrieveGeneIdsByAlias(params);
         assertFalse(geneIds.isEmpty());
         assertEquals(2, geneIds.size());
+    }
+
+    /**
+     * Tests retrieval of gene ids from gene aliases with case sensitivity disabled.
+     */
+    @Test
+    public void retrieveGeneIdsFromAliasesCaseInsensitive() {
+        SearchParameters params = new SearchParameters();
+        params.setTaxon(Taxon.ALL);
+        params.setInputValues("PNCA4,BRCA1,BRCC1");
+        params.setCaseSensitiveSearch(false);
+
+        Set<String> geneIds = bioDbNetService.retrieveGeneIdsByAlias(params);
+        assertFalse(geneIds.isEmpty());
+        assertEquals(24, geneIds.size());
     }
 
     /**
@@ -108,6 +147,7 @@ public class BioDbNetSearchServiceTestIntegration {
         SearchParameters params = new SearchParameters();
         params.setInputValues(StringUtils.join(PATHWAYS, ','));
         params.setTaxon(Taxon.ALL);
+        params.setCaseSensitiveSearch(true);
 
         Set<GeneResults> genes = bioDbNetService.retrieveGenesByPathway(params);
         assertEquals(122,  genes.size());
@@ -118,7 +158,6 @@ public class BioDbNetSearchServiceTestIntegration {
         assertEquals("nuclear receptor subfamily 0, group B, member 1", gene.getDescription());
         assertEquals("human", gene.getTaxon());
         assertEquals("AHX,DAX-1,SRXY2,AHC,HHG,NROB1,DAX1,AHCH,GTD,DSS", gene.getAliases());
-
     }
 
 }

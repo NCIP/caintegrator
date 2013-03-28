@@ -21,6 +21,7 @@ public class SearchParameters {
     private SearchType searchType = SearchType.GENE_SYMBOL;
     private String inputValues;
     private boolean filterGenesOnStudy = false;
+    private boolean caseSensitiveSearch = false;
     private Study study;
 
     /**
@@ -77,6 +78,20 @@ public class SearchParameters {
      */
     public void setFilterGenesOnStudy(boolean filterGenesOnStudy) {
         this.filterGenesOnStudy = filterGenesOnStudy;
+    }
+
+    /**
+     * @return the caseSensitiveSearch
+     */
+    public boolean isCaseSensitiveSearch() {
+        return caseSensitiveSearch;
+    }
+
+    /**
+     * @param caseSensitiveSearch the caseSensitiveSearch to set
+     */
+    public void setCaseSensitiveSearch(boolean caseSensitiveSearch) {
+        this.caseSensitiveSearch = caseSensitiveSearch;
     }
 
     /**

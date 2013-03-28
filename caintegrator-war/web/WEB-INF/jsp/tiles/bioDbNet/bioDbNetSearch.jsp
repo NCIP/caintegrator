@@ -18,12 +18,17 @@
             list="@gov.nih.nci.caintegrator.external.biodbnet.enums.SearchType@values()"
             listValue="name"/>
     </tr>
+    </tr>
     <tr><br>
         <s:select name="searchParameters.taxon" list="@gov.nih.nci.caintegrator.external.biodbnet.enums.Taxon@values()"
             listValue="name" label="Select Taxon"/>
     </tr>
     <tr><br>
         <s:checkbox name="searchParameters.filterGenesOnStudy" label="Show only genes that are part of this study" />
+    </tr>
+    <tr>
+        <br>
+        <s:checkbox name="searchParameters.caseSensitiveSearch" label="Case Sensitive Search" />
     </tr>
     <tr><br/>
     <td style="border:0px"> 

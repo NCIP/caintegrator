@@ -36,7 +36,7 @@ public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
     @Override
     public void prepare() {
         super.prepare();
-        searchParameters = new SearchParameters();
+        setSearchParameters(new SearchParameters());
         geneResults = Sets.newHashSet();
     }
 
@@ -69,16 +69,17 @@ public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
 
     private Set<GeneResults> handleSearch(SearchType searchType) {
         Set<GeneResults> results = Sets.newHashSet();
+        Set<String> newInputs = handleCaseSensitivity(getSearchParameters());
         if (searchType == SearchType.GENE_ID) {
-            results = bioDbNetService.retrieveGenesById(getSearchParameters());
+            results = bioDbNetService.retrieveGenesById(generateNewParams(newInputs));
         } else if (searchType == SearchType.GENE_ALIAS) {
-            Set<String> geneIds = bioDbNetService.retrieveGeneIdsByAlias(getSearchParameters());
+            Set<String> geneIds = bioDbNetService.retrieveGeneIdsByAlias(generateNewParams(newInputs));
             results = bioDbNetService.retrieveGenesById(generateNewParams(geneIds));
         } else if (searchType == SearchType.GENE_SYMBOL) {
-            Set<String> geneIds = bioDbNetService.retrieveGeneIds(getSearchParameters());
+            Set<String> geneIds = bioDbNetService.retrieveGeneIds(generateNewParams(newInputs));
             results = bioDbNetService.retrieveGenesById(generateNewParams(geneIds));
         } else if (searchType == SearchType.PATHWAY) {
-            results = bioDbNetService.retrieveGenesByPathway(getSearchParameters());
+            results = bioDbNetService.retrieveGenesByPathway(generateNewParams(newInputs));
         }
         return results;
     }
@@ -89,6 +90,30 @@ public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
         params.setTaxon(getSearchParameters().getTaxon());
         params.setInputValues(StringUtils.join(input, ','));
         return params;
+    }
+
+    /**
+     * Generates the search inputs in the following manner if case insensitivity has been selected.
+     *  - the original inputs
+     *  - inputs are transformed to all upper case
+     *  - inputs are transformed to all lower case
+     *  - inputs are transformed to 1st letter upper case, all others lower case
+     * @return the transformed input strings as comma separated values
+     */
+    private Set<String> handleCaseSensitivity(SearchParameters searchParams) {
+        Set<String> inputs = Sets.newTreeSet();
+        if (searchParams.isCaseSensitiveSearch() || searchParams.getSearchType() == SearchType.GENE_ID) {
+            CollectionUtils.addAll(inputs, StringUtils.split(searchParams.getInputValues(), ','));
+            return inputs;
+        }
+        String[] splitInputs = StringUtils.split(searchParams.getInputValues(), ',');
+        for (String input : splitInputs) {
+            inputs.add(input);
+            inputs.add(StringUtils.upperCase(input));
+            inputs.add(StringUtils.lowerCase(input));
+            inputs.add(StringUtils.capitalize(input));
+        }
+        return inputs;
     }
 
     /**
