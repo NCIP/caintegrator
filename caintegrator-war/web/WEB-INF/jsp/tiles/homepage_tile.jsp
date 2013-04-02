@@ -1,6 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-
 
 <div id="content">
 
@@ -77,13 +75,10 @@
 		<div class="padtop10 clear">
 			<s:url id="registrationUrl" action="input" namespace="registration" includeParams="all">
 				<s:param name="selectedPage" value="register" />
-				<s:param name="struts.token.name">struts.token</s:param>
-				<s:param name="struts.token" value="%{struts.token}" />
 			</s:url>
 			<s:a href="%{registrationUrl}">Register Now</s:a>
 		</div>
     </s:if>
-
 </div>
 
 <div class="clear"><br /></div>

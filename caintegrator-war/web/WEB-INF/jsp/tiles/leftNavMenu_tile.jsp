@@ -506,8 +506,6 @@
     
 	<s:url id="registrationUrl" action="input" namespace="registration" includeParams="all">
 	    <s:param name="selectedPage" value="%{'register'}" />
-        <s:param name="struts.token.name">struts.token</s:param>
-        <s:param name="struts.token" value="%{struts.token}" />  	    
 	</s:url>
 	<s:url id="loginUrl" namespace="/caintegrator/registration" value="../login.jsp" includeParams="all">
         <s:param name="selectedPage" value="%{'login'}" />

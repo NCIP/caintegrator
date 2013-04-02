@@ -1494,6 +1494,7 @@
                 <param name="actionName">../login</param>
             </result>
             <interceptor-ref name="paramsPrepareParamsStack">
+                <param name="tokenSession.excludeMethods">input,cancel</param>
                 <param name="tokenSession.includeMethods">*</param>
             </interceptor-ref>            
         </action>
