@@ -13,8 +13,8 @@
 <s:div cssStyle="padding: 1px 0px 0px 5px;">
     <tr><s:actionerror /></tr>
     <tr>
-        <s:textfield label="Search Terms (comma separated)" name="searchParameters.inputValues" cssStyle="padding:0px;"/> in 
-        <s:select name="searchParameters.searchType" 
+        <s:textfield label="Search Terms (comma separated)" name="searchParameters.inputValues" id="inputValues" cssStyle="padding:0px;"/> in 
+        <s:select name="searchParameters.searchType" id="searchType"
             list="@gov.nih.nci.caintegrator.external.biodbnet.enums.SearchType@values()"
             listValue="name"/>
     </tr>

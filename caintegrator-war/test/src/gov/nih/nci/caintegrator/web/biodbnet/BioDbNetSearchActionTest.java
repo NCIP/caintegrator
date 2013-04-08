@@ -12,7 +12,10 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import gov.nih.nci.caintegrator.external.biodbnet.BioDbNetRemoteService;
 import gov.nih.nci.caintegrator.external.biodbnet.BioDbNetSearchImpl;
 import gov.nih.nci.caintegrator.external.biodbnet.domain.Db2DbParams;
 import gov.nih.nci.caintegrator.external.biodbnet.domain.DbWalkParams;
@@ -20,8 +23,11 @@ import gov.nih.nci.caintegrator.external.biodbnet.enums.SearchType;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator.web.action.analysis.biodbnet.BioDbNetSearchAction;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.opensymphony.xwork2.Action;
 
@@ -35,6 +41,8 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
     private final String[] ignoredParams = {"taxonId", "outputs", "input" };
     private static final String GENE_ALIAS = "brcc1";
     private static final String PATHWAY_NAME = "h_bard1Pathway";
+    private static final String GENE_RESULT = "genes";
+    private static final String PATHWAY_RESULTS = "pathways";
 
     /**
      * {@inheritDoc}
@@ -72,21 +80,22 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.INPUT, action.search());
         assertTrue(action.hasActionErrors());
         assertEquals(1, action.getActionErrors().size());
-        assertEquals("bioDbNet.noResultsFound", action.getActionErrors().iterator().next());
+        assertEquals("bioDbNet.error", action.getActionErrors().iterator().next());
     }
 
     /**
-     * Tests expected behavior when not results are found.
+     * Tests expected behavior when no gene results are found.
      */
     @Test
-    public void searchNoResults() {
+    public void searchGenesNoResults() {
         action.getSearchParameters().setSearchType(null);
+        action.getSearchParameters().setInputValues(StringUtils.EMPTY);
 
-        assertEquals(Action.INPUT, action.search());
+        assertEquals(GENE_RESULT, action.search());
         assertTrue(action.getGeneResults().isEmpty());
         assertTrue(action.hasActionErrors());
         assertEquals(1, action.getActionErrors().size());
-        assertEquals("bioDbNet.noResultsFound", action.getActionErrors().iterator().next());
+        assertEquals("bioDbNet.noGeneResultsFound", action.getActionErrors().iterator().next());
     }
 
     /**
@@ -98,7 +107,7 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
         action.getSearchParameters().setInputValues("1,2,3,4");
         action.getSearchParameters().setCaseSensitiveSearch(true);
 
-        assertEquals(Action.SUCCESS, action.search());
+        assertEquals(GENE_RESULT, action.search());
         assertTrue(action.getGeneResults().size() > 0);
 
         Db2DbParams expectedInput = new Db2DbParams();
@@ -115,7 +124,7 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
         action.getSearchParameters().setInputValues("1,2,3,4");
         action.getSearchParameters().setCaseSensitiveSearch(false);
 
-        assertEquals(Action.SUCCESS, action.search());
+        assertEquals(GENE_RESULT, action.search());
         assertTrue(action.getGeneResults().size() > 0);
 
         Db2DbParams expectedInput = new Db2DbParams();
@@ -132,7 +141,7 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
         action.getSearchParameters().setInputValues(GENE_ALIAS);
         action.getSearchParameters().setCaseSensitiveSearch(true);
 
-        assertEquals(Action.SUCCESS, action.search());
+        assertEquals(GENE_RESULT, action.search());
         assertTrue(action.getGeneResults().size() > 0);
 
         DbWalkParams expectedInput = new DbWalkParams();
@@ -149,7 +158,7 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
         action.getSearchParameters().setInputValues(GENE_ALIAS);
         action.getSearchParameters().setCaseSensitiveSearch(false);
 
-        assertEquals(Action.SUCCESS, action.search());
+        assertEquals(GENE_RESULT, action.search());
         assertTrue(action.getGeneResults().size() > 0);
 
         DbWalkParams expectedInput = new DbWalkParams();
@@ -166,7 +175,7 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
         action.getSearchParameters().setInputValues("BRCA1,BRCA2");
         action.getSearchParameters().setCaseSensitiveSearch(true);
 
-        assertEquals(Action.SUCCESS, action.search());
+        assertEquals(GENE_RESULT, action.search());
         assertTrue(action.getGeneResults().size() > 0);
 
         Db2DbParams expectedInput = new Db2DbParams();
@@ -183,7 +192,7 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
         action.getSearchParameters().setInputValues("BRCA1,BRCA2");
         action.getSearchParameters().setCaseSensitiveSearch(false);
 
-        assertEquals(Action.SUCCESS, action.search());
+        assertEquals(GENE_RESULT, action.search());
         assertTrue(action.getGeneResults().size() > 0);
 
         Db2DbParams expectedInput = new Db2DbParams();
@@ -200,7 +209,7 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
         action.getSearchParameters().setInputValues(PATHWAY_NAME);
         action.getSearchParameters().setCaseSensitiveSearch(true);
 
-        assertEquals(Action.SUCCESS, action.search());
+        assertEquals(GENE_RESULT, action.search());
         assertTrue(action.getGeneResults().size() > 0);
 
         Db2DbParams expectedInput = new Db2DbParams();
@@ -217,12 +226,59 @@ public class BioDbNetSearchActionTest extends AbstractSessionBasedTest {
         action.getSearchParameters().setInputValues(PATHWAY_NAME);
         action.getSearchParameters().setCaseSensitiveSearch(false);
 
-        assertEquals(Action.SUCCESS, action.search());
+        assertEquals(GENE_RESULT, action.search());
         assertTrue(action.getGeneResults().size() > 0);
 
         Db2DbParams expectedInput = new Db2DbParams();
         expectedInput.setInputValues("H_BARD1PATHWAY,H_bard1Pathway,h_bard1Pathway,h_bard1pathway");
         verify(bioDbNetRemoteService).db2db(refEq(expectedInput, ignoredParams));
+    }
+
+    /**
+     * Tests search of pathways by genes with case sensitivity disabled.
+     */
+    @Test
+    public void searchPathwaysByGeneCaseInsensitive() {
+        action.getSearchParameters().setSearchType(SearchType.PATHWAY_BY_GENE);
+        action.getSearchParameters().setInputValues("BRCA1");
+        action.getSearchParameters().setCaseSensitiveSearch(false);
+
+        assertEquals(PATHWAY_RESULTS, action.search());
+        assertTrue(action.getGeneResults().isEmpty());
+        assertFalse(action.getPathwayResults().isEmpty());
+        assertEquals(5, action.getPathwayResults().size());
+
+        Db2DbParams expectedInput = new Db2DbParams();
+        expectedInput.setInputValues("BRCA1,brca1");
+        verify(bioDbNetRemoteService).db2db(refEq(expectedInput, ignoredParams));
+    }
+
+
+    /**
+     * Tests expected behavior when no gene results are found.
+     */
+    @Test
+    public void searchPathwayNoResults() {
+        bioDbNetRemoteService = mock(BioDbNetRemoteService.class);
+        when(bioDbNetRemoteService.db2db(any(Db2DbParams.class))).thenAnswer(new Answer<String>() {
+            @Override
+            public String answer(InvocationOnMock invocation) throws Throwable {
+                return "Gene Symbol Biocarta Pathway Name";
+            }
+        });
+
+        BioDbNetSearchImpl bioDbNetSvc = new BioDbNetSearchImpl();
+        bioDbNetSvc.setBioDbNetRemoteService(bioDbNetRemoteService);
+
+        action.setBioDbNetService(bioDbNetSvc);
+        action.getSearchParameters().setSearchType(SearchType.PATHWAY_BY_GENE);
+        action.getSearchParameters().setInputValues(StringUtils.EMPTY);
+
+        assertEquals(PATHWAY_RESULTS, action.search());
+        assertTrue(action.getGeneResults().isEmpty());
+        assertTrue(action.hasActionErrors());
+        assertEquals(1, action.getActionErrors().size());
+        assertEquals("bioDbNet.noPathwayResultsFound", action.getActionErrors().iterator().next());
     }
 
     /**

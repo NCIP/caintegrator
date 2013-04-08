@@ -7,6 +7,7 @@
 package gov.nih.nci.caintegrator.external.biodbnet;
 
 import gov.nih.nci.caintegrator.external.biodbnet.search.GeneResults;
+import gov.nih.nci.caintegrator.external.biodbnet.search.PathwayResults;
 import gov.nih.nci.caintegrator.external.biodbnet.search.SearchParameters;
 
 import java.util.Set;
@@ -48,4 +49,12 @@ public interface BioDbNetService {
      * @return the matching genes
      */
     Set<GeneResults> retrieveGenesByPathway(SearchParameters params);
+
+    /**
+     * Retrieves a set of pathways that contain the given gene symbols.
+     * @param params the search parameters
+     * @return the matching pathways
+     */
+    Set<PathwayResults> retrievePathwaysByGeneSymbols(SearchParameters params);
+
 }

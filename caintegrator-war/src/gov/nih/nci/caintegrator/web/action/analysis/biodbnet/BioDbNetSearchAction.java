@@ -9,6 +9,7 @@ package gov.nih.nci.caintegrator.web.action.analysis.biodbnet;
 import gov.nih.nci.caintegrator.external.biodbnet.BioDbNetService;
 import gov.nih.nci.caintegrator.external.biodbnet.enums.SearchType;
 import gov.nih.nci.caintegrator.external.biodbnet.search.GeneResults;
+import gov.nih.nci.caintegrator.external.biodbnet.search.PathwayResults;
 import gov.nih.nci.caintegrator.external.biodbnet.search.SearchParameters;
 import gov.nih.nci.caintegrator.web.action.AbstractCaIntegrator2Action;
 
@@ -26,9 +27,12 @@ import com.google.common.collect.Sets;
  */
 public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
     private static final long serialVersionUID = 1L;
+    private static final String GENE_RESULT = "genes";
+    private static final String PATHWAY_RESULT = "pathways";
     private BioDbNetService bioDbNetService;
     private SearchParameters searchParameters;
     private Set<GeneResults> geneResults;
+    private Set<PathwayResults> pathwayResults;
 
     /**
      * {@inheritDoc}
@@ -38,6 +42,7 @@ public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
         super.prepare();
         setSearchParameters(new SearchParameters());
         geneResults = Sets.newHashSet();
+        pathwayResults = Sets.newHashSet();
     }
 
     /**
@@ -56,18 +61,32 @@ public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
     public String search() {
         try {
             getSearchParameters().setStudy(getCurrentStudy());
-            setGeneResults(handleSearch(getSearchParameters().getSearchType()));
+            if (getSearchParameters().getSearchType() == SearchType.PATHWAY_BY_GENE) {
+                setPathwayResults(handlePathwaySearch());
+                if (CollectionUtils.isEmpty(getPathwayResults())) {
+                    addActionError(getText("bioDbNet.noPathwayResultsFound"));
+                }
+                return PATHWAY_RESULT;
+            } else {
+                setGeneResults(handleGeneSearch(getSearchParameters().getSearchType()));
+                if (CollectionUtils.isEmpty(getGeneResults())) {
+                    addActionError(getText("bioDbNet.noGeneResultsFound"));
+                }
+                return GENE_RESULT;
+            }
         } catch (Exception e) {
-            LOG.error("An error has occurred.", e);
-        }
-        if (CollectionUtils.isEmpty(getGeneResults())) {
-            addActionError(getText("bioDbNet.noResultsFound"));
+            addActionError(getText("bioDbNet.error"));
+            LOG.error("Unabled to access the bioDbNet Web Service.", e);
             return INPUT;
         }
-        return SUCCESS;
     }
 
-    private Set<GeneResults> handleSearch(SearchType searchType) {
+    private Set<PathwayResults> handlePathwaySearch() {
+        Set<String> newInputs = handleCaseSensitivity(getSearchParameters());
+        return bioDbNetService.retrievePathwaysByGeneSymbols(generateNewParams(newInputs));
+    }
+
+    private Set<GeneResults> handleGeneSearch(SearchType searchType) {
         Set<GeneResults> results = Sets.newHashSet();
         Set<String> newInputs = handleCaseSensitivity(getSearchParameters());
         if (searchType == SearchType.GENE_ID) {
@@ -153,6 +172,20 @@ public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
      */
     public void setGeneResults(Set<GeneResults> geneResults) {
         this.geneResults = geneResults;
+    }
+
+    /**
+     * @return the pathwayResults
+     */
+    public Set<PathwayResults> getPathwayResults() {
+        return pathwayResults;
+    }
+
+    /**
+     * @param pathwayResults the pathwayResults to set
+     */
+    public void setPathwayResults(Set<PathwayResults> pathwayResults) {
+        this.pathwayResults = pathwayResults;
     }
 
     /**

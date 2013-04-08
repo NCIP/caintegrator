@@ -6,6 +6,8 @@
  */
 package gov.nih.nci.caintegrator.external.biodbnet.search;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * Wrapper that contains the results of a biodbnet gene search.
  *
@@ -94,5 +96,27 @@ public class GeneResults implements Comparable<GeneResults> {
     @Override
     public int compareTo(GeneResults other) {
         return this.getGeneId().compareTo(other.getGeneId());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof GeneResults)) {
+            return false;
+        } else if (obj == this) {
+            return true;
+        }
+        GeneResults other = (GeneResults) obj;
+        return this.getGeneId().equals(other.getGeneId());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(getGeneId()).toHashCode();
     }
 }

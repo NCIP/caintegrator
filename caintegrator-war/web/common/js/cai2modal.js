@@ -72,6 +72,16 @@
         document.getElementById('bioDbNetSearchResultsDiv').style.visibility = 'visible';
     }
     
+    function runGenesFromPathwaySearch(geneSymbolsTextbox) {
+        var inputForm = document.bioDbNetSearchForm;
+        var pathways = retrieveCheckedValues(inputForm, geneSymbolsTextbox);
+        $('#inputValues')[0].value = pathways;
+        $('#searchType')[0].value = 'PATHWAY';
+        dojo.event.topic.publish('searchBioDbNet'); 
+        document.getElementById('bioDbNetSearchResultsDiv').style.display = 'block';
+        document.getElementById('bioDbNetSearchResultsDiv').style.visibility = 'visible';
+    }
+    
     function captureBioDbNetCheckBoxes(geneSymbolsTextbox) {
         var inputForm = document.bioDbNetSearchForm;
         captureCheckBoxes(inputForm, geneSymbolsTextbox);
@@ -79,6 +89,10 @@
     }
     
     function captureCheckBoxes(inputForm, geneSymbolsTextbox) {
+        document.getElementById(geneSymbolsTextbox).value = retrieveCheckedValues(inputForm, geneSymbolsTextbox);
+    }
+    
+    function retrieveCheckedValues(inputForm, geneSymbolsTextbox) {
         var cbResults = '';
         var cb_symbols_length = inputForm.cb_symbols.length;
         if (cb_symbols_length == 0 || cb_symbols_length == null) { // Only 1 checkbox
@@ -93,7 +107,7 @@
                 }
             }
         }
-        document.getElementById(geneSymbolsTextbox).value = cbResults;
+        return cbResults;
     }
     
 //**************************//

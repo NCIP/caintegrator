@@ -11,6 +11,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.external.biodbnet.enums.Taxon;
 import gov.nih.nci.caintegrator.external.biodbnet.search.GeneResults;
+import gov.nih.nci.caintegrator.external.biodbnet.search.PathwayResults;
 import gov.nih.nci.caintegrator.external.biodbnet.search.SearchParameters;
 
 import java.util.Set;
@@ -160,4 +161,21 @@ public class BioDbNetSearchServiceTestIntegration {
         assertEquals("AHX,DAX-1,SRXY2,AHC,HHG,NROB1,DAX1,AHCH,GTD,DSS", gene.getAliases());
     }
 
+    /**
+     * Tests retrieval of gene pathways by genes.
+     */
+    @Test
+    public void retrievePathwaysByGene() {
+        SearchParameters params = new SearchParameters();
+        params.setInputValues(BRCA1_GENE_NAME);
+        params.setTaxon(Taxon.ALL);
+        params.setCaseSensitiveSearch(false);
+
+        Set<PathwayResults> pathways = bioDbNetService.retrievePathwaysByGeneSymbols(params);
+        assertEquals(5, pathways.size());
+
+        PathwayResults pathway = pathways.iterator().next();
+        assertEquals("h_atmPathway", pathway.getName());
+        assertEquals("ATM Signaling Pathway", pathway.getTitle());
+    }
 }

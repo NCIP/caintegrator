@@ -1475,12 +1475,11 @@
         </action>
         
         <action name="bioDbNetSearch" method="search" class="bioDbNetSearchAction">
-            <result>/WEB-INF/jsp/tiles/bioDbNet/bioDbNetSearchResults.jsp</result>
-            <result name="input">/WEB-INF/jsp/tiles/bioDbNet/bioDbNetSearchResults.jsp</result>
-            <result name="error">/WEB-INF/jsp/tiles/bioDbNet/bioDbNetSearchResults.jsp</result>
+            <result>/WEB-INF/jsp/tiles/bioDbNet/bioDbNetGeneResults.jsp</result>
+            <result name="pathways">/WEB-INF/jsp/tiles/bioDbNet/bioDbNetPathwayResults.jsp</result>
+            <result name="genes">/WEB-INF/jsp/tiles/bioDbNet/bioDbNetGeneResults.jsp</result>
+            <result name="error">/WEB-INF/jsp/tiles/bioDbNet/bioDbNetGeneResults.jsp</result>
         </action>
-        
-        
     </package>
     
     <package name="registration" namespace="/registration" extends="caintegrator">

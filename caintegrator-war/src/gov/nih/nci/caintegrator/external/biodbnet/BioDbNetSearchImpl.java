@@ -10,6 +10,7 @@ import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator.external.biodbnet.domain.Db2DbParams;
 import gov.nih.nci.caintegrator.external.biodbnet.domain.DbWalkParams;
 import gov.nih.nci.caintegrator.external.biodbnet.search.GeneResults;
+import gov.nih.nci.caintegrator.external.biodbnet.search.PathwayResults;
 import gov.nih.nci.caintegrator.external.biodbnet.search.SearchParameters;
 
 import java.io.IOException;
@@ -41,9 +42,12 @@ public class BioDbNetSearchImpl implements BioDbNetService {
     private static final int GENE_SYMBOL_INDEX = 2;
     private static final int GENE_SYNONYM_INDEX = 3;
     private static final int TAXON_INDEX = 4;
+    private static final int PATHWAY_INFO_INDEX = 1;
 
-    private static final Pattern DESCRIPTION_PATTERN = Pattern.compile("Description:[\\s\\w,]*[^\\]]");
+    private static final Pattern DESCRIPTION_PATTERN = Pattern.compile("Description:[\\s\\w\\d,()_.;-]*[^\\]]");
     private static final Pattern TAXON_PATTERN = Pattern.compile("Organism:[\\s\\w,]*[^\\]]");
+    private static final Pattern PATHWAY_TITLE_PATTERN = Pattern.compile("\\[[\\s\\w\\d:-]*");
+    private static final Pattern PATHWAY_NAME_PATTERN = Pattern.compile("^[\\w\\s\\d_-]*");
     private static final String GENE_LOOKUP_ID = "Gene ID";
     private static final String GENE_LOOKUP_SYMBOL = "Gene Symbol";
     private static final String GENE_LOOKUP_OUTPUTS = "Gene Info, Gene Symbol, Gene Synonyms, Taxon ID";
@@ -133,6 +137,34 @@ public class BioDbNetSearchImpl implements BioDbNetService {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<PathwayResults> retrievePathwaysByGeneSymbols(SearchParameters params) {
+        Db2DbParams db2dbParams = new Db2DbParams();
+        db2dbParams.setInput("Gene Symbol");
+        db2dbParams.setOutputs("Biocarta Pathway Name");
+        db2dbParams.setTaxonId(params.getTaxon().getTaxonId());
+        db2dbParams.setInputValues(params.getInputValues());
+
+        Set<PathwayResults> pathways = Sets.newTreeSet();
+        String results = bioDbNetRemoteService.db2db(db2dbParams);
+        CSVReader reader = new CSVReader(new StringReader(results), '\t', '\'', 1);
+        try {
+            List<String[]> lines = reader.readAll();
+            for (String[] nextLine : lines) {
+                if (!StringUtils.equals(nextLine[PATHWAY_INFO_INDEX], EMPTY_VALUE)) {
+                    String pathwayLine = StringUtils.strip(nextLine[PATHWAY_INFO_INDEX], "\"");
+                    pathways.addAll(extractPathways(StringUtils.split(pathwayLine, ';')));
+                }
+            }
+        } catch (IOException e) {
+            LOG.error("Unabled to read dbBioNet pathway by gene results.", e);
+        }
+        return pathways;
+    }
+
+    /**
      * Given a label: value string, return the value.
      * @param input the input
      * @return the value
@@ -188,6 +220,21 @@ public class BioDbNetSearchImpl implements BioDbNetService {
         gene.setAliases(StringUtils.trim(StringUtils.replaceChars(line[GENE_SYNONYM_INDEX], ';', ',')));
         gene.setTaxon(getValue(taxonMatcher));
         return gene;
+    }
+
+    private Set<PathwayResults> extractPathways(String[] pathwayInfo) {
+        Set<PathwayResults> pathways = Sets.newHashSet();
+
+        for (String pathway : pathwayInfo) {
+            Matcher titleMatcher = PATHWAY_TITLE_PATTERN.matcher(pathway);
+            Matcher nameMatcher = PATHWAY_NAME_PATTERN.matcher(pathway);
+            nameMatcher.find();
+            PathwayResults result = new PathwayResults();
+            result.setName(StringUtils.trim(nameMatcher.group()));
+            result.setTitle(getValue(titleMatcher));
+            pathways.add(result);
+        }
+        return pathways;
     }
 
     /**

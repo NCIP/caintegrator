@@ -122,6 +122,7 @@ public abstract class AbstractMockitoTest {
     private static final String GENE_SYMBOL_RESULTS_FILE_LOCATION = "/bioDbNet/gene_by_id_search.txt";
     private static final String GENE_ALIAS_RESULTS_FILE_LOCATION = "/bioDbNet/gene_alias_search.txt";
     private static final String PATHWAY_RESULTS_FILE_LOCATION = "/bioDbNet/gene_pathway_search.txt";
+    private static final String PATHWAY_BY_GENE_RESULTS_FILE_LOCATION = "/bioDbNet/pathway_by_gene_search.txt";
 
     protected CaArrayFacade caArrayFacade;
     protected CaIntegrator2Dao dao;
@@ -631,6 +632,8 @@ public abstract class AbstractMockitoTest {
                 new File(this.getClass().getResource(GENE_ALIAS_RESULTS_FILE_LOCATION).getFile());
         final File genePathwayResultsFile =
                 new File(this.getClass().getResource(PATHWAY_RESULTS_FILE_LOCATION).getFile());
+        final File pathwayByGeneResultsFile =
+                new File(this.getClass().getResource(PATHWAY_BY_GENE_RESULTS_FILE_LOCATION).getFile());
 
         bioDbNetRemoteService = mock(BioDbNetRemoteService.class);
         when(bioDbNetRemoteService.db2db(any(Db2DbParams.class))).thenAnswer(new Answer<String>() {
@@ -638,7 +641,10 @@ public abstract class AbstractMockitoTest {
             public String answer(InvocationOnMock invocation) throws Throwable {
                 Db2DbParams params = (Db2DbParams) invocation.getArguments()[0];
                 String results = StringUtils.EMPTY;
-                if (StringUtils.equals("Gene ID", params.getOutputs())) {
+                if (StringUtils.equals("Gene Symbol", params.getInput())
+                        && StringUtils.equals("Biocarta Pathway Name", params.getOutputs())) {
+                    results = FileUtils.readFileToString(pathwayByGeneResultsFile);
+                } else if (StringUtils.equals("Gene ID", params.getOutputs())) {
                     results = FileUtils.readFileToString(geneIdResultsFile);
                 } else if (StringUtils.equals("Gene ID", params.getInput())) {
                     results = FileUtils.readFileToString(geneSymbolResultsFile);

@@ -11,6 +11,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.external.biodbnet.enums.Taxon;
 import gov.nih.nci.caintegrator.external.biodbnet.search.GeneResults;
+import gov.nih.nci.caintegrator.external.biodbnet.search.PathwayResults;
 import gov.nih.nci.caintegrator.external.biodbnet.search.SearchParameters;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
@@ -118,7 +119,23 @@ public class BioDbNetSearchServiceTest extends AbstractMockitoTest {
         assertEquals("breast cancer 1, early onset", gene.getDescription());
         assertEquals("human", gene.getTaxon());
         assertEquals("PSCP, RNF53, IRIS, PNCA4, BRCAI, BRCC1, PPP1R53, BROVCA1", gene.getAliases());
+    }
 
+    /**
+     * Tests retrieval of gene pathways from gene symbols.
+     */
+    @Test
+    public void retrievePathwaysByGeneSymbols() {
+        SearchParameters params = new SearchParameters();
+        params.setTaxon(Taxon.ALL);
+        params.setInputValues(BRCA1_GENE_NAME);
+
+        Set<PathwayResults> pathwayResults = bioDbNetService.retrievePathwaysByGeneSymbols(params);
+        assertEquals(5, pathwayResults.size());
+
+        PathwayResults result = pathwayResults.iterator().next();
+        assertEquals("h_atmPathway", result.getName());
+        assertEquals("ATM Signaling Pathway", result.getTitle());
     }
 
 }

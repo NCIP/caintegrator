@@ -30,7 +30,12 @@ public enum SearchType {
     /**
      * Search by Gene Pathway.
      */
-    PATHWAY("Gene Pathways");
+    PATHWAY("Gene Pathways"),
+
+    /**
+     * Search for gene pathways by gene symbol.
+     */
+    PATHWAY_BY_GENE("Gene Pathways by Gene Symbol");
 
     private String name;
 
