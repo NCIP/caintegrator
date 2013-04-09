@@ -264,19 +264,30 @@
             <arg value="--get"/>
             <arg value="remote.origin.url"/>
         </exec>
-        <exec executable="git" outputproperty="git.caintegrator.version" failifexecutionfails="true" errorproperty="">
+        <exec executable="git" outputproperty="git.branch" failifexecutionfails="true">
             <arg value="rev-parse"/>
             <arg value="--abbrev-ref"/>
             <arg value="HEAD"/>
         </exec>
-        <exec executable="git" outputproperty="git.revision" failifexecutionfails="true" errorproperty="">
+        <if>
+            <equals arg1="${git.branch}" arg2="HEAD" />
+            <then>
+                <exec executable="git" outputproperty="git.caintegrator.version" failifexecutionfails="true">
+                    <arg value="describe"/>
+                </exec>
+            </then>
+            <else>
+                <property name="git.caintegrator.version" value="${git.branch}"/>
+            </else>
+        </if>
+        <exec executable="git" outputproperty="git.revision" failifexecutionfails="true">
             <arg value="show"/>
             <arg value="-s"/>
             <arg value="--format=%h"/>
-         </exec>
-         <echo message="found git info: ${git.url} ${git.revision} ${git.caintegrator.version}" />
+        </exec>
+        <echo message="found git info: ${git.url} ${git.revision} ${git.caintegrator.version}" />
     </target>
-
+    
     <target name="cleanbdautil" description="prepare for info and delete bda util">
         <delete includeEmptyDirs="true">
           <fileset dir="${user.home}/.ivy2-bda-utils" includes="**/*" />
