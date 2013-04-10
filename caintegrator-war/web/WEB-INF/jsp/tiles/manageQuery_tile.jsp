@@ -41,7 +41,7 @@
 
     function runSearch() {
         var isPotentiallyLargeQuery = '<s:property value="queryForm.isPotentiallyLargeQuery()"/>';
-        if (isPotentiallyLargeQuery == "true" || $(':text[value=""][id^=FoldChangeGeneSymbol]').length != 0) {
+        if (isPotentiallyLargeQuery == "true" || !$(':text[value=""][id^=FoldChangeGeneSymbol]').val()) {
             if (confirm("This query includes all genes and will potentially take many minutes to complete.\n"
                     + "Please confirm that you want to continue?")) {
             	showBusyDialog();
