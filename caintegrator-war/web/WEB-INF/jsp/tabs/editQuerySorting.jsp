@@ -43,7 +43,7 @@
     <h2>Sorting feature is not applicable to this result type.</h2>
     <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
         <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
-           <a href="javascript:openWikiHelp('B4DnAg', '4-SearchingacaIntegratorStudy-SortingTab')" class="help">
+           <a href="javascript:openWikiHelp('B4DnAg', 'id-4-SearchingacaIntegratorStudy-SortingTab')" class="help">
            &nbsp;</a>
         </div>
     </div>

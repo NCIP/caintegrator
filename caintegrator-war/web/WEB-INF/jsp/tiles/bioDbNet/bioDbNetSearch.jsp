@@ -6,6 +6,9 @@
         <s:a href="" title="Click to close." onclick="hideBioDbNetInputForm()" cssStyle="cursor: pointer;">
             <img src="/caintegrator/images/close.gif" border="none" align="center" alt="Click to close."/>&nbsp;
         </s:a>
+        <div class="pagehelp">
+            <a href="javascript:openWikiHelp('B4DnAg', 'id-4-SearchingacaIntegratorStudy-bioDbNetSearch')" class="help"></a>
+        </div>
 </s:div>
 
 <h2><img style="vertical-align: middle" src="/caintegrator/images/bioDbNet.gif" alt="bioDbNet logo"> Biological Database Network Search</h2>

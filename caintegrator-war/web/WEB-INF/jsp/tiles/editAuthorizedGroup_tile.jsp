@@ -91,6 +91,12 @@
 
 
 <div id="content">
+    <div class="pagehelp">
+        <a href="javascript:openWikiHelp('3xeSB', 'id-3-ManagingaStudyorPlatform-EditingUserGroupAuthorization')" class="help">
+            &nbsp;
+        </a>
+    </div>
+    
     <h1><s:property value="#subTitleText" /></h1>
     <div class="form_wrapper_outer">
     
