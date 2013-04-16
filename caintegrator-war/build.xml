@@ -367,7 +367,7 @@
             <pathelement location="${caintegrator.war.test.classes.dir}" />
             <path refid="caintegrator.war.dependencies.path" />
             <pathelement location="${caintegrator.war.resources.src.dir}" />
-            <pathelement location="${caintegrator.war.resources.test.dir}" />
+            <pathelement location="${caintegrator.war.test.classes.dir}/resources"/>
             <path refid="junit.classpath" />
         </path>
         <path id="caintegrator.war.integration.dependencies.path">
@@ -375,6 +375,7 @@
             <path refid="caintegrator.war.dependencies.path" />
             <pathelement location="${caintegrator.war.resources.src.dir}" />
             <pathelement location="${caintegrator.war.resources.test.dir}" />
+            <pathelement location="${caintegrator.war.test.classes.dir}/resources"/>
             <path refid="junit.classpath" />
             <path refid="integration.classpath" />
         </path>
@@ -516,10 +517,10 @@
             classpath="${caintegrator.war.test.dependencies.path}" />
     </target>
 
-    <target name="test:unpack-test-data">
+    <target name="test:unpack-test-data" depends="test:compile:caintegrator.war.test.classes">
         <for param="zipfile">
             <path>
-                <fileset dir="${caintegrator.war.resources.test.dir}">
+                <fileset dir="${caintegrator.war.test.classes.dir}">
                     <include name="**/*.zip" />
                     <exclude name="pipelines/*.zip" />
                 </fileset>
@@ -530,7 +531,7 @@
         </for>
     </target>
 
-    <target name="test:integration:caintegrator.war" depends="test:compile:caintegrator.war.test.classes,
+    <target name="test:integration:caintegrator.war" depends="test:unpack-test-data,test:compile:caintegrator.war.test.classes,
         test:instrument:integration:caintegrator.war,
         hibernate.cfg.xml.test, caintegrator.csm.xml.test,
         database:reinitialize">
@@ -603,14 +604,15 @@
 
     <target name="test:compile:caintegrator.war.test.classes" depends="compile:caintegrator.war,path:caintegrator.war.test.dependencies">
         <mkdir dir="${caintegrator.war.test.classes.dir}" />
-        <copy todir="${caintegrator.war.test.classes.dir}">
+        <copy todir="${caintegrator.war.test.classes.dir}/resources">
             <filterset refid="caintegrator.filterset" />
             <fileset dir="${cbs-to-heatmap.jar.resources.bins.dir}" includes="*.dat" />
         </copy>
-        <copy todir="${caintegrator.war.test.classes.dir}">
-            <fileset dir="${caintegrator.war.resources.test.dir}/bioDbNet" includes="*.txt" />
+        <copy todir="${caintegrator.war.test.classes.dir}/resources">
+            <fileset dir="${caintegrator.war.resources.test.dir}" includes="**/*"/>
         </copy>
-        <javac srcdir="${caintegrator.war.test.src.dir}" destdir="${caintegrator.war.test.classes.dir}" classpathref="caintegrator.war.test.dependencies.path" includeantruntime="false" debug="true" />
+        <javac srcdir="${caintegrator.war.test.src.dir}" destdir="${caintegrator.war.test.classes.dir}" 
+            classpathref="caintegrator.war.test.dependencies.path" includeantruntime="false" debug="true" />
     </target>
 
     <property name="struts.properties.src" value="${caintegrator.war.resources.src.dir}/struts.properties" />
