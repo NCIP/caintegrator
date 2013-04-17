@@ -95,9 +95,9 @@
 
     function resetSorting(numberColumns) {
     	for (i=1;i<=numberColumns;i++) {
-    		document.getElementById("sortType_" + i + "Ascending").checked = false;
-    		document.getElementById("sortType_" + i + "Descending").checked = false;
-    		document.getElementById("sortType_" + i + "No Sort").checked = true;
+    		document.getElementById("sortType_" + i + "ASCENDING").checked = false;
+    		document.getElementById("sortType_" + i + "DESCENDING").checked = false;
+    		document.getElementById("sortType_" + i + "UNSORTED").checked = true;
     		document.getElementById("columnIndex_" + i).selectedIndex = i - 1;
     	}
     }

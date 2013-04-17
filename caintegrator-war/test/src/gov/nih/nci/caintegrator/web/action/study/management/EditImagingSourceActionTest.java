@@ -27,7 +27,6 @@ import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.InvalidImagingCollectionException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.study.management.EditImagingSourceAction;
 import gov.nih.nci.caintegrator.web.ajax.IImagingDataSourceAjaxUpdater;
 
 import java.io.File;
@@ -93,21 +92,21 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         assertTrue(action.hasFieldErrors());
 
         action.getImageSourceConfiguration().getServerProfile().setUrl("Fake URL");
-        action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO.getValue());
+        action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO);
         action.clearErrorsAndMessages();
         action.saveImagingSource();
         assertTrue(action.hasFieldErrors());
 
         action.clearErrorsAndMessages();
         action.getImageSourceConfiguration().getServerProfile().setWebUrl("http://someurl.nci.nih.gov/");
-        action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO.getValue());
+        action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO);
         action.clearErrorsAndMessages();
         action.saveImagingSource();
         assertTrue(action.hasFieldErrors());
 
         action.clearErrorsAndMessages();
         action.getImageSourceConfiguration().getServerProfile().setWebUrl("http://someurl.nci.nih.gov/ncia");
-        action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO.getValue());
+        action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO);
         action.clearErrorsAndMessages();
         action.saveImagingSource();
         assertTrue(action.hasFieldErrors());
@@ -122,7 +121,7 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
         assertTrue(action.hasFieldErrors());
 
         action.setImageClinicalMappingFile(null);
-        action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue());
+        action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES);
         action.clearErrorsAndMessages();
         action.saveImagingSource();
         assertTrue(action.hasFieldErrors());
@@ -193,7 +192,7 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
     @Test
     public void testMapImagingSource() {
         action.setImageClinicalMappingFile(null);
-        action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue());
+        action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES);
         assertEquals(Action.INPUT, action.mapImagingSource());
 
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
@@ -208,10 +207,8 @@ public class EditImagingSourceActionTest extends AbstractSessionBasedTest {
     @Test
     public void testGetSetMappingType() {
         action.setMappingType(null);
-        assertEquals("", action.getMappingType());
-        action.setMappingType("invalid");
-        assertEquals("", action.getMappingType());
-        action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue());
-        assertEquals(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue(), action.getMappingType());
+        assertEquals(null, action.getMappingType());
+        action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES);
+        assertEquals(ImageDataSourceMappingTypeEnum.IMAGE_SERIES, action.getMappingType());
     }
 }

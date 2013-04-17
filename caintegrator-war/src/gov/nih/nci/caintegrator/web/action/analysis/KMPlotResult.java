@@ -25,27 +25,24 @@ import com.opensymphony.xwork2.Result;
 public class KMPlotResult implements Result {
 
     private static final long serialVersionUID = 1L;
-    private String type;
+    private PlotTypeEnum type;
 
     /**
      * {@inheritDoc}
      */
     public void execute(ActionInvocation invocation) throws IOException {
-        if (PlotTypeEnum.checkType(type)) {
-            KMPlot kmPlot = retrieveKmPlot();
-            if (kmPlot != null) {
-                HttpServletResponse response = ServletActionContext.getResponse();
-                kmPlot.writePlotImage(response.getOutputStream());
-                response.setContentType("image/png");
-                response.getOutputStream().flush();
-            }
+        KMPlot kmPlot = retrieveKmPlot();
+        if (kmPlot != null) {
+            HttpServletResponse response = ServletActionContext.getResponse();
+            kmPlot.writePlotImage(response.getOutputStream());
+            response.setContentType("image/png");
+            response.getOutputStream().flush();
         }
-        
     }
 
     private KMPlot retrieveKmPlot() {
         KMPlot kmPlot;
-        switch (PlotTypeEnum.getByValue(type)) {
+        switch (type) {
         case ANNOTATION_BASED:
             kmPlot = SessionHelper.getAnnotationBasedKmPlot();
             break;
@@ -65,14 +62,14 @@ public class KMPlotResult implements Result {
     /**
      * @return the type
      */
-    public String getType() {
+    public PlotTypeEnum getType() {
         return type;
     }
 
     /**
      * @param type the type to set
      */
-    public void setType(String type) {
+    public void setType(PlotTypeEnum type) {
         this.type = type;
     }
 }

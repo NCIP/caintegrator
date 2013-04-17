@@ -6,15 +6,23 @@
  */
 package gov.nih.nci.caintegrator.application.registration;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator.application.registration.RegistrationRequest;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+/**
+ * Tests registration requests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class RegistrationRequestTest {
 
+    /**
+     * Tests retrieval of a registration request's mail body.
+     */
     @Test
-    public void testGetMailBody() {
+    public void getMailBody() {
         RegistrationRequest request = new RegistrationRequest();
         assertTrue(request.getMailBody().contains("No LDAP Authentication"));
         request.setLoginName("username");
@@ -23,5 +31,4 @@ public class RegistrationRequestTest {
         request.setRequestedStudies("studies");
         assertTrue(request.getMailBody().contains("Requested studies to be accessed: studies"));
     }
-
 }

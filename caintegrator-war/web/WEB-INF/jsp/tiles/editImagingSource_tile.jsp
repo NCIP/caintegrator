@@ -145,8 +145,8 @@
                		    </tr>
                 		</s:if>
                 		<s:radio name="mappingType" 
-                            list="@gov.nih.nci.caintegrator.application.study.ImageDataSourceMappingTypeEnum@getStringValues()"
-                            required="true" label="Select Mapping File Type:"
+                            list="@gov.nih.nci.caintegrator.application.study.ImageDataSourceMappingTypeEnum@values()" 
+                            listValue="value" required="true" label="Select Mapping File Type:"
                             onclick="disableFormElement(this, 'Auto (No File Required)', document.imagingSourceForm, imageClinicalMappingFile)"/>
                 		<s:file name="imageClinicalMappingFile" label="Subject to Imaging Mapping File" size="40" disabled="true"/>
                 </tr>

@@ -31,7 +31,7 @@
                 <td>
                 <s:radio id="sortType_%{#columnIterator.count}"
                 name="queryForm.resultConfiguration.sortType['%{annotationDefinition.displayName}']"
-                list="@gov.nih.nci.caintegrator.domain.application.SortTypeEnum@getDisplayableValues()"
+                list="@gov.nih.nci.caintegrator.domain.application.SortTypeEnum@values()" listValue="value"
                 theme="simple"/>
                 </td>
             </tr>

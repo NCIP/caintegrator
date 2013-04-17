@@ -82,24 +82,16 @@ public class ResultConfiguration {
     /**
      * @return the copyNumberType.
      */
-    public String getCopyNumberType() {
-        if (getQuery().getCopyNumberCriterionType() == null) {
-            return "";
-        } else {
-            return getQuery().getCopyNumberCriterionType().getValue();
-        }
+    public CopyNumberCriterionTypeEnum getCopyNumberType() {
+        return getQuery().getCopyNumberCriterionType();
     }
 
     /**
      *
      * @param copyNumberType the copyNumberType to set.
      */
-    public void setCopyNumberType(String copyNumberType) {
-        if (StringUtils.isBlank(copyNumberType)) {
-            getQuery().setCopyNumberCriterionType(null);
-        } else {
-            getQuery().setCopyNumberCriterionType(CopyNumberCriterionTypeEnum.getByValue(copyNumberType));
-        }
+    public void setCopyNumberType(CopyNumberCriterionTypeEnum copyNumberType) {
+        getQuery().setCopyNumberCriterionType(copyNumberType);
     }
 
     /**
@@ -224,16 +216,12 @@ public class ResultConfiguration {
      * @param columnName get index of this column.
      * @param sortType to set sortType.
      */
-    public void setSortType(String columnName, String sortType) {
+    public void setSortType(String columnName, SortTypeEnum sortType) {
         ResultColumn column = getColumn(columnName);
         if (column == null) {
             return;
         }
-        if (StringUtils.isBlank(sortType)) {
-            column.setSortType(null);
-        } else {
-            column.setSortType(SortTypeEnum.getByValue(sortType));
-        }
+        column.setSortType(sortType);
     }
 
     /**

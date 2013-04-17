@@ -35,9 +35,6 @@ import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.query.DisplayableQueryResult;
-import gov.nih.nci.caintegrator.web.action.query.DisplayableResultRow;
-import gov.nih.nci.caintegrator.web.action.query.ManageQueryAction;
 
 import javax.servlet.ServletContext;
 
@@ -148,8 +145,10 @@ public class ManageQueryActionTest extends AbstractSessionBasedTest {
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         verify(queryManagementService, times(1)).execute(any(Query.class));
-        manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENE_EXPRESSION.getValue());
-        manageQueryAction.getQueryForm().getResultConfiguration().setCopyNumberType(CopyNumberCriterionTypeEnum.SEGMENT_VALUE.getValue());
+        manageQueryAction.getQueryForm().getResultConfiguration()
+            .setResultType(ResultTypeEnum.GENE_EXPRESSION.getValue());
+        manageQueryAction.getQueryForm().getResultConfiguration()
+            .setCopyNumberType(CopyNumberCriterionTypeEnum.SEGMENT_VALUE);
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         verify(queryManagementService, times(1)).executeGenomicDataQuery(any(Query.class));
     }

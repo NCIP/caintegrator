@@ -7,10 +7,7 @@
 package gov.nih.nci.caintegrator.application.arraydata;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Supported Platforms.
@@ -20,34 +17,35 @@ public enum PlatformTypeEnum {
     /**
      * Affymetrix Gene Expression platform.
      */
-    AFFYMETRIX_GENE_EXPRESSION("Affymetrix Gene Expression", "Expression"),
-    
+    AFFYMETRIX_GENE_EXPRESSION("Affymetrix Gene Expression", PlatformDataTypeEnum.EXPRESSION),
+
     /**
      * Affymetrix SNP platform.
      */
-    AFFYMETRIX_SNP("Affymetrix SNP", "SNP"),
-    
+    AFFYMETRIX_SNP("Affymetrix SNP", PlatformDataTypeEnum.SNP),
+
     /**
      * Affymetrix Copy Number platform.
      */
-    AFFYMETRIX_COPY_NUMBER("Affymetrix Copy Number", "Copy Number"),
-    
+    AFFYMETRIX_COPY_NUMBER("Affymetrix Copy Number", PlatformDataTypeEnum.COPY_NUMBER),
+
     /**
      * Agilent Gene Expression platform.
      */
-    AGILENT_GENE_EXPRESSION("Agilent Gene Expression", "Expression"),
-    
+    AGILENT_GENE_EXPRESSION("Agilent Gene Expression", PlatformDataTypeEnum.EXPRESSION),
+
     /**
      * Agilent Copy Number platform.
      */
-    AGILENT_COPY_NUMBER("Agilent Copy Number", "Copy Number");
-    
-    private static Map<String, PlatformTypeEnum> valueToTypeMap = new HashMap<String, PlatformTypeEnum>();
+    AGILENT_COPY_NUMBER("Agilent Copy Number", PlatformDataTypeEnum.COPY_NUMBER);
+
+    private static final PlatformTypeEnum[] ENABLED_VALUES = {AFFYMETRIX_GENE_EXPRESSION, AFFYMETRIX_COPY_NUMBER,
+        AGILENT_GENE_EXPRESSION, AGILENT_COPY_NUMBER };
 
     private String value;
-    private String dataType;
-    
-    private PlatformTypeEnum(String value, String dataType) {
+    private PlatformDataTypeEnum dataType;
+
+    private PlatformTypeEnum(String value, PlatformDataTypeEnum dataType) {
         this.value = value;
         this.dataType = dataType;
     }
@@ -69,72 +67,30 @@ public enum PlatformTypeEnum {
     /**
      * @return the dataType
      */
-    public String getDataType() {
+    public PlatformDataTypeEnum getDataType() {
         return dataType;
     }
 
-    private static Map<String, PlatformTypeEnum> getValueToTypeMap() {
-        if (valueToTypeMap.isEmpty()) {
-            for (PlatformTypeEnum type : values()) {
-                valueToTypeMap.put(type.getValue(), type);
-            }
-        }
-        return valueToTypeMap;
-    }
-    
     /**
-     * Returns the <code>PlatformTypeEnum</code> corresponding to the given value. Returns null
-     * for null value.
-     * 
-     * @param value the value to match
-     * @return the matching type.
+     * The enabled platforms.
+     * @return the platforms that are available to the user for usage.
      */
-    public static PlatformTypeEnum getByValue(String value) {
-        checkType(value);
-        return getValueToTypeMap().get(value);
+    public static PlatformTypeEnum[] enabledPlatforms() {
+        return ArrayUtils.clone(ENABLED_VALUES);
     }
 
     /**
-     * Checks to see that the value given is a legal value.
-     * 
-     * @param value the value to check;
-     */
-    public static void checkType(String value) {
-        if (value != null && !getValueToTypeMap().containsKey(value)) {
-            throw new IllegalArgumentException("No matching type for " + value);
-        }
-    }
-    
-    /**
-     * Used in the JSP's to retrieve the displayable string version of the Enum values.
-     * Ex usage: 
-     * list="@gov.nih.nci.caintegrator.application.arraydata.PlatformTypeEnum@getValuesToDisplay()" 
-     * 
-     * @return HashMap of EnumeratedValue's String to Displayable String. 
-     */
-    public static List<String> getValuesToDisplay() {
-        List<String> list = new ArrayList<String>();
-        for (PlatformTypeEnum type : values()) {
-            if (!PlatformTypeEnum.AFFYMETRIX_SNP.equals(type)) { // TODO - For now disable the SNP type.
-                list.add(type.getValue());
-            }
-        }
-        return list;
-    }
-    
-    /**
-     * 
      * @return boolean is a gene expression data type.
      */
     public boolean isGeneExpression() {
-        return PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getDataType().equals(getDataType());
+        return PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getDataType() == getDataType();
     }
-    
+
     /**
-     * 
+     *
      * @return boolean is a copy number data type
      */
     public boolean isCopyNumber() {
-        return PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getDataType().equals(getDataType());
+        return PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getDataType() == getDataType();
     }
 }

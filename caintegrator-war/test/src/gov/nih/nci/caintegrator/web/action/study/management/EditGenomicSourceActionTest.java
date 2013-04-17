@@ -25,7 +25,6 @@ import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.study.management.EditGenomicSourceAction;
 import gov.nih.nci.caintegrator.web.ajax.IGenomicDataSourceAjaxUpdater;
 
 import org.junit.Before;
@@ -89,12 +88,6 @@ public class EditGenomicSourceActionTest extends AbstractSessionBasedTest {
         assertEquals(Action.SUCCESS, action.refresh());
         action.getTempGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
         assertEquals(Action.SUCCESS, action.refresh());
-    }
-
-    @Test
-    public void testGetDataType() {
-        action.getTempGenomicSource().setPlatformVendor(PlatformVendorEnum.AFFYMETRIX);
-        assertEquals(2, action.getDataTypes().size());
     }
 
     @Test

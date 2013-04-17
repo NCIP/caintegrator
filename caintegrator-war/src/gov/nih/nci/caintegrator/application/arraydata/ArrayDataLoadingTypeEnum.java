@@ -8,9 +8,7 @@ package gov.nih.nci.caintegrator.application.arraydata;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Possible data types for platform.
@@ -66,65 +64,6 @@ public enum ArrayDataLoadingTypeEnum {
         this.value = value;
     }
 
-    private static Map<String, ArrayDataLoadingTypeEnum> valueToTypeMap =
-        new HashMap<String, ArrayDataLoadingTypeEnum>();
-
-    private static Map<String, ArrayDataLoadingTypeEnum> getValueToTypeMap() {
-        if (valueToTypeMap.isEmpty()) {
-            for (ArrayDataLoadingTypeEnum type : values()) {
-                valueToTypeMap.put(type.getValue(), type);
-            }
-        }
-        return valueToTypeMap;
-    }
-
-    /**
-     * Used to retrieve all string values (by the JSP for display purposes).
-     * @param vendor the platform vendor
-     * @param type the platform data type
-     * @return List of all string values which represent the ENUM values.
-     */
-    public static List<String> getLoadingTypes(PlatformVendorEnum vendor, PlatformDataTypeEnum type) {
-        List<String> list = new ArrayList<String>();
-        if (PlatformVendorEnum.AFFYMETRIX.equals(vendor)) {
-            if (PlatformDataTypeEnum.EXPRESSION.equals(type)) {
-                list.add(PARSED_DATA.value);
-            } else if (PlatformDataTypeEnum.COPY_NUMBER.equals(type)) {
-                list.add(CNCHP.value);
-            } else {
-                list.add(CHP.value);
-            }
-        } else if (PlatformVendorEnum.AGILENT.equals(vendor)) {
-            list.add(PARSED_DATA.value);
-        }
-        list.add(SINGLE_SAMPLE_PER_FILE.value);
-        list.add(MULTI_SAMPLE_PER_FILE.value);
-        return list;
-    }
-
-    /**
-     * Returns the <code>ArrayDataLoadingTypeEnum</code> corresponding to the given value. Returns null
-     * for null value.
-     *
-     * @param value the value to match
-     * @return the matching type.
-     */
-    public static ArrayDataLoadingTypeEnum getByValue(String value) {
-        checkType(value);
-        return getValueToTypeMap().get(value);
-    }
-
-    /**
-     * Checks to see that the value given is a legal <code>ArrayDataLoadingTypeEnum</code> value.
-     *
-     * @param value the value to check;
-     */
-    public static void checkType(String value) {
-        if (value != null && !getValueToTypeMap().containsKey(value)) {
-            throw new IllegalArgumentException("No matching type for " + value);
-        }
-    }
-
     /**
      * @return multiSamplePerFile
      */
@@ -137,5 +76,29 @@ public enum ArrayDataLoadingTypeEnum {
      */
     public boolean isUseSupplementalFiles() {
         return useSupplementalFiles;
+    }
+
+    /**
+     * Used to retrieve all string values (by the JSP for display purposes).
+     * @param vendor the platform vendor
+     * @param type the platform data type
+     * @return List of all string values which represent the ENUM values.
+     */
+    public static List<ArrayDataLoadingTypeEnum> getLoadingTypes(PlatformVendorEnum vendor, PlatformDataTypeEnum type) {
+        List<ArrayDataLoadingTypeEnum> list = new ArrayList<ArrayDataLoadingTypeEnum>();
+        if (PlatformVendorEnum.AFFYMETRIX == vendor) {
+            if (PlatformDataTypeEnum.EXPRESSION == type) {
+                list.add(PARSED_DATA);
+            } else if (PlatformDataTypeEnum.COPY_NUMBER == type) {
+                list.add(CNCHP);
+            } else {
+                list.add(CHP);
+            }
+        } else if (PlatformVendorEnum.AGILENT == vendor) {
+            list.add(PARSED_DATA);
+        }
+        list.add(SINGLE_SAMPLE_PER_FILE);
+        list.add(MULTI_SAMPLE_PER_FILE);
+        return list;
     }
 }

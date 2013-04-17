@@ -19,7 +19,7 @@ public enum AnalysisJobTypeEnum {
      * Gene Pattern.
      */
     GENE_PATTERN("Gene Pattern", "Gene Pattern"),
-    
+
     /**
      * Comparative Marker Selection.
      */
@@ -34,13 +34,13 @@ public enum AnalysisJobTypeEnum {
      * GISTIC.
      */
     GISTIC("Gistic", "Gene Pattern - ");
-    
-    private static Map<String, AnalysisJobTypeEnum> valueToTypeMap = 
+
+    private static Map<String, AnalysisJobTypeEnum> valueToTypeMap =
                     new HashMap<String, AnalysisJobTypeEnum>();
 
     private String value;
     private String type;
-    
+
     private AnalysisJobTypeEnum(String value, String type) {
         this.value = value;
         this.type = type;
@@ -82,11 +82,11 @@ public enum AnalysisJobTypeEnum {
         }
         return valueToTypeMap;
     }
-    
+
     /**
      * Returns the <code>AnalysisJobTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
-     * 
+     *
      * @param value the value to match
      * @return the matching type.
      */
@@ -97,7 +97,7 @@ public enum AnalysisJobTypeEnum {
 
     /**
      * Checks to see that the value given is a legal <code>AssayType</code> value.
-     * 
+     *
      * @param value the value to check;
      * @return T/F value depending on if is a valid type.
      */

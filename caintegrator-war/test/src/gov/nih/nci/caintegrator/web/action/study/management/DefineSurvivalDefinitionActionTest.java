@@ -23,7 +23,6 @@ import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.study.management.DefineSurvivalDefinitionAction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -188,11 +187,11 @@ public class DefineSurvivalDefinitionActionTest extends AbstractSessionBasedTest
 
         action.getSurvivalDefinitionFormValues().setSurvivalValueDefinitionName("uniqueName");
         action.prepare();
-        action.getSurvivalDefinitionFormValues().setSurvivalValueType(SurvivalValueTypeEnum.DATE.getValue());
+        action.getSurvivalDefinitionFormValues().setSurvivalValueType(SurvivalValueTypeEnum.DATE);
         assertEquals(Action.SUCCESS, action.saveSurvivalValueDefinition()); // All valid.
         assertTrue(studyManagementServiceStub.saveCalled);
         action.prepare();
-        action.getSurvivalDefinitionFormValues().setSurvivalValueType(SurvivalValueTypeEnum.LENGTH_OF_TIME.getValue());
+        action.getSurvivalDefinitionFormValues().setSurvivalValueType(SurvivalValueTypeEnum.LENGTH_OF_TIME);
         assertEquals(Action.INPUT, action.saveSurvivalValueDefinition()); // All valid.
         assertTrue(studyManagementServiceStub.saveCalled);
 

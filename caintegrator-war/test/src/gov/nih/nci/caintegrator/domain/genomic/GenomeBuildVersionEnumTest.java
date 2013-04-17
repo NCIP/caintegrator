@@ -7,27 +7,15 @@
 package gov.nih.nci.caintegrator.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator.domain.genomic.GenomeBuildVersionEnum;
 
 import org.junit.Test;
 
 
 /**
- * 
+ *
  */
 public class GenomeBuildVersionEnumTest {
 
-    @Test
-    public void testGetByValue() {
-        assertEquals(GenomeBuildVersionEnum.HG16, GenomeBuildVersionEnum.getByValue(GenomeBuildVersionEnum.HG16.getValue()));
-        assertEquals(GenomeBuildVersionEnum.HG18, GenomeBuildVersionEnum.getByValue(GenomeBuildVersionEnum.HG18.getValue()));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testCheckType() {
-        GenomeBuildVersionEnum.checkType("not found");
-    }
-    
     @Test
     public void testMatchGenomeVersion() {
         assertEquals(GenomeBuildVersionEnum.HG16, GenomeBuildVersionEnum.matchGenomVersion("hg16"));
@@ -38,5 +26,4 @@ public class GenomeBuildVersionEnumTest {
         assertEquals(GenomeBuildVersionEnum.HG18, GenomeBuildVersionEnum.matchGenomVersion("NCBI Build 36.1"));
         assertEquals(GenomeBuildVersionEnum.HG19, GenomeBuildVersionEnum.matchGenomVersion("hg19"));
     }
-
 }

@@ -380,15 +380,15 @@ public class ManageListAction extends AbstractDeployedStudyAction {
     /**
      * @return the listType
      */
-    public String getListType() {
-        return listType.getValue();
+    public ListTypeEnum getListType() {
+        return listType;
     }
 
     /**
      * @param listType the listType to set
      */
-    public void setListType(String listType) {
-        this.listType = ListTypeEnum.getByValue(listType);
+    public void setListType(ListTypeEnum listType) {
+        this.listType = listType;
     }
 
     /**

@@ -225,28 +225,6 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     }
 
     /**
-     * @return the platformVendorString
-     */
-    public String getPlatformVendorString() {
-        if (platformVendor == null) {
-            return "";
-        } else {
-            return platformVendor.getValue();
-        }
-    }
-
-    /**
-     * @param platformVendorString the platformVendor string value to set
-     */
-    public void setPlatformVendorString(String platformVendorString) {
-        if (StringUtils.isBlank(platformVendorString)) {
-            this.platformVendor = null;
-        } else {
-            this.platformVendor = PlatformVendorEnum.getByValue(platformVendorString);
-        }
-    }
-
-    /**
      * @param platformVendor the platformVendor to set
      */
     public void setPlatformVendor(PlatformVendorEnum platformVendor) {
@@ -268,28 +246,6 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     }
 
     /**
-     * @return the resultType
-     */
-    public String getDataTypeString() {
-        if (dataType == null) {
-            return "";
-        } else {
-            return dataType.getValue();
-        }
-    }
-
-    /**
-     * @param dataTypeString the dataType string value to set
-     */
-    public void setDataTypeString(String dataTypeString) {
-        if (StringUtils.isBlank(dataTypeString)) {
-            this.dataType = null;
-        } else {
-            this.dataType = PlatformDataTypeEnum.getByValue(dataTypeString);
-        }
-    }
-
-    /**
      * @return the loadingType
      */
     public ArrayDataLoadingTypeEnum getLoadingType() {
@@ -301,28 +257,6 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public void setLoadingType(ArrayDataLoadingTypeEnum loadingType) {
         this.loadingType = loadingType;
-    }
-
-    /**
-     * @return the loadingType
-     */
-    public String getLoadingTypeString() {
-        if (loadingType == null) {
-            return "";
-        } else {
-            return loadingType.getValue();
-        }
-    }
-
-    /**
-     * @param loadingTypeString the loadingType string value to set
-     */
-    public void setLoadingTypeString(String loadingTypeString) {
-        if (StringUtils.isBlank(loadingTypeString)) {
-            this.loadingType = null;
-        } else {
-            this.loadingType = ArrayDataLoadingTypeEnum.getByValue(loadingTypeString);
-        }
     }
 
     /**
@@ -618,29 +552,6 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     }
 
     /**
-     * @return the resultType
-     */
-    public String getTechnicalReplicatesCentralTendencyString() {
-        if (technicalReplicatesCentralTendency == null) {
-            return "";
-        } else {
-            return technicalReplicatesCentralTendency.getValue();
-        }
-    }
-
-    /**
-     * @param technicalReplicatesCentralTendencyString the technicalReplicatesCentralTendency string value to set
-     */
-    public void setTechnicalReplicatesCentralTendencyString(String technicalReplicatesCentralTendencyString) {
-        if (StringUtils.isBlank(technicalReplicatesCentralTendencyString)) {
-            this.technicalReplicatesCentralTendency = null;
-        } else {
-            this.technicalReplicatesCentralTendency =
-                CentralTendencyTypeEnum.getByValue(technicalReplicatesCentralTendencyString);
-        }
-    }
-
-    /**
      * @return the useHighVarianceCalculation
      */
     public Boolean isUseHighVarianceCalculation() {
@@ -666,29 +577,6 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public void setHighVarianceCalculationType(HighVarianceCalculationTypeEnum highVarianceCalculationType) {
         this.highVarianceCalculationType = highVarianceCalculationType;
-    }
-
-    /**
-     * @return the resultType
-     */
-    public String getHighVarianceCalculationTypeString() {
-        if (highVarianceCalculationType == null) {
-            return "";
-        } else {
-            return highVarianceCalculationType.getValue();
-        }
-    }
-
-    /**
-     * @param highVarianceCalculationTypeString the highVarianceCalculationType string value to set
-     */
-    public void setHighVarianceCalculationTypeString(String highVarianceCalculationTypeString) {
-        if (StringUtils.isBlank(highVarianceCalculationTypeString)) {
-            this.highVarianceCalculationType = null;
-        } else {
-            this.highVarianceCalculationType =
-                HighVarianceCalculationTypeEnum.getByValue(highVarianceCalculationTypeString);
-        }
     }
 
     /**

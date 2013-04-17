@@ -63,7 +63,7 @@
                     <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" readonly="true" cssClass="readonly" theme="cai2xhtml" size="35" />
                     <!--/NOTE -->       
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" size="35" />
-                    <s:textfield label="Loading Type" name="genomicSource.loadingTypeString" readonly="true" cssClass="readonly" size="35" />
+                    <s:textfield label="Loading Type" name="genomicSource.loadingType.value" readonly="true" cssClass="readonly" size="35" />
                     <s:file id="sampleMappingFile" name="sampleMappingFile" label="Subject to Sample Mapping File" size="35" />
                     
                     <tr>

@@ -269,22 +269,15 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     /**
      * @return the mappingType
      */
-    public String getMappingType() {
-        if (mappingType != null) {
-            return mappingType.getValue();
-        }
-        return "";
+    public ImageDataSourceMappingTypeEnum getMappingType() {
+        return mappingType;
     }
 
     /**
      * @param mappingType the mappingType to set
      */
-    public void setMappingType(String mappingType) {
-        if (StringUtils.isBlank(mappingType)) {
-            this.mappingType = null;
-        } else {
-            this.mappingType = ImageDataSourceMappingTypeEnum.getByValue(mappingType);
-        }
+    public void setMappingType(ImageDataSourceMappingTypeEnum mappingType) {
+        this.mappingType = mappingType;
     }
 
     /**

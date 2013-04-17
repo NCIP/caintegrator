@@ -24,11 +24,11 @@ import java.util.List;
 import org.directwebremoting.proxy.dwr.Util;
 
 /**
- * This is an object which is turned into an AJAX javascript file using the DWR framework.  
+ * This is an object which is turned into an AJAX javascript file using the DWR framework.
  */
 public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     implements IPlatformDeploymentAjaxUpdater {
-    
+
     private static final String UNAVAILABLE_STRING = "---";
     private static final String STATUS_TABLE = "platformDeploymentJobStatusTable";
     private static final String JOB_PLATFORM_NAME = "platformName_";
@@ -47,6 +47,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void initializeDynamicTable(DisplayableUserWorkspace workspace) {
         String username = workspace.getUserWorkspace().getUsername();
         try {
@@ -71,7 +72,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
             getDwrUtil(username).setValue(PLATFORM_LOADER, "");
         }
     }
-    
+
     private void checkTimeout(PlatformConfiguration platformConfiguration) {
         if (Status.PROCESSING.equals(platformConfiguration.getStatus())
                 && DateUtil.isTimeout(platformConfiguration.getDeploymentStartDate(), DateUtil.TWENTY_FOUR_HOURS)) {
@@ -114,7 +115,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                 new PlatformDeploymentAjaxRunner(this, platformConfiguration, username));
         platformConfigurationRunner.start();
     }
-    
+
     void addError(String errorMessage, String username) {
         getDwrUtil(username).setValue("errorMessages", errorMessage);
     }
@@ -122,7 +123,7 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     /**
      * {@inheritDoc}
      */
-    @Override 
+    @Override
     protected Util getDwrUtil(String username) {
         return getDwrUtilFactory().retrievePlatformConfigurationUtil(username);
     }
@@ -130,19 +131,19 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     void updateJobStatus(String username, PlatformConfiguration platformConfiguration) {
         Util utilThis = getDwrUtil(username);
         String platformConfigurationId = platformConfiguration.getId().toString();
-        utilThis.setValue(JOB_PLATFORM_NAME + platformConfigurationId, 
+        utilThis.setValue(JOB_PLATFORM_NAME + platformConfigurationId,
                           retrievePlatformName(platformConfiguration));
         updateRowPlatformType(platformConfiguration, utilThis, platformConfigurationId);
         updateRowPlatformChannelType(platformConfiguration, utilThis, platformConfigurationId);
-        utilThis.setValue(JOB_PLATFORM_VENDOR + platformConfigurationId, 
+        utilThis.setValue(JOB_PLATFORM_VENDOR + platformConfigurationId,
                 retrievePlatformVendor(platformConfiguration));
-        utilThis.setValue(JOB_ARRAY_NAME + platformConfigurationId, 
+        utilThis.setValue(JOB_ARRAY_NAME + platformConfigurationId,
                           retrievePlatformArrayNames(platformConfiguration));
-        utilThis.setValue(JOB_PLATFORM_STATUS + platformConfigurationId, 
+        utilThis.setValue(JOB_PLATFORM_STATUS + platformConfigurationId,
                 getStatusMessage(platformConfiguration.getStatus()));
-        utilThis.setValue(JOB_PLATFORM_STATUS_DESCRIPTION + platformConfigurationId, 
+        utilThis.setValue(JOB_PLATFORM_STATUS_DESCRIPTION + platformConfigurationId,
                 platformConfiguration.getStatusDescription());
-        utilThis.setValue(JOB_PLATFORM_STUDIES_USING_THIS_PLATFORM + platformConfigurationId, 
+        utilThis.setValue(JOB_PLATFORM_STUDIES_USING_THIS_PLATFORM + platformConfigurationId,
                 retrieveStudiesUsingThisPlatform(platformConfiguration));
         updateRowActions(platformConfiguration, utilThis, platformConfigurationId);
     }
@@ -177,22 +178,22 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String retrievePlatformName(PlatformConfiguration platformConfiguration) {
-        return platformConfiguration.getPlatform() == null ? platformConfiguration.getName() 
+        return platformConfiguration.getPlatform() == null ? platformConfiguration.getName()
                                        : platformConfiguration.getPlatform().getName();
     }
-    
+
     private String retrievePlatformType(PlatformConfiguration platformConfiguration) {
         return platformConfiguration.getPlatformType() == null ? UNAVAILABLE_STRING
                                        : platformConfiguration.getPlatformType().getValue();
     }
-    
+
     private String retrievePlatformChannelType(PlatformConfiguration platformConfiguration) {
         return platformConfiguration.getPlatformChannelType() == null ? UNAVAILABLE_STRING
                                        : platformConfiguration.getPlatformChannelType().getValue();
     }
 
     private String retrievePlatformVendor(PlatformConfiguration platformConfiguration) {
-        return platformConfiguration.getPlatform() == null ? UNAVAILABLE_STRING 
+        return platformConfiguration.getPlatform() == null ? UNAVAILABLE_STRING
                                        : platformConfiguration.getPlatform().getVendor().getValue();
     }
 
@@ -201,47 +202,47 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                                        : platformConfiguration.getPlatform().getDisplayableArrayNames();
     }
 
-    private void updateRowPlatformType(PlatformConfiguration platformConfiguration, Util utilThis, 
+    private void updateRowPlatformType(PlatformConfiguration platformConfiguration, Util utilThis,
             String platformConfigurationId) {
         if (UNAVAILABLE_STRING.equals(retrievePlatformType(platformConfiguration))) {
             utilThis.setValue(JOB_PLATFORM_TYPE + platformConfigurationId,
                     "<select id=\"platformType" + platformConfigurationId + CLOSE_TAG
                     + getPlatformTypeOptions() + "</select><br>");
         } else {
-            utilThis.setValue(JOB_PLATFORM_TYPE + platformConfigurationId, 
+            utilThis.setValue(JOB_PLATFORM_TYPE + platformConfigurationId,
                             retrievePlatformType(platformConfiguration));
         }
     }
-    
+
     private String getPlatformTypeOptions() {
         StringBuffer options = new StringBuffer();
-        for (String type : PlatformTypeEnum.getValuesToDisplay()) {
-            options.append("<option value=\"" + type + CLOSE_TAG + type + "</option>");
+        for (PlatformTypeEnum type : PlatformTypeEnum.enabledPlatforms()) {
+            options.append("<option value=\"" + type + CLOSE_TAG + type.getValue() + "</option>");
         }
         return options.toString();
     }
 
-    private void updateRowPlatformChannelType(PlatformConfiguration platformConfiguration, Util utilThis, 
+    private void updateRowPlatformChannelType(PlatformConfiguration platformConfiguration, Util utilThis,
             String platformConfigurationId) {
         if (UNAVAILABLE_STRING.equals(retrievePlatformChannelType(platformConfiguration))) {
             utilThis.setValue(JOB_PLATFORM_CHANNEL_TYPE + platformConfigurationId,
                     "<select id=\"platformChannelType" + platformConfigurationId + CLOSE_TAG
                     + getPlatformChannelTypeOptions() + "</select><br>");
         } else {
-            utilThis.setValue(JOB_PLATFORM_CHANNEL_TYPE + platformConfigurationId, 
+            utilThis.setValue(JOB_PLATFORM_CHANNEL_TYPE + platformConfigurationId,
                             retrievePlatformChannelType(platformConfiguration));
         }
     }
-    
+
     private String getPlatformChannelTypeOptions() {
         StringBuffer options = new StringBuffer();
-        for (String type : PlatformChannelTypeEnum.getValuesToDisplay()) {
-            options.append("<option value=\"" + type + CLOSE_TAG + type + "</option>");
+        for (PlatformChannelTypeEnum type : PlatformChannelTypeEnum.values()) {
+            options.append("<option value=\"" + type + CLOSE_TAG + type.getValue() + "</option>");
         }
         return options.toString();
     }
-    
-    private void updateRowActions(PlatformConfiguration platformConfiguration, Util utilThis, 
+
+    private void updateRowActions(PlatformConfiguration platformConfiguration, Util utilThis,
             String platformConfigurationId) {
         if (UNAVAILABLE_STRING.equals(retrievePlatformType(platformConfiguration))
                 || UNAVAILABLE_STRING.equals(retrievePlatformChannelType(platformConfiguration))) {
@@ -249,14 +250,14 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
                     "<a href=\"javascript:submitAction('updatePlatform'," + platformConfigurationId + ");\">save</a>",
                     false);
         } else if (!Status.PROCESSING.equals(platformConfiguration.getStatus()) && !platformConfiguration.isInUse()) {
-            utilThis.setValue(JOB_ACTION_PLATFORM_URL + platformConfigurationId, 
+            utilThis.setValue(JOB_ACTION_PLATFORM_URL + platformConfigurationId,
                     "<a href=\"javascript:submitAction('delete'," + platformConfigurationId + ",'');\">Delete</a>",
                     false);
         } else {
             utilThis.setValue(JOB_ACTION_PLATFORM_URL, "None");
         }
     }
-    
+
     private String getStatusMessage(Status studyConfigurationStatus) {
         if (Status.PROCESSING.equals(studyConfigurationStatus)) {
             return AJAX_LOADING_GIF + " " + studyConfigurationStatus.getValue();

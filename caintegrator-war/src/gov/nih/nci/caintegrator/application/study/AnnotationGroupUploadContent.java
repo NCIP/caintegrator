@@ -95,6 +95,7 @@ public class AnnotationGroupUploadContent {
     public AnnotationTypeEnum getDataType() {
         return dataType;
     }
+    
     /**
      * @param dataType the dataType to set
      */

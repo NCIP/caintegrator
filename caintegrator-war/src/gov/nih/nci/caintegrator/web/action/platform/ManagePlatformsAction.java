@@ -43,13 +43,13 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
     private String platformFileContentType;
     private String platformFileFileName;
     private String platformName;
-    private String platformType = PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue();
-    private String platformChannelType = PlatformChannelTypeEnum.ONE_COLOR.getValue();
+    private PlatformTypeEnum platformType = PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION;
+    private PlatformChannelTypeEnum platformChannelType = PlatformChannelTypeEnum.ONE_COLOR;
     private String selectedAction;
     private IPlatformDeploymentAjaxUpdater ajaxUpdater;
     private String platformConfigurationId;
-    private String selectedPlatformType;
-    private String selectedPlatformChannelType;
+    private PlatformTypeEnum selectedPlatformType;
+    private PlatformChannelTypeEnum selectedPlatformChannelType;
 
     private static final String CREATE_PLATFORM_ACTION = "createPlatform";
     private static final String ADD_FILE_ACTION = "addAnnotationFile";
@@ -131,18 +131,17 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
         PlatformConfiguration platformConfiguration = getArrayDataService()
             .getRefreshedPlatformConfiguration(Long.valueOf(platformConfigurationId));
         if (platformConfiguration.getPlatformType() == null) {
-            platformConfiguration.setPlatformType(PlatformTypeEnum.getByValue(getSelectedPlatformType()));
+            platformConfiguration.setPlatformType(getSelectedPlatformType());
         }
         if (platformConfiguration.getPlatformChannelType() == null) {
-            platformConfiguration.setPlatformChannelType(PlatformChannelTypeEnum
-                .getByValue(getSelectedPlatformChannelType()));
+            platformConfiguration.setPlatformChannelType(getSelectedPlatformChannelType());
         }
         getArrayDataService().savePlatformConfiguration(platformConfiguration);
     }
 
     private void checkAnnotationFileExtension() {
         boolean isUnsupportedExtension = false;
-        switch (PlatformTypeEnum.getByValue(platformType)) {
+        switch (platformType) {
         case AFFYMETRIX_GENE_EXPRESSION:
         case AFFYMETRIX_SNP:
         case AFFYMETRIX_COPY_NUMBER:
@@ -158,7 +157,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
             break;
 
         default:
-            addActionError(getText("struts.messages.error.platform.invalid.type", getArgs(platformType)));
+            addActionError(getText("struts.messages.error.platform.invalid.type", getArgs(platformType.getValue())));
         }
         if (isUnsupportedExtension) {
             extensionNotSupported();
@@ -200,8 +199,8 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
     }
 
     private void checkPlatformParameters() {
-        if (PlatformTypeEnum.AFFYMETRIX_SNP.getValue().equals(platformType)
-                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AFFYMETRIX_SNP == platformType
+                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER == platformType) {
             checkAffyDnaPlatformType();
         } else {
             if (checkAddedPlatformFile()) {
@@ -212,8 +211,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
     }
 
     private void checkNonAffyDnaPlatformType() {
-        if (!PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue().equals(platformType)
-                && StringUtils.isEmpty(platformName)
+        if (PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION != platformType && StringUtils.isEmpty(platformName)
                 && !platformFileFileName.endsWith(".xml")) {
             addFieldError(PLATFORM_NAME, getText("struts.messages.error.platform.non.affy.dna.name.req"));
         }
@@ -250,7 +248,8 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
         try {
             AbstractPlatformSource source = getPlatformSource();
             if (source == null) {
-                addActionError(getText("struts.messages.error.platform.invalid.type", getArgs(platformType)));
+                addActionError(getText("struts.messages.error.platform.invalid.type",
+                        getArgs(platformType.getValue())));
                 return ERROR;
             }
             String extractedName = source.getLoader().getPlatformName();
@@ -273,28 +272,23 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
 
     private AbstractPlatformSource getPlatformSource() throws IOException {
         AbstractPlatformSource source = null;
-        switch (PlatformTypeEnum.getByValue(platformType)) {
+        switch (platformType) {
         case AFFYMETRIX_GENE_EXPRESSION:
             source = new AffymetrixExpressionPlatformSource(getPlatformFileCopy());
             break;
-
         case AFFYMETRIX_SNP:
             source = new AffymetrixSnpPlatformSource(getPlatformForm().getAnnotationFiles(), getPlatformName());
             break;
-
         case AFFYMETRIX_COPY_NUMBER:
             source = new AffymetrixCnPlatformSource(getPlatformForm().getAnnotationFiles(), getPlatformName());
             break;
-
         case AGILENT_GENE_EXPRESSION:
             source = new AgilentExpressionPlatformSource(getPlatformFileCopy(), getPlatformName(),
                     platformFileFileName);
             break;
-
         case AGILENT_COPY_NUMBER:
             source = new AgilentCnPlatformSource(getPlatformFileCopy(), getPlatformName(), platformFileFileName);
             break;
-
         default:
             source = null;
         }
@@ -318,8 +312,8 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
         PlatformConfiguration configuration = new PlatformConfiguration(source);
         configuration.setName(name);
         configuration.setStatus(Status.PROCESSING);
-        configuration.setPlatformType(PlatformTypeEnum.getByValue(platformType));
-        configuration.setPlatformChannelType(PlatformChannelTypeEnum.getByValue(platformChannelType));
+        configuration.setPlatformType(platformType);
+        configuration.setPlatformChannelType(platformChannelType);
         arrayDataService.savePlatformConfiguration(configuration);
         ajaxUpdater.runJob(configuration, getWorkspace().getUsername());
         getPlatformForm().clear();
@@ -436,14 +430,14 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
     /**
      * @return the platformType
      */
-    public String getPlatformType() {
+    public PlatformTypeEnum getPlatformType() {
         return platformType;
     }
 
     /**
      * @param platformType the platformType to set
      */
-    public void setPlatformType(String platformType) {
+    public void setPlatformType(PlatformTypeEnum platformType) {
         this.platformType = platformType;
     }
 
@@ -466,10 +460,10 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
      * @return whether to display the platform name.
      */
     public String getPlatformNameDisplay() {
-        if (PlatformTypeEnum.AFFYMETRIX_SNP.getValue().equals(platformType)
-                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue().equals(platformType)
-                || PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
-                || PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AFFYMETRIX_SNP == platformType
+                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER == platformType
+                || PlatformTypeEnum.AGILENT_GENE_EXPRESSION == platformType
+                || PlatformTypeEnum.AGILENT_COPY_NUMBER == platformType) {
             return DISPLAY_BLOCK;
         } else {
             return DISPLAY_NONE;
@@ -481,9 +475,9 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
      * @return whether to display the platform channel type.
      */
     public String getPlatformChannelTypeDisplay() {
-        if (PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue().equals(platformType)
-                || PlatformTypeEnum.AFFYMETRIX_SNP.getValue().equals(platformType)
-                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION == platformType
+                || PlatformTypeEnum.AFFYMETRIX_SNP == platformType
+                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER == platformType) {
             return DISPLAY_NONE;
         } else {
             return DISPLAY_BLOCK;
@@ -495,8 +489,8 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
      * @return whether to display the add button.
      */
     public String getAddButtonDisplay() {
-        if (PlatformTypeEnum.AFFYMETRIX_SNP.getValue().equals(platformType)
-                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AFFYMETRIX_SNP == platformType
+                || PlatformTypeEnum.AFFYMETRIX_COPY_NUMBER == platformType) {
             return DISPLAY_BLOCK;
         } else {
             return DISPLAY_NONE;
@@ -508,7 +502,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
      * @return whether to display the adf geml comment.
      */
     public String getAdfGemlFileDisplay() {
-        if (PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AGILENT_COPY_NUMBER == platformType) {
             return DISPLAY_BLOCK;
         } else {
             return DISPLAY_NONE;
@@ -520,7 +514,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
      * @return whether to display the csv comment.
      */
     public String getCsvlFileDisplay() {
-        if (PlatformTypeEnum.AGILENT_COPY_NUMBER.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AGILENT_COPY_NUMBER == platformType) {
             return DISPLAY_NONE;
         } else {
             return DISPLAY_BLOCK;
@@ -558,42 +552,42 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
     /**
      * @return the selectedPlatformType
      */
-    public String getSelectedPlatformType() {
+    public PlatformTypeEnum getSelectedPlatformType() {
         return selectedPlatformType;
     }
 
     /**
      * @param selectedPlatformType the selectedPlatformType to set
      */
-    public void setSelectedPlatformType(String selectedPlatformType) {
+    public void setSelectedPlatformType(PlatformTypeEnum selectedPlatformType) {
         this.selectedPlatformType = selectedPlatformType;
     }
 
     /**
      * @return the platformChannelType
      */
-    public String getPlatformChannelType() {
+    public PlatformChannelTypeEnum getPlatformChannelType() {
         return platformChannelType;
     }
 
     /**
      * @param platformChannelType the platformChannelType to set
      */
-    public void setPlatformChannelType(String platformChannelType) {
+    public void setPlatformChannelType(PlatformChannelTypeEnum platformChannelType) {
         this.platformChannelType = platformChannelType;
     }
 
     /**
      * @return the selectedPlatformChannelType
      */
-    public String getSelectedPlatformChannelType() {
+    public PlatformChannelTypeEnum getSelectedPlatformChannelType() {
         return selectedPlatformChannelType;
     }
 
     /**
      * @param selectedPlatformChannelType the selectedPlatformChannelType to set
      */
-    public void setSelectedPlatformChannelType(String selectedPlatformChannelType) {
+    public void setSelectedPlatformChannelType(PlatformChannelTypeEnum selectedPlatformChannelType) {
         this.selectedPlatformChannelType = selectedPlatformChannelType;
     }
 }

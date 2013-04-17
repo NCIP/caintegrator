@@ -1206,7 +1206,7 @@
         
         <action name="retrieveAnnotationKMPlot" method="retrievePlot" class="kmPlotAnnotationBasedAction">
             <result name="kmPlotResult" type="kmPlotResult"> 
-                <param name="type">annotationBased</param>
+                <param name="type">ANNOTATION_BASED</param>
             </result>
         </action>
         
@@ -1231,7 +1231,7 @@
         
         <action name="retrieveGeneExpressionKMPlot" method="retrievePlot" class="kmPlotGeneExpressionBasedAction">
             <result name="kmPlotResult" type="kmPlotResult"> 
-                <param name="type">geneExpression</param>
+                <param name="type">GENE_EXPRESSION</param>
             </result>
         </action>
         
@@ -1263,7 +1263,7 @@
         
         <action name="retrieveQueryKMPlot" method="retrievePlot" class="kmPlotQueryBasedAction">
             <result name="kmPlotResult" type="kmPlotResult"> 
-                <param name="type">queryBased</param>
+                <param name="type">QUERY_BASED</param>
             </result>
         </action>
         
@@ -1314,29 +1314,29 @@
         
         <action name="retrieveAnnotationGEPlot_mean" method="retrievePlot" class="gePlotAnnotationBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">annotationBased</param>
-                <param name="calculationType">mean</param>
+                <param name="plotType">ANNOTATION_BASED</param>
+                <param name="calculationType">MEAN</param>
             </result>
         </action>
         
         <action name="retrieveAnnotationGEPlot_median" method="retrievePlot" class="gePlotAnnotationBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">annotationBased</param>
-                <param name="calculationType">median</param>
+                <param name="plotType">ANNOTATION_BASED</param>
+                <param name="calculationType">MEDIAN</param>
             </result>
         </action>
         
         <action name="retrieveAnnotationGEPlot_log2" method="retrievePlot" class="gePlotAnnotationBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">annotationBased</param>
-                <param name="calculationType">log2Intensity</param>
+                <param name="plotType">ANNOTATION_BASED</param>
+                <param name="calculationType">LOG2_INTENSITY</param>
             </result>
         </action>
         
         <action name="retrieveAnnotationGEPlot_bw" method="retrievePlot" class="gePlotAnnotationBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">annotationBased</param>
-                <param name="calculationType">boxWhiskerLog2Intensity</param>
+                <param name="plotType">ANNOTATION_BASED</param>
+                <param name="calculationType">BOX_WHISKER_LOG2_INTENSITY</param>
             </result>
         </action>
         
@@ -1361,29 +1361,29 @@
         
         <action name="retrieveGenomicQueryGEPlot_mean" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">genomicQueryBased</param>
-                <param name="calculationType">mean</param>
+                <param name="plotType">GENOMIC_QUERY_BASED</param>
+                <param name="calculationType">MEAN</param>
             </result>
         </action>
         
         <action name="retrieveGenomicQueryGEPlot_median" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">genomicQueryBased</param>
-                <param name="calculationType">median</param>
+                <param name="plotType">GENOMIC_QUERY_BASED</param>
+                <param name="calculationType">MEDIAN</param>
             </result>
         </action>
 
         <action name="retrieveGenomicQueryGEPlot_log2" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">genomicQueryBased</param>
-                <param name="calculationType">log2Intensity</param>
+                <param name="plotType">GENOMIC_QUERY_BASED</param>
+                <param name="calculationType">LOG2_INTENSITY</param>
             </result>
         </action>
         
         <action name="retrieveGenomicQueryGEPlot_bw" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">genomicQueryBased</param>
-                <param name="calculationType">boxWhiskerLog2Intensity</param>
+                <param name="plotType">GENOMIC_QUERY_BASED</param>
+                <param name="calculationType">BOX_WHISKER_LOG2_INTENSITY</param>
             </result>
         </action>
         
@@ -1415,29 +1415,29 @@
         
         <action name="retrieveClinicalQueryGEPlot_mean" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">clinicalQueryBased</param>
-                <param name="calculationType">mean</param>
+                <param name="plotType">CLINICAL_QUERY_BASED</param>
+                <param name="calculationType">MEAN</param>
             </result>
         </action>
         
         <action name="retrieveClinicalQueryGEPlot_median" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">clinicalQueryBased</param>
-                <param name="calculationType">median</param>
+                <param name="plotType">CLINICAL_QUERY_BASED</param>
+                <param name="calculationType">MEDIAN</param>
             </result>
         </action>
 
         <action name="retrieveClinicalQueryGEPlot_log2" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">clinicalQueryBased</param>
-                <param name="calculationType">log2Intensity</param>
+                <param name="plotType">CLINICAL_QUERY_BASED</param>
+                <param name="calculationType">LOG2_INTENSITY</param>
             </result>
         </action>
         
         <action name="retrieveClinicalQueryGEPlot_bw" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
-                <param name="plotType">clinicalQueryBased</param>
-                <param name="calculationType">boxWhiskerLog2Intensity</param>
+                <param name="plotType">CLINICAL_QUERY_BASED</param>
+                <param name="calculationType">BOX_WHISKER_LOG2_INTENSITY</param>
             </result>
         </action>
                

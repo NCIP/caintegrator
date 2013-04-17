@@ -76,8 +76,8 @@
                                     <div class="wwlbl"><label class="label">List Type</label></div>
                                         <div class="wwctrl">
                                             <s:radio id="listType" name="listType"
-                                                list="@gov.nih.nci.caintegrator.web.action.abstractlist.ListTypeEnum@getValueToTypeMap()"
-                                                listKey="key" listValue="value" onclick="checkListType(this.value);"/>
+                                                list="@gov.nih.nci.caintegrator.web.action.abstractlist.ListTypeEnum@values()"
+                                                listValue="value" onclick="checkListType(this.value);"/>
                                         </div>
                                 </td>
                             </tr>

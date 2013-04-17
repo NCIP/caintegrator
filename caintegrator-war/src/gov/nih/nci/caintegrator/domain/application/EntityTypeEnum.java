@@ -25,26 +25,26 @@ public enum EntityTypeEnum {
      * Sample type.
      */
     SAMPLE("sample"),
-    
+
     /**
      * Image Series type.
      */
     IMAGESERIES("imageSeries"),
-    
+
     /**
      * Image type.
      */
     IMAGE("image"),
-    
+
     /**
      * Gene Expression Type.
      */
     GENEEXPRESSION("geneExpression");
-    
+
     private static Map<String, EntityTypeEnum> valueToTypeMap = new HashMap<String, EntityTypeEnum>();
 
     private String value;
-    
+
     private EntityTypeEnum(String value) {
         this.value = value;
     }
@@ -71,22 +71,11 @@ public enum EntityTypeEnum {
         }
         return valueToTypeMap;
     }
-    
-    /**
-     * Used in the JSP's to retrieve the displayable string version of the Enum values.
-     * @return HashMap of EnumeratedValue's String to Displayable String. 
-     */
-    public static Map<String, String> getValueToDisplayableMap() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(EntityTypeEnum.SUBJECT.getValue().toLowerCase(Locale.getDefault()), "Subject");
-        map.put(EntityTypeEnum.IMAGESERIES.getValue().toLowerCase(Locale.getDefault()), "Image Series");
-        return map;
-    }
-    
+
     /**
      * Returns the <code>EntityTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
-     * 
+     *
      * @param value the value to match
      * @return the matching type.
      */
@@ -97,7 +86,7 @@ public enum EntityTypeEnum {
 
     /**
      * Checks to see that the value given is a legal <code>AssayType</code> value.
-     * 
+     *
      * @param value the value to check;
      */
     public static void checkType(String value) {

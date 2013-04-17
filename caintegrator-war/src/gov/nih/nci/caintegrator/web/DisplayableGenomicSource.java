@@ -114,7 +114,7 @@ public class DisplayableGenomicSource {
      * @return the data type
      */
     public String getDataType() {
-        return genomicDataSourceConfiguration.getDataTypeString();
+        return genomicDataSourceConfiguration.getDataType().getValue();
     }
 
     /**
@@ -154,7 +154,7 @@ public class DisplayableGenomicSource {
      * @return central tendency.
      */
     public String getTechnicalReplicateCentralTendency() {
-        return genomicDataSourceConfiguration.getTechnicalReplicatesCentralTendencyString();
+        return genomicDataSourceConfiguration.getTechnicalReplicatesCentralTendency().getValue();
     }
 
     /**

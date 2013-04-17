@@ -84,7 +84,7 @@
         <div class="reporterTypeSelector">
         <b>Preferred Copy Number Method: </b> 
             <s:select name="queryForm.resultConfiguration.copyNumberType" 
-                list="@gov.nih.nci.caintegrator.domain.application.CopyNumberCriterionTypeEnum@getDisplayableValues()"
+                list="@gov.nih.nci.caintegrator.domain.application.CopyNumberCriterionTypeEnum@values()" listValue="value"
                 />
         </div>  
     </s:elseif>

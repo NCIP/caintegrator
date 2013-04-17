@@ -6,10 +6,6 @@
  */
 package gov.nih.nci.caintegrator.external.caarray;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import gov.nih.nci.caarray.external.v1_0.data.DataSet;
 import gov.nih.nci.caarray.external.v1_0.data.DataType;
 import gov.nih.nci.caarray.external.v1_0.data.DesignElement;
@@ -41,6 +37,10 @@ import gov.nih.nci.caintegrator.domain.genomic.Sample;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -51,9 +51,9 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
     private static final ReporterTypeEnum REPORTER_TYPE = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
     private static final Logger LOGGER = Logger.getLogger(ExpressionDataRetrievalHelper.class);
     private ArrayDataValues arrayDataValues;
-    
+
     ExpressionDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource,
-            DataService dataService, SearchService searchService, CaIntegrator2Dao dao, 
+            DataService dataService, SearchService searchService, CaIntegrator2Dao dao,
             ArrayDataService arrayDataService) {
         super(genomicSource, dataService, searchService, dao, arrayDataService);
     }
@@ -68,9 +68,10 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
         return REPORTER_TYPE;
     }
 
-    protected void retrieveData() 
+    @Override
+    protected void retrieveData()
     throws ConnectionException, DataRetrievalException, InconsistentDataSetsException, InvalidInputException {
-    
+
         DataSet dataSet = getDataService().getDataSet(createRequest());
         if (dataSet.getDatas().isEmpty()) {
             throw new DataRetrievalException("No hybridization values available for experiment: "
@@ -83,16 +84,16 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
         convertToArrayDataValues(dataSet);
     }
 
-    private void convertToArrayDataValues(DataSet dataSet) 
+    private void convertToArrayDataValues(DataSet dataSet)
     throws DataRetrievalException, InvalidInputException {
         fillSampleToHybridizationDataMap(dataSet);
         for (Sample sample : getSampleToHybridizationDataMap().keySet()) {
             loadArrayDataValues(sample, dataSet);
         }
     }
-    
 
-    private void loadArrayDataValues(Sample sample, DataSet dataSet) 
+
+    private void loadArrayDataValues(Sample sample, DataSet dataSet)
     throws InvalidInputException {
         List<HybridizationData> hybridizationDatas = getSampleToHybridizationDataMap().get(sample);
         ArrayData arrayData = createArrayData(sample, hybridizationDatas.get(0).getHybridization().getName());
@@ -101,8 +102,8 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
         for (int i = 0; i < probeSets.size(); i++) {
             AbstractReporter reporter = getReporter(probeSets.get(i));
             if (reporter == null) {
-                String probeSetName = ((DesignElement) probeSets.get(i)).getName();
-                getLogger().warn("Reporter with name " + probeSetName + " was not found in platform " 
+                String probeSetName = probeSets.get(i).getName();
+                getLogger().warn("Reporter with name " + probeSetName + " was not found in platform "
                         + getPlatformHelper().getPlatform().getName());
             } else {
                 List<Float> floatValues = new ArrayList<Float>();
@@ -114,7 +115,7 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
         }
     }
 
-    private ArrayData createArrayData(Sample sample, String arrayName) 
+    private ArrayData createArrayData(Sample sample, String arrayName)
     throws InvalidInputException {
         Array array = new Array();
         array.setPlatform(getPlatformHelper().getPlatform());
@@ -150,9 +151,8 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
     }
 
     protected void setValue(ArrayData arrayData, AbstractReporter reporter, List<Float> values) {
-        arrayDataValues.setFloatValue(arrayData, 
+        arrayDataValues.setFloatValue(arrayData,
                 reporter, ArrayDataValueType.EXPRESSION_SIGNAL, values, getCentralTendencyCalculator());
-        
     }
 
     /**

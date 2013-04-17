@@ -162,10 +162,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         SortedSet<String> platformNames = new TreeSet<String>();
         for (PlatformConfiguration platformConfiguration : getArrayDataService().getPlatformConfigurations()) {
             if (Status.LOADED.equals(platformConfiguration.getStatus())
-                    && platformConfiguration.getPlatform().getVendor().equals(
-                            getTempGenomicSource().getPlatformVendor())
-                    && platformConfiguration.getPlatformType().getDataType().equals(
-                            getTempGenomicSource().getDataTypeString())) {
+                    && platformConfiguration.getPlatform().getVendor() == getTempGenomicSource().getPlatformVendor()
+                    && platformConfiguration.getPlatformType().getDataType() == getTempGenomicSource().getDataType()) {
                 platformNames.add(platformConfiguration.getPlatform().getName());
             }
         }
@@ -175,22 +173,9 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @return the list of array data loading types
      */
-    public List<String> getLoadingTypes() {
-        return ArrayDataLoadingTypeEnum.getLoadingTypes(
-                getTempGenomicSource().getPlatformVendor(), getTempGenomicSource().getDataType());
-    }
-
-    /**
-     *
-     * @return a list of data types based on the platform vendor.
-     */
-    public List<String> getDataTypes() {
-        if (PlatformVendorEnum.AFFYMETRIX.getValue().equals(getTempGenomicSource().getPlatformVendor())) {
-            return PlatformDataTypeEnum.getStringValues();
-        }
-        List<String> dataTypes = PlatformDataTypeEnum.getStringValues();
-        dataTypes.remove("SNP");
-        return dataTypes;
+    public List<ArrayDataLoadingTypeEnum> getLoadingTypes() {
+        return ArrayDataLoadingTypeEnum.getLoadingTypes(getTempGenomicSource().getPlatformVendor(),
+                getTempGenomicSource().getDataType());
     }
 
     /**

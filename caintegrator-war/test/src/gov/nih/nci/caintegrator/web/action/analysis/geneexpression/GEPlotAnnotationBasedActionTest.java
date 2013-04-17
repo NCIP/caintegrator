@@ -29,7 +29,6 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.geneexpression.GEPlotAnnotationBasedAction;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -174,7 +173,8 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         assertEquals(ActionSupport.INPUT, action.createPlot());
         action.getPlotParameters().setGeneSymbol("EGFR");
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
-        verify(analysisService, atLeastOnce()).createGeneExpressionPlot(any(StudySubscription.class), any(AbstractGEPlotParameters.class));
+        verify(analysisService, atLeastOnce()).createGeneExpressionPlot(any(StudySubscription.class),
+                any(AbstractGEPlotParameters.class));
         assertFalse(action.isCreatable());
 
         action.getGePlotForm().getAnnotationBasedForm().setSelectedAnnotationId("1");
@@ -192,13 +192,13 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
 
     @Test
     public void testGetPlotUrl() {
-        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEAN.getValue()).
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEAN).
                                         contains("retrieveAnnotationGEPlot_mean.action?"));
-        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEDIAN.getValue()).
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEDIAN).
                                         contains("retrieveAnnotationGEPlot_median.action?"));
-        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.LOG2_INTENSITY.getValue()).
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.LOG2_INTENSITY).
                                         contains("retrieveAnnotationGEPlot_log2.action?"));
-        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.BOX_WHISKER_LOG2_INTENSITY.getValue()).
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.BOX_WHISKER_LOG2_INTENSITY).
                                         contains("retrieveAnnotationGEPlot_bw.action?"));
     }
 
@@ -212,7 +212,7 @@ public class GEPlotAnnotationBasedActionTest extends AbstractSessionBasedTest {
         selectedAnnotation.getPermissibleValueCollection().add(val2);
         selectedAnnotation.setDataType(AnnotationTypeEnum.STRING);
         selectedAnnotationFieldDescriptor.setDefinition(selectedAnnotation);
-        selectedAnnotationFieldDescriptor.setId(1l);
+        selectedAnnotationFieldDescriptor.setId(1L);
         action.getPlotParameters().setSelectedAnnotation(selectedAnnotationFieldDescriptor);
         action.getPlotParameters().setAddPatientsNotInQueriesGroup(true);
     }

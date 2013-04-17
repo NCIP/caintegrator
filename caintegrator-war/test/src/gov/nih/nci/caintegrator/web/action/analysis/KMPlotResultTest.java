@@ -15,7 +15,6 @@ import gov.nih.nci.caintegrator.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.KMPlotResult;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,17 +37,17 @@ public class KMPlotResultTest extends AbstractSessionBasedTest {
 
         SessionHelper.setKmPlot(PlotTypeEnum.ANNOTATION_BASED, kmPlot);
         KMPlotResult result = new KMPlotResult();
-        result.setType(PlotTypeEnum.ANNOTATION_BASED.getValue());
+        result.setType(PlotTypeEnum.ANNOTATION_BASED);
         result.execute(new MockActionInvocation());
         verify(kmPlot, times(1)).writePlotImage(any(OutputStream.class));
 
         SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, kmPlot);
-        result.setType(PlotTypeEnum.GENE_EXPRESSION.getValue());
+        result.setType(PlotTypeEnum.GENE_EXPRESSION);
         result.execute(new MockActionInvocation());
         verify(kmPlot, times(2)).writePlotImage(any(OutputStream.class));
 
         verifyNoMoreInteractions(kmPlot);
-        result.setType("Invalid Type");
+        result.setType(PlotTypeEnum.GENOMIC_QUERY_BASED);
         result.execute(new MockActionInvocation());
     }
 }

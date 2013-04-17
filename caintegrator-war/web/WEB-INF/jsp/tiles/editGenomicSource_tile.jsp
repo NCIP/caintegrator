@@ -14,22 +14,13 @@
     <!--/Page Help-->
     
     <script type="text/javascript">
-        function CheckPlatformVendor(vendor, dataType) {
-            if (vendor == "Agilent"
-                    || (vendor == "Affymetrix" && dataType == "Expression")) {
-                document.getElementById("platformName").disabled = false;
-            } else {
-                document.getElementById("platformName").disabled = true;
-            }
-        }
-        
         function saveGenomicSource() {
             if (document.genomicSourceForm.genomicSourceId.value != null
                     && document.genomicSourceForm.genomicSourceId.value != "") {
                 var confirmationMessage = "You are about to update the configuration information for this data source.  "
                     + "Doing so will require you to remap your samples. "
                     + "Please click OK to update the data source or click Cancel to go back.";
-                 if (document.genomicSourceForm.dataType.value == "Copy Number") {
+                 if (document.genomicSourceForm.dataType.value == "COPY_NUMBER") {
                 	 confirmationMessage = "You are about to update the configuration information for this data source.  "
                          + "Doing so will require you to remap your samples. Any copy number analysis jobs associated with samples in this source will also be deleted.  "
                          + "Please click OK to update the data source or click Cancel to go back.";
@@ -112,13 +103,13 @@
                     <!--/NOTE --> 
                     <s:textfield label="caArray Experiment Id" name="tempGenomicSource.experimentIdentifier" id="experimentId" />
                     <br/>
-                    <s:select id="platformVendor" name="tempGenomicSource.platformVendorString" label="Vendor"
-                        list="@gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
+                    <s:select id="platformVendor" name="tempGenomicSource.platformVendor" label="Vendor"
+                        list="@gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum@values()" listValue="value"
                         onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
                                 document.genomicSourceForm.submit();"/>
                     <br/>
-                    <s:select id="dataType" name="tempGenomicSource.dataTypeString" label="Data Type"
-                        list="dataTypes"
+                    <s:select id="dataType" name="tempGenomicSource.dataType" label="Data Type"
+                        list="@gov.nih.nci.caintegrator.application.arraydata.PlatformDataTypeEnum@enabledValues()" listValue="value"
                         onchange="document.genomicSourceForm.action = 'refreshGenomicSource.action';
                                 document.genomicSourceForm.submit();"/>
                     <br/>
@@ -127,13 +118,11 @@
                         label="Platform"
                         list="filterPlatformNames"/>
                     <br/>
-                    <s:select id="loadingType" 
-                        name="tempGenomicSource.loadingTypeString" 
-                        label="Array Data Loading Type"
-                        list="loadingTypes"/>
+                    <s:select id="loadingType"  name="tempGenomicSource.loadingType" label="Array Data Loading Type"
+                        list="loadingTypes" listValue="value"/>
                     <br/>
-                    <s:select id="technicalReplicatesCentralTendency" name="tempGenomicSource.technicalReplicatesCentralTendencyString" label="Central Tendency for Technical Replicates"
-                        list="@gov.nih.nci.caintegrator.application.study.CentralTendencyTypeEnum@getStringValues()"
+                    <s:select id="technicalReplicatesCentralTendency" name="tempGenomicSource.technicalReplicatesCentralTendency" label="Central Tendency for Technical Replicates"
+                        list="@gov.nih.nci.caintegrator.application.study.CentralTendencyTypeEnum@values()" listValue="value"
                         />
                     <br/>    
                     <div class="wwgrp" id="wwgrp_isUseHighVarianceCalculation">
@@ -149,8 +138,8 @@
                         </div> 
                     </div>
                     <s:div id="varianceInputParams" cssStyle="%{varianceInputCssStyle}">
-                    <s:select id="highVarianceCalculationType" name="tempGenomicSource.highVarianceCalculationTypeString" label="Standard Deviation Type" 
-                        list="@gov.nih.nci.caintegrator.application.study.HighVarianceCalculationTypeEnum@getStringValues()"/>
+                    <s:select id="highVarianceCalculationType" name="tempGenomicSource.highVarianceCalculationType" label="Standard Deviation Type" 
+                        list="@gov.nih.nci.caintegrator.application.study.HighVarianceCalculationTypeEnum@values()" listValue="value"/>
                     <br/>
                     <s:textfield label="Standard Deviation Threshold" name="tempGenomicSource.highVarianceThreshold" id="highVarianceThreshold" />
                     <br/>

@@ -13,7 +13,6 @@ import gov.nih.nci.caintegrator.application.study.LogEntry;
 import gov.nih.nci.caintegrator.common.Cai2Util;
 import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.PermissibleValue;
-import gov.nih.nci.caintegrator.domain.annotation.SurvivalLengthUnitsEnum;
 import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
@@ -231,10 +230,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
             survivalValueDefinition.getSurvivalStatus().setId(
                     Long.valueOf(survivalDefinitionFormValues.getSurvivalStatusId()));
         }
-        if (!StringUtils.isBlank(survivalDefinitionFormValues.getSurvivalLengthUnits())) {
-            survivalValueDefinition.setSurvivalLengthUnits(SurvivalLengthUnitsEnum
-                    .getByValue(survivalDefinitionFormValues.getSurvivalLengthUnits()));
-        }
+        survivalValueDefinition.setSurvivalLengthUnits(survivalDefinitionFormValues.getSurvivalLengthUnits());
     }
 
 
@@ -330,10 +326,8 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
      */
     private void setSurvivalValueDefinitionValues() {
         survivalValueDefinition.setName(survivalDefinitionFormValues.getSurvivalValueDefinitionName());
-        survivalValueDefinition.setSurvivalValueType(SurvivalValueTypeEnum.getByValue(survivalDefinitionFormValues
-                .getSurvivalValueType()));
-        survivalValueDefinition.setSurvivalLengthUnits(SurvivalLengthUnitsEnum.getByValue(
-                survivalDefinitionFormValues.getSurvivalLengthUnits()));
+        survivalValueDefinition.setSurvivalValueType(survivalDefinitionFormValues.getSurvivalValueType());
+        survivalValueDefinition.setSurvivalLengthUnits(survivalDefinitionFormValues.getSurvivalLengthUnits());
         if (SurvivalValueTypeEnum.DATE.equals(survivalValueDefinition.getSurvivalValueType())) {
             survivalValueDefinition.setSurvivalLength(null);
             survivalValueDefinition.setSurvivalStatus(null);

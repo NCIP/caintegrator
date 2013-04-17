@@ -36,7 +36,7 @@
                 </td>
                 <td class="value_inline">
                     <s:radio name="kmPlotForm.geneExpressionBasedForm.expressionType"
-                    list="@gov.nih.nci.caintegrator.application.analysis.KMGeneExpressionBasedParameters@getExpressionTypeValuesToDisplay()"
+                    list="@gov.nih.nci.caintegrator.application.analysis.ExpressionTypeEnum@values()" listValue="value"
                     onclick="selectGeneExpressionType()" disabled="kmPlotForm.geneExpressionBasedForm.disableExpressionTypeSelector"/>                
                 </td>
                 <td class="value_inline"></td>

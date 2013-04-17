@@ -7,8 +7,6 @@
 package gov.nih.nci.caintegrator.domain.genomic;
 
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Genome Build.
@@ -35,8 +33,6 @@ public enum GenomeBuildVersionEnum {
      */
     HG19("hg19");
 
-    private static Map<String, GenomeBuildVersionEnum> valueToTypeMap = new HashMap<String, GenomeBuildVersionEnum>();
-
     private String value;
 
     private GenomeBuildVersionEnum(String value) {
@@ -55,38 +51,6 @@ public enum GenomeBuildVersionEnum {
      */
     public void setValue(String value) {
         this.value = value;
-    }
-
-    private static Map<String, GenomeBuildVersionEnum> getValueToTypeMap() {
-        if (valueToTypeMap.isEmpty()) {
-            for (GenomeBuildVersionEnum type : values()) {
-                valueToTypeMap.put(type.getValue(), type);
-            }
-        }
-        return valueToTypeMap;
-    }
-
-    /**
-     * Returns the <code>GenomeBuildTypeEnum</code> corresponding to the given value. Returns null
-     * for null value.
-     *
-     * @param value the value to match
-     * @return the matching type.
-     */
-    public static GenomeBuildVersionEnum getByValue(String value) {
-        checkType(value);
-        return getValueToTypeMap().get(value);
-    }
-
-    /**
-     * Checks to see that the value given is a legal value.
-     *
-     * @param value the value to check;
-     */
-    public static void checkType(String value) {
-        if (value != null && !getValueToTypeMap().containsKey(value)) {
-            throw new IllegalArgumentException("No matching type for " + value);
-        }
     }
 
     /**

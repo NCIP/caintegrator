@@ -69,7 +69,6 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
             getErrorMessages().add(valueStringPrefix + " value is not a valid number, must be > 0.");
             return false;
         }
-
         return true;
     }
 
@@ -80,7 +79,6 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         }
         return true;
     }
-
 
     private boolean validateUnderexpressed() {
         String valueStringPrefix = isFoldChangeType() ? "Under Expressed Fold Change" : "Below Expression Level";
@@ -102,7 +100,6 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         }
         return true;
     }
-
 
     /**
      * @return the underValue
@@ -132,7 +129,6 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         this.overValue = overValue;
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -141,9 +137,7 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         underValue = null;
         overValue = null;
         geneSymbol = null;
-
     }
-
 
     /**
      * @return the geneSymbol
@@ -152,7 +146,6 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         return geneSymbol;
     }
 
-
     /**
      * @param geneSymbol the geneSymbol to set
      */
@@ -160,14 +153,12 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         this.geneSymbol = geneSymbol;
     }
 
-
     /**
      * @return the controlSampleSetName
      */
     public String getControlSampleSetName() {
         return controlSampleSetName;
     }
-
 
     /**
      * @param controlSampleSetName the controlSampleSetName to set
@@ -190,14 +181,12 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         return genesFoundInStudy;
     }
 
-
     /**
      * @return the multiplePlatformsInStudy
      */
     public boolean isMultiplePlatformsInStudy() {
         return multiplePlatformsInStudy;
     }
-
 
     /**
      * @param multiplePlatformsInStudy the multiplePlatformsInStudy to set
@@ -232,18 +221,6 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
      */
     public void setPlatformName(String platformName) {
         this.platformName = platformName;
-    }
-
-    /**
-     * Used in the JSP's to retrieve the displayable string version of the Enum values.
-     * @return HashMap of EnumeratedValue's String to Displayable String.
-     */
-    public static List<String> getExpressionTypeValuesToDisplay() {
-        List<String> list = new ArrayList<String>();
-        for (ExpressionTypeEnum type : ExpressionTypeEnum.values()) {
-            list.add(type.getValue());
-        }
-        return list;
     }
 
     private boolean isFoldChangeType() {

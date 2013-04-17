@@ -27,16 +27,16 @@ import com.opensymphony.xwork2.Result;
 public class GEPlotResult implements Result {
 
     private static final long serialVersionUID = 1L;
-    private String plotType;
-    private String calculationType;
+    private PlotTypeEnum plotType;
+    private PlotCalculationTypeEnum calculationType;
 
     /**
      * {@inheritDoc}
      */
     public void execute(ActionInvocation invocation) throws IOException {
-        if (PlotTypeEnum.checkType(plotType)) {
+        if (plotType != null) {
             GeneExpressionPlotGroup gePlots = retrieveGePlots();
-            GeneExpressionPlot gePlot = gePlots.getPlot(PlotCalculationTypeEnum.getByValue(calculationType));
+            GeneExpressionPlot gePlot = gePlots.getPlot(calculationType);
             if (gePlot != null) {
                 HttpServletResponse response = ServletActionContext.getResponse();
                 gePlot.writePlotImage(response.getOutputStream());
@@ -44,11 +44,11 @@ public class GEPlotResult implements Result {
                 response.getOutputStream().flush();
             }
         }
-        
+
     }
 
     private GeneExpressionPlotGroup retrieveGePlots() {
-        switch (PlotTypeEnum.getByValue(plotType)) {
+        switch (plotType) {
         case ANNOTATION_BASED:
             return SessionHelper.getAnnotationBasedGePlots();
         case GENOMIC_QUERY_BASED:
@@ -60,35 +60,31 @@ public class GEPlotResult implements Result {
         }
     }
 
-
     /**
      * @return the plotType
      */
-    public String getPlotType() {
+    public PlotTypeEnum getPlotType() {
         return plotType;
     }
-
 
     /**
      * @param plotType the plotType to set
      */
-    public void setPlotType(String plotType) {
+    public void setPlotType(PlotTypeEnum plotType) {
         this.plotType = plotType;
     }
-
 
     /**
      * @return the calculationType
      */
-    public String getCalculationType() {
+    public PlotCalculationTypeEnum getCalculationType() {
         return calculationType;
     }
-
 
     /**
      * @param calculationType the calculationType to set
      */
-    public void setCalculationType(String calculationType) {
+    public void setCalculationType(PlotCalculationTypeEnum calculationType) {
         this.calculationType = calculationType;
     }
 }

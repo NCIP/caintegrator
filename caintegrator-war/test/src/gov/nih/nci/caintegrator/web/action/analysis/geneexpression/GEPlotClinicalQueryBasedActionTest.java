@@ -26,7 +26,6 @@ import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
 import gov.nih.nci.caintegrator.web.action.analysis.DisplayableQuery;
-import gov.nih.nci.caintegrator.web.action.analysis.geneexpression.GEPlotClinicalQueryBasedAction;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -118,13 +117,13 @@ public class GEPlotClinicalQueryBasedActionTest extends AbstractSessionBasedTest
 
     @Test
     public void testGetPlotUrl() {
-        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEAN.getValue()).
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEAN).
                                         contains("retrieveClinicalQueryGEPlot_mean.action?"));
-        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEDIAN.getValue()).
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEDIAN).
                                         contains("retrieveClinicalQueryGEPlot_median.action?"));
-        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.LOG2_INTENSITY.getValue()).
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.LOG2_INTENSITY).
                                         contains("retrieveClinicalQueryGEPlot_log2.action?"));
-        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.BOX_WHISKER_LOG2_INTENSITY.getValue()).
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.BOX_WHISKER_LOG2_INTENSITY).
                                         contains("retrieveClinicalQueryGEPlot_bw.action?"));
     }
 
@@ -141,10 +140,14 @@ public class GEPlotClinicalQueryBasedActionTest extends AbstractSessionBasedTest
         query2.setName("2");
         subscription.getQueryCollection().add(query1);
         subscription.getQueryCollection().add(query2);
-        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueryNames().add(DisplayableQuery.getDisplayableQueryName(query1));
-        action.getGePlotForm().getClinicalQueryBasedForm().getUnselectedQueryNames().add(DisplayableQuery.getDisplayableQueryName(query2));
-        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueries().put(DisplayableQuery.getDisplayableQueryName(query1), new DisplayableQuery(query1));
-        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueries().put(DisplayableQuery.getDisplayableQueryName(query2), new DisplayableQuery(query2));
+        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueryNames()
+            .add(DisplayableQuery.getDisplayableQueryName(query1));
+        action.getGePlotForm().getClinicalQueryBasedForm().getUnselectedQueryNames()
+            .add(DisplayableQuery.getDisplayableQueryName(query2));
+        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueries().
+            put(DisplayableQuery.getDisplayableQueryName(query1), new DisplayableQuery(query1));
+        action.getGePlotForm().getClinicalQueryBasedForm().getSelectedQueries()
+            .put(DisplayableQuery.getDisplayableQueryName(query2), new DisplayableQuery(query2));
         action.getGePlotForm().getClinicalQueryBasedForm().
                 setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         action.getGePlotForm().getClinicalQueryBasedForm().setAddPatientsNotInQueriesGroup(true);

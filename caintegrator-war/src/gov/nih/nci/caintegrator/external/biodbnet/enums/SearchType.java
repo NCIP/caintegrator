@@ -47,7 +47,6 @@ public enum SearchType {
         this.name = name;
     }
 
-
     /**
      * @return the name
      */

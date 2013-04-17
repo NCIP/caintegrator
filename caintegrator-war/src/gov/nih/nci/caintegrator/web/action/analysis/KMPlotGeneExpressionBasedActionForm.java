@@ -16,12 +16,12 @@ import java.util.List;
  * Form used to store input values for Gene Expression Based KM Plots.
  */
 public class KMPlotGeneExpressionBasedActionForm {
-    
+
     private static final String DEFAULT_OVER_EXPRESSED_FOLD_CHANGE = "2.0";
     private static final String DEFAULT_UNDER_EXPRESSED_FOLD_CHANGE = "2.0";
     private static final String DEFAULT_OVER_EXPRESSED_EXPRESSION_LEVEL = "100.0";
     private static final String DEFAULT_UNDER_EXPRESSED_EXPRESSION_LEVEL = "50.0";
-    
+
     private String geneSymbol;
     private String overexpressedNumber;
     private String underexpressedNumber;
@@ -30,7 +30,7 @@ public class KMPlotGeneExpressionBasedActionForm {
     private List<String> controlSampleSets = new ArrayList<String>();
     private boolean initialized = false;
     private boolean resetSelected = false;
-    private String expressionType;
+    private ExpressionTypeEnum expressionType;
     private boolean disableExpressionTypeSelector = false;
 
     /**
@@ -48,16 +48,15 @@ public class KMPlotGeneExpressionBasedActionForm {
     private void setFoldChangeTypeAsDefault() {
         overexpressedNumber = DEFAULT_OVER_EXPRESSED_FOLD_CHANGE;
         underexpressedNumber = DEFAULT_UNDER_EXPRESSED_FOLD_CHANGE;
-        expressionType = ExpressionTypeEnum.FOLD_CHANGE.getValue();
+        expressionType = ExpressionTypeEnum.FOLD_CHANGE;
     }
-    
+
     /**
      * If there are no controls, we disable fold change selector and set defaults toward expression level based.
      */
     public void setNoControlsInStudy() {
         setDisableExpressionTypeSelector(true);
-        setExpressionType(
-                ExpressionTypeEnum.EXPRESSION_LEVEL.getValue());
+        setExpressionType(ExpressionTypeEnum.EXPRESSION_LEVEL);
         overexpressedNumber = DEFAULT_OVER_EXPRESSED_EXPRESSION_LEVEL;
         underexpressedNumber = DEFAULT_UNDER_EXPRESSED_EXPRESSION_LEVEL;
     }
@@ -117,7 +116,7 @@ public class KMPlotGeneExpressionBasedActionForm {
     public void setInitialized(boolean initialized) {
         this.initialized = initialized;
     }
-    
+
     /**
      * @return the resetSelected
      */
@@ -159,7 +158,7 @@ public class KMPlotGeneExpressionBasedActionForm {
     public void setPlatformName(String platformName) {
         this.platformName = platformName;
     }
-    
+
     /**
      * @return the controlSampleSets
      */
@@ -177,19 +176,19 @@ public class KMPlotGeneExpressionBasedActionForm {
     /**
      * @return the expressionType
      */
-    public String getExpressionType() {
+    public ExpressionTypeEnum getExpressionType() {
         return expressionType;
     }
 
     /**
      * @param expressionType the expressionType to set
      */
-    public void setExpressionType(String expressionType) {
+    public void setExpressionType(ExpressionTypeEnum expressionType) {
         this.expressionType = expressionType;
     }
-    
+
     /**
-     * 
+     *
      * @return if type is foldchange.
      */
     public boolean isFoldChangeType() {

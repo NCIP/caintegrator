@@ -6,7 +6,6 @@
  */
 package gov.nih.nci.caintegrator.web.action.analysis;
 
-import gov.nih.nci.caintegrator.application.analysis.ExpressionTypeEnum;
 import gov.nih.nci.caintegrator.application.analysis.KMGeneExpressionBasedParameters;
 import gov.nih.nci.caintegrator.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator.application.kmplot.PlotTypeEnum;
@@ -65,7 +64,7 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
         }
         kmPlotParameters.setGeneSymbol(getForm().getGeneSymbol());
         kmPlotParameters.setControlSampleSetName(getForm().getControlSampleSetName());
-        kmPlotParameters.setExpressionType(ExpressionTypeEnum.getByValue(getForm().getExpressionType()));
+        kmPlotParameters.setExpressionType(getForm().getExpressionType());
         kmPlotParameters.setPlatformName(getForm().getPlatformName());
     }
 

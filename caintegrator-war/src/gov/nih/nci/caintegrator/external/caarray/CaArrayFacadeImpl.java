@@ -143,7 +143,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
                     arrayDataService);
         }
         throw new DataRetrievalException("Unsupported platform vendor: " + genomicSource.getPlatformVendor()
-                + " and type " + genomicSource.getDataTypeString());
+                + " and type " + genomicSource.getDataType().getValue());
     }
 
     /**
