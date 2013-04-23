@@ -32,6 +32,8 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.primitives.Floats;
+
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
@@ -39,12 +41,11 @@ import org.springframework.transaction.annotation.Transactional;
 class ExpressionMultiSamplePerFileMappingFileHandler extends AbstractExpressionMappingFileHandler {
 
     private static final Logger LOGGER = Logger.getLogger(ExpressionSingleSamplePerFileMappingFileHandler.class);
-    
+
     private final List<Sample> samples = new ArrayList<Sample>();
     private final List<String> dataFileNames = new ArrayList<String>();
     private final List<SupplementalDataFile> dataFiles = new ArrayList<SupplementalDataFile>();
-    
-    
+
     ExpressionMultiSamplePerFileMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
@@ -58,7 +59,8 @@ class ExpressionMultiSamplePerFileMappingFileHandler extends AbstractExpressionM
         return getArrayDataValues();
     }
 
-    void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile) 
+    @Override
+    void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
     throws ValidationException, FileNotFoundException {
         samples.add(getGenomicSource().getSample(sampleName));
         if (!dataFileNames.contains(supplementalDataFile.getFileName())) {
@@ -67,17 +69,16 @@ class ExpressionMultiSamplePerFileMappingFileHandler extends AbstractExpressionM
         }
     }
 
-    private void loadArrayDataValues() 
-    throws ConnectionException, DataRetrievalException, ValidationException {
-        Map<String, Map<String, List<Float>>> dataMap = extractData();
+    private void loadArrayDataValues() throws ConnectionException, DataRetrievalException, ValidationException {
+        Map<String, Map<String, float[]>> dataMap = extractData();
         for (String sampleName : dataMap.keySet()) {
             loadArrayDataValues(getSample(sampleName), dataMap.get(sampleName));
         }
     }
 
-    private Map<String, Map<String, List<Float>>> extractData()
-    throws DataRetrievalException, ConnectionException, ValidationException {
-        Map<String, Map<String, List<Float>>> dataMap = new HashMap<String, Map<String, List<Float>>>();
+    private Map<String, Map<String, float[]>> extractData()
+            throws DataRetrievalException, ConnectionException, ValidationException {
+        Map<String, Map<String, float[]>> dataMap = new HashMap<String, Map<String, float[]>>();
         for (SupplementalDataFile dataFile : dataFiles) {
             GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
                     getDataFile(dataFile.getFileName()), dataFile.getProbeNameHeader(),
@@ -88,7 +89,7 @@ class ExpressionMultiSamplePerFileMappingFileHandler extends AbstractExpressionM
         return dataMap;
     }
 
-    private void validateSampleMapping(Map<String, Map<String, List<Float>>> dataMap, List<String> sampleList)
+    private void validateSampleMapping(Map<String, Map<String, float[]>> dataMap, List<String> sampleList)
     throws DataRetrievalException {
         StringBuffer errorMsg = new StringBuffer();
         for (String sampleName : sampleList) {
@@ -121,24 +122,24 @@ class ExpressionMultiSamplePerFileMappingFileHandler extends AbstractExpressionM
         return null;
     }
 
-    private void loadArrayDataValues(Sample sample, Map<String, List<Float>> dataMap) 
+    private void loadArrayDataValues(Sample sample, Map<String, float[]> dataMap)
     throws DataRetrievalException, ValidationException {
         ArrayData arrayData = createArrayData(sample);
         getDao().save(arrayData);
         loadArrayDataValues(dataMap, arrayData);
         getArrayDataService().save(getArrayDataValues());
     }
-    
-    protected void loadArrayDataValues(Map<String, List<Float>> dataMap, ArrayData arrayData) {
+
+    protected void loadArrayDataValues(Map<String, float[]> dataMap, ArrayData arrayData) {
         for (String probeName : dataMap.keySet()) {
-            AbstractReporter reporter = getPlatformHelper().getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, 
-                    probeName);
+            AbstractReporter reporter =
+                    getPlatformHelper().getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, probeName);
             if (reporter == null) {
-                LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
+                LOGGER.warn("Reporter with name " + probeName + " was not found in platform "
                         + getPlatformHelper().getPlatform().getName());
             } else {
                 getArrayDataValues().setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL,
-                        dataMap.get(probeName), getCentralTendencyCalculator());
+                        Floats.asList(dataMap.get(probeName)), getCentralTendencyCalculator());
             }
         }
     }

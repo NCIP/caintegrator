@@ -32,6 +32,8 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.primitives.Floats;
+
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
@@ -39,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpressionMappingFileHandler {
 
     private static final Logger LOGGER = Logger.getLogger(ExpressionSingleSamplePerFileMappingFileHandler.class);
-    
+
     private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
         new HashMap<Sample, List<SupplementalDataFile>>();
     ExpressionSingleSamplePerFileMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
@@ -55,7 +57,8 @@ class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpression
         return getArrayDataValues();
     }
 
-    void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile) 
+    @Override
+    void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
     throws ValidationException, FileNotFoundException {
         Sample sample = getGenomicSource().getSample(sampleName);
         addDataFile(sample, supplementalDataFile);
@@ -70,14 +73,14 @@ class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpression
         supplementalDataFiles.add(supplementalDataFile);
     }
 
-    private void loadArrayDataValues() 
+    private void loadArrayDataValues()
     throws ConnectionException, DataRetrievalException, ValidationException {
         for (Sample sample : sampleToDataFileMap.keySet()) {
             loadArrayDataValues(sample);
         }
     }
 
-    private void loadArrayDataValues(Sample sample) 
+    private void loadArrayDataValues(Sample sample)
     throws ConnectionException, DataRetrievalException, ValidationException {
         List<SupplementalDataFile> supplementalDataFiles = new ArrayList<SupplementalDataFile>();
         try {
@@ -93,28 +96,28 @@ class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpression
         }
     }
 
-    private void loadArrayDataValues(Sample sample, List<SupplementalDataFile> supplementalDataFiles) 
+    private void loadArrayDataValues(Sample sample, List<SupplementalDataFile> supplementalDataFiles)
     throws DataRetrievalException, ValidationException {
         ArrayData arrayData = createArrayData(sample);
         getDao().save(arrayData);
         for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
-            Map<String, List<Float>> dataMap = GenericSingleSamplePerFileParser.INSTANCE.extractData(
+            Map<String, float[]> dataMap = GenericSingleSamplePerFileParser.INSTANCE.extractData(
                     supplementalDataFile, getPlatformHelper().getPlatform().getVendor());
             loadArrayDataValues(dataMap, arrayData);
         }
         getArrayDataService().save(getArrayDataValues());
     }
-    
-    protected void loadArrayDataValues(Map<String, List<Float>> dataMap, ArrayData arrayData) {
+
+    protected void loadArrayDataValues(Map<String, float[]> dataMap, ArrayData arrayData) {
         for (String probeName : dataMap.keySet()) {
-            AbstractReporter reporter = getPlatformHelper().getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, 
+            AbstractReporter reporter = getPlatformHelper().getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET,
                     probeName);
             if (reporter == null) {
-                LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
+                LOGGER.warn("Reporter with name " + probeName + " was not found in platform "
                         + getPlatformHelper().getPlatform().getName());
             } else {
                 getArrayDataValues().setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL,
-                        dataMap.get(probeName), getCentralTendencyCalculator());
+                        Floats.asList(dataMap.get(probeName)), getCentralTendencyCalculator());
             }
         }
     }

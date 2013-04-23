@@ -7,7 +7,6 @@
 package gov.nih.nci.caintegrator.application.study.deployment;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -20,7 +19,6 @@ import gov.nih.nci.caintegrator.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator.application.study.ValidationException;
-import gov.nih.nci.caintegrator.application.study.deployment.GenericSupplementalSingleSamplePerFileHandler;
 import gov.nih.nci.caintegrator.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator.domain.genomic.DnaAnalysisReporter;
@@ -42,11 +40,23 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
 
+/**
+ * Tests for generic unparsed single supplemental file  handler.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class GenericUnparsedSupplementalFileSingleSampleHandlerTest extends AbstractMockitoTest {
+    /**
+     * Expected exception.
+     */
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
 
     /**
      * Sets up the test.
@@ -58,8 +68,18 @@ public class GenericUnparsedSupplementalFileSingleSampleHandlerTest extends Abst
             .thenReturn(FileUtils.readFileToByteArray(TestDataFiles.TCGA_LEVEL_2_DATA_SINGLE_SAMPLE_FILE));
     }
 
+    /**
+     * Tests loading of copy number data without a mapping file.
+     * @throws DataRetrievalException on error
+     * @throws ConnectionException on error
+     * @throws ValidationException on error
+     */
     @Test
-    public void testLoadCopyNumberDataSingleSample() throws ConnectionException, ValidationException {
+    public void loadArrayDataWithoutMappingFile() throws DataRetrievalException, ConnectionException,
+        ValidationException {
+        expectedException.expect(DataRetrievalException.class);
+        expectedException.expectMessage("Sample mapping file not found");
+
         CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
         GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -69,22 +89,31 @@ public class GenericUnparsedSupplementalFileSingleSampleHandlerTest extends Abst
         source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
         GenericSupplementalSingleSamplePerFileHandler handler = new GenericSupplementalSingleSamplePerFileHandler(
                 source, caArrayFacade, arrayDataService, dao);
-        boolean exceptionCaught = false;
-        try {
-            handler.loadArrayData();
-        } catch (DataRetrievalException e) {
-            exceptionCaught = true;
-        }
-        assertTrue(exceptionCaught);
-        exceptionCaught = false;
-        source.getDnaAnalysisDataConfiguration().setMappingFilePath(TestDataFiles.TCGA_AGILENT_COPY_NUMBER_MAPPING_SINGLE_SAMPLE_FILE.getAbsolutePath());
-        try {
-            handler.loadArrayData();
-        } catch (DataRetrievalException e) {
-            exceptionCaught = true;
-        }
-        assertFalse(exceptionCaught);
-        Set<ArrayData> arrayDatas = studyConfiguration.getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null);
+        handler.loadArrayData();
+    }
+
+    /**
+     * Tests loading array data with agilent copy number data mapping file.
+     * @throws DataRetrievalException on error
+     * @throws ConnectionException on error
+     * @throws ValidationException on error
+     */
+    @Test
+    public void loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException {
+        CaIntegrator2DaoStub dao = new LocalCaIntegrator2DaoStub();
+        GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.getOrCreateSubjectAssignment("E09176");
+        source.setStudyConfiguration(studyConfiguration);
+        source.setDataType(PlatformDataTypeEnum.COPY_NUMBER);
+        source.setDnaAnalysisDataConfiguration(new DnaAnalysisDataConfiguration());
+        GenericSupplementalSingleSamplePerFileHandler handler = new GenericSupplementalSingleSamplePerFileHandler(
+                source, caArrayFacade, arrayDataService, dao);
+        source.getDnaAnalysisDataConfiguration()
+            .setMappingFilePath(TestDataFiles.TCGA_AGILENT_COPY_NUMBER_MAPPING_SINGLE_SAMPLE_FILE.getAbsolutePath());
+        handler.loadArrayData();
+        Set<ArrayData> arrayDatas =
+                studyConfiguration.getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null);
         assertEquals(1, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkArrayData(arrayData);
@@ -100,7 +129,12 @@ public class GenericUnparsedSupplementalFileSingleSampleHandlerTest extends Abst
         assertTrue(arrayData.getSample().getArrayCollection().contains(arrayData.getArray()));
     }
 
-    static class LocalCaIntegrator2DaoStub extends CaIntegrator2DaoStub {
+    /**
+     * Local DAO stub implementation.
+     *
+     * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+     */
+    private static class LocalCaIntegrator2DaoStub extends CaIntegrator2DaoStub {
 
         private Platform platform;
 
@@ -127,13 +161,14 @@ public class GenericUnparsedSupplementalFileSingleSampleHandlerTest extends Abst
         throws IOException, UnsignedOutOfLimitsException, DataRetrievalException {
             List<String> sampleNames = new ArrayList<String>();
             sampleNames.add("TCGA-13-0805-01A-01D-0357-04");
-            GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
-                    dataFile, "ProbeID", "Hybridization Ref", sampleNames);
-            Map<String, Map<String, List<Float>>> dataMap = new HashMap<String, Map<String, List<Float>>>();
+            GenericMultiSamplePerFileParser parser =
+                    new GenericMultiSamplePerFileParser(dataFile, "ProbeID", "Hybridization Ref", sampleNames);
+            Map<String, Map<String, float[]>> dataMap = new HashMap<String, Map<String, float[]>>();
             parser.loadData(dataMap);
-            Map<String, List<Float>> reporterMap = dataMap.values().iterator().next();
+            Map<String, float[]> reporterMap = dataMap.values().iterator().next();
 
-            ReporterList reporterList = platform.addReporterList(reporterListName, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+            ReporterList reporterList =
+                    platform.addReporterList(reporterListName, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
             for (String probeName : reporterMap.keySet()) {
                 DnaAnalysisReporter reporter = new DnaAnalysisReporter();
                 reporter.setName(probeName);
