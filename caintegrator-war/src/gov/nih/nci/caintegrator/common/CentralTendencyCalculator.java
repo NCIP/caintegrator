@@ -9,8 +9,6 @@ package gov.nih.nci.caintegrator.common;
 import gov.nih.nci.caintegrator.application.study.CentralTendencyTypeEnum;
 import gov.nih.nci.caintegrator.application.study.HighVarianceCalculationTypeEnum;
 
-import java.util.List;
-
 /**
  * This calculator takes in central tendency type parameters, and a collection of float values, and after it runs will
  * figure out the central tendency value and (optionally) whether the values have a high variance or not.
@@ -21,10 +19,10 @@ public class CentralTendencyCalculator {
     private final CentralTendencyTypeEnum type;
     private final HighVarianceCalculationTypeEnum varianceCalculationType;
     private final boolean useHighVarianceCalculation;
-    
+
     private Float centralTendencyValue;
     private boolean highVariance = false;
-    
+
     /**
      * Constructor to use if not calculating the high variance as well.
      * @param type central tendency type.
@@ -35,7 +33,7 @@ public class CentralTendencyCalculator {
         this.highVarianceThreshold = null;
         this.varianceCalculationType = null;
     }
-    
+
     /**
      * Public constructor.
      * @param type central tendency type.
@@ -44,29 +42,29 @@ public class CentralTendencyCalculator {
      *                                  before being flagged as "highVariance".
      * @param varianceCalculationType type of calculation to use for high variance.
      */
-    public CentralTendencyCalculator(CentralTendencyTypeEnum type, boolean useHighVarianceCalculation, 
+    public CentralTendencyCalculator(CentralTendencyTypeEnum type, boolean useHighVarianceCalculation,
             Double highVarianceThreshold, HighVarianceCalculationTypeEnum varianceCalculationType) {
         this.type = type;
         this.useHighVarianceCalculation = useHighVarianceCalculation;
         this.highVarianceThreshold = highVarianceThreshold;
         this.varianceCalculationType = varianceCalculationType;
     }
-    
+
     /**
-     * 
+     *
      * @param values to turn into a single central tendency value.
      */
-    public void calculateCentralTendencyValue(List<Float> values) {
+    public void calculateCentralTendencyValue(float[] values) {
         Double stdDev = 0.0;
         highVariance = false;
-        if (CentralTendencyTypeEnum.MEDIAN.equals(type)) {
+        if (CentralTendencyTypeEnum.MEDIAN == type) {
             stdDev = handleMedianType(values);
-        } else if (CentralTendencyTypeEnum.MEAN.equals(type)) {
+        } else if (CentralTendencyTypeEnum.MEAN == type) {
             stdDev = handleMeanType(values);
         } else {
             throw new IllegalArgumentException("Unknokwn CentralTendencyType.");
         }
-        checkHighVariance(stdDev, values.size());
+        checkHighVariance(stdDev, values.length);
     }
 
     private void checkHighVariance(Double stdDev, int numValues) {
@@ -80,38 +78,38 @@ public class CentralTendencyCalculator {
     }
 
     /**
-     * This calculation determines if the standard deviation is >= the percentage of high variance 
-     * (example: 50%) of the central tendency value.  An example is if the central tendency is 10, the 
-     * highVarianceThreshold is 50 and the stdDeviation is 5.  In that case this would be considered 
+     * This calculation determines if the standard deviation is >= the percentage of high variance
+     * (example: 50%) of the central tendency value.  An example is if the central tendency is 10, the
+     * highVarianceThreshold is 50 and the stdDeviation is 5.  In that case this would be considered
      * high variance = true.  In that scenario, if the stdDeviation is 4.9 then it would be considered false.
      * @param stdDev
      */
     private void calculatePercentageHighVariance(Double stdDev) {
-        Double percentageVariance = ((stdDev / centralTendencyValue) * ONE_HUNDRED_PERCENT); 
+        Double percentageVariance = ((stdDev / centralTendencyValue) * ONE_HUNDRED_PERCENT);
         if (percentageVariance >= highVarianceThreshold) {
             highVariance = true;
         }
     }
-    
+
     private void calculateValueHighVariance(Double stdDev) {
         if (stdDev >= highVarianceThreshold) {
             highVariance = true;
         }
     }
 
-    private Double handleMeanType(List<Float> values) {
+    private Double handleMeanType(float[] values) {
         Double stdDev = 0.0;
         centralTendencyValue = MathUtil.mean(values);
-        if (isHighVarianceCalculationNecessary(values.size())) {
+        if (isHighVarianceCalculationNecessary(values.length)) {
             stdDev = MathUtil.standardDeviation(values, centralTendencyValue);
         }
         return stdDev;
     }
 
-    private Double handleMedianType(List<Float> values) {
+    private Double handleMedianType(float[] values) {
         Double stdDev = 0.0;
         centralTendencyValue = MathUtil.median(values);
-        if (isHighVarianceCalculationNecessary(values.size())) {
+        if (isHighVarianceCalculationNecessary(values.length)) {
             stdDev = MathUtil.standardDeviation(values, MathUtil.mean(values));
         }
         return stdDev;
@@ -130,7 +128,7 @@ public class CentralTendencyCalculator {
     public void setCentralTendencyValue(Float centralTendencyValue) {
         this.centralTendencyValue = centralTendencyValue;
     }
-    
+
     private boolean isHighVarianceCalculationNecessary(int numValues) {
         return useHighVarianceCalculation && numValues > 1;
     }

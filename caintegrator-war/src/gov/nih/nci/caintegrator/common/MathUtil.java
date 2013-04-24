@@ -6,6 +6,7 @@
  */
 package gov.nih.nci.caintegrator.common;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public final class MathUtil {
 
     /**
      * Calculates the median for the list of numbers.
-     * 
+     *
      * @param list
      *            of numbers to calculate median for.
      * @return median value.
@@ -54,7 +55,7 @@ public final class MathUtil {
 
     /**
      * Retrieves mean value of the list of floats.
-     * 
+     *
      * @param totalValue total value of the number.
      * @param numValues number of values.
      * @return mean value.
@@ -69,47 +70,44 @@ public final class MathUtil {
      * @param mean of the values.
      * @return standard deviation.
      */
-    public static Double standardDeviation(List<Float> values, Float mean) {
-        Double totalSquaredDeviations = 0.0;
-        for (Float value : values) {
+    public static Double standardDeviation(float[] values, float mean) {
+        double totalSquaredDeviations = 0.0;
+        for (float value : values) {
             totalSquaredDeviations += Math.pow(value - mean, 2);
         }
-        return Math.sqrt(mean(totalSquaredDeviations, values.size()));
+        return Math.sqrt(mean(totalSquaredDeviations, values.length));
     }
 
     /**
      * Calculates the median for the list of numbers.
-     * 
-     * @param list
-     *            of numbers to calculate median for.
+     *
+     * @param values of numbers to calculate median for.
      * @return median value.
      */
-    public static Float median(List<Float> list) {
-        if (list.size() == 1) {
-            return list.get(0);
+    public static float median(float[] values) {
+        if (values.length == 1) {
+            return values[0];
         }
-        Collections.sort(list);
-        int middle = list.size() / 2;
-        if (list.size() % 2 == 1) {
-            return list.get(middle);
+        Arrays.sort(values);
+        int middle = values.length / 2;
+        if (values.length % 2 == 1) {
+            return values[middle];
         } else {
-            return (list.get(middle - 1) + list.get(middle)) / 2.0f;
+            return (values[middle - 1] + values[middle]) / 2.0f;
         }
     }
 
     /**
      * Retrieves mean value of the list of floats.
-     * 
-     * @param list
-     *            of values.
+     *
+     * @param values of values.
      * @return mean value.
      */
-    public static Float mean(List<Float> list) {
-        Float totalNumber = 0f;
-        for (Float value : list) {
+    public static float mean(float[] values) {
+        float totalNumber = 0.0f;
+        for (float value : values) {
             totalNumber += value;
         }
-        return list.isEmpty() ? 0 : totalNumber / list.size();
+        return values.length == 0 ? 0 : totalNumber / values.length;
     }
-
 }

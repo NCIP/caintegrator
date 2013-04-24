@@ -36,6 +36,7 @@ import gov.nih.nci.caintegrator.external.DataRetrievalException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -46,9 +47,9 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
     private static final Logger LOGGER = Logger.getLogger(DnaAnalysisDataRetrievalHelper.class);
     private static final ReporterTypeEnum REPORTER_TYPE = ReporterTypeEnum.DNA_ANALYSIS_REPORTER;
     private List<ArrayDataValues> arrayDataValuesList;
-    
+
     DnaAnalysisDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource,
-            DataService dataService, SearchService searchService, CaIntegrator2Dao dao, 
+            DataService dataService, SearchService searchService, CaIntegrator2Dao dao,
             ArrayDataService arrayDataService) {
         super(genomicSource, dataService, searchService, dao, arrayDataService);
     }
@@ -62,10 +63,11 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
     ReporterTypeEnum getReporterType() {
         return REPORTER_TYPE;
     }
-    
-    protected void retrieveData() 
+
+    @Override
+    protected void retrieveData()
     throws ConnectionException, DataRetrievalException, InconsistentDataSetsException, InvalidInputException {
-    
+
         DataSet dataSet = getDataService().getDataSet(createRequest());
         if (dataSet.getDatas().isEmpty()) {
             throw new DataRetrievalException("No log2 ratio available for experiment: "
@@ -76,7 +78,7 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
         arrayDataValuesList = new ArrayList<ArrayDataValues>();
         convertToArrayDataValuesList(dataSet);
     }
-    
+
 
     @Override
     protected QuantitationType getSignal(DataSetRequest request) throws InvalidInputException {
@@ -91,8 +93,8 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
         }
         return null;
     }
-    
-    private void convertToArrayDataValuesList(DataSet dataSet) 
+
+    private void convertToArrayDataValuesList(DataSet dataSet)
     throws DataRetrievalException, InvalidInputException {
         fillSampleToHybridizationDataMap(dataSet);
         for (Sample sample : getSampleToHybridizationDataMap().keySet()) {
@@ -101,7 +103,7 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
             ArrayDataValues arrayDataValues = new ArrayDataValues(
                     getPlatformHelper().getAllReportersByType(REPORTER_TYPE));
             arrayDataValuesList.add(arrayDataValues);
-            
+
             storeArrayDataValues(dataSet, sample, arrayData, arrayDataValues);
             getArrayDataService().save(arrayDataValues);
             arrayDataValues.clearMaps();
@@ -116,20 +118,20 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
         for (int i = 0; i < probeSets.size(); i++) {
             AbstractReporter reporter = getReporter(probeSets.get(i));
             if (reporter == null) {
-                String probeSetName = ((DesignElement) probeSets.get(i)).getName();
-                getLogger().warn("Reporter with name " + probeSetName + " was not found in platform " 
+                String probeSetName = probeSets.get(i).getName();
+                getLogger().warn("Reporter with name " + probeSetName + " was not found in platform "
                         + getPlatformHelper().getPlatform().getName());
             } else {
-                List<Float> floatValues = new ArrayList<Float>();
+                float[] floatValues = new float[] {};
                 for (float[] values : allHybridizationsValues) {
-                    floatValues.add(values[i]);
+                    floatValues = ArrayUtils.add(floatValues, values[i]);
                 }
                 arrayDataValues.setFloatValue(arrayData, reporter, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO,
                         floatValues, getCentralTendencyCalculator());
             }
         }
     }
-    
+
     private ArrayData createArrayData(Sample sample) {
         ArrayData arrayData = new ArrayData();
         arrayData.setType(ArrayDataType.COPY_NUMBER);
@@ -144,7 +146,7 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
         if (!getReporterList(REPORTER_TYPE).isEmpty()) {
             arrayData.getReporterLists().addAll(getReporterList(REPORTER_TYPE));
             for (ReporterList reporterList : getReporterList(REPORTER_TYPE)) {
-                reporterList.getArrayDatas().add(arrayData);    
+                reporterList.getArrayDatas().add(arrayData);
             }
             array.setPlatform(getReporterList(REPORTER_TYPE).iterator().next().getPlatform());
         }
@@ -157,5 +159,5 @@ class DnaAnalysisDataRetrievalHelper extends AbstractDataRetrievalHelper {
     protected List<ArrayDataValues> getArrayDataValuesList() {
         return arrayDataValuesList;
     }
-    
+
 }

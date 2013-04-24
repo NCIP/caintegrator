@@ -72,9 +72,9 @@ public class ArrayDataValues {
      */
     public double getLog2Value(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type,
             PlatformChannelTypeEnum channelType) {
-        return PlatformChannelTypeEnum.TWO_COLOR.equals(channelType)
-            ? getFloatValue(arrayData, getReporterIndex(reporter), type)
-            : Cai2Util.log2(getFloatValue(arrayData, getReporterIndex(reporter), type));
+        return PlatformChannelTypeEnum.TWO_COLOR == channelType
+                ? getFloatValue(arrayData, getReporterIndex(reporter), type)
+                        : Cai2Util.log2(getFloatValue(arrayData, getReporterIndex(reporter), type));
     }
 
     /**
@@ -134,8 +134,8 @@ public class ArrayDataValues {
      * @param values the values to set.
      * @param centralTendencyCalculator used to calculate the central tendency of the float values.
      */
-    public void setFloatValue(ArrayData arrayData, AbstractReporter reporter,
-            ArrayDataValueType type, List<Float> values, CentralTendencyCalculator centralTendencyCalculator) {
+    public void setFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type,
+            float[] values, CentralTendencyCalculator centralTendencyCalculator) {
         centralTendencyCalculator.calculateCentralTendencyValue(values);
         setFloatValue(arrayData, reporter, type, centralTendencyCalculator.getCentralTendencyValue());
         if (centralTendencyCalculator.isHighVariance()) {

@@ -6,13 +6,13 @@
  */
 package gov.nih.nci.caintegrator.application.arraydata;
 
+import gov.nih.nci.caintegrator.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import gov.nih.nci.caintegrator.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
 
 
 /**
@@ -22,7 +22,7 @@ class TypeValues {
 
     private final ArrayDataValueType type;
     private final ArrayDataValues arrayDataValues;
-    private final Map<ArrayData, Object> valuesMap = new HashMap<ArrayData, Object>();
+    private final Map<ArrayData, float[]> valuesMap = new HashMap<ArrayData, float[]>();
 
     TypeValues(ArrayDataValueType type, ArrayDataValues arrayDataValues) {
         this.type = type;
@@ -30,7 +30,7 @@ class TypeValues {
     }
 
    void setFloatValue(ArrayData arrayData, AbstractReporter reporter, float value) {
-        float[] values = (float[]) getValues(arrayData);
+        float[] values = getValues(arrayData);
         values[arrayDataValues.getReporterIndex(reporter)] = value;
     }
 
@@ -38,17 +38,17 @@ class TypeValues {
        if (newValues.length == arrayDataValues.getReporters().size()) {
            valuesMap.put(arrayData, newValues);
        } else {
-           float[] values = (float[]) getValues(arrayData);
+           float[] values = getValues(arrayData);
            int destPosition = arrayDataValues.getReporterIndex(forReporters.get(0));
            System.arraycopy(newValues, 0, values, destPosition, newValues.length);
        }
    }
 
-    private Object getValues(ArrayData arrayData) {
+    private float[] getValues(ArrayData arrayData) {
         if (arrayData == null) {
             throw new IllegalArgumentException("arrayData was null");
         }
-        Object values = valuesMap.get(arrayData);
+        float[] values = valuesMap.get(arrayData);
         if (values == null) {
             values = createArray();
             valuesMap.put(arrayData, values);
@@ -56,7 +56,7 @@ class TypeValues {
         return values;
     }
 
-    private Object createArray() {
+    private float[] createArray() {
         if (type.getTypeClass().equals(Float.class)) {
             return new float[arrayDataValues.getReporters().size()];
         } else {
@@ -69,7 +69,7 @@ class TypeValues {
     }
 
     float[] getFloatValues(ArrayData arrayData) {
-        return (float[]) getValues(arrayData);
+        return getValues(arrayData);
     }
 
     Set<ArrayData> getArrayDatas() {

@@ -37,10 +37,10 @@ import gov.nih.nci.caintegrator.domain.genomic.Sample;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -106,9 +106,9 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
                 getLogger().warn("Reporter with name " + probeSetName + " was not found in platform "
                         + getPlatformHelper().getPlatform().getName());
             } else {
-                List<Float> floatValues = new ArrayList<Float>();
+                float[] floatValues = new float[] {};
                 for (float[] values : allHybridizationsValues) {
-                    floatValues.add(values[i]);
+                    floatValues = ArrayUtils.add(floatValues, values[i]);
                 }
                 setValue(arrayData, reporter, floatValues);
             }
@@ -150,9 +150,9 @@ class ExpressionDataRetrievalHelper extends AbstractDataRetrievalHelper {
         return getSearchService().searchByExample(criteria, null).getResults().get(0);
     }
 
-    protected void setValue(ArrayData arrayData, AbstractReporter reporter, List<Float> values) {
-        arrayDataValues.setFloatValue(arrayData,
-                reporter, ArrayDataValueType.EXPRESSION_SIGNAL, values, getCentralTendencyCalculator());
+    protected void setValue(ArrayData arrayData, AbstractReporter reporter, float[] values) {
+        arrayDataValues.setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL, values,
+                getCentralTendencyCalculator());
     }
 
     /**

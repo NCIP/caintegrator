@@ -57,9 +57,6 @@ import gov.nih.nci.caintegrator.domain.genomic.Sample;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator.external.caarray.CaArrayFacadeImpl;
-import gov.nih.nci.caintegrator.external.caarray.CaArrayServiceFactory;
-import gov.nih.nci.caintegrator.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
 import java.io.ByteArrayInputStream;
@@ -71,8 +68,8 @@ import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.hibernate.tool.hbm2x.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;

@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.hibernate.tool.hbm2x.StringUtils;
 
 import au.com.bytecode.opencsv.CSVReader;
 

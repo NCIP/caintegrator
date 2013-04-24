@@ -21,8 +21,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.google.common.primitives.Floats;
-
 /**
  * Reads data in supplemental raw data file.
  */
@@ -71,8 +69,7 @@ public final class GenericSupplementalSingleSampleDataRetrieval {
                 LOGGER.warn("Reporter with name " + probeName + " was not found in platform "
                         + platformHelper.getPlatform().getName());
             } else {
-                values.setFloatValue(arrayData, reporter, dataType, Floats.asList(dataMap.get(probeName)),
-                        centralTendencyCalculator);
+                values.setFloatValue(arrayData, reporter, dataType, dataMap.get(probeName), centralTendencyCalculator);
             }
         }
     }

@@ -32,8 +32,6 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.primitives.Floats;
-
 /**
  * Reads and retrieves copy number data from a caArray instance.
  */
@@ -117,7 +115,7 @@ class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpression
                         + getPlatformHelper().getPlatform().getName());
             } else {
                 getArrayDataValues().setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL,
-                        Floats.asList(dataMap.get(probeName)), getCentralTendencyCalculator());
+                        dataMap.get(probeName), getCentralTendencyCalculator());
             }
         }
     }
