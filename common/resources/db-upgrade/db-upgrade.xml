@@ -526,4 +526,8 @@
         <comment>Renaming the application from caintegrator2 to caintegrator.</comment>
         <sqlFile path="@db-upgrade.run.dir@/application-rename.sql"/>
     </changeSet>
+    <changeSet id="CAINT-1281" author="aevansel">
+        <comment>Updating the csm_protection_element for caintegrator to use the new caintegrator object_id instead of caintegrator2.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4.1/CAINT-1281.sql"/>
+    </changeSet>
 </databaseChangeLog>

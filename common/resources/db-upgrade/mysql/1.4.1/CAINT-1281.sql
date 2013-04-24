@@ -1,0 +1,1 @@
+UPDATE csm_protection_element set object_id = 'caintegrator' where protection_element_name = 'caintegrator';
