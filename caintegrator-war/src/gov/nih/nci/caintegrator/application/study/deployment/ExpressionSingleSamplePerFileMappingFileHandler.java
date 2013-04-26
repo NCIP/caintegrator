@@ -24,7 +24,6 @@ import gov.nih.nci.caintegrator.external.caarray.SupplementalDataFile;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,16 +31,18 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
+
 /**
- * Reads and retrieves copy number data from a caArray instance.
+ * Retrieves and loads single sample per file data from caArray.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 @Transactional (propagation = Propagation.REQUIRED)
 class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpressionMappingFileHandler {
-
     private static final Logger LOGGER = Logger.getLogger(ExpressionSingleSamplePerFileMappingFileHandler.class);
+    private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap = Maps.newHashMap();
 
-    private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
-        new HashMap<Sample, List<SupplementalDataFile>>();
     ExpressionSingleSamplePerFileMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
@@ -58,7 +59,7 @@ class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpression
     @Override
     void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
     throws ValidationException, FileNotFoundException {
-        Sample sample = getGenomicSource().getSample(sampleName);
+        Sample sample = getSampleNameToSampleMap().get(sampleName);
         addDataFile(sample, supplementalDataFile);
     }
 
@@ -71,15 +72,14 @@ class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpression
         supplementalDataFiles.add(supplementalDataFile);
     }
 
-    private void loadArrayDataValues()
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    private void loadArrayDataValues() throws ConnectionException, DataRetrievalException, ValidationException {
         for (Sample sample : sampleToDataFileMap.keySet()) {
             loadArrayDataValues(sample);
         }
     }
 
     private void loadArrayDataValues(Sample sample)
-    throws ConnectionException, DataRetrievalException, ValidationException {
+            throws ConnectionException, DataRetrievalException, ValidationException {
         List<SupplementalDataFile> supplementalDataFiles = new ArrayList<SupplementalDataFile>();
         try {
             for (SupplementalDataFile supplementalDataFile : sampleToDataFileMap.get(sample)) {

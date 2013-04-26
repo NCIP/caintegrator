@@ -353,11 +353,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public Sample getSample(String sampleName) {
         for (Sample sample : getSamples()) {
-            if (sampleName == null && sample.getName() == null) {
-                return sample;
-            } else if (sampleName == null && sample.getName() != null) {
-                continue;
-            } else if (sampleName.equals(sample.getName())) {
+            if (StringUtils.equals(sampleName, sample.getName())) {
                 return sample;
             }
         }

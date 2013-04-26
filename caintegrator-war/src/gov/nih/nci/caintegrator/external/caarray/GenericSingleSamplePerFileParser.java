@@ -23,7 +23,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Parse supplemental data file.
+ * Parser for single sample per file supplemental data.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public final class GenericSingleSamplePerFileParser {
 
@@ -65,12 +67,8 @@ public final class GenericSingleSamplePerFileParser {
         String valueField = StringUtils.trim(fields[headerToIndexMap.get(supplementalDataFile.getValueHeader())]);
         if ((PlatformVendorEnum.AGILENT == vendor && probeName.startsWith("A_") || PlatformVendorEnum.AGILENT != vendor)
                 && NumberUtils.isNumber(valueField)) {
-            addValueToDataMap(dataMap, probeName, NumberUtils.toFloat(valueField));
+            dataMap.put(probeName, ArrayUtils.add(dataMap.get(probeName), NumberUtils.toFloat(valueField)));
         }
-    }
-
-    private void addValueToDataMap(Map<String, float[]> dataMap, String probeName, float value) {
-        dataMap.put(probeName, ArrayUtils.add(dataMap.get(probeName), value));
     }
 
     private void loadHeaders(String probeNameHeader) throws IOException, DataRetrievalException {

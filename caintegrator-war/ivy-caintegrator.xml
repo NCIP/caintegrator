@@ -56,7 +56,7 @@
     <dependency org="commons-configuration" name="commons-configuration" rev="1.5" conf="runtime->master"/>
     <dependency org="org.apache.commons" name="commons-lang3" rev="3.1" conf="runtime->master"/>
     <dependency org="commons-math" name="commons-math" rev="1.2" conf="runtime->master"/>
-    <dependency org="commons-io" name="commons-io" rev="1.4" conf="runtime->master"/>
+    <dependency org="commons-io" name="commons-io" rev="2.4" conf="runtime->master"/>
     <dependency org="jboss" name="jbossall-client" rev="4.0.5.GA" conf="compile->master"/>
     <dependency org="jboss" name="jboss-ejb3x" rev="4.0.5.GA" conf="runtime->master"/>
     <dependency org="jboss" name="jboss-aop-client" rev="1.5.2.GA" conf="compile->master"/>
@@ -94,7 +94,7 @@
     <dependency org="affymetrix" name="affxfusion" rev="1.1" conf="runtime->master" force="true"/>
     <dependency org="ivicore" name="ivicore" rev="1.2dev" conf="runtime->master" />
     <dependency org="genepattern" name="genepattern" rev="3.2.1" conf="runtime->master" />
-    <dependency org="com.google.guava" name="guava" rev="11.0.2" conf="runtime->master" />
+    <dependency org="com.google.guava" name="guava" rev="14.0.1" conf="runtime->master" />
 
     <!-- These exist in the repository -->
     <dependency org="javax.activation" name="activation" rev="1.1" conf="compile->master"/>

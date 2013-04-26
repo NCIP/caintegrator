@@ -27,7 +27,9 @@ import java.io.FileNotFoundException;
 import java.util.Set;
 
 /**
- * 
+ * Base class for handling parsing and loading of expression mapping files.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public abstract class AbstractExpressionMappingFileHandler extends AbstractSupplementalMappingFileHandler {
 
@@ -41,14 +43,14 @@ public abstract class AbstractExpressionMappingFileHandler extends AbstractSuppl
         super(genomicSource, caArrayFacade, arrayDataService, dao);
         this.platformHelper = new PlatformHelper(dao.getPlatform(genomicSource.getPlatformName()));
         this.reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        this.arrayDataValues = 
+        this.arrayDataValues =
             new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
     }
-    
+
     abstract ArrayDataValues loadArrayData() throws DataRetrievalException, ConnectionException, ValidationException;
-    
+
     /**
-     * 
+     *
      * @param sample use to create the ArrayData
      * @return ArrayData
      */

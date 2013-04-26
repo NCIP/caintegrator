@@ -107,7 +107,7 @@ class GenomicDataHelper {
     throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         if (!genomicSource.getSamples().isEmpty()) {
             ArrayDataValues probeSetValues;
-            if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
+            if (ArrayDataLoadingTypeEnum.PARSED_DATA == genomicSource.getLoadingType()) {
                 probeSetValues = caArrayFacade.retrieveData(genomicSource);
             } else {
                 AbstractExpressionMappingFileHandler handler =

@@ -175,5 +175,4 @@ public class Sample extends AbstractCaIntegrator2Object {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-
 }

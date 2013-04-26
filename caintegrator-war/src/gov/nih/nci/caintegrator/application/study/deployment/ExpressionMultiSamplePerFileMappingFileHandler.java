@@ -24,7 +24,6 @@ import gov.nih.nci.caintegrator.external.caarray.SupplementalDataFile;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +31,12 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
+
 /**
- * Reads and retrieves copy number data from a caArray instance.
+ * Retrieves and loads multiple sample per file data from caArray.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 @Transactional (propagation = Propagation.REQUIRED)
 class ExpressionMultiSamplePerFileMappingFileHandler extends AbstractExpressionMappingFileHandler {
@@ -60,7 +63,7 @@ class ExpressionMultiSamplePerFileMappingFileHandler extends AbstractExpressionM
     @Override
     void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
     throws ValidationException, FileNotFoundException {
-        samples.add(getGenomicSource().getSample(sampleName));
+        samples.add(getSampleNameToSampleMap().get(sampleName));
         if (!dataFileNames.contains(supplementalDataFile.getFileName())) {
             dataFileNames.add(supplementalDataFile.getFileName());
             dataFiles.add(supplementalDataFile);
@@ -76,7 +79,7 @@ class ExpressionMultiSamplePerFileMappingFileHandler extends AbstractExpressionM
 
     private Map<String, Map<String, float[]>> extractData()
             throws DataRetrievalException, ConnectionException, ValidationException {
-        Map<String, Map<String, float[]>> dataMap = new HashMap<String, Map<String, float[]>>();
+        Map<String, Map<String, float[]>> dataMap = Maps.newHashMap();
         for (SupplementalDataFile dataFile : dataFiles) {
             GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
                     getDataFile(dataFile.getFileName()), dataFile.getProbeNameHeader(),

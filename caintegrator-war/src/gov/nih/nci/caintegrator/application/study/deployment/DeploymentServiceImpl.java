@@ -101,7 +101,7 @@ public class DeploymentServiceImpl implements DeploymentService {
             genomicDataHelper.setGenePatternClientFactory(getGenePatternClientFactory());
             genomicDataHelper.loadData(studyConfiguration);
             dao.runSessionKeepAlive();
-            generateViewerFiles(studyConfiguration, heatmapParameters);
+            //generateViewerFiles(studyConfiguration, heatmapParameters);
         }
         studyConfiguration.setStatus(Status.DEPLOYED);
         studyConfiguration.setDeploymentFinishDate(new Date());

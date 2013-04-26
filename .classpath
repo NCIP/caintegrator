@@ -46,7 +46,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/commons-discovery-0.4.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/commons-fileupload-1.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/commons-httpclient-3.0.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/commons-math-1.2.jar"/>
@@ -63,7 +62,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/freestylesearch-4.0.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/genepattern-3.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/google-collections-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/guava-11.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/hibernate-3.2.0.ga.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/hibernate-annotations-3.2.0.ga.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/hibernate-commons-annotations-3.0.0.ga.jar"/>
@@ -155,6 +153,8 @@
 	<classpathentry kind="lib" path="genepattern-service-jar/lib/compile/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="kaplan-meier-jar/lib/compile/weka-3.4.13.jar"/>
 	<classpathentry kind="lib" path="lib/test-junit/javassist-3.9.0.GA.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-runtime/opencsv-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/guava-14.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/opencsv-2.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
