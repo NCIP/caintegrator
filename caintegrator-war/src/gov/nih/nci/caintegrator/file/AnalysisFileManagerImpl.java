@@ -209,8 +209,7 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
      */
     @Override
     public File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName) {
-        return new File(getStudyIGVDirectory(study) + File.separator
-                + platformName + "_" + fileType.getFilename());
+        return new File(getStudyIGVDirectory(study) + File.separator + platformName + "_" + fileType.getFilename());
     }
 
     private File getStudyIGVDirectory(Study study) {

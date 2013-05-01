@@ -13,23 +13,23 @@ import gov.nih.nci.caintegrator.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator.domain.genomic.ReporterList;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 /**
  * Transports and provides access to genomic data values.
  */
 public class ArrayDataValues {
-
     private final List<AbstractReporter> reporters;
     private Set<ReporterList> reporterLists;
-    private final Map<String, Integer> reporterIndexMap = new HashMap<String, Integer>();
-    private final Map<ArrayDataValueType, TypeValues> typeValuesMap = new HashMap<ArrayDataValueType, TypeValues>();
+    private final Map<String, Integer> reporterIndexMap = Maps.newHashMap();
+    private final Map<ArrayDataValueType, TypeValues> typeValuesMap = Maps.newHashMap();
 
     /**
      * Creates a new values object.
@@ -73,8 +73,7 @@ public class ArrayDataValues {
     public double getLog2Value(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type,
             PlatformChannelTypeEnum channelType) {
         return PlatformChannelTypeEnum.TWO_COLOR == channelType
-                ? getFloatValue(arrayData, getReporterIndex(reporter), type)
-                        : Cai2Util.log2(getFloatValue(arrayData, getReporterIndex(reporter), type));
+                ? getFloatValue(arrayData, reporter, type) : Cai2Util.log2(getFloatValue(arrayData, reporter, type));
     }
 
     /**
@@ -97,7 +96,7 @@ public class ArrayDataValues {
      * @param type the type of data
      * @return the value.
      */
-    public float getFloatValue(ArrayData arrayData, int reporterIndex, ArrayDataValueType type) {
+    private float getFloatValue(ArrayData arrayData, int reporterIndex, ArrayDataValueType type) {
         return getTypeValues(type).getFloatValue(arrayData, reporterIndex);
     }
 
@@ -202,8 +201,7 @@ public class ArrayDataValues {
      * @return the array datas in order by id.
      */
     public List<ArrayData> getOrderedArrayDatas() {
-        List<ArrayData> arrayDatas = new ArrayList<ArrayData>();
-        arrayDatas.addAll(getArrayDatas());
+        List<ArrayData> arrayDatas = Lists.newArrayList(getArrayDatas());
         Collections.sort(arrayDatas, AbstractCaIntegrator2Object.ID_COMPARATOR);
         return arrayDatas;
     }
@@ -235,5 +233,4 @@ public class ArrayDataValues {
         }
         return reporterLists;
     }
-
 }

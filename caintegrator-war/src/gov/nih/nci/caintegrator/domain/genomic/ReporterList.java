@@ -16,12 +16,12 @@ import java.util.Set;
 import java.util.SortedSet;
 
 /**
- * 
+ *
  */
 public class ReporterList extends AbstractCaIntegrator2Object implements Comparable<ReporterList> {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String name;
     private ReporterTypeEnum reporterType;
     private String genomeVersion;
@@ -49,14 +49,14 @@ public class ReporterList extends AbstractCaIntegrator2Object implements Compara
         setName(name);
         setReporterType(reporterTypeEnum);
     }
-    
+
     /**
      * @return the platform
      */
     public Platform getPlatform() {
         return platform;
     }
-    
+
     /**
      * @param platform the platform to set
      */
@@ -92,7 +92,7 @@ public class ReporterList extends AbstractCaIntegrator2Object implements Compara
     private void setReporterType(ReporterTypeEnum reporterType) {
         this.reporterType = reporterType;
     }
-    
+
     /**
      * Sets the index field for the contained reporters in natural sort order.
      */
@@ -132,16 +132,16 @@ public class ReporterList extends AbstractCaIntegrator2Object implements Compara
         this.name = name;
     }
 
-    Integer getFirstDataStorageIndex() {
+    int getFirstDataStorageIndex() {
         if (ReporterTypeEnum.GISTIC_GENOMIC_REGION_REPORTER.equals(reporterType)) {
             return 0;
         } else {
-            SortedSet<ReporterList> precedingReporterLists = 
+            SortedSet<ReporterList> precedingReporterLists =
                 getPlatform().getReporterLists(getReporterType()).headSet(this);
             if (precedingReporterLists.isEmpty()) {
                 return 0;
             } else {
-                return precedingReporterLists.last().getFirstDataStorageIndex() 
+                return precedingReporterLists.last().getFirstDataStorageIndex()
                     + precedingReporterLists.last().getReporters().size();
             }
         }
@@ -161,7 +161,7 @@ public class ReporterList extends AbstractCaIntegrator2Object implements Compara
 
     /**
      * Adds a new reporter to this <code>ReporterList</code>, creating the necessary associations.
-     * 
+     *
      * @param reporter  the reporter to add
      */
     public void addReporter(AbstractReporter reporter) {

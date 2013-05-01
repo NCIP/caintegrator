@@ -73,8 +73,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     @Override
     @Transactional(readOnly = true)
     public QueryResult execute(Query query) throws InvalidCriterionException {
-        return new QueryTranslator(retrieveQueryToExecute(query), getDao(),
-                arrayDataService, resultHandler).execute();
+        return new QueryTranslator(retrieveQueryToExecute(query), getDao(), arrayDataService, resultHandler).execute();
     }
 
     /**
@@ -83,8 +82,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     @Override
     @Transactional(readOnly = true)
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException {
-        return new GenomicQueryHandler(retrieveQueryToExecute(query),
-                getDao(), arrayDataService).execute();
+        return new GenomicQueryHandler(retrieveQueryToExecute(query), getDao(), arrayDataService).execute();
     }
 
     /**

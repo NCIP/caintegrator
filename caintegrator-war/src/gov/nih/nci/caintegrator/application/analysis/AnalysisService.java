@@ -37,10 +37,10 @@ import org.genepattern.webservice.WebServiceException;
  * Interface to analysis functionality.
  */
 public interface AnalysisService extends CaIntegrator2EntityRefresher {
-    
+
     /**
      * Returns a list of GenePattern analysis tasks that may be run.
-     * 
+     *
      * @param server the gene pattern server.
      * @return the list of available tasks
      * @throws WebServiceException if the service couldn't be reached.
@@ -49,15 +49,15 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
 
     /**
      * Executes a job on a GenePattern server.
-     * 
+     *
      * @param server the GenePattern server
      * @param invocation contains the configuration of the job to execute
      * @return the Wrapper for the JobInfo retrieved from GenePattern.
      * @throws WebServiceException if the service couldn't be reached.
      */
-    JobInfoWrapper executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
+    JobInfoWrapper executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation)
     throws WebServiceException;
-    
+
     /**
      * Executes preprocessDataset followed by Comparative Marker Selection via grid interface.
      * @param updater the ajax updater.
@@ -67,9 +67,8 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @throws InvalidCriterionException if criterion is not valid.
      */
     File executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
-            ComparativeMarkerSelectionAnalysisJob job) 
-            throws ConnectionException, InvalidCriterionException;
-    
+            ComparativeMarkerSelectionAnalysisJob job) throws ConnectionException, InvalidCriterionException;
+
     /**
      * Executes Principal Component Analysis grid service and returns back the results files.
      * @param updater the ajax updater.
@@ -80,7 +79,7 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      */
     File executeGridPCA(StatusUpdateListener updater,
             PrincipalComponentAnalysisJob job) throws ConnectionException, InvalidCriterionException;
-    
+
     /**
      * Executes preprocessDataset followed by Comparative Marker Selection via grid interface.
      * @param updater the ajax updater.
@@ -95,24 +94,24 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
     File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job)
             throws ConnectionException, InvalidCriterionException, ParameterException, IOException,
                 DataRetrievalException;
-    
+
     /**
      * Validates that we can connect to a gene pattern server.
      * @param server to validate connection.
      * @return true if valid, false otherwise.
      */
     boolean validateGenePatternConnection(ServerConnectionProfile server);
-    
+
     /**
      * Creates a KMPlot object based on clinical subjects for the given parameters.
      * @param subscription the study subscription that the user wants to create the plot for.
      * @param kmParameters are the input parameters for the KMPlot.
      * @return the plot object.
      * @throws InvalidCriterionException if the Criterion is no longer valid for queries.
-     * @throws GenesNotFoundInStudyException if the criterion is supposed to have gene input and none found in study. 
+     * @throws GenesNotFoundInStudyException if the criterion is supposed to have gene input and none found in study.
      * @throws InvalidSurvivalValueDefinitionException if the survival value definition is invalid.
      */
-    KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters) 
+    KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters)
     throws InvalidCriterionException, GenesNotFoundInStudyException, InvalidSurvivalValueDefinitionException;
 
     /**
@@ -125,20 +124,20 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @throws InvalidCriterionException if criterion is not valid.
      * @throws GenesNotFoundInStudyException if none of the given genes are found in study.
      */
-    GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription, 
-            AbstractGEPlotParameters plotParameters) throws ControlSamplesNotMappedException, 
+    GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription,
+            AbstractGEPlotParameters plotParameters) throws ControlSamplesNotMappedException,
             InvalidCriterionException, GenesNotFoundInStudyException;
 
     /**
      * Delete the analysis job with given id.
-     * 
+     *
      * @param jobId the id of the analysis job to delete.
      */
     void deleteAnalysisJob(Long jobId);
 
     /**
      * Delete the Viewer directory with given study.
-     * 
+     *
      * @param study the study viewer directory to delete.
      */
     void deleteViewerDirectory(Study study);
@@ -151,29 +150,28 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      */
     List<String> validateGeneSymbols(StudySubscription studySubscription, List<String> geneSymbols)
         throws GenesNotFoundInStudyException;
-    
+
     /**
      * Refreshes studySubscription object from the database so it can be used.
      * @param studySubscription to be refreshed from the database.
      * @return refreshed studySubscription.
      */
     StudySubscription getRefreshedStudySubscription(StudySubscription studySubscription);
-    
+
     /**
      * Deletes the gistic analysis.
      * @param gisticAnalysis to delete.
      */
     void deleteGisticAnalysis(GisticAnalysis gisticAnalysis);
-    
+
     /**
      * Executes IGV and returns the URL to start it.
      * @param igvParameters the igv parameters to use.
      * @return full URL to forward user to.
      * @throws InvalidCriterionException if invalid criterion in query.
      */
-    String executeIGV(IGVParameters igvParameters) 
-    throws InvalidCriterionException;
-    
+    String executeIGV(IGVParameters igvParameters)  throws InvalidCriterionException;
+
     /**
      * Executes Heatmap and returns the URL to start it.
      * @param heatmapParameters the heatmap parameters to use.
@@ -191,6 +189,5 @@ public interface AnalysisService extends CaIntegrator2EntityRefresher {
      * @throws IOException if unable to write or read files.
      */
     void createViewerFiles(StudySubscription studySubscription, HeatmapParameters heatmapParameters,
-            Platform platform)
-    throws InvalidCriterionException, IOException;
+            Platform platform) throws InvalidCriterionException, IOException;
 }

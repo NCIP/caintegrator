@@ -30,7 +30,7 @@ class TypeValues {
     }
 
    void setFloatValue(ArrayData arrayData, AbstractReporter reporter, float value) {
-        float[] values = getValues(arrayData);
+        float[] values = getFloatValues(arrayData);
         values[arrayDataValues.getReporterIndex(reporter)] = value;
     }
 
@@ -38,25 +38,13 @@ class TypeValues {
        if (newValues.length == arrayDataValues.getReporters().size()) {
            valuesMap.put(arrayData, newValues);
        } else {
-           float[] values = getValues(arrayData);
+           float[] values = getFloatValues(arrayData);
            int destPosition = arrayDataValues.getReporterIndex(forReporters.get(0));
            System.arraycopy(newValues, 0, values, destPosition, newValues.length);
        }
    }
 
-    private float[] getValues(ArrayData arrayData) {
-        if (arrayData == null) {
-            throw new IllegalArgumentException("arrayData was null");
-        }
-        float[] values = valuesMap.get(arrayData);
-        if (values == null) {
-            values = createArray();
-            valuesMap.put(arrayData, values);
-        }
-        return values;
-    }
-
-    private float[] createArray() {
+   private float[] createArray() {
         if (type.getTypeClass().equals(Float.class)) {
             return new float[arrayDataValues.getReporters().size()];
         } else {
@@ -69,7 +57,15 @@ class TypeValues {
     }
 
     float[] getFloatValues(ArrayData arrayData) {
-        return getValues(arrayData);
+        if (arrayData == null) {
+            throw new IllegalArgumentException("arrayData was null");
+        }
+        float[] values = valuesMap.get(arrayData);
+        if (values == null) {
+            values = createArray();
+            valuesMap.put(arrayData, values);
+        }
+        return values;
     }
 
     Set<ArrayData> getArrayDatas() {

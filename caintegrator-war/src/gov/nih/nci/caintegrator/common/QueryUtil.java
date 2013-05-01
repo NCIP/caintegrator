@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -291,7 +292,7 @@ public final class QueryUtil {
         query.setAllGenomicDataQuery(true);
         query.setResultType(resultType);
         query.setReporterType(reporterType);
-        if (queries != null && !queries.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(queries)) {
             CompoundCriterion compoundCriterions = new CompoundCriterion();
             compoundCriterions.setBooleanOperator(BooleanOperatorEnum.OR);
             for (Query currentQuery : queries) {
@@ -300,7 +301,7 @@ public final class QueryUtil {
             query.getCompoundCriterion().getCriterionCollection().add(compoundCriterions);
         }
         if (StringUtils.isNotBlank(platformName)) {
-            GenomicCriterionTypeEnum criterionType = (ResultTypeEnum.GENE_EXPRESSION.equals(resultType))
+            GenomicCriterionTypeEnum criterionType = ResultTypeEnum.GENE_EXPRESSION == resultType
                 ? GenomicCriterionTypeEnum.GENE_EXPRESSION : GenomicCriterionTypeEnum.COPY_NUMBER;
             GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
             geneNameCriterion.setPlatformName(platformName);

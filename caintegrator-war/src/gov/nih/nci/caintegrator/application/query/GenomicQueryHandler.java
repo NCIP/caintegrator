@@ -37,11 +37,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Maps;
+
 /**
  * Runs queries that return <code>GenomicDataQueryResults</code>.
  */
 class GenomicQueryHandler {
-
     private static final float DECIMAL_100 = 100.0f;
     private final Query query;
     private final CaIntegrator2Dao dao;
@@ -70,9 +71,9 @@ class GenomicQueryHandler {
     private GenomicDataQueryResult createGeneExpressionResult(ArrayDataValues values) {
         GenomicDataQueryResult result = new GenomicDataQueryResult();
         createGeneExpressionResultRows(result, values);
-        Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap = createReporterToRowMap(result);
+        Map<Long, GenomicDataResultRow> reporterIdToRowMap = createReporterIdToRowMap(result);
         for (ArrayData arrayData : values.getArrayDatas()) {
-            addToGeneExpressionResult(values, result, reporterToRowMap, arrayData);
+            addToGeneExpressionResult(values, result, reporterIdToRowMap, arrayData);
         }
         result.setQuery(query);
         return result;
@@ -163,7 +164,7 @@ class GenomicQueryHandler {
     }
 
     private void addToGeneExpressionResult(ArrayDataValues values, GenomicDataQueryResult result,
-        Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap, ArrayData arrayData) {
+        Map<Long, GenomicDataResultRow> reporterIdToRowMap, ArrayData arrayData) {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(
                 query.getCompoundCriterion(), query.getResultType());
         result.setHasCriterionSpecifiedValues(criterionHandler.hasCriterionSpecifiedReporterValues());
@@ -175,16 +176,14 @@ class GenomicQueryHandler {
                 HibernateUtil.loadCollection(reporter.getGenes());
                 HibernateUtil.loadCollection(reporter.getSamplesHighVariance());
             }
-            GenomicDataResultRow row = reporterToRowMap.get(reporter);
+            GenomicDataResultRow row = reporterIdToRowMap.get(reporter.getId());
             GenomicDataResultValue value = new GenomicDataResultValue();
             value.setColumn(column);
-            Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
-            if (floatValue != null) {
-                value.setValue(twoDecimalPoint(floatValue));
-                if (query.isNeedsGenomicHighlighting()) {
-                    checkMeetsGeneExpressionCriterion(result, criterionHandler, reporter, row, value);
-                    checkHighVariance(result, arrayData, reporter, value);
-                }
+            float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
+            value.setValue(twoDecimalPoint(floatValue));
+            if (query.isNeedsGenomicHighlighting()) {
+                checkMeetsGeneExpressionCriterion(result, criterionHandler, reporter, row, value);
+                checkHighVariance(result, arrayData, reporter, value);
             }
             row.getValues().add(value);
         }
@@ -222,10 +221,10 @@ class GenomicQueryHandler {
             result.setHasHighVarianceValues(true);
         }
     }
-    private Map<AbstractReporter, GenomicDataResultRow> createReporterToRowMap(GenomicDataQueryResult result) {
-        Map<AbstractReporter, GenomicDataResultRow> rowMap = new HashMap<AbstractReporter, GenomicDataResultRow>();
+    private Map<Long, GenomicDataResultRow> createReporterIdToRowMap(GenomicDataQueryResult result) {
+        Map<Long, GenomicDataResultRow> rowMap = Maps.newHashMapWithExpectedSize(result.getRowCollection().size());
         for (GenomicDataResultRow row : result.getRowCollection()) {
-            rowMap.put(row.getReporter(), row);
+            rowMap.put(row.getReporter().getId(), row);
         }
         return rowMap;
     }
@@ -261,8 +260,7 @@ class GenomicQueryHandler {
                 query.getCompoundCriterion(), query.getResultType());
         Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
         samplesOnly.add(EntityTypeEnum.SAMPLE);
-        Set<ResultRow> rows = criterionHandler.getMatches(dao,
-                arrayDataService, query, samplesOnly);
+        Set<ResultRow> rows = criterionHandler.getMatches(dao, arrayDataService, query, samplesOnly);
         return getArrayDatas(rows);
     }
 

@@ -533,15 +533,14 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
         }
 
     private File createGeneExpressionFile(StudySubscription studySubscription, Platform platform) {
-        File gctFile = null;
-        gctFile = analysisFileManager.retrieveIGVFile(studySubscription.getStudy(),
+        File gctFile = analysisFileManager.retrieveIGVFile(studySubscription.getStudy(),
                 IGVFileTypeEnum.GENE_EXPRESSION, platform.getName());
         if (!gctFile.exists()) {
             try {
-            gctFile = analysisFileManager.createIGVGctFile(
-                createGctDataset(studySubscription, new HashSet<Query>(),
-                        platform.getName(), null, false),
-                studySubscription.getStudy(), platform.getName());
+                GctDataset dataSet = createGctDataset(studySubscription, new HashSet<Query>(), platform.getName(),
+                        null, false);
+                gctFile =
+                        analysisFileManager.createIGVGctFile(dataSet, studySubscription.getStudy(), platform.getName());
             } catch (InvalidCriterionException e) {
                 return null;
             }
@@ -574,8 +573,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
      */
     @Override
     public void createViewerFiles(StudySubscription studySubscription, HeatmapParameters heatmapParameters,
-            Platform platform)
-    throws InvalidCriterionException, IOException {
+            Platform platform) throws InvalidCriterionException, IOException {
         if (platform.getPlatformConfiguration().getPlatformType().isGeneExpression()) {
             createGeneExpressionFile(studySubscription, platform);
         }
@@ -637,15 +635,15 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     private GctDataset createGctDataset(StudySubscription studySubscription, Collection<Query> querySet,
             String platformName, SampleSet excludedSet, boolean addGenesToReporters) throws InvalidCriterionException {
         SampleSet refreshedExcludedSet = excludedSet == null ? null : getRefreshedEntity(excludedSet);
-        return GenePatternUtil.createGctDataset(studySubscription, querySet,
-                refreshedExcludedSet, queryManagementService, platformName, addGenesToReporters);
+        return GenePatternUtil.createGctDataset(studySubscription, querySet, refreshedExcludedSet,
+                queryManagementService, platformName, addGenesToReporters);
     }
 
     private Collection<SegmentData> createSegmentDataset(StudySubscription studySubscription,
             Collection<Query> querySet, String platformName, SampleSet excludedSet) throws InvalidCriterionException {
         SampleSet refreshedExcludedSet = excludedSet == null ? null : getRefreshedEntity(excludedSet);
-        return GenePatternUtil.createSegmentDataset(studySubscription, querySet,
-                refreshedExcludedSet, queryManagementService, platformName);
+        return GenePatternUtil.createSegmentDataset(studySubscription, querySet, refreshedExcludedSet,
+                queryManagementService, platformName);
     }
 
     /**
