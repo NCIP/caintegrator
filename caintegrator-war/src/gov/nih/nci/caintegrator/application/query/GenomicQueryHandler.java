@@ -120,8 +120,8 @@ class GenomicQueryHandler {
         }
     }
 
-    private Float twoDecimalPoint(Float floatValue) {
-        return floatValue == null ? null : Math.round(floatValue * DECIMAL_100) / DECIMAL_100;
+    private float twoDecimalPoint(float floatValue) {
+        return Math.round(floatValue * DECIMAL_100) / DECIMAL_100;
     }
 
     private Map<SegmentData, GenomicDataResultRow> createCopyNumberResultRows(
@@ -134,8 +134,8 @@ class GenomicQueryHandler {
         boolean isGenomeVersionMapped = dao.isGenomeVersionMapped(genomeVersion);
         for (SegmentData segmentData : segmentDatas) {
             if (arrayDatas.contains(segmentData.getArrayData())) {
-                Integer startPosition = segmentData.getLocation().getStartPosition();
-                Integer endPosition = segmentData.getLocation().getEndPosition();
+                int startPosition = segmentData.getLocation().getStartPosition();
+                int endPosition = segmentData.getLocation().getEndPosition();
                 if (!startEndPositionResultRowMap.containsKey(startPosition)) {
                     startEndPositionResultRowMap.put(startPosition, new HashMap<Integer, GenomicDataResultRow>());
                 }
@@ -204,8 +204,7 @@ class GenomicQueryHandler {
         if (result.isHasCriterionSpecifiedValues()) {
             if (criterionHandler.hasCriterionSpecifiedSegmentValues()
                     && !criterionHandler.hasCriterionSpecifiedSegmentCallsValues()) {
-                value.setCriteriaMatchType(criterionHandler.
-                        getSegmentValueMatchCriterionType(value.getValue()));
+                value.setCriteriaMatchType(criterionHandler.getSegmentValueMatchCriterionType(value.getValue()));
             } else {
                 value.setCriteriaMatchType(criterionHandler.
                         getSegmentCallsValueMatchCriterionType(value.getCallsValue()));

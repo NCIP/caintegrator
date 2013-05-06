@@ -7,13 +7,12 @@
 package gov.nih.nci.caintegrator.domain.application;
 
 /**
- * Interface to sort the GenomicDataResultColumn and GenomicDataResultRow. 
+ * Interface to sort the GenomicDataResultColumn and GenomicDataResultRow.
  */
 interface GenomicDataResultComparable {
 
     /**
      * @return the sorted value
      */
-    Float getSortedValue();
-
+    float getSortedValue();
 }

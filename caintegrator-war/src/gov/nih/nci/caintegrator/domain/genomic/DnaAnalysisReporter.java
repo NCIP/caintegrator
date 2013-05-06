@@ -6,9 +6,13 @@
  */
 package gov.nih.nci.caintegrator.domain.genomic;
 
+import com.google.common.primitives.Ints;
+
 
 /**
  * Reporter for DNA Analysis (SNP) arrays.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class DnaAnalysisReporter extends AbstractReporter {
 
@@ -19,7 +23,7 @@ public class DnaAnalysisReporter extends AbstractReporter {
     private static final int MT_CHROMOSOME_VALUE = 25;
 
     private String chromosome;
-    private Integer position;
+    private int position = -1;
     private String dbSnpId;
     private Character alleleA;
     private Character alleleB;
@@ -27,6 +31,7 @@ public class DnaAnalysisReporter extends AbstractReporter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(AbstractReporter abstractReporter) {
         DnaAnalysisReporter reporter = (DnaAnalysisReporter) abstractReporter;
         int chromosomeComparison = getChromosomeComparison(reporter);
@@ -38,8 +43,8 @@ public class DnaAnalysisReporter extends AbstractReporter {
     }
 
     private int getPositionComparison(DnaAnalysisReporter reporter) {
-        int positionInt = getPosition() != null ? getPosition() : 0;
-        int comparePositionInt = reporter.getPosition() != null ? reporter.getPosition() : 0;
+        int positionInt = getPosition() < 0 ?  0 : getPosition();
+        int comparePositionInt = reporter.getPosition() < 0 ? 0 : reporter.getPosition();
         return positionInt - comparePositionInt;
     }
 
@@ -49,7 +54,7 @@ public class DnaAnalysisReporter extends AbstractReporter {
         } else if (reporter.getChromosome() == null) {
             return -1;
         } else {
-            return ((Integer) getChromosomeAsInt()).compareTo(reporter.getChromosomeAsInt());
+            return Ints.compare(getChromosomeAsInt() , reporter.getChromosomeAsInt());
         }
     }
 
@@ -75,18 +80,18 @@ public class DnaAnalysisReporter extends AbstractReporter {
             this.chromosome = null;
         }
     }
-    
+
     /**
      * @return the position
      */
-    public Integer getPosition() {
+    public int getPosition() {
         return position;
     }
 
     /**
      * @param position the position to set
      */
-    public void setPosition(Integer position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 
@@ -138,13 +143,13 @@ public class DnaAnalysisReporter extends AbstractReporter {
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
-    
+
     /**
      * Verifies that the reporter has a valid location.
      * @return T/F value.
      */
     public boolean hasValidLocation() {
-        return getChromosome() != null && getPosition() != null;
+        return getChromosome() != null && getPosition() >= 0;
     }
 
     /**
@@ -161,6 +166,4 @@ public class DnaAnalysisReporter extends AbstractReporter {
             return Integer.parseInt(chromosome);
         }
     }
-
-
 }

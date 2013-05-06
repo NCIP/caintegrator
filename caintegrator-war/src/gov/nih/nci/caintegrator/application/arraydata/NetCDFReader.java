@@ -27,7 +27,7 @@ import ucar.nc2.Variable;
  * Provides functionality to read NetCDF files.
  */
 class NetCDFReader extends AbstractNetCdfFileHandler {
-    
+
     private static final Logger LOGGER = Logger.getLogger(NetCDFReader.class);
 
     private final DataRetrievalRequest request;
@@ -76,7 +76,7 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
         }
     }
 
-    private void loadValues(ArrayDataValues values, Variable variable, ArrayDataValueType type, ArrayData arrayData) 
+    private void loadValues(ArrayDataValues values, Variable variable, ArrayDataValueType type, ArrayData arrayData)
     throws IOException, InvalidRangeException {
         if (Float.class.equals(type.getTypeClass())) {
             loadFloatValues(values, variable, type, arrayData);
@@ -85,8 +85,8 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
         }
     }
 
-    private void loadFloatValues(ArrayDataValues values, Variable variable, ArrayDataValueType type, 
-            ArrayData arrayData) 
+    private void loadFloatValues(ArrayDataValues values, Variable variable, ArrayDataValueType type,
+            ArrayData arrayData)
     throws IOException, InvalidRangeException {
         for (List<AbstractReporter> reporters : getSequentialReporterLists()) {
             float[] floatValues = getFloatValues(variable, reporters, getArrayDataOffset(arrayData));
@@ -107,12 +107,12 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
         return offset;
     }
 
-    private float[] getFloatValues(Variable variable, List<AbstractReporter> reporters, Integer arrayDataIndex) 
+    private float[] getFloatValues(Variable variable, List<AbstractReporter> reporters, Integer arrayDataIndex)
     throws IOException, InvalidRangeException {
         return (float[]) getValuesArray(variable, reporters, arrayDataIndex).get1DJavaArray(Float.class);
     }
 
-    private Array getValuesArray(Variable variable, List<AbstractReporter> reporters, Integer arrayDataIndex) 
+    private Array getValuesArray(Variable variable, List<AbstractReporter> reporters, Integer arrayDataIndex)
     throws IOException, InvalidRangeException {
         int[] origin = new int[2];
         origin[0] = arrayDataIndex;

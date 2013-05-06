@@ -28,7 +28,7 @@ public final class DisplayableCopyNumberQueryResult {
     private final List<DisplayableCopyNumberSampleBasedRow> sampleRows =
         new ArrayList<DisplayableCopyNumberSampleBasedRow>();
     private int pageSize = DEFAULT_PAGE_SIZE;
-    
+
     DisplayableCopyNumberQueryResult(GenomicDataQueryResult result, ResultsOrientationEnum orientation) {
         this.result = result;
         if (ResultsOrientationEnum.SUBJECTS_AS_COLUMNS.equals(orientation)) {
@@ -44,16 +44,14 @@ public final class DisplayableCopyNumberQueryResult {
                 GenomicDataResultValue value = getValue(row, column);
                 if (value != null && value.isMeetsCriterion()) {
                     DisplayableCopyNumberSampleBasedRow displayableRow = new DisplayableCopyNumberSampleBasedRow();
-                    displayableRow.setSubject(
-                            column.getSampleAcquisition().getAssignment().getIdentifier());
-                    displayableRow.setSample(
-                            column.getSampleAcquisition().getSample().getName());
-                    displayableRow.setChromosome(
-                            row.getSegmentDataResultValue().getChromosomalLocation().getChromosome().toString());
-                    displayableRow.setStartPosition(
-                            row.getSegmentDataResultValue().getChromosomalLocation().getStartPosition().toString());
-                    displayableRow.setEndPosition(
-                            row.getSegmentDataResultValue().getChromosomalLocation().getEndPosition().toString());
+                    displayableRow.setSubject(column.getSampleAcquisition().getAssignment().getIdentifier());
+                    displayableRow.setSample(column.getSampleAcquisition().getSample().getName());
+                    displayableRow.setChromosome(row.getSegmentDataResultValue().getChromosomalLocation()
+                            .getChromosome());
+                    displayableRow.setStartPosition(Integer.toString(
+                            row.getSegmentDataResultValue().getChromosomalLocation().getStartPosition()));
+                    displayableRow.setEndPosition(Integer.toString(
+                            row.getSegmentDataResultValue().getChromosomalLocation().getEndPosition()));
                     displayableRow.setGenes(row.getSegmentDataResultValue().getDisplayGenes());
                     displayableRow.setValue(value);
                     sampleRows.add(displayableRow);
@@ -62,7 +60,7 @@ public final class DisplayableCopyNumberQueryResult {
         }
         Collections.sort(sampleRows);
     }
-    
+
     private void loadGeneBasedRow() {
         loadHeaders();
         loadRows();
@@ -73,10 +71,10 @@ public final class DisplayableCopyNumberQueryResult {
             DisplayableCopyNumberGeneBasedRow displayableRow = new DisplayableCopyNumberGeneBasedRow();
             displayableRow.setChromosome(
                     row.getSegmentDataResultValue().getChromosomalLocation().getChromosome().toString());
-            displayableRow.setStartPosition(
-                    row.getSegmentDataResultValue().getChromosomalLocation().getStartPosition().toString());
-            displayableRow.setEndPosition(
-                    row.getSegmentDataResultValue().getChromosomalLocation().getEndPosition().toString());
+            displayableRow.setStartPosition(Integer.toString(
+                    row.getSegmentDataResultValue().getChromosomalLocation().getStartPosition()));
+            displayableRow.setEndPosition(Integer.toString(
+                    row.getSegmentDataResultValue().getChromosomalLocation().getEndPosition()));
             displayableRow.setGenes(row.getSegmentDataResultValue().getDisplayGenes());
             for (GenomicDataResultColumn column : result.getColumnCollection()) {
                 displayableRow.getValues().add(getValue(row, column));
@@ -103,16 +101,16 @@ public final class DisplayableCopyNumberQueryResult {
 
     /**
      * Gets the query.
-     * 
+     *
      * @return the query.
      */
     public Query getQuery() {
         return result.getQuery();
     }
-    
+
     /**
      * Returns the list of sampleHeaders to display.
-     * 
+     *
      * @return the sampleHeaders.
      */
     public List<String> getSampleHeaders() {

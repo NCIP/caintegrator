@@ -12,10 +12,10 @@ import java.util.Comparator;
 /**
  * A comparator class for Genomic Result by sortedValue.
  */
-public class GenomicDataResultComparator implements Comparator <GenomicDataResultComparable> {
+public class GenomicDataResultComparator implements Comparator<GenomicDataResultComparable> {
 
     private final int order;
-    
+
     /**
      * @param order sorting direction 1 for ascending and -1 for descending
      */
@@ -28,7 +28,6 @@ public class GenomicDataResultComparator implements Comparator <GenomicDataResul
      * {@inheritDoc}
      */
     public int compare(GenomicDataResultComparable arg0, GenomicDataResultComparable arg1) {
-        return order * arg0.getSortedValue().compareTo(arg1.getSortedValue());
+        return order * Float.compare(arg0.getSortedValue(), arg1.getSortedValue());
     }
-
 }

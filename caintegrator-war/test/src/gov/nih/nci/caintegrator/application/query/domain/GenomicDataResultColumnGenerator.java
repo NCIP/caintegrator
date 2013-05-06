@@ -14,20 +14,26 @@ import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator.domain.genomic.SampleAcquisition;
+
+
 /**
- * 
+ * Genomic data result column generator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public final class GenomicDataResultColumnGenerator extends AbstractTestDataGenerator<GenomicDataResultColumn> {
 
+    /**
+     * Data generator.
+     */
     public static final GenomicDataResultColumnGenerator INSTANCE = new GenomicDataResultColumnGenerator();
-    
+
     private GenomicDataResultColumnGenerator() {
         super();
     }
 
     @Override
     public void compareFields(GenomicDataResultColumn original, GenomicDataResultColumn retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getSampleAcquisition(), retrieved.getSampleAcquisition());
     }
 

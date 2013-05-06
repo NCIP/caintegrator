@@ -14,14 +14,14 @@ import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 public class SegmentData extends AbstractCaIntegrator2Object implements Comparable<SegmentData> {
 
     private static final long serialVersionUID = 1L;
-    
-    private Integer numberOfMarkers;
-    private Float segmentValue;
-    private Integer callsValue;
-    private Float probabilityAmplification;
-    private Float probabilityGain;
-    private Float probabilityLoss;
-    private Float probabilityNormal;
+
+    private int numberOfMarkers;
+    private float segmentValue;
+    private int callsValue;
+    private float probabilityAmplification;
+    private float probabilityGain;
+    private float probabilityLoss;
+    private float probabilityNormal;
     private ChromosomalLocation location;
     private ArrayData arrayData;
 
@@ -41,98 +41,98 @@ public class SegmentData extends AbstractCaIntegrator2Object implements Comparab
     /**
      * @return the numberOfMarkers
      */
-    public Integer getNumberOfMarkers() {
+    public int getNumberOfMarkers() {
         return numberOfMarkers;
     }
 
     /**
      * @param numberOfMarkers the numberOfMarkers to set
      */
-    public void setNumberOfMarkers(Integer numberOfMarkers) {
+    public void setNumberOfMarkers(int numberOfMarkers) {
         this.numberOfMarkers = numberOfMarkers;
     }
 
     /**
      * @return the segmentValue
      */
-    public Float getSegmentValue() {
+    public float getSegmentValue() {
         return segmentValue;
     }
 
     /**
      * @param segmentValue the segmentValue to set
      */
-    public void setSegmentValue(Float segmentValue) {
+    public void setSegmentValue(float segmentValue) {
         this.segmentValue = segmentValue;
     }
 
     /**
      * @return the callsValue
      */
-    public Integer getCallsValue() {
+    public int getCallsValue() {
         return callsValue;
     }
 
     /**
      * @param callsValue the callsValue to set
      */
-    public void setCallsValue(Integer callsValue) {
+    public void setCallsValue(int callsValue) {
         this.callsValue = callsValue;
     }
 
     /**
      * @return the probabilityAmplification
      */
-    public Float getProbabilityAmplification() {
+    public float getProbabilityAmplification() {
         return probabilityAmplification;
     }
 
     /**
      * @param probabilityAmplification the probabilityAmplification to set
      */
-    public void setProbabilityAmplification(Float probabilityAmplification) {
+    public void setProbabilityAmplification(float probabilityAmplification) {
         this.probabilityAmplification = probabilityAmplification;
     }
 
     /**
      * @return the probabilityGain
      */
-    public Float getProbabilityGain() {
+    public float getProbabilityGain() {
         return probabilityGain;
     }
 
     /**
      * @param probabilityGain the probabilityGain to set
      */
-    public void setProbabilityGain(Float probabilityGain) {
+    public void setProbabilityGain(float probabilityGain) {
         this.probabilityGain = probabilityGain;
     }
 
     /**
      * @return the probabilityLoss
      */
-    public Float getProbabilityLoss() {
+    public float getProbabilityLoss() {
         return probabilityLoss;
     }
 
     /**
      * @param probabilityLoss the probabilityLoss to set
      */
-    public void setProbabilityLoss(Float probabilityLoss) {
+    public void setProbabilityLoss(float probabilityLoss) {
         this.probabilityLoss = probabilityLoss;
     }
 
     /**
      * @return the probabilityNormal
      */
-    public Float getProbabilityNormal() {
+    public float getProbabilityNormal() {
         return probabilityNormal;
     }
 
     /**
      * @param probabilityNormal the probabilityNormal to set
      */
-    public void setProbabilityNormal(Float probabilityNormal) {
+    public void setProbabilityNormal(float probabilityNormal) {
         this.probabilityNormal = probabilityNormal;
     }
 
@@ -163,5 +163,4 @@ public class SegmentData extends AbstractCaIntegrator2Object implements Comparab
     public void setArrayData(ArrayData arrayData) {
         this.arrayData = arrayData;
     }
-
 }

@@ -10,17 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator.application.arraydata.AbstractPlatformSource;
-import gov.nih.nci.caintegrator.application.arraydata.AffymetrixCdfReadException;
-import gov.nih.nci.caintegrator.application.arraydata.AffymetrixCdfReader;
-import gov.nih.nci.caintegrator.application.arraydata.AffymetrixExpressionPlatformSource;
-import gov.nih.nci.caintegrator.application.arraydata.AffymetrixSnpPlatformSource;
-import gov.nih.nci.caintegrator.application.arraydata.AgilentCnPlatformSource;
-import gov.nih.nci.caintegrator.application.arraydata.AgilentExpressionPlatformSource;
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformHelper;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformLoadingException;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator.domain.genomic.Gene;
@@ -37,10 +26,16 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Verifier for an array design.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class ArrayDesignChecker {
 
-    public static Platform checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixSnpPlatformSource source, ArrayDataService service) throws PlatformLoadingException, AffymetrixCdfReadException {
-        AffymetrixCdfReader cdfReaders[] = getCdfReaders(cdfs);
+    public static Platform checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixSnpPlatformSource source,
+            ArrayDataService service) throws PlatformLoadingException, AffymetrixCdfReadException {
+        AffymetrixCdfReader[] cdfReaders = getCdfReaders(cdfs);
         Platform platform = retrievePlatform(source, service);
         if (platform.getId() == null) {
             platform.setId(1L);
@@ -107,8 +102,8 @@ public class ArrayDesignChecker {
 
     public static Platform checkLoadAgilentCopyNumberArrayDesign(String platformName, File annotationFile, ArrayDataService service)
     throws PlatformLoadingException {
-        AgilentCnPlatformSource source = new AgilentCnPlatformSource(annotationFile, platformName,
-                annotationFile.getName());
+        AgilentCnPlatformSource source =
+                new AgilentCnPlatformSource(annotationFile, platformName, annotationFile.getName());
         Platform platform = retrievePlatform(source, service);
         if (platform.getId() == null) {
             platform.setId(1L);
@@ -143,7 +138,8 @@ public class ArrayDesignChecker {
 
     private static void checkProbeSetReporters(Platform platform, AffymetrixCdfReader cdfReader) {
         PlatformHelper platformHelper = new PlatformHelper(platform);
-        Set<ReporterList> probeSetReporters = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        Set<ReporterList> probeSetReporters =
+                platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         for (ReporterList reporterList : probeSetReporters) {
             assertEquals(platform, reporterList.getPlatform());
             assertEquals(cdfReader.getCdfData().getHeader().getNumProbeSets(), reporterList.getReporters().size());
@@ -166,7 +162,5 @@ public class ArrayDesignChecker {
         configuration.setDeploymentStartDate(new Date());
         service.savePlatformConfiguration(configuration);
         return service.loadArrayDesign(configuration).getPlatform();
-
     }
-
 }

@@ -20,10 +20,10 @@ public final class SegmentDatasetFileWriter {
 
     private static final char TAB = '\t';
     private static final char NEW_LINE = '\n';
-    
+
     private static final String IGV_SEG_HEADER =
         "Track Name\tChromosome\tStart Position\tEnd Position\tSegment Value\n";
-    
+
     private SegmentDatasetFileWriter() {
         super();
     }
@@ -49,24 +49,23 @@ public final class SegmentDatasetFileWriter {
         }
     }
 
-    private static void writeData(FileWriter writer, Collection<SegmentData> dataset, 
+    private static void writeData(FileWriter writer, Collection<SegmentData> dataset,
             boolean isUseCGHCall) throws IOException {
         for (SegmentData segmentData : dataset) {
             writer.write(segmentData.getArrayData().getSample().getName());
             writer.write(TAB);
             writer.write(segmentData.getLocation().getChromosome());
             writer.write(TAB);
-            writer.write(segmentData.getLocation().getStartPosition().toString());
+            writer.write(Integer.toString(segmentData.getLocation().getStartPosition()));
             writer.write(TAB);
-            writer.write(segmentData.getLocation().getEndPosition().toString());
+            writer.write(Integer.toString(segmentData.getLocation().getEndPosition()));
             writer.write(TAB);
             if (isUseCGHCall) {
-                writer.write(segmentData.getCallsValue() == null ? "" : segmentData.getCallsValue().toString());
+                writer.write(Integer.toString(segmentData.getCallsValue()));
             } else {
-                writer.write(segmentData.getSegmentValue().toString());
+                writer.write(Float.toString(segmentData.getSegmentValue()));
             }
             writer.write(NEW_LINE);
         }
     }
-
 }

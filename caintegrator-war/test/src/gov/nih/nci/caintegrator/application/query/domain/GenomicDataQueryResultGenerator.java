@@ -14,18 +14,24 @@ import gov.nih.nci.caintegrator.domain.application.Query;
 
 import java.util.Set;
 
-
+/**
+ * Genomic data query result generator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public final class GenomicDataQueryResultGenerator extends AbstractTestDataGenerator<GenomicDataQueryResult> {
 
+    /**
+     * Data generator.
+     */
     public static final GenomicDataQueryResultGenerator INSTANCE = new GenomicDataQueryResultGenerator();
-    
+
     private GenomicDataQueryResultGenerator() {
         super();
     }
 
     @Override
     public void compareFields(GenomicDataQueryResult original, GenomicDataQueryResult retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
         QueryGenerator.INSTANCE.compareFields(original.getQuery(), retrieved.getQuery());
         assertEquals(original.getRowCollection().size(), retrieved.getRowCollection().size());
     }
@@ -36,7 +42,6 @@ public final class GenomicDataQueryResultGenerator extends AbstractTestDataGener
         return new GenomicDataQueryResult();
     }
 
-
     @Override
     public void setValues(GenomicDataQueryResult queryResult, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         Query query = new Query();
@@ -46,6 +51,5 @@ public final class GenomicDataQueryResultGenerator extends AbstractTestDataGener
             queryResult.getRowCollection().add(GenomicDataResultRowGenerator.INSTANCE.createPersistentObject());
         }
     }
-
 }
 
