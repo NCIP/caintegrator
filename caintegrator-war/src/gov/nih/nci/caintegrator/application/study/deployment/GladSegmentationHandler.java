@@ -6,15 +6,6 @@
  */
 package gov.nih.nci.caintegrator.application.study.deployment;
 
-import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
-import gov.nih.nci.caintegrator.common.GenePatternUtil;
-import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator.domain.genomic.ChromosomalLocation;
-import gov.nih.nci.caintegrator.domain.genomic.DnaAnalysisData;
-import gov.nih.nci.caintegrator.domain.genomic.DnaAnalysisReporter;
-import gov.nih.nci.caintegrator.domain.genomic.SegmentData;
-import gov.nih.nci.caintegrator.external.DataRetrievalException;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -29,6 +20,14 @@ import org.genepattern.webservice.ParameterInfo;
 import org.genepattern.webservice.WebServiceException;
 
 import au.com.bytecode.opencsv.CSVReader;
+import edu.mit.broad.genepattern.gp.services.CaIntegrator2GPClient;
+import gov.nih.nci.caintegrator.common.GenePatternUtil;
+import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator.domain.genomic.ChromosomalLocation;
+import gov.nih.nci.caintegrator.domain.genomic.DnaAnalysisData;
+import gov.nih.nci.caintegrator.domain.genomic.DnaAnalysisReporter;
+import gov.nih.nci.caintegrator.domain.genomic.SegmentData;
+import gov.nih.nci.caintegrator.external.DataRetrievalException;
 
 /**
  * Adds segmentation data by invoking the GLAD GenePattern service.
@@ -113,7 +112,7 @@ class GladSegmentationHandler {
         return arrayDataMap;
     }
 
-    private File getOutputFile(JobInfo jobInfo) 
+    private File getOutputFile(JobInfo jobInfo)
     throws IOException, WebServiceException, DataRetrievalException {
         File outputFile = client.getResultFile(jobInfo, OUTPUT_FILENAME);
         if (outputFile == null) {
@@ -153,9 +152,9 @@ class GladSegmentationHandler {
         }
         writer.write("\n");
     }
-    
+
     private float roundToThreeDecimalPlaces(float value) {
-        return Math.round(value * DECIMAL_1000) / DECIMAL_1000;        
+        return Math.round(value * DECIMAL_1000) / DECIMAL_1000;
     }
 
     private void writeHeader(FileWriter writer, List<ArrayData> arrayDatas) throws IOException {

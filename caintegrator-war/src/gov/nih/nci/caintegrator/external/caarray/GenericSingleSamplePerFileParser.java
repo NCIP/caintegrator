@@ -10,9 +10,8 @@ import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator.common.Cai2Util;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,8 +46,7 @@ public final class GenericSingleSamplePerFileParser {
     public Map<String, float[]> extractData(SupplementalDataFile supplementalDataFile, PlatformVendorEnum vendor)
     throws DataRetrievalException {
         try {
-            dataFileReader =
-                    new CSVReader(new InputStreamReader(new FileInputStream(supplementalDataFile.getFile())), '\t');
+            dataFileReader = new CSVReader(new FileReader(supplementalDataFile.getFile()), '\t');
             loadHeaders(supplementalDataFile.getProbeNameHeader());
             Map<String, float[]> dataMap = new HashMap<String, float[]>();
             String[] fields;
@@ -59,6 +57,8 @@ public final class GenericSingleSamplePerFileParser {
             return dataMap;
         } catch (IOException e) {
             throw new DataRetrievalException("Couldn't read supplemental data file.", e);
+        } finally {
+            dataFileReader = null;
         }
     }
 

@@ -10,10 +10,9 @@ import gov.nih.nci.caintegrator.common.Cai2Util;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,7 @@ public final class GenericMultiSamplePerFileParser {
     private void createDataFileReader(File dataFile, String probeHeader, String sampleHeader, List<String> sampleList)
     throws DataRetrievalException {
         try {
-            dataFileReader = new CSVReader(new InputStreamReader(new FileInputStream(dataFile)), '\t');
+            dataFileReader = new CSVReader(new FileReader(dataFile), '\t');
             loadHeaders(probeHeader, sampleHeader, sampleList);
         } catch (FileNotFoundException e) {
             throw new DataRetrievalException("Supplemental file not found: ", e);
