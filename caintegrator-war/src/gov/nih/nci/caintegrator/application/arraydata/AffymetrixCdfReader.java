@@ -57,10 +57,6 @@ public final class AffymetrixCdfReader {
     private boolean open() {
         boolean success = cdfData.read();
         if (!success) {
-            // This invokes a fileChannel.map call that could possibly fail due to a bug in Java
-            // that causes previous memory mapped files to not be released until after GC.  So
-            // we force a gc here to ensure that is not the cause of our problems
-            System.gc();
             cdfData.clear();
             success = cdfData.read();
         }
@@ -71,11 +67,9 @@ public final class AffymetrixCdfReader {
      * Closes the reader.
      */
     public void close() {
-        // See development tracker issue #9735 and dev tracker #10925 for details on why System.gc() used here
         if (cdfData != null) {
             cdfData.clear();
             cdfData = null;
-            System.gc();
         }
     }
 

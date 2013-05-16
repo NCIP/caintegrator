@@ -267,9 +267,12 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
      * @return the string which forms the html for the disable/enable Study url.
      */
     private String getArchiveStudyUrlString(StudyConfiguration studyConfiguration) {
+        String token = "", tokenName = "";
+        try {
+            token = SessionHelper.getInstance().getToken();
+            tokenName = SessionHelper.getInstance().getTokenName();
+        } catch (Exception e) { token = ""; }
 
-       String token = SessionHelper.getInstance().getToken();
-       String tokenName = SessionHelper.getInstance().getTokenName();
        String returnString = "";
        String actionName = "";
        if (BooleanUtils.isTrue(studyConfiguration.getStudy().isEnabled())) {
