@@ -538,7 +538,7 @@
 	                </s:if>                  
                     <li><a href="/caintegrator/workspace.action">Browse Public Studies</a></li>
                 </s:if>
-                <li><a href="javascript:openWikiHelp('ngPTAg', 'id-1-GettingStartedwithcaIntegrator-ApplicationSupport')">Support</a></li>
+                <li><a href="http://cbiit.nci.nih.gov/support" target="_blank">Support</a></li>
                 <li><a href="${tutorialsUrl}">Tutorials</a></li>
                 <li><a href="javascript:openWikiHelp('mwPTAg', '')">User Guide</a></li>
             </ul>
