@@ -6,7 +6,7 @@
     <h1><s:property value="#subTitleText" /></h1>
     <div class="tutorials">
         <a href="javascript:openOverviewTutorialWindow('overviewTutorial')" class="video">
-            A short overview of the functionality of caIntegrator and how it integrates with other caBIG tools
+            A short overview of the functionality of caIntegrator and how it integrates with other tools
         </a>
     </div>
     <div class="tutorials">
