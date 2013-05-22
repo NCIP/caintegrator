@@ -27,7 +27,7 @@
     <h2 class="darker" style="padding: 6px 10px;">Welcome to caIntegrator </h2>
 
     <p style="padding: 0.25em 0pt 1em 2em; max-width: 800px;">
-        caIntegrator is a web-based software application that allows researchers to set up custom, caBIG®-compatible web portals to conduct integrative research, without requiring programming experience. These portals bring together heterogeneous clinical, microarray and medical imaging data to enrich multidisciplinary research.
+        caIntegrator is a web-based software application that allows researchers to set up custom web portals to conduct integrative research, without requiring programming experience. These portals bring together heterogeneous clinical, microarray and medical imaging data to enrich multidisciplinary research.
     </p>
     <p style="padding: 0.25em 0pt 1em 2em; max-width: 800px; color: rgb(71, 91, 130);"><font size="3"><b>To begin select a study from the
 		<s:if test="anonymousUser">
