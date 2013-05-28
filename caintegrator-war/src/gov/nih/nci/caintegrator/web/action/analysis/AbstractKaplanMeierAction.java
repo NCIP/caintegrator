@@ -26,8 +26,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * Abstract Action dealing with Kaplan-Meier plotting.
  */
@@ -66,7 +64,6 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     @Override
     public void prepare() {
         super.prepare();
-        refreshGenomicSources();
         retrieveAndRefreshSurvivalValueDefinition();
         populateSurvivalValueDefinitions();
         if (!getCurrentStudy().getStudyConfiguration().hasExpressionData()) {
@@ -84,12 +81,9 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
 
     private void retrieveAndRefreshSurvivalValueDefinition() {
        AbstractKMParameters params = getKmPlotParameters();
-       if (getKmPlotForm().getSurvivalValueDefinitionId() != null
-                && !StringUtils.isEmpty(getKmPlotForm().getSurvivalValueDefinitionId())
-                && params != null
+       if (getKmPlotForm().getSurvivalValueDefinitionId() != null && params != null
                 && params.getSurvivalValueDefinition() != null) {
-                params.getSurvivalValueDefinition().setId(
-                       Long.valueOf(getKmPlotForm().getSurvivalValueDefinitionId()));
+                params.getSurvivalValueDefinition().setId(getKmPlotForm().getSurvivalValueDefinitionId());
                 params.setSurvivalValueDefinition(getQueryManagementService().
                         getRefreshedEntity(params.getSurvivalValueDefinition()));
        }

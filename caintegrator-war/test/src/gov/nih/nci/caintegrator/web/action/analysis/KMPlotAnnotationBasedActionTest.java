@@ -34,8 +34,6 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.KMPlotAnnotationBasedAction;
-import gov.nih.nci.caintegrator.web.action.analysis.KMPlotAnnotationBasedActionForm;
 
 import java.awt.Color;
 
@@ -198,7 +196,7 @@ public class KMPlotAnnotationBasedActionTest extends AbstractSessionBasedTest  {
 
         action.getKmPlotForm().getAnnotationBasedForm().setSelectedAnnotationId("1");
         action.getKmPlotForm().getAnnotationBasedForm().setAnnotationGroupSelection("subjectAnnotations");
-        action.getKmPlotForm().setSurvivalValueDefinitionId("1");
+        action.getKmPlotForm().setSurvivalValueDefinitionId(1L);
         assertTrue(action.isCreatable());
     }
 

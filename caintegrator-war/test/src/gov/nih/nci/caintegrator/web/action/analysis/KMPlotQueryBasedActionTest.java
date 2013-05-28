@@ -31,8 +31,6 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.DisplayableQuery;
-import gov.nih.nci.caintegrator.web.action.analysis.KMPlotQueryBasedAction;
 
 import java.awt.Color;
 
@@ -91,7 +89,7 @@ public class KMPlotQueryBasedActionTest extends AbstractSessionBasedTest {
     public void testPrepare() {
         SurvivalValueDefinition svd = new SurvivalValueDefinition();
         svd.setId(Long.valueOf(1));
-        action.getKmPlotForm().setSurvivalValueDefinitionId("1");
+        action.getKmPlotForm().setSurvivalValueDefinitionId(1L);
         action.getKmPlotParameters().setSurvivalValueDefinition(svd);
         setupActionVariables();
         action.prepare();
