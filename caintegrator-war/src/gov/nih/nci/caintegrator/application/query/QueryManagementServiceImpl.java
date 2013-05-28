@@ -255,8 +255,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     @Override
     public Set<String> retrieveGeneExpressionPlatformsForStudy(Study study) {
         Set<String> platformsInStudy = new HashSet<String>();
-        for (Platform platform : arrayDataService.getPlatformsInStudy(
-                study, PlatformDataTypeEnum.EXPRESSION)) {
+        for (Platform platform : arrayDataService.getPlatformsInStudy(study, PlatformDataTypeEnum.EXPRESSION)) {
             platformsInStudy.add(platform.getName());
         }
         return platformsInStudy;

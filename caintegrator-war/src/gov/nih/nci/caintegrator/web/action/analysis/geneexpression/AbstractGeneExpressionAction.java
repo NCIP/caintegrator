@@ -56,9 +56,8 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     @Override
     public void prepare() {
         super.prepare();
-        refreshGenomicSources();
-        platformsInStudy = new ArrayList<String>(
-                getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
+        platformsInStudy =
+                new ArrayList<String>(getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
         Collections.sort(platformsInStudy);
     }
 
