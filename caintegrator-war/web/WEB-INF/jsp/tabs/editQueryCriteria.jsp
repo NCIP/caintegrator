@@ -133,7 +133,10 @@
         </s:else>
     </table>
 
-    <div class="tablefooter"><s:radio name="queryForm.criteriaGroup.booleanOperator" list="{'or','and'}"></s:radio></div>
+    <div class="tablefooter">
+        <s:radio name="queryForm.criteriaGroup.booleanOperator" 
+            list="@gov.nih.nci.caintegrator.domain.application.BooleanOperatorEnum@values()" listValue="value"/>
+    </div>
 
     <!--Buttons-->
 

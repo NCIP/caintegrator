@@ -151,13 +151,11 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     @Override
     public void prepare() {
         super.prepare();
-        refreshGenomicSources();
-        geneExpressionPlatformsInStudy = getQueryManagementService().
-            retrieveGeneExpressionPlatformsForStudy(getStudy());
-        copyNumberPlatformsInStudy = getQueryManagementService().
-            retrieveCopyNumberPlatformsForStudy(getStudy());
-        copyNumberPlatformsWithCghCallInStudy = getQueryManagementService().
-            retrieveCopyNumberPlatformsWithCghCallForStudy(getStudy());
+        geneExpressionPlatformsInStudy =
+                getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy());
+        copyNumberPlatformsInStudy = getQueryManagementService().retrieveCopyNumberPlatformsForStudy(getStudy());
+        copyNumberPlatformsWithCghCallInStudy =
+                getQueryManagementService().retrieveCopyNumberPlatformsWithCghCallForStudy(getStudy());
         if ("selectedTabSearchResults".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
         } else {
