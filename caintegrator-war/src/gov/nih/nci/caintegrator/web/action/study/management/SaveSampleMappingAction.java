@@ -9,7 +9,6 @@ package gov.nih.nci.caintegrator.web.action.study.management;
 import gov.nih.nci.caintegrator.application.arraydata.ArrayDataLoadingTypeEnum;
 import gov.nih.nci.caintegrator.application.study.LogEntry;
 import gov.nih.nci.caintegrator.application.study.ValidationException;
-import gov.nih.nci.caintegrator.common.HibernateUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,8 +44,7 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
     public void prepare() {
         super.prepare();
         try {
-            HibernateUtil.loadGenomicSources(getStudyConfiguration().getGenomicDataSources());
-            this.getStudyManagementService().checkForSampleUpdates(getStudyConfiguration());
+            this.getStudyManagementService().checkForSampleUpdates(getGenomicSource());
         } catch (Exception e) {
             LOG.error("Error retrieving sample update information.", e);
         }

@@ -10,7 +10,9 @@ import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.caarray.ExperimentNotFoundException;
 
 /**
- * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
+ * Action for editing sample mappings.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class EditSampleMappingAction extends AbstractGenomicSourceAction {
 
@@ -25,7 +27,7 @@ public class EditSampleMappingAction extends AbstractGenomicSourceAction {
             addActionError(getText("struts.messages.error.study.no.subject"));
         }
         try {
-            this.getStudyManagementService().checkForSampleUpdates(getStudyConfiguration());
+            this.getStudyManagementService().checkForSampleUpdates(getGenomicSource());
         } catch (ConnectionException e) {
             addActionError("The configured server couldn't be reached. Please check the configuration settings.");
         } catch (ExperimentNotFoundException e) {

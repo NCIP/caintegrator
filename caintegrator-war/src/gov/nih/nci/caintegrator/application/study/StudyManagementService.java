@@ -577,12 +577,13 @@ public interface StudyManagementService extends CaIntegrator2EntityRefresher {
     void daoSave(Object persistentObject);
 
     /**
-     * Check samples for updates based on experiment.
-     * @param sc study config
+     * Check samples for updates based on a particular genomic data source.
+     * @param config the genomic data source configuration
      * @throws ConnectionException connection error
      * @throws ExperimentNotFoundException experiment not found.
      */
-    void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException;
+    void checkForSampleUpdates(GenomicDataSourceConfiguration config)
+            throws ConnectionException, ExperimentNotFoundException;
 
     /**
      * Gets all visible AnnotationFieldDescriptors from group that the user is authorized to see.

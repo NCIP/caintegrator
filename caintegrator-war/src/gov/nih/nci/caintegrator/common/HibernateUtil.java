@@ -136,7 +136,7 @@ public final class HibernateUtil {
      * Make sure all persistent collections are loaded.
      * @param genomicSources List of GenomicDataSourceConfiguration to load from hibernate.
      */
-    public static void loadGenomicSources(List<GenomicDataSourceConfiguration> genomicSources) {
+    private static void loadGenomicSources(List<GenomicDataSourceConfiguration> genomicSources) {
         loadCollection(genomicSources);
         for (GenomicDataSourceConfiguration genomicSource : genomicSources) {
             loadGenomicSource(genomicSource);
@@ -224,7 +224,7 @@ public final class HibernateUtil {
      * @param sampleSets to load.
      */
 
-    public static void loadSampleSets(Collection<SampleSet> sampleSets) {
+    private static void loadSampleSets(Collection<SampleSet> sampleSets) {
         for (SampleSet sampleSet : sampleSets) {
             loadSamples(sampleSet.getSamples());
         }
@@ -245,7 +245,7 @@ public final class HibernateUtil {
      * Loads the subcollections for the Sample object.
      * @param sample to load.
      */
-    public static void loadSampleCollections(Sample sample) {
+    private static void loadSampleCollections(Sample sample) {
         loadCollection(sample.getArrayCollection());
         loadCollection(sample.getArrayDataCollection());
         for (ArrayData arrayData : sample.getArrayDataCollection()) {

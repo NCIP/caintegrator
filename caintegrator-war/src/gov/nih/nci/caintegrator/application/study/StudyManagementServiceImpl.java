@@ -118,8 +118,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     @Override
     @Transactional(rollbackFor = {ValidationException.class, IOException.class, ConnectionException.class })
     public StudyConfiguration copy(StudyConfiguration copyFrom, StudyConfiguration copyTo)
-    throws ValidationException, IOException,
-        ConnectionException {
+    throws ValidationException, IOException, ConnectionException {
         this.save(copyTo);
         copyHelper.copyStudyLogo(copyFrom, copyTo);
         copyHelper.copyAnnotationGroups(copyFrom, copyTo);
@@ -643,17 +642,10 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
      * {@inheritDoc}
      */
     @Override
-    public void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException {
-        for (GenomicDataSourceConfiguration gdsc : sc.getGenomicDataSources()) {
-            checkForSampleUpdates(gdsc);
-        }
-    }
-
-    private void checkForSampleUpdates(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+    public void checkForSampleUpdates(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
     ExperimentNotFoundException {
         Map<String, Date> sampleUpdates = getCaArrayFacade().checkForSampleUpdates(
-                genomicSource.getExperimentIdentifier(),
-                genomicSource.getServerProfile());
+                genomicSource.getExperimentIdentifier(), genomicSource.getServerProfile());
         genomicSource.setRefreshSampleNames(sampleUpdates);
     }
 
@@ -677,9 +669,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public GenomicDataSourceConfiguration getRefreshedGenomicSource(Long id) {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.setId(id);
-        genomicSource = getRefreshedEntity(genomicSource);
-        HibernateUtil.loadCollection(genomicSource.getStudyConfiguration());
-        return genomicSource;
+        return getRefreshedEntity(genomicSource);
     }
 
     /**
@@ -1119,9 +1109,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     public StudyConfiguration getRefreshedStudyConfiguration(Long id) {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(id);
-        studyConfiguration = getRefreshedEntity(studyConfiguration);
-        HibernateUtil.loadCollection(studyConfiguration);
-        return studyConfiguration;
+        return getRefreshedEntity(studyConfiguration);
     }
 
     /**
@@ -1481,14 +1469,13 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
         Set<String> allAvailableValues = new HashSet<String>();
         Set<PermissibleValue> permissibleValues = fieldDescriptor.getDefinition().getPermissibleValueCollection();
         Set<String> displayPermissibleValues = PermissibleValueUtil.getDisplayPermissibleValue(permissibleValues);
-        Set<AbstractAnnotationValue> annotationValues = fieldDescriptor.getDefinition()
-                .getAnnotationValueCollection();
+        Set<AbstractAnnotationValue> annotationValues = fieldDescriptor.getDefinition().getAnnotationValueCollection();
         allAvailableValues.addAll(AnnotationUtil.getAdditionalValue(annotationValues, new ArrayList<String>(),
                                                                     displayPermissibleValues));
         for (FileColumn fileColumn : getDao().getFileColumnsUsingAnnotationFieldDescriptor(fieldDescriptor)) {
             List<String> fileDataValues = fileColumn.getAnnotationFile() != null ? fileColumn.getDataValues()
                     : new ArrayList<String>();
-            if (AnnotationTypeEnum.DATE.equals(fieldDescriptor.getDefinition().getDataType())) {
+            if (AnnotationTypeEnum.DATE == fieldDescriptor.getDefinition().getDataType()) {
                 try {
                     fileDataValues = DateUtil.toString(fileDataValues);
                 } catch (ParseException e) {

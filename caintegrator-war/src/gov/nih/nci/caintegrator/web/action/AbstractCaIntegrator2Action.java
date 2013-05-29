@@ -7,7 +7,6 @@
 package gov.nih.nci.caintegrator.web.action;
 
 import gov.nih.nci.caintegrator.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator.common.HibernateUtil;
 import gov.nih.nci.caintegrator.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.GenePatternAnalysisJob;
@@ -191,16 +190,6 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
             return getStudySubscription().getStudy();
         } else {
             return null;
-        }
-    }
-
-    /**
-     * Refreshes genomic sources for any page that needs it.
-     */
-    protected final void refreshGenomicSources() {
-        if (getCurrentStudy() != null) {
-            HibernateUtil.loadGenomicSources(getWorkspaceService().getRefreshedEntity(
-                    getCurrentStudy().getStudyConfiguration()).getGenomicDataSources());
         }
     }
 
