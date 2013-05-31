@@ -13,12 +13,12 @@
             debugLevel: 1,
             onSelect: function(select, dtnode) {
                 dtnode.visit(function(dtnode) {
-                    $("#descriptor-" + dtnode.data.key).attr("checked", select);
+                    $("#descriptor-" + dtnode.data.key).prop("checked", select);
                   }, true);
             },
             onExpand: function(select, dtnode) {
                 dtnode.visit(function(dtnode) {
-                    $("#descriptor-" + dtnode.data.key).attr("checked", dtnode.isSelected()).hide();
+                    $("#descriptor-" + dtnode.data.key).prop("checked", dtnode.isSelected()).hide();
                   }, true);
             }
         });
@@ -31,12 +31,12 @@
             debugLevel: 1,
             onSelect: function(select, dtnode) {
                 dtnode.visit(function(dtnode) {
-                    $("#datasource-" + dtnode.data.key).attr("checked", select);
+                    $("#datasource-" + dtnode.data.key).prop("checked", select);
                   }, true);
             },
             onExpand: function(select, dtnode) {
                 dtnode.visit(function(dtnode) {
-                    $("#datasource-" + dtnode.data.key).attr("checked", dtnode.isSelected()).hide();
+                    $("#datasource-" + dtnode.data.key).prop("checked", dtnode.isSelected()).hide();
                   }, true);
             }
         });
@@ -50,14 +50,14 @@
             debugLevel: 1,
             onSelect: function(select, dtnode) {
                 dtnode.visit(function(dtnode) {
-                    $("#definition-id-" + dtnode.data.key).attr("checked", select);
-                    $("#definition-value-" + dtnode.data.key).attr("checked", select);
+                    $("#definition-id-" + dtnode.data.key).prop("checked", select);
+                    $("#definition-value-" + dtnode.data.key).prop("checked", select);
                   }, true);
             },
             onExpand: function(select, dtnode) {
                 dtnode.visit(function(dtnode) {
-                    $("#definition-id-" + dtnode.data.key).attr("checked", dtnode.isSelected()).hide();
-                    $("#definition-value-" + dtnode.data.key).attr("checked", dtnode.isSelected()).hide();
+                    $("#definition-id-" + dtnode.data.key).prop("checked", dtnode.isSelected()).hide();
+                    $("#definition-value-" + dtnode.data.key).prop("checked", dtnode.isSelected()).hide();
                   }, true);
             }
             
@@ -74,16 +74,16 @@
         });
         
         $.map($("#left_tree").dynatree("getTree").getSelectedNodes(), function (dtnode) {
-            $("#descriptor-" + dtnode.data.key).attr("checked", true);
+            $("#descriptor-" + dtnode.data.key).prop("checked", true);
             dtnode.activate();
         });
         $.map($("#middle_tree").dynatree("getTree").getSelectedNodes(), function (dtnode) {
-            $("#datasource-" + dtnode.data.key).attr("checked", true);
+            $("#datasource-" + dtnode.data.key).prop("checked", true);
             dtnode.activate();
         });
         $.map($("#right_tree").dynatree("getTree").getSelectedNodes(), function (dtnode) {
-            $("#definition-id-" + dtnode.data.key).attr("checked", true);
-            $("#definition-value-" + dtnode.data.key).attr("checked", true);
+            $("#definition-id-" + dtnode.data.key).prop("checked", true);
+            $("#definition-value-" + dtnode.data.key).prop("checked", true);
             dtnode.activate();
         });
 });
