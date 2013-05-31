@@ -23,6 +23,7 @@
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/caintegrator2.css" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/cai2modal.css" />
         
+        <script type="text/javascript" src="./struts/optiontransferselect.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/pde.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/caintegrator2.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/cai2modal.js"></script>
