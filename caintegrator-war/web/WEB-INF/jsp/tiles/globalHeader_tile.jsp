@@ -40,14 +40,8 @@
             <s:action name="workspace"/>
         </s:if>
         <div id="user">
-            <s:url id="logoutUrl" value="/logout.action" includeParams="none">
-                <s:param name="struts.token.name">struts.token</s:param>
-                <s:param name="struts.token" value="%{struts.token}" />
-            </s:url>
-            <s:url id="loginUrl" value="/login.jsp" includeParams="none">
-                <s:param name="struts.token.name">struts.token</s:param>
-                <s:param name="struts.token" value="%{struts.token}" />
-            </s:url>
+            <s:url id="logoutUrl" value="/logout.action" includeParams="none"/>
+            <s:url id="loginUrl" value="/login.jsp" includeParams="none"/>
 	        <s:if test="anonymousUser"> 
 	        Currently not logged in <s:if test="%{selectedPage!='register'}">| <a href="${loginUrl}">Login</a>
 	        </s:if>

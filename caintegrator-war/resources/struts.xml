@@ -150,9 +150,6 @@
             <result name="casLogout" type="redirect">
                 <param name="location">${casServerLogoutUrl}</param>
             </result>
-            <interceptor-ref name="paramsPrepareParamsStack">
-                <param name="tokenSession.includeMethods">*</param>
-            </interceptor-ref> 
         </action>        
         
         <action name="workspace" method="openWorkspace" class="workspaceAction">
