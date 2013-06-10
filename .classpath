@@ -56,7 +56,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/displaytag-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/dom4j-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/dwr-2.0.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/ehcache-core-2.4.7.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ejb3-persistence-1.0.1.GA.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/freemarker-2.3.19.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/freestylesearch-4.0.jar"/>
@@ -156,5 +155,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/guava-14.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/opencsv-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/ehcache-core-2.6.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

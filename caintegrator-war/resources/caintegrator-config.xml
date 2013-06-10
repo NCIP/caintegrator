@@ -1194,6 +1194,13 @@
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="java:jdbc/CaIntegratorDataSource" />
     </bean>
+    
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" scope="singleton">
+        <property name="shared" value="true"/>
+        <property name="configLocation">
+            <value>classpath:ehcache.xml</value>
+        </property>
+    </bean>
 
     <bean id="gridDiscoveryClient" class="gov.nih.nci.caintegrator.application.analysis.grid.GridDiscoveryClientImpl">
         <property name="configurationHelper">

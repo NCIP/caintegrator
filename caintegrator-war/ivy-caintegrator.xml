@@ -71,7 +71,7 @@
     <dependency org="bouncycastle" name="bcprov-jdk15" rev="140" conf="compile,runtime->master"/>
     <dependency org="ucar" name="nccore" rev="4.0.34" conf="runtime->master"/>
     <dependency org="net.sf.opencsv" name="opencsv" rev="2.3" conf="runtime->master"/>
-    <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.4.7" conf="runtime->master"/>
+    <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.6.6" conf="runtime->master"/>
     <dependency org="cglib" name="cglib" rev="2.1_3" conf="runtime->default" transitive="false"/>
     <dependency org="dom4j" name="dom4j" rev="1.6" conf="runtime->master"/>
     <dependency org="ognl" name="ognl" rev="3.0.5" conf="runtime->master"/>
