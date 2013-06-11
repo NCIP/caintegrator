@@ -1,11 +1,29 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
+
+<script type="text/javascript">
+  function resetClinicalQueryForm() {
+      var form =  $('#geneExpressionClinicalQueryInputForm');
+      form.find('#resetSelected').val(true);
+      form.attr('action', 'resetClinicalQueryBasedGEPlot.action');
+      form.submit();
+  }
+  
+  function createClinicalQueryPlot() {
+      selectAllOptions(document.getElementById('allQueries'));
+      selectAllOptions(document.getElementById('querySelections'))
+      var form =  $('#geneExpressionClinicalQueryInputForm');
+      form.find('#createPlotSelected').val(true);
+      $('#clinicalQueryGePlotDiv').html("<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>");
+      $.post('createClinicalQueryBasedGEPlot.action', form.serialize(), function(data) {
+          $('#clinicalQueryGePlotDiv').html(data);
+      }, 'html');
+  }
+</script>
 
 <s:form name="geneExpressionClinicalQueryInputForm" id="geneExpressionClinicalQueryInputForm" theme="simple">
     <s:token />
-    <s:hidden name="createPlotSelected" value="false" />
-    <s:hidden name="resetSelected" value="false" />
+    <s:hidden name="createPlotSelected" id="createPlotSelected" value="false" />
+    <s:hidden name="resetSelected" id="resetSelected" value="false" />
     <!-- For bioDbNet to know which form element to publish gene symbols to. -->
     <s:hidden name="geneSymbolElementId" />
 
@@ -137,37 +155,14 @@
         <br>
         <div>
         <center>
-        <button type="button" 
-                onclick="document.geneExpressionClinicalQueryInputForm.resetSelected.value = 'true';
-                document.geneExpressionClinicalQueryInputForm.action = 'resetClinicalQueryBasedGEPlot.action';
-                document.geneExpressionClinicalQueryInputForm.submit();"> Reset 
-        </button>
-        <s:if test="creatable">
-        
-            <button type="button" 
-                    onclick="selectAllOptions(document.getElementById('allQueries'));
-                    selectAllOptions(document.getElementById('querySelections'));
-                    document.geneExpressionClinicalQueryInputForm.createPlotSelected.value = 'true';
-                    dojo.event.topic.publish('createClinicalQueryBasedGEPlot');"> Create Plot 
-            </button>
-            
-        </s:if>
-        </center>
+            <button type="button" onclick="resetClinicalQueryForm()">Reset</button>
+            <s:if test="creatable">
+                <button type="button" onclick="createClinicalQueryPlot()">Create Plot</button>
+            </s:if>
+            </center>
         </div>
-        
-    <s:url id="createClinicalQueryBasedGEPlot" action="createClinicalQueryBasedGEPlot"/>
-    
     <br><br>
     <center>
-    <sx:div id="clinicalQueryGePlotDiv"  
-            href="%{createClinicalQueryBasedGEPlot}" 
-            formId="geneExpressionClinicalQueryInputForm" 
-            showLoadingText="true"
-            loadingText="<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>"
-            listenTopics="createClinicalQueryBasedGEPlot" refreshOnShow="true" />
-        
+        <s:div id="clinicalQueryGePlotDiv"></s:div>
     </center>
-
-    <!-- /Gene Expression Inputs -->
-    
 </s:form>

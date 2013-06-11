@@ -1,7 +1,19 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
-<script language="javascript">
-
+<script type="text/javascript">
+            $(document).ready(function() {
+                $("#tab-container").easytabs({
+                    animate: false,
+                    cache: true,
+                    updateHash: false
+                });
+                $('#tab-container').bind('easytabs:ajax:beforeSend', function(e, clicked, panel) {
+                    var tab = $(panel);
+                    tab.html("<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>");
+                });
+                $('#tab-container').easytabs('select', '#' + $('#displayTab').val());
+            });
+</script>
+<script type="text/javascript">
     function setGroupAnnotations(onOff, size, checkboxListNum){
         for(i=1;i<=size;i++){
             var item = 'queryForm.resultConfiguration.columnSelectionLists[' + checkboxListNum +'].values-' + i;
@@ -9,27 +21,27 @@
         }
     }
 
-    function selectAll () {
+    function selectAll() {
         document.manageQueryForm.selectedAction.value='selectAll';
         document.manageQueryForm.submit();
     }
 
-    function selectNone () {
+    function selectNone() {
         document.manageQueryForm.selectedAction.value='selectNone';
         document.manageQueryForm.submit();
     }
 
-    function selectAllSubject () {
+    function selectAllSubject() {
         document.manageQueryForm.selectedAction.value='selectAllSubject';
         document.manageQueryForm.submit();
     }
 
-    function selectNoneSubject () {
+    function selectNoneSubject() {
         document.manageQueryForm.selectedAction.value='selectNoneSubject';
         document.manageQueryForm.submit();
     }
     
-    function filterParam (field) {
+    function filterParam(field) {
         return field.name == "selectedAction";
     }
     
@@ -114,8 +126,6 @@
         <h1>Search <s:property value="study.shortTitleText"/></h1>
         <s:actionerror/>
         
-        <!--Tab Box-->
-        
         <s:url id="criteriaUrl" action="selectQueryTab">
             <s:param name="selectedAction">selectedTabCriteria</s:param>
         </s:url>
@@ -133,23 +143,26 @@
         </s:url>
         
         <s:form action="manageQuery" name="manageQueryForm" id="manageQueryForm" theme="simple">
-            <link rel="stylesheet" type="text/css" href="/caintegrator/common/css/TabContainer.css" />
-
-            <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}"
-                templateCssPath="/common/css/TabContainer.css">
-
-                <sx:div href="%{criteriaUrl}" id="criteria" label="Criteria" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
-                <sx:div href="%{columnsUrl}" id="columns" label="Results Type" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
-                <sx:div href="%{sortingUrl}" id="sorting" label="Sorting" formId="manageQueryForm" refreshOnShow="true" showLoadingText="true"/>
-                <sx:div href="%{searchResultsUrl}" id="searchResults" label="Query Results" formId="manageQueryForm" formFilter="filterParam" showLoadingText="true" preload="false" executeScripts="true"/>
+            <s:hidden id="displayTab" value="%{displayTab}"/>
+            <s:div id="tab-container" cssClass="tab-container">
+                <ul class="etabs">
+                    <li class="tab"><s:a href="%{criteriaUrl}" data-target="#criteria">Criteria</s:a></li>
+                    <li class="tab"><s:a href="%{columnsUrl}" data-target="#columns">Results Type</s:a></li>
+                    <li class="tab"><s:a href="%{sortingUrl}" data-target="#sorting">Sorting</s:a></li>
+                    <li class="tab"><s:a href="%{searchResultsUrl}" data-target="#searchResults">Query Results</s:a></li>
+                    <s:if test="%{!anonymousUser}">
+                        <li class="tab"><s:a href="%{saveAsUrl}" data-target="#saveAs">Save query as...</s:a></li>
+                    </s:if>
+                </ul>
+                <s:div id="criteria"></s:div>
+                <s:div id="columns"></s:div>
+                <s:div id="sorting"></s:div>
+                <s:div id="searchResults"></s:div>
                 <s:if test="%{!anonymousUser}">
-                    <sx:div href="%{saveAsUrl}" id="saveAs" label="Save query as..." formId="manageQueryForm" formFilter="filterParam" showLoadingText="true"/>
+                    <s:div id="saveAs"></s:div>
                 </s:if>
-            </sx:tabbedpanel>
+            </s:div>
 	    </s:form>
-        
-        <!--/Tab Box-->
-           
 </div>
 
 <s:div id="subjectlistdiv" cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:465px;max-height: 150px; overflow:auto;">

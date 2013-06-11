@@ -884,6 +884,7 @@ a.bioDbNetLogo {
     background:transparent url('/caintegrator/images/bioDbNet.gif') no-repeat scroll center top; 
     padding:20px 45px 18px 10px;
 }
+
 /** Styles when using struts css_xhtml theme **/
 .wwgrp
 {position: relative; white-space: nowrap; min-width: 600px; margin-top: 10px; margin-bottom: 10px; display:inline;}

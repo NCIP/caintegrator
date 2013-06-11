@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:hidden name="runSearchSelected" value="false" />
 
@@ -20,21 +19,9 @@
             No Gene List available.
         </s:if>
         <s:else>
-            <s:select name="geneListName" list="studySubscription.allGeneListNames" label="Gene List"
-                onchange="runGeneListSearch();"/>
+            <s:select name="geneListName" list="studySubscription.allGeneListNames" label="Gene List" onchange="runGeneListSearch();"/>
         </s:else>
     </tr>
     <br>
-    <s:if test="!studySubscription.allGeneListNames.isEmpty()">
-        <sx:div id="geneListSearchResultsDiv" 
-            href="geneListSearch.action" 
-            formId="geneListSearchForm" 
-            showLoadingText="true"
-            loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
-            listenTopics="searchGeneList" 
-            refreshOnShow="false" />
-    </s:if>
-    <s:else>
-        <sx:div id="geneListSearchResultsDiv" />
-    </s:else>
+    <s:div id="geneListSearchResultsDiv"></s:div>
 </s:div>

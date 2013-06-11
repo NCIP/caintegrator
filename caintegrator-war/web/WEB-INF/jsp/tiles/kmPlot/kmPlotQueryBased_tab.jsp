@@ -1,11 +1,29 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
+
+<script type="text/javascript">
+  function resetQueryForm() {
+      var form =  $('#kaplanMeierQueryInputForm');
+      form.find('#resetSelected').val(true);
+      form.attr('action', 'resetQueryBasedKMPlot.action');
+      form.submit();
+  }
+  
+  function createQueryPlot() {
+      selectAllOptions(document.getElementById('allQueries'));
+      selectAllOptions(document.getElementById('querySelections'));
+      var form =  $('#kaplanMeierQueryInputForm');
+      form.find('#createPlotSelected').val(true);
+      $('#queryKmPlotDiv').html("<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>");
+      $.post('createQueryBasedKMPlot.action', form.serialize(), function(data) {
+          $('#queryKmPlotDiv').html(data);
+      }, 'html');
+  }
+</script>
 
 <s:form name="kaplanMeierQueryInputForm" id="kaplanMeierQueryInputForm" theme="simple">
     <s:token />
-    <s:hidden name="createPlotSelected" value="false" />
-    <s:hidden name="resetSelected" value="false" />
+    <s:hidden name="createPlotSelected" id="createPlotSelected" value="false" />
+    <s:hidden name="resetSelected" id="resetSelected" value="false" />
           
     <!-- Kaplan-Meier Inputs -->
     <h2>Kaplan-Meier Survival Plots based on Saved Queries and Saved Lists</h2>
@@ -83,37 +101,14 @@
         <br>
         <div>
         <center>
-        <button type="button" 
-                onclick="document.kaplanMeierQueryInputForm.resetSelected.value = 'true';
-                document.kaplanMeierQueryInputForm.action = 'resetQueryBasedKMPlot.action';
-                document.kaplanMeierQueryInputForm.submit();"> Reset 
-        </button>
+        <button type="button"  onclick="resetQueryForm();">Reset</button>
         <s:if test="creatable">
-        
-            <button type="button" 
-                    onclick="selectAllOptions(document.getElementById('allQueries'));
-                    selectAllOptions(document.getElementById('querySelections'));
-                    document.kaplanMeierQueryInputForm.createPlotSelected.value = 'true';
-                    dojo.event.topic.publish('createQueryBasedKMPlot');"> Create Plot 
-            </button>
-            
+            <button type="button" onclick="createQueryPlot();">Create Plot</button>
         </s:if>
         </center>
         </div>
-        
-    <s:url id="createQueryBasedKMPlot" action="createQueryBasedKMPlot"/>
-    
     <br><br>
     <center>
-    <sx:div id="queryKmPlotDiv" 
-            href="%{createQueryBasedKMPlot}" 
-            formId="kaplanMeierQueryInputForm" 
-            showLoadingText="true"
-            loadingText="<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>"
-            listenTopics="createQueryBasedKMPlot" refreshOnShow="true" />
-        
+        <s:div id="queryKmPlotDiv"></s:div>
     </center>
-
-    <!-- /Kaplan-Meier Inputs -->
-    
 </s:form>

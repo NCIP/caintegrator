@@ -1,10 +1,25 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
+
+<script type="text/javascript">
+  function resetAnnotationForm() {
+      var form =  $('#kaplanMeierAnnotationInputForm');
+      form.attr('action', 'resetAnnotationBasedKMPlot.action');
+      form.submit();
+  }
+  
+  function createAnnotationPlot() {
+      var form =  $('#kaplanMeierAnnotationInputForm');
+      form.find('#createPlotSelected').val(true);
+      $('#annotationKmPlotDiv').html("<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>");
+      $.post('createAnnotationBasedKMPlot.action', form.serialize(), function(data) {
+          $('#annotationKmPlotDiv').html(data);
+      }, 'html');
+  }
+</script>
 
 <s:form name="kaplanMeierAnnotationInputForm" id="kaplanMeierAnnotationInputForm" theme="simple">
     <s:token />                
-    <s:hidden name="createPlotSelected" value="false" />
+    <s:hidden name="createPlotSelected" id="createPlotSelected" value="false" />
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
        
     <!-- Kaplan-Meier Inputs -->
@@ -70,30 +85,13 @@
         <br>
         <div>
         <center>
-        
-        <button type="button" 
-                onclick="document.kaplanMeierAnnotationInputForm.action = 'resetAnnotationBasedKMPlot.action';
-                document.kaplanMeierAnnotationInputForm.submit();"> Reset 
-        </button>
-        
-        <button type="button" 
-                onclick="document.kaplanMeierAnnotationInputForm.createPlotSelected.value = 'true';
-                dojo.event.topic.publish('createAnnotationPlot');"> Create Plot 
-        </button>
+            <button type="button" onclick="resetAnnotationForm();">Reset</button>
+            <button type="button" onclick="createAnnotationPlot();">Create Plot</button>
         </center>
         </div>
     <!-- /Kaplan-Meier Inputs -->
-    <s:url id="createAnnotationBasedKMPlot" action="createAnnotationBasedKMPlot"/>
-    
     <br><br>
     <center>
-    <sx:div id="annotationKmPlotDiv" 
-            href="%{createAnnotationBasedKMPlot}" 
-            formId="kaplanMeierAnnotationInputForm" 
-            showLoadingText="true"
-            loadingText="<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>"
-            listenTopics="createAnnotationPlot" refreshOnShow="true" />
-        
+        <s:div id="annotationKmPlotDiv"></s:div>
     </center>
-    
 </s:form>

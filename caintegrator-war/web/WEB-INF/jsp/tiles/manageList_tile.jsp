@@ -11,27 +11,6 @@
 </div>
 
 <!--/Page Help-->
-
-<script type="text/javascript">
-    
-    function setSelectedAction(selectAction) {
-        document.manageList.selectedAction.value = selectAction;
-        return true;
-    }
-    
-    function checkListType(type) {
-        if (type == "Gene List") {
-            document.getElementById("geneDiv").style.display = "block";
-            document.getElementById("subjectDiv").style.display = "none";
-        }
-        else {
-            document.getElementById("geneDiv").style.display = "none";
-            document.getElementById("subjectDiv").style.display = "block";
-        }
-    }
-    
-</script>
-
     <h1><s:property value="#subTitleText" /></h1>
     
     <s:if test="%{anonymousUser}">
@@ -151,3 +130,23 @@
 
 <div class="clear"><br />
 </div>
+
+<script type="text/javascript">
+    
+    function setSelectedAction(selectAction) {
+        document.manageList.selectedAction.value = selectAction;
+        return true;
+    }
+    
+    function checkListType(type) {
+        if (type == "Gene List") {
+            document.getElementById("geneDiv").style.display = "block";
+            document.getElementById("subjectDiv").style.display = "none";
+        }
+        else {
+            document.getElementById("geneDiv").style.display = "none";
+            document.getElementById("subjectDiv").style.display = "block";
+        }
+    }
+    
+</script>

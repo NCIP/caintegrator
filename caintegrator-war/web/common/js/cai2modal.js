@@ -3,36 +3,31 @@
 //***********************//
 	
 	function showGeneListInputForm(geneSymbolElementIdValue) {
-        document.getElementById('TB_overlay').style.display = 'block';
-        document.getElementById('geneListSearchInputDiv').style.display = 'block';
-        document.getElementById('geneListSearchInputDiv').style.visibility = 'visible';
-        if (document.geneListSearchForm.geneListSearchTopicPublished.value == 'false') {
-            document.geneListSearchForm.geneListSearchTopicPublished.value = true;
-            dojo.event.topic.publish('geneListSearchTopic');
-            dojo.event.topic.publish('searchGeneList');
-        } else {
-            document.getElementById('geneListSearchResultsDiv').style.display = 'block';
-            document.getElementById('geneListSearchResultsDiv').style.visibility = 'visible';
-        }
-        document.geneListSearchForm.geneSymbolElementId.value = geneSymbolElementIdValue;
+	    $('#TB_overlay').show();
+	    $('#geneListSearchInputDiv').html("<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>");
+	    $('#geneListSearchInputDiv').show();
+        $.when($.get('geneListSearchInput.action', function(data) {
+                $('#geneListSearchInputDiv').html(data);
+            }
+        )).done(function() {
+            runGeneListSearch();
+        });
+        $('#geneListSearchForm').find('[name=geneSymbolElementId]').val(geneSymbolElementIdValue);
     }
     
     function runGeneListSearch() {
-        document.geneListSearchForm.runSearchSelected.value = 'true';
-        dojo.event.topic.publish('searchGeneList');
-        document.getElementById('geneListSearchResultsDiv').style.display = 'block';
-        document.getElementById('geneListSearchResultsDiv').style.visibility = 'visible';
+        var form = $('#geneListSearchForm');
+        $('#geneListSearchResultsDiv').html("<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>");
+        $('#geneListSearchResultsDiv').show();
+        $.post('geneListSearch.action', form.serialize(), function(data) {
+            $('#geneListSearchResultsDiv').html(data);
+        }, 'html');
     }
     
     function hideGeneListInputForm() {
-        document.getElementById('TB_overlay').style.display = 'none';
-        document.getElementById('geneListSearchInputDiv').style.visibility = 'hidden';
-        hideGeneListSearchResults();
-    }
-    
-    function hideGeneListSearchResults() {
-        document.getElementById('geneListSearchResultsDiv').style.display = 'none';
-        document.getElementById('geneListSearchResultsDiv').style.visibility = 'hidden';
+        $('#TB_overlay').hide();
+        $('#geneListSearchInputDiv').hide();
+        $('#geneListSearchResultsDiv').hide();
     }
     
     function captureGeneListCheckBoxes(geneSymbolsTextbox) {
@@ -46,30 +41,29 @@
     	hideGeneListInputForm(document.geneListSearchForm);
     }
     
-    
     function showBioDbNetInputForm(geneSymbolElementIdValue) {
-        document.getElementById('TB_overlay').style.display = 'block';
-        document.getElementById('bioDbNetSearchInputDiv').style.display = 'block';
-        document.getElementById('bioDbNetSearchInputDiv').style.visibility = 'visible';
-        dojo.event.topic.publish('bioDbNetSearchTopic');    
-        document.bioDbNetSearchForm.geneSymbolElementId.value = geneSymbolElementIdValue;        
+        $('#TB_overlay').show();
+        $('#bioDbNetSearchInputDiv').html("<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>");
+        $('#bioDbNetSearchInputDiv').show();
+        $.get('bioDbNetSearchInput.action', function(data) {
+                $('#bioDbNetSearchInputDiv').html(data);
+            }
+        );
+        $('#bioDbNetSearchForm').find('[name=geneSymbolElementId]').val(geneSymbolElementIdValue);
     }
     
     function hideBioDbNetInputForm() {
-        document.getElementById('TB_overlay').style.display = 'none';
-        document.getElementById('bioDbNetSearchInputDiv').style.visibility = 'hidden';
-        hideBioDbNetSearchResults();
-    }
-    
-    function hideBioDbNetSearchResults() {
-        document.getElementById('bioDbNetSearchResultsDiv').style.display = 'none';
-        document.getElementById('bioDbNetSearchResultsDiv').style.visibility = 'hidden';
+        $('#TB_overlay').hide();
+        $('#bioDbNetSearchInputDiv').hide();
+        $('#bioDbNetSearchResultsDiv').hide();
     }
     
     function runBioDbNetSearch() {
-        dojo.event.topic.publish('searchBioDbNet'); 
-        document.getElementById('bioDbNetSearchResultsDiv').style.display = 'block';
-        document.getElementById('bioDbNetSearchResultsDiv').style.visibility = 'visible';
+        $('#bioDbNetSearchResultsDiv').html("<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>");
+        $.post('bioDbNetSearch.action', $('#bioDbNetSearchForm').serialize(), function(data) {
+            $('#bioDbNetSearchResultsDiv').html(data);
+        }, 'html');
+        $('#bioDbNetSearchResultsDiv').show();
     }
     
     function runGenesFromPathwaySearch(geneSymbolsTextbox) {
@@ -77,9 +71,7 @@
         var pathways = retrieveCheckedValues(inputForm, geneSymbolsTextbox);
         $('#inputValues')[0].value = pathways;
         $('#searchType')[0].value = 'PATHWAY';
-        dojo.event.topic.publish('searchBioDbNet'); 
-        document.getElementById('bioDbNetSearchResultsDiv').style.display = 'block';
-        document.getElementById('bioDbNetSearchResultsDiv').style.visibility = 'visible';
+        runBioDbNetSearch();
     }
     
     function captureBioDbNetCheckBoxes(geneSymbolsTextbox) {
