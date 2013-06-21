@@ -1,5 +1,4 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 <script type="text/javascript">
     function selectGeneExpressionType() {
         var arrayOfElements=document.getElementsByName("kmPlotForm.geneExpressionBasedForm.expressionType");
