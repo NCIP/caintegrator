@@ -1,4 +1,5 @@
-<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ehcache.xsd">
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ehcache.xsd" 
+    updateCheck="false" monitoring="autodetect" dynamicConfig="true">
 
 	<diskStore path="java.io.tmpdir/ehcache"/>
 
@@ -7,4 +8,1089 @@
         memoryStoreEvictionPolicy="LRU" statistics="false">
         <persistence strategy="localTempSwap"/>
     </defaultCache>
+    
+    <cache name="gov.nih.nci.caintegrator.domain.imaging.Image"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.imaging.Image.annotationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.QueryResult"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.QueryResult.rowCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.AnalysisJobConfiguration"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.AbstractReporter"
+		maxElementsInMemory="500000"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.AbstractReporter.genes"
+        maxElementsInMemory="100000"
+        eternal="false"
+        timeToIdleSeconds="7200"
+        timeToLiveSeconds="86400"
+        overflowToDisk="true"/>
+
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.AbstractReporter.samplesHighVariance"
+        maxElementsInMemory="100000"
+        eternal="false"
+        timeToIdleSeconds="7200"
+        timeToLiveSeconds="86400"
+        overflowToDisk="true"/>
+        		
+	<cache name="gov.nih.nci.caintegrator.domain.application.SelectedValueCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.SelectedValueCriterion.valueCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.AbstractAnnotationCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.AbstractGenomicCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.SampleAcquisition"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.SampleAcquisition.annotationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.GeneList"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.GeneList.geneCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.GeneListCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.AbstractCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.CompoundCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.CompoundCriterion.criterionCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.PermissibleValue"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.Query"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.Query.columnCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.UserWorkspace"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.UserWorkspace.subscriptionCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.ResultRow"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.ResultRow.valueCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.Array"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.Array.sampleCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.StringAnnotationValue"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.imaging.ImageSeries"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.imaging.ImageSeries.imageCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.imaging.ImageSeries.annotationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Timepoint"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Timepoint.sampleAcquisitionCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Timepoint.ImageSeriesAcquisitionCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition.annotationValueCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.ValueDomain.permissibleValueCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Subject"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Subject.assignmentCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.StudySubscription"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.StudySubscription.queryCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.application.StudySubscription.listCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.NumericAnnotationValue"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.CommonDataElement"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.SubjectAnnotation"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.Sample"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.Sample.arrayDataCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.Sample.arrayCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.Sample.sampleAcquisitions"
+        maxElementsInMemory="500"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.FoldChangeCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment.sampleAcquisitionCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment.subjectAnnotationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment.imageStudyCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.imaging.ImageSeriesAcquisition"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.imaging.ImageSeriesAcquisition.seriesCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.GenomicDataResultValue"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.ResultColumn"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.AbstractList"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.ArrayData"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.SubjectList"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.SubjectList.subjectCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.Platform"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.Platform.reporterLists"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.GeneExpressionReporter"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.ResultValue"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.AbstractAnnotationValue"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.analysis.AnalysisMethod"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.analysis.AbstractCopyNumberAnalysis"
+        maxElementsInMemory="500"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.annotation.DateAnnotationValue"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.ReporterList"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.ReporterList.reporters"
+		maxElementsInMemory="500000"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.GenomicDataQueryResult"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.GenomicDataQueryResult.rowCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.application.GenomicDataQueryResult.columnCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.StringComparisonCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Study"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Study.timepointCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.translational.Study.studyConfiguration"
+        maxElementsInMemory="500"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Study.sampleAnnotationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Study.imageSeriesAnnotationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Study.assignmentCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.caintegrator.domain.translational.Study.subjectAnnotationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.application.NumericComparisonCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.GenomicDataResultColumn"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.GeneCriterion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.caintegrator.domain.application.GenomicDataResultRow"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.application.GenomicDataResultRow.valueCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.Gene"
+		maxElementsInMemory="100000"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.caintegrator.domain.genomic.Gene.reporterCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.SegmentData"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AuthorizedQuery"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.StudyLogo"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.application.study.FileColumn"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.domain.application.SubjectIdentifier"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AbstractClinicalSourceConfiguration"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.ImageDataSourceConfiguration"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.application.study.AuthorizedStudyElementsGroup"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.application.study.StudyConfiguration"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.GeneLocationConfiguration"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AnnotationGroup"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.annotation.mask.AbstractAnnotationMask"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.application.study.LogEntry"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.application.study.AnnotationFieldDescriptor"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.external.caarray.SampleIdentifier"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.domain.annotation.SurvivalValueDefinition"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AuthorizedAnnotationFieldDescriptor"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.external.ServerConnectionProfile"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.domain.application.AbstractPersistedAnalysisJob"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.SampleSet"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.ExternalLinkList"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AuthorizedGenomicDataSourceConfiguration"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.ImageAnnotationConfiguration"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.application.study.AnnotationFile"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.PlatformConfiguration"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.ExternalLink"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.GeneChromosomalLocation"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.application.study.AnnotationFieldDescriptor.annotationMasks"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AnnotationGroup.annotationFieldDescriptors"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.SampleSet.samples"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AuthorizedStudyElementsGroup.authorizedAnnotationFieldDescriptors"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+     <cache name="gov.nih.nci.caintegrator.application.study.StudyConfiguration.listCollection"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.application.StudySubscription.copyNumberAnalysisCollection"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.ArrayData.segmentDatas"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.application.study.ExternalLinkList.externalLinks"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.application.StudySubscription.analysisJobCollection"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.StudyConfiguration.authorizedStudyElementsGroups"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AuthorizedStudyElementsGroup.authorizedGenomicDataSourceConfigurations"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.GeneLocationConfiguration.geneLocations"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.application.CopyNumberAlterationCriterion.callsValues"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.StudyConfiguration.logEntries"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.Platform.reporterListsInternal"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AuthorizedStudyElementsGroup.authorizedQuerys"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.ReporterList.arrayDatas"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.application.SubjectListCriterion.subjectListCollection"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.analysis.AbstractCopyNumberAnalysis.samplesUsedForCalculation"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration.controlSampleSetCollection"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.application.SubjectList.subjectIdentifiers"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.ImageDataSourceConfiguration.imageSeriesAcquisitions"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration.samples"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.translational.Study.annotationGroups"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.AnnotationFile.columns"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration.sampleIdentifiers"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.Sample.reportersHighVariance"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.Array.arrayDataCollection"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.application.study.StudyConfiguration.clinicalConfigurationCollection"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+    
+    <cache name="gov.nih.nci.caintegrator.domain.translational.Study.survivalValueDefinitionCollection"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition.commonDataElement.valueDomain.permissibleValueCollection"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.StudyConfiguration.genomicDataSources"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.domain.genomic.ArrayData.reporterLists"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.StudyConfiguration.imageDataSources"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
+        
+    <cache name="gov.nih.nci.caintegrator.application.study.StudyConfiguration.externalLinkLists"
+        maxElementsInMemory="50000"
+        eternal="false"
+        timeToIdleSeconds="1800"
+        timeToLiveSeconds="100000"
+        overflowToDisk="true"/>
 </ehcache>
