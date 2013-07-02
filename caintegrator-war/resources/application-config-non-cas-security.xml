@@ -10,7 +10,6 @@
 				PATTERN_TYPE_APACHE_ANT
                 /http/remoteauthenticationmanager/**=sessionContextIntegrationFilter
                 /services/**=sessionContextIntegrationFilter
-                /**/tutorials.action/**=sessionContextIntegrationFilter
                 /registration/input.action/**=sessionContextIntegrationFilter
                 /registration/save.action/**=sessionContextIntegrationFilter
                 /**/login.action/**=sessionContextIntegrationFilter,logoutFilter

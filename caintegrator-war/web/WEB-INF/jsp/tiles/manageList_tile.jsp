@@ -65,13 +65,11 @@
                                     <s:div id="geneDiv" cssStyle="display: block;">
                                         <div class="wwgrp">
                                             <div class="wwlbl"><label class="label">Gene Symbols</label></div>
-                                            <div class="wwctrl">
                                                 <s:component template="genetextfield.ftl" theme="cai2simple">
                                                     <s:param name="createTextField" value="true" />
                                                     <s:param name="textFieldId" value="%{'geneSymbolsId'}"/>
                                                     <s:param name="textFieldName" value="%{'geneInputElements'}"/>
                                                 </s:component>
-                                            </div>
                                             <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element">
 	                                            <span class="wwlbl">(comma separated list)</span>
 	                                            <span class="wwctrl"></span>

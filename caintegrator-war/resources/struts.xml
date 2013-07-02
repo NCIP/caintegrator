@@ -125,10 +125,6 @@
              <result type="tiles">homepage</result>
         </action>        
         
-        <action name="tutorials" class="emptyAction">
-            <result type="tiles">tutorials</result>
-        </action>
-        
         <action name="home" class="homepageAction">
             <result type="tiles">homepage</result>
         </action>
@@ -150,9 +146,6 @@
             <result name="casLogout" type="redirect">
                 <param name="location">${casServerLogoutUrl}</param>
             </result>
-            <interceptor-ref name="paramsPrepareParamsStack">
-                <param name="tokenSession.includeMethods">*</param>
-            </interceptor-ref> 
         </action>        
         
         <action name="workspace" method="openWorkspace" class="workspaceAction">

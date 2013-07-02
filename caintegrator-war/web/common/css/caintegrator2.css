@@ -136,11 +136,6 @@ LEGEND INPUT, LEGEND SELECT
 { float:right;  margin-top:1.4em; width:7em; text-align:right; margin-right:50px }
 .pagehelp A.help, SPAN.help
 { text-decoration:none; background:url("/caintegrator/images/ico_help.gif") no-repeat; line-height:1.5em; padding:0 10px 4px 19px; }
-.tutorials
-{ height:6em; width:70em; text-align:left; padding:0 27px; }
-.tutorials A.video
-{ text-decoration:none; background:url("/caintegrator/images/video_icon.jpg") no-repeat;
-    line-height:4em; padding:10px 0px 12px 50px; font-size:140% }
 .tabhelp
 { float:right;  margin-top:-1.4em; width:7em; text-align:right; margin-right:50px }
 .tabhelp A.help, SPAN.help
