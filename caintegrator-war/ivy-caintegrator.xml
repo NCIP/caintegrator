@@ -28,7 +28,7 @@
     <dependency org="junit" name="junit" rev="4.10" conf="test-junit,test-pmd->master"/>
     <dependency org="javassist" name="javassist" rev="3.9.0.GA" conf="test-junit->default"/>
     <dependency org="org.mockito" name="mockito-all" rev="1.9.0" conf="test-junit->default"/>
-    <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9" conf="test-cobertura->master"/>
+    <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4.1" conf="test-cobertura->master"/>
     <dependency org="log4j" name="log4j" rev="1.2.9" conf="runtime,test-cobertura->master"/>
     <dependency org="javancss" name="javancss" rev="29.50" conf="test-javancss->master"/>
     <dependency org="javancss" name="ccl" rev="29.50" conf="test-javancss->master"/>
