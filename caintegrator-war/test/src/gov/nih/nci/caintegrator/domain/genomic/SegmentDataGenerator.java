@@ -8,11 +8,8 @@ package gov.nih.nci.caintegrator.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-
 import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator.domain.genomic.ChromosomalLocation;
-import gov.nih.nci.caintegrator.domain.genomic.SegmentData;
 
 import java.util.Set;
 
@@ -20,16 +17,16 @@ import java.util.Set;
 public final class SegmentDataGenerator extends AbstractTestDataGenerator<SegmentData> {
 
     public static final SegmentDataGenerator INSTANCE = new SegmentDataGenerator();
-    
-    private SegmentDataGenerator() { 
+
+    private SegmentDataGenerator() {
         super();
     }
-    
+
     @Override
     public void compareFields(SegmentData original, SegmentData retrieved) {
         assertEquals(original.getArrayData(), retrieved.getArrayData());
         assertEquals(original.getNumberOfMarkers(), retrieved.getNumberOfMarkers());
-        assertEquals(original.getSegmentValue(), retrieved.getSegmentValue());
+        assertEquals(original.getSegmentValue(), retrieved.getSegmentValue(), 0.0);
         if (original.getLocation() == null) {
             assertNull(retrieved.getLocation());
         } else {

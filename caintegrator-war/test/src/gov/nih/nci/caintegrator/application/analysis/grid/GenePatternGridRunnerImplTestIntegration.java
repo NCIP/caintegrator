@@ -45,6 +45,7 @@ import org.genepattern.gistic.common.GisticUtils;
 import org.genepattern.io.ParseException;
 import org.genepattern.io.odf.OdfObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -181,6 +182,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTes
     }
 
     @Test
+    @Ignore
     public void testRunGistic() throws ConnectionException, InvalidCriterionException, IOException, ParameterException {
         StudySubscription subscription = setupStudySubscription(ArrayDataType.COPY_NUMBER);
         GisticParameters parameters = new GisticParameters();

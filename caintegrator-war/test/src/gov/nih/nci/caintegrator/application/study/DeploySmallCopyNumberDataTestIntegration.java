@@ -20,7 +20,6 @@ import gov.nih.nci.caintegrator.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
-import gov.nih.nci.caintegrator.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator.domain.genomic.ReporterTypeEnum;
@@ -37,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStudyTestIntegration {
 
-    private final static Logger LOGGER = Logger.getLogger(DeploySmallCopyNumberDataTestIntegration.class);
+    private static final Logger LOGGER = Logger.getLogger(DeploySmallCopyNumberDataTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws Exception {

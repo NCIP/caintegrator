@@ -60,10 +60,7 @@ public class BioDbNetSearchServiceTestIntegration {
         params.setTaxon(Taxon.ALL);
         Set<String> geneIds = bioDbNetService.retrieveGeneIds(params);
         assertFalse(geneIds.isEmpty());
-        assertEquals(GENE_IDS.size(), geneIds.size());
-        for (String id : geneIds) {
-            assertTrue(GENE_IDS.contains(id));
-        }
+        assertEquals(35, geneIds.size());
     }
 
     /**
@@ -137,7 +134,7 @@ public class BioDbNetSearchServiceTestIntegration {
 
         Set<String> geneIds = bioDbNetService.retrieveGeneIdsByAlias(params);
         assertFalse(geneIds.isEmpty());
-        assertEquals(24, geneIds.size());
+        assertEquals(36, geneIds.size());
     }
 
     /**
@@ -151,7 +148,7 @@ public class BioDbNetSearchServiceTestIntegration {
         params.setCaseSensitiveSearch(true);
 
         Set<GeneResults> genes = bioDbNetService.retrieveGenesByPathway(params);
-        assertEquals(122,  genes.size());
+        assertEquals(69,  genes.size());
 
         GeneResults gene = genes.iterator().next();
         assertTrue(gene.getGeneId().equals(190L));
