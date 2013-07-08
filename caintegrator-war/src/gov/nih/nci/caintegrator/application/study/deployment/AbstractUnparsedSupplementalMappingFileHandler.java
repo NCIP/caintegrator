@@ -55,6 +55,7 @@ public abstract class AbstractUnparsedSupplementalMappingFileHandler extends Abs
             sample = new Sample();
             sample.setName(sampleName);
             getGenomicSource().getSamples().add(sample);
+            getSampleNameToSampleMap().put(sampleName, sample);
         }
         addSampleAcquisition(subjectIdentifier, sample);
         return sample;

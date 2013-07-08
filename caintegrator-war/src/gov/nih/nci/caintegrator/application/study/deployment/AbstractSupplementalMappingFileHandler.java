@@ -25,7 +25,6 @@ import java.util.Map;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 
 /**
@@ -41,12 +40,10 @@ public abstract class AbstractSupplementalMappingFileHandler extends AbstractCaA
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService);
         this.dao = dao;
-        sampleNameToSample = Maps.uniqueIndex(getGenomicSource().getSamples(), new Function<Sample, String>() {
-            @Override
-            public String apply(Sample s) {
-                return s.getName();
-            }
-        });
+        sampleNameToSample = Maps.newHashMap();
+        for (Sample sample : getGenomicSource().getSamples()) {
+            sampleNameToSample.put(sample.getName(), sample);
+        }
     }
 
     void loadMappingFile() throws DataRetrievalException, ValidationException {
