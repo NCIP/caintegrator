@@ -8,37 +8,24 @@
     <conf name="compile" extends="runtime" />
     <conf name="test" />
     <conf name="test-pmd"  />
-    <conf name="test-selenium" />
     <conf name="test-junit" />
-    <conf name="test-acceptance" />
     <conf name="test-cobertura" />
-    <conf name="test-javancss" />
     <conf name="test-checkstyle" />
-    <conf name="test-findbugs" />
-    <conf name="test-simian" />
     <conf name="test-integration" />
   </configurations>
 
   <publications></publications>
 
   <dependencies>
-    <dependency org="org.seleniumhq.selenium.server" name="selenium-server" rev="1.0.3" conf="test-selenium->default">
-     <artifact name="selenium-server" type="jar" url="https://ncimvn.nci.nih.gov/nexus/content/repositories/public/org/seleniumhq/selenium/server/selenium-server/1.0.3/selenium-server-1.0.3-standalone.jar"/>
-    </dependency>
     <dependency org="junit" name="junit" rev="4.10" conf="test-junit,test-pmd->master"/>
     <dependency org="javassist" name="javassist" rev="3.9.0.GA" conf="test-junit->default"/>
     <dependency org="org.mockito" name="mockito-all" rev="1.9.0" conf="test-junit->default"/>
     <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4.1" conf="test-cobertura->master"/>
     <dependency org="log4j" name="log4j" rev="1.2.9" conf="runtime,test-cobertura->master"/>
-    <dependency org="javancss" name="javancss" rev="29.50" conf="test-javancss->master"/>
-    <dependency org="javancss" name="ccl" rev="29.50" conf="test-javancss->master"/>
     <dependency org="com.puppycrawl.tools" name="checkstyle" rev="5.2" conf="test-checkstyle->master"/>
     <dependency org="commons-beanutils" name="commons-beanutils-core" rev="1.8.3" conf="test-checkstyle->master"/>
     <dependency org="commons-cli" name="commons-cli" rev="1.2" conf="test-checkstyle->master"/>
-    <dependency org="redhill" name="simian" rev="2.2.4" conf="test-simian->master"/>
     <dependency org="pmd" name="pmd" rev="4.2.5" conf="test-pmd->master"/>
-    <dependency org="fitlibrary" name="fitrunner" rev="1.0" conf="test-acceptance->master"/>
-    <dependency org="antfit" name="antfit" rev="1.0" conf="test-acceptance->master"/>
     <dependency org="jaxen" name="jaxen" rev="1.1.1" conf="test-pmd->master" />
     <dependency org="asm" name="asm" rev="3.1" conf="test-pmd->master"/>
     <dependency org="asm" name="asm" rev="2.2.1" conf="test-cobertura->master"/>

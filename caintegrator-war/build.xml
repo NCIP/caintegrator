@@ -51,11 +51,8 @@
 
     <!-- Report properties -->
     <property name="reports.dir" value="${software.dir}/target/reports"/>
-    <property name="reports.simian.dir" value="${reports.dir}/simian"/>
     <property name="reports.pmd.dir" value="${reports.dir}/pmd"/>
     <property name="reports.checkstyle.dir" value="${reports.dir}/checkstyle"/>
-    <property name="reports.javancss.dir" value="${reports.dir}/javancss"/>
-    <property name="reports.findbugs.dir" value="${reports.dir}/findbugs"/>
 
     <!-- ******************************************************************* -->
     <!-- ** BUILD / TASKDEFS                                              ** -->
@@ -99,15 +96,10 @@
     <property name="caintegrator.war.compile.lib.dir" location="${lib.dir}/caintegrator2-compile"/>
     <property name="caintegrator.war.runtime.lib.dir" location="${lib.dir}/caintegrator2-runtime"/>
 
-    <property name="acceptance.lib.dir" location="${lib.dir}/test-acceptance"/>
     <property name="checkstyle.lib.dir" location="${lib.dir}/test-checkstyle"/>
     <property name="cobertura.lib.dir" location="${lib.dir}/test-cobertura"/>
-    <property name="findbugs.lib.dir" location="${lib.dir}/test-findbugs"/>
-    <property name="javancss.lib.dir" location="${lib.dir}/test-javancss"/>
     <property name="junit.lib.dir" location="${lib.dir}/test-junit"/>
     <property name="pmd.lib.dir" location="${lib.dir}/test-pmd"/>
-    <property name="selenium.lib.dir" location="${lib.dir}/test-selenium"/>
-    <property name="simian.lib.dir" location="${lib.dir}/test-simian"/>
     <property name="integration.lib.dir" location="${lib.dir}/test-integration"/>
 
     <target name="ivy:init">
@@ -123,22 +115,14 @@
     <target name="clean:dependencies">
         <delete dir="${caintegrator.war.compile.lib.dir}" />
         <delete dir="${caintegrator.war.runtime.lib.dir}" />
-        <delete dir="${acceptance.lib.dir}" />
         <delete dir="${checkstyle.lib.dir}" />
         <delete dir="${cobertura.lib.dir}" />
-        <delete dir="${findbugs.lib.dir}" />
-        <delete dir="${javancss.lib.dir}" />
         <delete dir="${junit.lib.dir}" />
         <delete dir="${pmd.lib.dir}" />
-        <delete dir="${selenium.lib.dir}" />
-        <delete dir="${simian.lib.dir}" />
         <delete dir="${integration.lib.dir}" />
     </target>
 
-    <target name="ivy:setup" depends="ivy:setup-runtime,
-        ivy:setup-compile,
-        ivy:setup-test,
-        ivy:setup-static-analysis"
+    <target name="ivy:setup" depends="ivy:setup-runtime,ivy:setup-compile,ivy:setup-test,ivy:setup-static-analysis"
         description="Updates the local ivy repository for all build and test dependencies."/>
 
     <target name="ivy:setup-runtime" depends="ivy:init">
@@ -152,13 +136,6 @@
     </target>
 
     <target name="ivy:setup-test" depends="ivy:init">
-        <ivy:resolve refresh="true" conf="test-selenium" />
-        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-selenium" />
-        <path id="selenium.classpath">
-            <fileset dir="${selenium.lib.dir}">
-                <include name="*.jar" />
-            </fileset>
-        </path>
         <ivy:resolve refresh="true" conf="test-junit" />
         <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-junit" />
         <path id="junit.classpath">
@@ -184,13 +161,6 @@
     </target>
 
     <target name="ivy:setup-static-analysis" depends="ivy:init">
-        <ivy:resolve refresh="true" conf="test-javancss" />
-        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-javancss" />
-        <path id="javancss.classpath">
-            <fileset dir="${lib.dir}/test-javancss">
-                <include name="*.jar" />
-            </fileset>
-        </path>
         <ivy:resolve refresh="true" conf="test-checkstyle" />
         <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-checkstyle" />
         <path id="project.test.checkstyle.classpath">
@@ -205,13 +175,6 @@
                 <include name="*.jar" />
             </fileset>
         </path>
-        <ivy:resolve refresh="true" conf="test-simian" />
-        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-simian" />
-        <path id="project.test.simian.classpath">
-            <fileset dir="${lib.dir}/test-simian">
-                <include name="*.jar" />
-            </fileset>
-        </path>
     </target>
 
 
@@ -219,43 +182,26 @@
     <!-- ** MAIN TARGETS                                                  ** -->
     <!-- ******************************************************************* -->
 
-    <target name="continuous-integration"
-        depends="clean,build,static-analysis,test:unit"
+    <target name="continuous-integration" depends="clean,build,static-analysis,test:unit"
         description="Cleans, builds, checks and tests the codebase. This should be run prior to every commit." />
 
-    <target name="nightly-build"
-        depends="continuous-integration,database:reinitialize,test:integration"
+    <target name="nightly-build" depends="continuous-integration,database:reinitialize,test:integration"
         description="Builds and deploys caIntegrator and performs the complete suite of tests." />
 
-    <target name="clean"
-        depends="clean:caintegrator.war,
-        clean:dependencies,
-        clean:reports"
+    <target name="clean" depends="clean:caintegrator.war,clean:dependencies,clean:reports"
         description="Removes all generated artifacts from the working directory." />
 
-    <target name="build"
-        depends="caintegrator.war"
-        description="Compiles all production source code and assembles artifacts." />
+    <target name="build" depends="caintegrator.war" description="Compiles all production source code and assembles artifacts." />
 
-    <target name="database"
-        depends="database:reinitialize"
+    <target name="database" depends="database:reinitialize"
         description="Drops any exisisting instance of the caintegrator database; creates and populates a new instance." />
 
-    <target name="test"
-        depends="test:unit,test:integration"
-        description="Executes all unit and functional tests." />
+    <target name="test" depends="test:unit,test:integration" description="Executes all unit and functional tests." />
 
-    <target name="deploy"
-        depends="deploy:jboss"
-        description="Deploys the caIntegrator application to JBoss." />
+    <target name="deploy" depends="deploy:jboss" description="Deploys the caIntegrator application to JBoss." />
 
-    <target name="static-analysis" description="Performs static analysis"
-        depends="
-        static-analysis:simian,
-        static-analysis:pmd,
-        static-analysis:checkstyle,
-        static-analysis:javancss">
-            <fail if="checkstyle.failure" message="There were Checkstyle failures." />
+    <target name="static-analysis" description="Performs static analysis" depends="static-analysis:pmd, static-analysis:checkstyle">
+        <fail if="checkstyle.failure" message="There were Checkstyle failures." />
     </target>
     
     <target name="git:getinfo" description="obtain git revision info" unless="nogit">
@@ -287,14 +233,6 @@
         </exec>
         <echo message="found git info: ${git.url} ${git.revision} ${git.caintegrator.version}" />
     </target>
-    
-    <target name="cleanbdautil" description="prepare for info and delete bda util">
-        <delete includeEmptyDirs="true">
-          <fileset dir="${user.home}/.ivy2-bda-utils" includes="**/*" />
-        </delete>
-    </target>
-
-
 
     <!-- ******************************************************************* -->
     <!-- ** EXTERNAL DEPENDENCY PROPERTIES                                ** -->
@@ -496,15 +434,6 @@
         </war>
     </target>
 
-    <!-- I believe this target is no longer necessary. -->
-    <target name="caintegrator.jar" depends="compile:caintegrator.war,hibernate.cfg.xml.test">
-        <delete file="${caintegrator.jar}"/>
-        <copy file="${hibernate.cfg.xml.test}" tofile="${hibernate.cfg.xml.deploy}" overwrite="true" />
-        <jar destfile="${caintegrator.jar}" basedir="${caintegrator.war.java.classes.dir}" >
-            <fileset dir="${caintegrator.war.resources.src.dir}" excludes="*hibernate.cfg.xml"/>
-        </jar>
-    </target>
-
     <target name="compile:caintegrator.war" depends="path:caintegrator.war.dependencies">
         <mkdir dir="${caintegrator.war.java.classes.dir}" />
         <javac srcdir="${caintegrator.war.java.src.dir}" destdir="${caintegrator.war.java.classes.dir}" classpathref="caintegrator.war.dependencies.path" includeantruntime="false" debug="true" />
@@ -669,12 +598,6 @@
         <run-sql-script sql.file="${caintegratordb.sql.target.dir}/prime-csm-tables.sql" />
     </target>
 
-    <target name="database:create-tables-generated" depends="database:generate-sql">
-        <run-sql-script sql.file="${caintegratordb.sql.target.dir}/create-tables-generated.sql" />
-    </target>
-
-    <target name="database:reinitialize-tables" depends="database:drop-tables,database:create-tables" description="Drop &amp; recreate caIntegrator schema" />
-
     <target name="database:reinitialize" depends="database:init-sql" description="Completely reset caIntegrator by dropping database, recreating, and creating schema, and populating with initial data">
         <antcall target="database:recreate-database" />
         <antcall target="database:create-tables" />
@@ -776,35 +699,6 @@
             sql.file="${caintegratordb.sql.target.dir}/create-database-and-user.sql" />
     </target>
 
-    <target name="database:generate-sql" depends="compile:caintegrator.war, database:init-sql">
-        <!-- Hibernate tool-->
-        <path id="hibernatetool.classpath">
-            <fileset dir="${caintegrator.war.compile.lib.dir}">
-                <include name="commons-logging-1.1.1.jar"/>
-                <include name="ejb3-persistence-1.0.1.GA.jar" />
-                <include name="hibernate-annotations-3.2.0.ga.jar" />
-                <include name="hibernate-commons-annotations-3.0.0.GA.jar" />
-                <include name="mysql-connector-java-5.1.13.jar" />
-                <include name="commons-collections-3.2.jar" />
-                <include name="hibernate-3.2.0.ga.jar" />
-                <include name="dom4j-1.6.jar" />
-            </fileset>
-            <fileset dir="${lib.dir}/hibernatetool">
-                <include name="hibernate-tools-3.2.2.beta1.jar" />
-            </fileset>
-        </path>
-        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.classpath" />
-        <hibernatetool destdir="${caintegratordb.sql.target.dir}">
-            <configuration configurationfile="${caintegrator.war.resources.src.dir}/hibernate.cfg.xml" />
-            <hbm2ddl drop="false" create="true" export="false" outputfilename="create-tables-generated.sql" />
-            <hbm2ddl drop="true" create="false" export="false" outputfilename="drop-tables-generated.sql" />
-            <classpath>
-                <pathelement location="${caintegrator.war.java.classes.dir}" />
-                <pathelement location="${caintegrator.war.resources.src.dir}" />
-            </classpath>
-        </hibernatetool>
-    </target>
-
     <target name="database:test-data" depends="database:reinitialize,test:compile:caintegrator.war.test.classes,hibernate.cfg.xml.test, caintegrator.csm.xml.test">
         <java classname="gov.nih.nci.caintegrator.data.DataGenerator" classpathref="caintegrator.war.test.dependencies.path" />
     </target>
@@ -872,26 +766,20 @@
     <!-- ******************************************************************* -->
 
     <!-- JUnit Test Targets -->
-    <target name="test:unit" depends="test:unit:caintegrator.war,
-      test:junit-report,
-      test:cobertura-report,
-      test:cobertura-check">
+    <target name="test:unit" depends="test:unit:caintegrator.war,test:junit-report,test:cobertura-report,test:cobertura-check">
         <fail if="junit.failure" message="There were JUnit failures." />
         <fail if="cobertura.failure" message="Test coverage was insufficient (see Cobertura report)." />
     </target>
 
-    <target name="test:integration:rembrandt-ncri" depends="deploy:rembrandt-ncri,
-        test:junit-report-integration">
+    <target name="test:integration:rembrandt-ncri" depends="deploy:rembrandt-ncri,test:junit-report-integration">
         <fail if="junit.failure" message="There were JUnit failures." />
     </target>
 
-    <target name="test:integration" depends="test:integration:caintegrator.war,
-        test:junit-report-integration">
+    <target name="test:integration" depends="test:integration:caintegrator.war,test:junit-report-integration">
         <fail if="junit.failure" message="There were JUnit failures." />
     </target>
 
-    <target name="test:integration:from-master" depends="test:integration:master.build,
-        test:junit-report-integration">
+    <target name="test:integration:from-master" depends="test:integration:master.build,test:junit-report-integration">
         <fail if="junit.failure" message="There were JUnit failures." />
     </target>
 
@@ -941,21 +829,6 @@
 
     <!-- One target and one macro have been written for each static-analysis tool.  The macro runs static-analysis on an one set of values. The target then calls the macro with values for each sub-project.  If a user wanted to add options to the static-analysis tool in the the macro, they could add an attribute, refer to that attribute in the static-analysis call and then add the option to each of the calls to the marco in the wrapper target.-->
 
-    <!-- Runs Simian a code duplication reporter.
-        You can find additional information about simian at:
-        http://www.redhillconsulting.com.au/products/simian/installation.html
-        -->
-    <target name="static-analysis:simian" depends="ivy:setup-static-analysis" description="Performs code duplication analysis">
-        <mkdir dir="${reports.simian.dir}"/>
-        <static-analysis-simian
-            simian.src.dir="${caintegrator.war.java.src.dir}"
-            simian.rpt.dir="${reports.simian.dir}"
-            simian.report-xsl.file="${common.dir}/simian/simian.xsl"
-            simian.xml.name="simian-caintegrator-war.xml"
-            simian.html.name="simian-caintegrator-war.html"
-            />
-    </target>
-
     <target name="static-analysis:pmd" depends="ivy:setup-static-analysis">
         <mkdir dir="${reports.pmd.dir}"/>
         <static-analysis-pmd
@@ -968,21 +841,6 @@
             pmd.rule-set.file="${common.dir}/pmd/pmd-ruleset.xml"
             pmd.xml.name="pmd-report.xml"
             pmd.html.name="pmd-report.html"
-            />
-    </target>
-
-    <!-- Runs JavaNCSS a tool that identifies code Cyclomatic Complexity.
-        You can find additional information about JavaNCSS at:
-        http://www.kclee.de/clemens/java/javancss/
-        -->
-    <target name="static-analysis:javancss" depends="ivy:setup-static-analysis">
-        <mkdir dir="${reports.javancss.dir}"/>
-        <static-analysis-javancss
-            javancss.src.dir="${caintegrator.war.java.src.dir}"
-            javancss.rpt.dir="${reports.javancss.dir}"
-            javancss.report-xsl.file="${common.dir}/javancss/javancss2methodhtml.xsl"
-            javancss.xml.name="javancss_metrics_caintegrator-war.xml"
-            javancss.html.name="javancss_report_caintegrator-war.html"
             />
     </target>
 
@@ -1001,10 +859,6 @@
             checkstyle.html.name="checkstyle.html"
             checkstyle.classpath.ref.name="caintegrator.full.classpath"
             />
-    </target>
-
-    <target name="pmd:update-eclipse-projects">
-        <copy file="${resource.dir}/pmd/pmd-ruleset.xml" tofile="${root.dir}/.ruleset" />
     </target>
 
     <!-- ******************************************************************* -->
@@ -1163,7 +1017,6 @@
          </junit>
     </target>
 
-
     <!-- ******************************************************************* -->
     <!-- ** DOCUMENTATION TARGETS                                         ** -->
     <!-- ******************************************************************* -->
@@ -1197,8 +1050,6 @@
                 <sysproperty key="server.hostname" value="${jboss.server.hostname}" />
                 <sysproperty key="server.port" value="${jboss.server.port}" />
                 <sysproperty key="server.jndi.port" value="${jboss.server.jndi.port}" />
-                <sysproperty key="selenium.server.port" value="${selenium.server.port}" />
-
                 <classpath>
                     <pathelement path="@{instrumented.classes}" />
                     <pathelement path="@{classpath}" />
@@ -1230,10 +1081,6 @@
                 <sysproperty key="server.hostname" value="${jboss.server.hostname}" />
                 <sysproperty key="server.port" value="${jboss.server.port}" />
                 <sysproperty key="server.jndi.port" value="${jboss.server.jndi.port}" />
-                <sysproperty key="selenium.server.port" value="${selenium.server.port}" />
-                <!--
-                <jvmarg value="-d64" />
-                -->
                 <classpath>
                     <pathelement path="@{instrumented.classes}" />
                     <pathelement path="@{classpath}" />
@@ -1263,7 +1110,6 @@
                 <sysproperty key="server.hostname" value="${jboss.server.hostname}" />
                 <sysproperty key="server.port" value="${jboss.server.port}" />
                 <sysproperty key="server.jndi.port" value="${jboss.server.jndi.port}" />
-                <sysproperty key="selenium.server.port" value="${selenium.server.port}" />
 
                 <classpath>
                     <pathelement path="@{instrumented.classes}" />
@@ -1281,25 +1127,6 @@
                     </fileset>
                 </batchtest>
             </junit>
-        </sequential>
-    </macrodef>
-
-    <macrodef name="static-analysis-simian">
-        <attribute name="simian.src.dir"/>
-        <attribute name="simian.rpt.dir"/>
-        <attribute name="simian.report-xsl.file"/>
-        <attribute name="simian.xml.name" default="simian.xml"/>
-        <attribute name="simian.html.name" default="simian.html"/>
-        <sequential>
-            <taskdef resource="simiantask.properties" classpathref="project.test.simian.classpath" />
-            <simian
-                failureProperty="simian.failure"
-                failOnDuplication="failse"
-                >
-                <fileset dir="@{simian.src.dir}" includes="**/*.java"/>
-                <formatter type="xml" toFile="@{simian.rpt.dir}/@{simian.xml.name}"/>
-            </simian>
-            <xslt in="@{simian.rpt.dir}/@{simian.xml.name}" out="@{simian.rpt.dir}/@{simian.html.name}" style="@{simian.report-xsl.file}" />
         </sequential>
     </macrodef>
 
@@ -1347,67 +1174,6 @@
         </sequential>
     </macrodef>
 
-    <macrodef name="static-analysis-javancss">
-        <attribute name="javancss.src.dir"/>
-        <attribute name="javancss.rpt.dir"/>
-        <attribute name="javancss.report-xsl.file"/>
-        <attribute name="javancss.xml.name" default="javancss.xml"/>
-        <attribute name="javancss.html.name" default="javancss.html"/>
-        <sequential>
-            <taskdef name="javancss" classpathref="javancss.classpath" classname="javancss.JavancssAntTask" />
-            <javancss
-                srcdir="@{javancss.src.dir}"
-                includes="**/*.java"
-                excludes="**/*test*/*"
-                generatereport="true"
-                outputfile="@{javancss.rpt.dir}/@{javancss.xml.name}"
-                ccnPerFuncMax="10"
-                format="xml">
-            </javancss>
-            <xslt taskname="javancss"
-                in="@{javancss.rpt.dir}/@{javancss.xml.name}"
-                out="@{javancss.rpt.dir}/@{javancss.html.name}"
-                style="@{javancss.report-xsl.file}"/>
-        </sequential>
-    </macrodef>
-
-    <macrodef name="static-analysis-findbugs">
-        <attribute name="findbugs.home.dir"/>
-        <attribute name="findbugs.src.dir"/>
-        <attribute name="findbugs.rpt.dir"/>
-        <attribute name="findbugs.classes.dir"/>
-        <attribute name="findbugs.report-xsl.file"/>
-        <attribute name="findbugs.app.classpath.ref"/>
-        <attribute name="findbugs.xml.name" default="findbugs.xml"/>
-        <attribute name="findbugs.html.name" default="findbugs.html"/>
-        <sequential>
-            <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="project.test.findbugs.classpath"/>
-
-            <findbugs home="@{findbugs.home.dir}"
-                output="xml:withMessages"
-                outputFile="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
-                jvmargs="-Xms128m -Xmx512m"
-                >
-                <auxClasspath>
-                    <!--
-                    <fileset dir="@{findbugs.app.classpath.dir}">
-                        <include name="**/*.jar" />
-                    </fileset>
-                    -->
-                    <fileset refid="@{findbugs.app.classpath.ref}"/>
-                </auxClasspath>
-
-                <sourcePath path="@{findbugs.src.dir}" />
-                <class location="@{findbugs.classes.dir}" />
-            </findbugs>
-            <xslt taskname="findbugs"
-                in="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
-                out="@{findbugs.rpt.dir}/@{findbugs.html.name}"
-                style="@{findbugs.report-xsl.file}"
-                />
-        </sequential>
-    </macrodef>
-
     <macrodef name="static-analysis-checkstyle">
         <attribute name="checkstyle.src.dir"/>
         <attribute name="checkstyle.rpt.dir"/>
@@ -1443,7 +1209,4 @@
 
         </sequential>
     </macrodef>
-
-
-
 </project>
