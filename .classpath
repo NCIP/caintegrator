@@ -96,9 +96,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-core-2.3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-spring-plugin-2.3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-tiles-plugin-2.3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-api-2.0.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-core-2.0.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-jsp-2.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ws-addressing-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ws-core-client-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ws-enumeration-4.0.3.jar"/>
@@ -158,5 +155,8 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-tx-3.0.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/test-junit/spring-test-3.0.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/axis-jaxrpc-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-api-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-core-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-jsp-2.2.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

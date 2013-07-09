@@ -75,9 +75,12 @@
     <dependency org="aopalliance" name="aopalliance" rev="1.0" conf="runtime->master"/>
     
     <dependency org="org.apache.santuario" name="xmlsec" rev="1.4.0" conf="compile->default"/>
-    <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.0.6" conf="runtime->master"/>
-    <dependency org="org.apache.tiles" name="tiles-core" rev="2.0.6" conf="runtime->master"/>
-    <dependency org="org.apache.tiles" name="tiles-api" rev="2.0.6" conf="runtime->master"/>
+    <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.2.2" conf="runtime->master"/>
+    <dependency org="org.apache.tiles" name="tiles-core" rev="2.2.2" conf="runtime->master"/>
+    <dependency org="org.apache.tiles" name="tiles-servlet" rev="2.2.2" conf="runtime->master"/>
+    <dependency org="org.apache.tiles" name="tiles-template" rev="2.2.2" conf="runtime->master"/>
+    <dependency org="org.apache.tiles" name="tiles-api" rev="2.2.2" conf="runtime->master"/>
+    
     <dependency org="org.freemarker" name="freemarker" rev="2.3.19" conf="runtime->master"/>
     <dependency org="org.apache.struts" name="struts2-core" rev="2.3.1.1" conf="runtime->master"/>
     <dependency org="org.apache.struts" name="struts2-spring-plugin" rev="2.3.1.1" conf="runtime->master"/>
