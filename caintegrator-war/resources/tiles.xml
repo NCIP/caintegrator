@@ -102,12 +102,6 @@
         <put-attribute name="subTitle" value="This feature currently not implemented." />
     </definition>
     
-    <definition name="tutorials" extends="cssBaseDef">
-        <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/tutorials_tile.jsp" />
-        <put-attribute name="subTitle" value="Tutorial Menu" />
-    </definition>
-    
     <definition name="homepage" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/homepage_tile.jsp" />
         <put-attribute name="subTitle" value="Login" />

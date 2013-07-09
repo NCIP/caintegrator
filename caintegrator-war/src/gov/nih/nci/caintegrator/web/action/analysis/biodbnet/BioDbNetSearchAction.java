@@ -108,6 +108,7 @@ public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
         params.setFilterGenesOnStudy(getSearchParameters().isFilterGenesOnStudy());
         params.setTaxon(getSearchParameters().getTaxon());
         params.setInputValues(StringUtils.join(input, ','));
+        params.setStudy(getCurrentStudy());
         return params;
     }
 

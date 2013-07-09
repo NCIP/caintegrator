@@ -9,7 +9,7 @@
             <a href="http://www.nih.gov/about/privacy.htm">PRIVACY NOTICE</a>
             <a href="http://www.nih.gov/about/disclaim.htm">DISCLAIMER</a>
             <a href="http://www3.cancer.gov/accessibility/nci508.htm">ACCESSIBILITY</a>
-            <a href="javascript:openWikiHelp('ngPTAg', 'id-1-GettingStartedwithcaIntegrator-ApplicationSupport')" class="last">SUPPORT</a> 
+            <a href="http://cbiit.nci.nih.gov/support" target="_blank" class="last">SUPPORT</a> 
         </div>
     </div>
     <div id="partnerlogos">             

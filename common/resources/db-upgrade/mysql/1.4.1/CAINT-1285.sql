@@ -1,0 +1,1 @@
+update csm_protection_element set object_id = replace(object_id, 'caintegrator2', 'caintegrator') where object_id like '%caintegrator2%';
