@@ -14,12 +14,20 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 
+
 /**
+ * View study log action.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class ViewStudyLogAction extends AbstractDeployedStudyAction implements ParameterNameAware {
 
     private static final long serialVersionUID = 1L;

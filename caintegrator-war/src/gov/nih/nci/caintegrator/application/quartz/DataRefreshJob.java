@@ -20,13 +20,19 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.stereotype.Component;
 
 /**
  * Quartz job to check caArray experiments for updated data.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class DataRefreshJob extends QuartzJobBean implements Runnable {
     private static final Logger LOG = Logger.getLogger(DataRefreshJob.class);
     private CaArrayFacade caArrayFacade;
@@ -96,6 +102,7 @@ public class DataRefreshJob extends QuartzJobBean implements Runnable {
     /**
      * @param dao the dao to set
      */
+    @Autowired
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }
@@ -103,6 +110,7 @@ public class DataRefreshJob extends QuartzJobBean implements Runnable {
     /**
      * @param caArrayFacade the caArrayFacade to set
      */
+    @Autowired
     public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
         this.caArrayFacade = caArrayFacade;
     }

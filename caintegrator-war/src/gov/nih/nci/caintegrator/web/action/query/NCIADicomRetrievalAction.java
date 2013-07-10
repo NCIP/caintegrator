@@ -9,13 +9,19 @@ package gov.nih.nci.caintegrator.web.action.query;
 import gov.nih.nci.caintegrator.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator.web.action.AbstractCaIntegrator2Action;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Action to run NCIA Dicom jobs which retrieve and download DICOM files.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class NCIADicomRetrievalAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Downloads dicom file.
      * @return Struts 2 result.

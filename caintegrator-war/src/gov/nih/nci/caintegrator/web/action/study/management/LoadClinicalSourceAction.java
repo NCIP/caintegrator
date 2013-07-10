@@ -11,9 +11,16 @@ import gov.nih.nci.caintegrator.application.study.Status;
 import gov.nih.nci.caintegrator.web.ajax.ISubjectDataSourceAjaxUpdater;
 import gov.nih.nci.caintegrator.web.ajax.SubjectDataSourceAjaxRunner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Action called to edit an existing clinical data source.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
 
     private static final long serialVersionUID = 1L;
@@ -25,28 +32,28 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
     @Override
     public String execute() {
         getClinicalSource().setStatus(Status.PROCESSING);
-        setStudyLastModifiedByCurrentUser(getClinicalSource(), 
+        setStudyLastModifiedByCurrentUser(getClinicalSource(),
                 LogEntry.getSystemLogLoadSubjectAnnotationFile(
                         getClinicalSource().getAnnotationFile().getFile().getName()));
-        updater.runJob(getStudyConfiguration().getId(), getClinicalSource().getId(), 
+        updater.runJob(getStudyConfiguration().getId(), getClinicalSource().getId(),
                 SubjectDataSourceAjaxRunner.JobType.LOAD);
         return SUCCESS;
     }
-    
+
     /**
      * Reload a clinical source file.
      * @return string
      */
     public String reLoad() {
         getClinicalSource().setStatus(Status.PROCESSING);
-        setStudyLastModifiedByCurrentUser(getClinicalSource(), 
+        setStudyLastModifiedByCurrentUser(getClinicalSource(),
                 LogEntry.getSystemLogLoadSubjectAnnotationFile(
                         getClinicalSource().getAnnotationFile().getFile().getName()));
-        updater.runJob(getStudyConfiguration().getId(), getClinicalSource().getId(), 
+        updater.runJob(getStudyConfiguration().getId(), getClinicalSource().getId(),
                 SubjectDataSourceAjaxRunner.JobType.RELOAD);
         return SUCCESS;
     }
-    
+
     /**
      * Delete a clinical source file.
      * @return string
@@ -57,7 +64,7 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
         setStudyLastModifiedByCurrentUser(getClinicalSource(),
                 LogEntry.getSystemLogDeleteSubjectAnnotationFile(
                         getClinicalSource().getAnnotationFile().getFile().getName()));
-        updater.runJob(getStudyConfiguration().getId(), getClinicalSource().getId(), 
+        updater.runJob(getStudyConfiguration().getId(), getClinicalSource().getId(),
                 SubjectDataSourceAjaxRunner.JobType.DELETE);
         return SUCCESS;
     }
@@ -72,8 +79,9 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
     /**
      * @param updater the updater to set
      */
+    @Autowired
     public void setUpdater(ISubjectDataSourceAjaxUpdater updater) {
         this.updater = updater;
     }
-    
+
 }

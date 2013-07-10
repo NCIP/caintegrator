@@ -27,10 +27,16 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
 
     private static final long serialVersionUID = 1L;
@@ -188,6 +194,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @param arrayDataService the arrayDataService to set
      */
+    @Autowired
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }
@@ -202,6 +209,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @param updater the updater to set
      */
+    @Autowired
     public void setUpdater(IGenomicDataSourceAjaxUpdater updater) {
         this.updater = updater;
     }
@@ -216,6 +224,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @param caArrayFacade the caArrayFacade to set
      */
+    @Autowired
     public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
         this.caArrayFacade = caArrayFacade;
     }
@@ -230,6 +239,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @param configurationHelper the configurationHelper to set
      */
+    @Autowired
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }

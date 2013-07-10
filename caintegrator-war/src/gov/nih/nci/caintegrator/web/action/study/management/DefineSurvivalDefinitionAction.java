@@ -24,10 +24,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Action used to modify/create/delete SurvivalValueDefinitions for a Study.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;

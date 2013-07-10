@@ -12,14 +12,21 @@ import gov.nih.nci.caintegrator.web.DownloadableFile;
 import gov.nih.nci.caintegrator.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
- * 
+ *
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction {
-    
+
     private static final long serialVersionUID = 1L;
     private static final String DOWNLOAD_RESULTS_FILE = "downloadResultFile";
-    
+
     private StudyManagementService studyManagementService;
     private AbstractPersistedAnalysisJob job;
     private Long jobId;
@@ -33,7 +40,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
         super.prepare();
         setJob(getWorkspaceService().getPersistedAnalysisJob(jobId));
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -61,11 +68,11 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
         }
         addActionError(getText("struts.messages.error.must.specify.file.type"));
         return INPUT;
-        
+
     }
 
     private String handleInputDownload(DownloadableFile downloadableFile) {
-        
+
         if (job.getInputZipFile() != null) {
             downloadableFile.setPath(job.getInputZipFile().getPath());
             getDisplayableWorkspace().setTemporaryDownloadFile(downloadableFile);
@@ -80,11 +87,11 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
             downloadableFile.setPath(job.getResultsZipFile().getPath());
             getDisplayableWorkspace().setTemporaryDownloadFile(downloadableFile);
             return DOWNLOAD_RESULTS_FILE;
-        } 
+        }
         addActionError(getText("struts.messages.error.no.results.file"));
         return INPUT;
     }
-    
+
     private String getFilenamePrefix() {
         switch(job.getJobType()) {
         case CMS:
@@ -99,7 +106,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
             throw new IllegalStateException("Job type unknown");
         }
     }
-    
+
     /**
      * @return the jobId
      */
@@ -113,7 +120,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
     public void setJobId(Long jobId) {
         this.jobId = jobId;
     }
-    
+
     /**
      * @return the studyManagementService
      */
@@ -124,6 +131,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
     /**
      * @param studyManagementService the studyManagementService to set
      */
+    @Autowired
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }
@@ -141,7 +149,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
     public void setJob(AbstractPersistedAnalysisJob job) {
         this.job = job;
     }
-    
+
     /**
      * @return the type
      */

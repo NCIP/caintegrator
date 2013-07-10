@@ -40,10 +40,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
 
     private static final long serialVersionUID = 1L;
@@ -326,6 +332,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
@@ -340,6 +347,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -354,6 +362,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     /**
      * @param ajaxUpdater the ajaxUpdater to set
      */
+    @Autowired
     public void setAjaxUpdater(IPersistedAnalysisJobAjaxUpdater ajaxUpdater) {
         this.ajaxUpdater = ajaxUpdater;
     }
@@ -396,6 +405,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     /**
      * @param studyManagementService the studyManagementService to set
      */
+    @Autowired
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }
@@ -438,6 +448,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
     /**
      * @param configurationHelper the configurationHelper to set
      */
+    @Autowired
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }

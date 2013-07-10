@@ -27,10 +27,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
+ * Edit imaging source annotation actions.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAction {
 
     private static final long serialVersionUID = 1L;
@@ -318,6 +326,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     /**
      * @param aimFacade the aimFacade to set
      */
+    @Autowired
     public void setAimFacade(AIMFacade aimFacade) {
         this.aimFacade = aimFacade;
     }
@@ -346,6 +355,7 @@ public class EditImagingSourceAnnotationsAction extends AbstractImagingSourceAct
     /**
      * @param updater the updater to set
      */
+    @Autowired
     public void setUpdater(IImagingDataSourceAjaxUpdater updater) {
         this.updater = updater;
     }

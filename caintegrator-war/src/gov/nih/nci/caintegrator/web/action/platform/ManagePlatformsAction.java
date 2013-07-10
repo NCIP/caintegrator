@@ -29,10 +29,16 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Provides functionality to list and add array designs.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class ManagePlatformsAction extends AbstractCai2ManagementAction {
 
     private static final long serialVersionUID = 1L;
@@ -342,6 +348,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
     /**
      * @param arrayDataService the arrayDataService to set
      */
+    @Autowired
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }
@@ -409,6 +416,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
     /**
      * @param fileManager the fileManager to set
      */
+    @Autowired
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
@@ -531,6 +539,7 @@ public class ManagePlatformsAction extends AbstractCai2ManagementAction {
     /**
      * @param ajaxUpdater the ajaxUpdater to set
      */
+    @Autowired
     public void setAjaxUpdater(IPlatformDeploymentAjaxUpdater ajaxUpdater) {
         this.ajaxUpdater = ajaxUpdater;
     }

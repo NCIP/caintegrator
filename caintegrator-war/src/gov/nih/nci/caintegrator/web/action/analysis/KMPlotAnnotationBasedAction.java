@@ -25,10 +25,16 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Action dealing with Kaplan-Meier Annotaion Based plotting.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
     private static final long serialVersionUID = 1L;
@@ -313,6 +319,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     /**
      * @param studyManagementService the studyManagementService to set
      */
+    @Autowired
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }

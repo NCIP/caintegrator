@@ -20,6 +20,10 @@ import java.util.Map;
 import javax.mail.MessagingException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -28,6 +32,8 @@ import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 /**
  * Action for registering a user to cai2.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class RegistrationAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
@@ -146,6 +152,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     /**
      * @param registrationService the registrationService to set
      */
+    @Autowired
     public void setRegistrationService(RegistrationService registrationService) {
         this.registrationService = registrationService;
     }
@@ -160,6 +167,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     /**
      * @param securityManager the securityManager to set
      */
+    @Autowired
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
     }
@@ -210,6 +218,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     /**
      * @param configurationHelper the configurationHelper to set
      */
+    @Autowired
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }

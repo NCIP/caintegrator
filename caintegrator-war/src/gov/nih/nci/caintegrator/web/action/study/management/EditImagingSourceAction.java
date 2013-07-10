@@ -25,10 +25,18 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
+ * Edit imaging source action.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditImagingSourceAction extends AbstractImagingSourceAction {
 
     private static final long serialVersionUID = 1L;
@@ -304,6 +312,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     /**
      * @param updater the updater to set
      */
+    @Autowired
     public void setUpdater(IImagingDataSourceAjaxUpdater updater) {
         this.updater = updater;
     }
@@ -325,6 +334,7 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     /**
      * @param nciaFacade the nciaFacade to set
      */
+    @Autowired
     public void setNciaFacade(NCIAFacade nciaFacade) {
         this.nciaFacade = nciaFacade;
     }

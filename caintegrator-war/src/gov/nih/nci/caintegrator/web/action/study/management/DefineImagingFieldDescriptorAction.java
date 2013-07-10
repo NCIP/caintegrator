@@ -8,9 +8,15 @@ package gov.nih.nci.caintegrator.web.action.study.management;
 
 import gov.nih.nci.caintegrator.web.ajax.DataElementSearchAjaxUpdater;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Action used to edit the type and annotation of an imaging file column by a Study Manager.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class DefineImagingFieldDescriptorAction extends AbstractFieldDescriptorAction {
 
     private static final long serialVersionUID = 1L;

@@ -17,6 +17,10 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Sets;
 
@@ -25,6 +29,8 @@ import com.google.common.collect.Sets;
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
     private static final long serialVersionUID = 1L;
     private static final String GENE_RESULT = "genes";
@@ -193,6 +199,7 @@ public class BioDbNetSearchAction extends AbstractCaIntegrator2Action {
      * Sets the bioDbNet service.
      * @param svc the service to set
      */
+    @Autowired
     public void setBioDbNetService(BioDbNetService svc) {
         this.bioDbNetService = svc;
     }

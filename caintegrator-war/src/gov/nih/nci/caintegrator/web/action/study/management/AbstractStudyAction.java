@@ -13,25 +13,28 @@ import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.security.exceptions.CSSecurityException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.opensymphony.xwork2.ModelDriven;
 
 /**
  * Base class for actions that require retrieval of persistent <code>StudyConfigurations</code>.
  */
-public abstract class AbstractStudyAction extends AbstractCai2ManagementAction 
+public abstract class AbstractStudyAction extends AbstractCai2ManagementAction
 implements ModelDriven<StudyConfiguration> {
-    
+
     /**
      * Default serialize.
      */
     private static final long serialVersionUID = 1L;
-    
+
     private StudyConfiguration studyConfiguration = new StudyConfiguration();
     private StudyManagementService studyManagementService;
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public void prepare() {
         super.prepare();
         if (!SessionHelper.getInstance().isStudyManager()) {
@@ -78,13 +81,14 @@ implements ModelDriven<StudyConfiguration> {
     /**
      * @param studyManagementService the studyManagementService to set
      */
+    @Autowired
     public final void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }
-    
+
     /**
-     * Sets the lastModifiedBy attribute of a StudyConfiguration to the current user's workspace.  The 
-     * timeStampedStudyObject is the specific object that is being changed, if null then it will only 
+     * Sets the lastModifiedBy attribute of a StudyConfiguration to the current user's workspace.  The
+     * timeStampedStudyObject is the specific object that is being changed, if null then it will only
      * set the timestamp on the current study configuration.  Otherwise it updates the timestamp of both
      * objects.
      * @param timeStampedStudyObject optional object, if non-null it will save the lastModifiedDate of this object
@@ -96,7 +100,7 @@ implements ModelDriven<StudyConfiguration> {
         getStudyManagementService().setStudyLastModifiedByCurrentUser(getStudyConfiguration(), getWorkspace(),
                 timeStampedStudyObject, systemLogEntry);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -107,7 +111,7 @@ implements ModelDriven<StudyConfiguration> {
         }
         return null;
     }
-    
+
     /**
      * Remove malicious characters from the long and short study names.
      */

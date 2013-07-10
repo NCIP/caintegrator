@@ -9,24 +9,31 @@ package gov.nih.nci.caintegrator.web.action.study.management;
 import java.io.File;
 import java.io.IOException;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Adds a new new clinical data source file to a study.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class AddStudyLogoAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
     private File studyLogoFile;
     private String studyLogoFileContentType;
     private String studyLogoFileFileName;
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")     // PMD mistakenly flagging as empty method
     protected boolean isFileUpload() {
         return true;
-    }     
-    
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -40,7 +47,7 @@ public class AddStudyLogoAction extends AbstractStudyAction {
             return ERROR;
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -94,5 +101,5 @@ public class AddStudyLogoAction extends AbstractStudyAction {
         this.studyLogoFileFileName = studyLogoFileFileName;
     }
 
-   
+
 }

@@ -37,6 +37,10 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.genepattern.webservice.WebServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -45,6 +49,8 @@ import com.google.common.collect.Lists;
 /**
  * Action to configure and run GenePattern analysis jobs.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
 
     private static final long serialVersionUID = 1L;
@@ -271,6 +277,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
@@ -286,6 +293,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -328,6 +336,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     /**
      * @param ajaxUpdater the ajaxUpdater to set
      */
+    @Autowired
     public void setAjaxUpdater(IPersistedAnalysisJobAjaxUpdater ajaxUpdater) {
         this.ajaxUpdater = ajaxUpdater;
     }
@@ -342,6 +351,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     /**
      * @param configurationHelper the configurationHelper to set
      */
+    @Autowired
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }
@@ -424,6 +434,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     /**
      * @param studyManagementService the studyManagementService to set
      */
+    @Autowired
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }

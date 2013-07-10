@@ -16,8 +16,6 @@
     <!--Menu-->
     <s:url id="newQueryUrl" includeParams="none" action="newQuery" />
     
-    <s:url id="notYetImplementedUrl" includeParams="none" action="notYetImplemented" />
-    
     <s:set name="sessionHelper" value="#session['sessionHelper']" />
     
     <s:set name="isUserNotLoggedIn" 

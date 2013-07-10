@@ -6,9 +6,15 @@
  */
 package gov.nih.nci.caintegrator.web.action;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Struts 2 action for user workspace access and management.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class WorkspaceAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
@@ -19,10 +25,10 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     private boolean invalidAccess = false;
     private boolean sessionTimeout = false;
     private String selectedPage;
-    
+
     /**
      * Opens the current user's workspace.
-     * 
+     *
      * @return forward to workspace.
      */
     public String openWorkspace() {
@@ -47,13 +53,13 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         return WORKSPACE_STUDY;
     }
-    
+
     private void addRegistrationMessage() {
         if (registrationSuccess) {
             addActionMessage(getText("struts.messages.registration.successful"));
         }
     }
-    
+
     private void addErrorMessages() {
         if (invalidAccess) {
             addActionError(getText("struts.messages.error.invalid.access"));
@@ -81,7 +87,7 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     public void setCurrentStudySubscriptionId(Long currentStudySubscriptionId) {
         getDisplayableWorkspace().setCurrentStudySubscriptionId(currentStudySubscriptionId);
     }
-    
+
     /**
      * Returns the result type "studyLogoResult".
      * @return current study logo.
@@ -132,7 +138,7 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
     public void setSessionTimeout(boolean sessionTimeout) {
         this.sessionTimeout = sessionTimeout;
     }
-    
+
     /**
      * @return the selectedPage
      */
