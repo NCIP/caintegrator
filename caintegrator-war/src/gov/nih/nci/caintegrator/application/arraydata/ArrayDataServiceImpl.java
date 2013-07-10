@@ -36,13 +36,16 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateAccessor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of the array data service (backed by NetCDF).
  */
+@Service("arrayDataService")
 @Transactional (propagation = Propagation.REQUIRED)
 public class ArrayDataServiceImpl implements ArrayDataService {
 
@@ -227,6 +230,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * @param dao the dao to set
      */
+    @Autowired
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }
@@ -241,6 +245,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * @param fileManager the fileManager to set
      */
+    @Autowired
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }

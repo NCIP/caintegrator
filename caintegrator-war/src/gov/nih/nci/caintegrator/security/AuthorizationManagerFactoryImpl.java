@@ -10,9 +10,12 @@ import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.exceptions.CSException;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Factory for retrieving AuthorizationManager objects.
  */
+@Component
 public class AuthorizationManagerFactoryImpl implements AuthorizationManagerFactory {
 
     /**

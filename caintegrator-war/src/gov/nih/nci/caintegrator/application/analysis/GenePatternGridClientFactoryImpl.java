@@ -20,10 +20,12 @@ import org.genepattern.gistic.client.GisticClient;
 import org.genepattern.gistic.common.GisticI;
 import org.genepattern.pca.client.PCAClient;
 import org.genepattern.pca.common.PCAI;
+import org.springframework.stereotype.Component;
 
 /**
  * Implementation of GenePatternGridClientFactory.
  */
+@Component
 public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFactory {
 
     private static final String MALFORMED_URI = "Malformed URI.";

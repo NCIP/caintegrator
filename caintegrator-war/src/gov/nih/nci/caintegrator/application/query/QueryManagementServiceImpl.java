@@ -47,12 +47,15 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of the QueryManagementService interface.
  */
+@Service("queryManagementService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class QueryManagementServiceImpl extends CaIntegrator2BaseService implements QueryManagementService {
 
@@ -63,6 +66,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param resultHandler the resultHandler to set
      */
+    @Autowired
     public void setResultHandler(ResultHandler resultHandler) {
         this.resultHandler = resultHandler;
     }
@@ -458,6 +462,7 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param arrayDataService the arrayDataService to set
      */
+    @Autowired
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }
@@ -472,9 +477,8 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param fileManager the fileManager to set
      */
+    @Autowired
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
-
-
 }

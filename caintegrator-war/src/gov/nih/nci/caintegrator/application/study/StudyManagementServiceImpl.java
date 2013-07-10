@@ -70,12 +70,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Entry point to the StudyManagementService subsystem.
  */
+@Service("studyManagementService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class StudyManagementServiceImpl extends CaIntegrator2BaseService implements StudyManagementService {
 
@@ -704,6 +707,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param fileManager the fileManager to set
      */
+    @Autowired
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
@@ -736,6 +740,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param caDSRFacade the caDSRFacade to set
      */
+    @Autowired
     public void setCaDSRFacade(CaDSRFacade caDSRFacade) {
         this.caDSRFacade = caDSRFacade;
     }
@@ -863,6 +868,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param nciaFacade the nciaFacade to set
      */
+    @Autowired
     public void setNciaFacade(NCIAFacade nciaFacade) {
         this.nciaFacade = nciaFacade;
     }
@@ -877,6 +883,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param aimFacade the aimFacade to set
      */
+    @Autowired
     public void setAimFacade(AIMFacade aimFacade) {
         this.aimFacade = aimFacade;
     }
@@ -891,6 +898,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param caArrayFacade the caArrayFacade to set
      */
+    @Autowired
     public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
         this.caArrayFacade = caArrayFacade;
     }
@@ -1223,6 +1231,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param workspaceService the workspaceService to set
      */
+    @Autowired
     public void setWorkspaceService(WorkspaceService workspaceService) {
         this.workspaceService = workspaceService;
     }
@@ -1295,6 +1304,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param securityManager the securityManager to set
      */
+    @Autowired
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
     }
@@ -1507,6 +1517,7 @@ public class StudyManagementServiceImpl extends CaIntegrator2BaseService impleme
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }

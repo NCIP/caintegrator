@@ -12,10 +12,12 @@ import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
 import java.rmi.RemoteException;
 
 import org.apache.axis.types.URI.MalformedURIException;
+import org.springframework.stereotype.Component;
 
 /**
  * Implementation of the AIMServiceFactory.
  */
+@Component
 public class AIMServiceFactoryImpl implements AIMServiceFactory {
 
     /**
@@ -30,5 +32,4 @@ public class AIMServiceFactoryImpl implements AIMServiceFactory {
             throw new ConnectionException("Remote Connection Failed.", e);
         }
     }
-
 }

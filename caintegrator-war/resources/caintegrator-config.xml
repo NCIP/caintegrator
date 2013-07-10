@@ -29,47 +29,33 @@
 
     <bean id="dicomRetrievalAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator.web.ajax.DicomRetrievalAjaxUpdater">
         <dwr:remote javascript="DicomRetrievalAjaxUpdater" />
-        <property name="nciaFacade">
-          <ref local="nciaFacade"/>
-        </property>
+        <property name="nciaFacade" ref="nciaFacade"/>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
 
     <bean id="igvAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator.web.ajax.IGVAjaxUpdater">
         <dwr:remote javascript="IGVAjaxUpdater" />
-        <property name="analysisService">
-          <ref local="analysisService"/>
-        </property>
+        <property name="analysisService" ref="analysisService"/>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
 
     <bean id="heatmapAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator.web.ajax.HeatmapAjaxUpdater">
         <dwr:remote javascript="HeatmapAjaxUpdater" />
-        <property name="analysisService">
-          <ref local="analysisService"/>
-        </property>
+        <property name="analysisService" ref="analysisService"/>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
 
     <bean id="dataElementSearchAjaxUpdater" scope="session" class="gov.nih.nci.caintegrator.web.ajax.DataElementSearchAjaxUpdater">
         <dwr:remote javascript="DataElementSearchAjaxUpdater" />
-        <property name="studyManagementService">
-          <ref local="studyManagementService"/>
-        </property>
+        <property name="studyManagementService" ref="studyManagementService"/>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
 
     <bean id="persistedAnalysisJobAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator.web.ajax.PersistedAnalysisJobAjaxUpdater">
         <dwr:remote javascript="PersistedAnalysisJobAjaxUpdater" />
-        <property name="workspaceService">
-          <ref local="workspaceService"/>
-        </property>
-        <property name="analysisService">
-          <ref local="analysisService"/>
-        </property>
-        <property name="queryManagementService">
-           <ref local="queryManagementService"/>
-        </property>
+        <property name="workspaceService" ref="workspaceService"/>
+        <property name="analysisService" ref="analysisService"/>
+        <property name="queryManagementService" ref="queryManagementService"/>
         <property name="dwrUtilFactory">
             <ref local="dwrUtilFactory"/>
         </property>
@@ -78,12 +64,8 @@
 
     <bean id="studyDeploymentAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator.web.ajax.StudyDeploymentAjaxUpdater">
         <dwr:remote javascript="StudyDeploymentAjaxUpdater" />
-        <property name="workspaceService">
-          <ref local="workspaceService"/>
-        </property>
-        <property name="deploymentService">
-          <ref local="deploymentService"/>
-        </property>
+        <property name="workspaceService" ref="workspaceService"/>
+        <property name="deploymentService" ref="deploymentService"/>
         <property name="dwrUtilFactory">
             <ref local="dwrUtilFactory"/>
         </property>
@@ -92,12 +74,8 @@
 
     <bean id="subjectDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator.web.ajax.SubjectDataSourceAjaxUpdater">
         <dwr:remote javascript="SubjectDataSourceAjaxUpdater" />
-        <property name="workspaceService">
-          <ref local="workspaceService"/>
-        </property>
-        <property name="studyManagementService">
-          <ref local="studyManagementService"/>
-        </property>
+        <property name="workspaceService" ref="workspaceService"/>
+        <property name="studyManagementService" ref="studyManagementService"/>
         <property name="dwrUtilFactory">
             <ref local="dwrUtilFactory"/>
         </property>
@@ -106,12 +84,8 @@
 
     <bean id="genomicDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator.web.ajax.GenomicDataSourceAjaxUpdater">
         <dwr:remote javascript="GenomicDataSourceAjaxUpdater" />
-        <property name="workspaceService">
-          <ref local="workspaceService"/>
-        </property>
-        <property name="studyManagementService">
-          <ref local="studyManagementService"/>
-        </property>
+        <property name="workspaceService" ref="workspaceService"/>
+        <property name="studyManagementService" ref="studyManagementService"/>
         <property name="dwrUtilFactory">
             <ref local="dwrUtilFactory"/>
         </property>
@@ -120,12 +94,8 @@
 
     <bean id="imagingDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator.web.ajax.ImagingDataSourceAjaxUpdater">
         <dwr:remote javascript="ImagingDataSourceAjaxUpdater" />
-        <property name="workspaceService">
-          <ref local="workspaceService"/>
-        </property>
-        <property name="studyManagementService">
-          <ref local="studyManagementService"/>
-        </property>
+        <property name="workspaceService" ref="workspaceService"/>
+        <property name="studyManagementService" ref="studyManagementService"/>
         <property name="dwrUtilFactory">
             <ref local="dwrUtilFactory"/>
         </property>
@@ -134,12 +104,8 @@
 
     <bean id="platformDeploymentAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator.web.ajax.PlatformDeploymentAjaxUpdater">
         <dwr:remote javascript="PlatformDeploymentAjaxUpdater" />
-        <property name="workspaceService">
-          <ref local="workspaceService"/>
-        </property>
-        <property name="arrayDataService">
-          <ref local="arrayDataService"/>
-        </property>
+        <property name="workspaceService" ref="workspaceService"/>
+        <property name="arrayDataService" ref="arrayDataService"/>
         <property name="dwrUtilFactory">
             <ref local="dwrUtilFactory"/>
         </property>
@@ -152,306 +118,29 @@
     <!-- ** SUBSYSTEMS                                                    ** -->
     <!-- ******************************************************************* -->
 
-    <bean id="registrationService"
-        class="gov.nih.nci.caintegrator.application.registration.RegistrationServiceImpl">
-        <property name="configurationHelper">
-            <ref local="configurationHelper" />
-        </property>
-    </bean>
+    <bean id="caDSRSearch" class="gov.nih.nci.cadsr.freestylesearch.util.Search" />
 
-    <bean id="studyManagementService"
-        class="gov.nih.nci.caintegrator.application.study.StudyManagementServiceImpl">
-        <property name="dao">
-            <ref local="caIntegrator2Dao"/>
-        </property>
-        <property name="fileManager">
-            <ref local="fileManager"/>
-        </property>
-        <property name="caDSRFacade">
-            <ref local="caDSRFacade"/>
-        </property>
-        <property name="caArrayFacade">
-            <ref local="caArrayFacade"/>
-        </property>
-        <property name="nciaFacade">
-            <ref local="nciaFacade"/>
-        </property>
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
-        <property name="securityManager">
-            <ref local="securityManager" />
-        </property>
-        <property name="aimFacade">
-            <ref local="aimFacade" />
-        </property>
-        <property name="analysisService">
-            <ref local="analysisService" />
-        </property>
-    </bean>
-
-    <bean id="deploymentService"
-        class="gov.nih.nci.caintegrator.application.study.deployment.DeploymentServiceImpl">
-        <property name="dao">
-            <ref local="caIntegrator2Dao"/>
-        </property>
-        <property name="caArrayFacade">
-            <ref local="caArrayFacade"/>
-        </property>
-        <property name="arrayDataService">
-            <ref local="arrayDataService"/>
-        </property>
-        <property name="analysisService">
-          <ref local="analysisService"/>
-        </property>
-        <property name="bioconductorService">
-            <ref local="bioconductorService"/>
-        </property>
-        <property name="dnaAnalysisHandlerFactory">
-            <ref local="dnaAnalysisHandlerFactory" />
-        </property>
-        <property name="genePatternClientFactory">
-            <ref local="genePatternClientFactory" />
-        </property>
-    </bean>
-
-    <bean id="dnaAnalysisHandlerFactory"
-        class="gov.nih.nci.caintegrator.application.study.deployment.DnaAnalysisHandlerFactoryImpl" />
-
-    <bean id="workspaceService"
-        class="gov.nih.nci.caintegrator.application.workspace.WorkspaceServiceImpl">
-        <property name="dao">
-            <ref local="caIntegrator2Dao"/>
-        </property>
-        <property name="securityManager">
-            <ref local="securityManager" />
-        </property>
-    </bean>
-
-    <bean id="queryManagementService"
-            class="gov.nih.nci.caintegrator.application.query.QueryManagementServiceImpl">
-        <property name="dao">
-            <ref local="caIntegrator2Dao"/>
-        </property>
-        <property name="arrayDataService">
-            <ref local="arrayDataService"/>
-        </property>
-        <property name="resultHandler">
-            <ref local="resultHandler"/>
-        </property>
-        <property name="fileManager">
-            <ref local="fileManager"/>
-        </property>
-    </bean>
-
-    <bean id="analysisService"
-        class="gov.nih.nci.caintegrator.application.analysis.AnalysisServiceImpl">
-        <property name="genePatternClientFactory">
-            <ref local="genePatternClientFactory"/>
-        </property>
-        <property name="dao">
-            <ref local="caIntegrator2Dao"/>
-        </property>
-        <property name="kmPlotService">
-            <ref local="kmPlotService"/>
-        </property>
-        <property name="gePlotService">
-            <ref local="gePlotService"/>
-        </property>
-        <property name="queryManagementService">
-            <ref local="queryManagementService"/>
-        </property>
-        <property name="genePatternGridRunner">
-            <ref local="genePatternGridRunner"/>
-        </property>
-        <property name="fileManager">
-            <ref local="fileManager"/>
-        </property>
-        <property name="analysisFileManager">
-            <ref local="analysisFileManager"/>
-        </property>
-        <property name="arrayDataService">
-            <ref local="arrayDataService"/>
-        </property>
-        <property name="sessionAnalysisResultsManager">
-            <ref local="sessionAnalysisResultsManager"/>
-        </property>
-        <property name="cbsToHeatmapFactory">
-            <ref local="cbsToHeatmapFactory" />
-        </property>
-    </bean>
-
-    <bean id="resultHandler" class="gov.nih.nci.caintegrator.application.query.ResultHandlerImpl" />
-
-    <bean id="caDSRFacade"
-        class="gov.nih.nci.caintegrator.external.cadsr.CaDSRFacadeImpl">
-        <property name="dataDescription" value="http://freestyle.nci.nih.gov"/>
-        <property name="caDsrUrl" value="http://cadsrapi.nci.nih.gov/cadsrapi40/"/>
-        <property name="search">
-            <ref local="caDSRSearch" />
-        </property>
-        <property name="caDsrApplicationServiceFactory">
-            <ref bean="caDsrApplicationServiceFactoryImpl"/>
-        </property>
-    </bean>
-
-    <bean id="caDSRSearch"
-        class="gov.nih.nci.cadsr.freestylesearch.util.Search" />
-
-    <bean id="caDsrApplicationServiceFactoryImpl" class="gov.nih.nci.caintegrator.external.cadsr.CaDSRApplicationServiceFactoryImpl"/>
-
-    <bean id="caIntegrator2Dao"
-        class="gov.nih.nci.caintegrator.data.CaIntegrator2DaoImpl">
-        <property name="sessionFactory">
-            <ref local="sessionFactory" />
-        </property>
-        <property name="securityManager" >
-            <ref local="securityManager" />
-        </property>
-    </bean>
-
-    <bean id="caArrayFacade"
-        class="gov.nih.nci.caintegrator.external.caarray.CaArrayFacadeImpl">
-        <property name="serviceFactory">
-            <ref local="caArrayServiceFactory"/>
-        </property>
-        <property name="dao">
-            <ref local="caIntegrator2Dao"/>
-        </property>
-    </bean>
-
-    <bean id="arrayDataService"
-
-        class="gov.nih.nci.caintegrator.application.arraydata.ArrayDataServiceImpl">
-        <property name="dao">
-            <ref local="caIntegrator2Dao"/>
-        </property>
-        <property name="fileManager">
-            <ref local="fileManager"/>
-        </property>
-    </bean>
-
-    <bean id="nciaFacade"
-         class="gov.nih.nci.caintegrator.external.ncia.NCIAFacadeImpl">
-         <property name="nciaServiceFactory">
-            <ref local="nciaServiceFactory"/>
-        </property>
-        <property name="fileManager">
-            <ref local="fileManager"/>
-        </property>
-        <property name="nciaDicomJobFactory">
-            <ref local="nciaDicomJobFactory"/>
-        </property>
-    </bean>
-
-    <bean id="aimFacade"
-         class="gov.nih.nci.caintegrator.external.aim.AIMFacadeImpl">
-         <property name="aimServiceFactory">
-            <ref local="aimServiceFactory"/>
-        </property>
-    </bean>
-
-    <bean id="kmPlotService"
-         class="gov.nih.nci.caintegrator.application.kmplot.KMPlotServiceCaIntegratorImpl">
-         <property name="caIntegratorPlotService">
-            <ref local="caIntegratorPlotService"/>
-        </property>
-    </bean>
-
-    <bean id="gePlotService"
-         class="gov.nih.nci.caintegrator.application.geneexpression.GeneExpressionPlotServiceImpl">
-    </bean>
-
-    <bean id="caIntegratorPlotService"
-         class="gov.nih.nci.caintegrator.plots.services.KMPlotServiceImpl">
-    </bean>
-
-    <bean id="nciaServiceFactory" class="gov.nih.nci.caintegrator.external.ncia.NCIAServiceFactoryImpl" />
-
-    <bean id="nciaDicomJobFactory" class="gov.nih.nci.caintegrator.external.ncia.NCIADicomJobFactoryImpl" />
-
-    <bean id="aimServiceFactory" class="gov.nih.nci.caintegrator.external.aim.AIMServiceFactoryImpl" />
-
-    <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator.external.ServerConnectionProfile" >
-       <!--  <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?" /> -->
-       <!--  Note, the dev url below can only be used when behind NCI's VPN  -->
-       <property name="url" value="http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
-
-    </bean>
-
-    <bean id="caArrayServiceFactory"
-        class="gov.nih.nci.caintegrator.external.caarray.CaArrayServiceFactoryImpl" />
-
-    <bean id="bioconductorService"
-        class="gov.nih.nci.caintegrator.external.bioconductor.BioconductorServiceImpl" />
-
-    <bean id="genePatternClientFactory" class="gov.nih.nci.caintegrator.application.analysis.GenePatternClientFactoryImpl" >
-        <property name="fileManager">
-            <ref local="fileManager" />
-        </property>
-    </bean>
-
-    <bean id="genePatternGridRunner"
-        class="gov.nih.nci.caintegrator.application.analysis.grid.GenePatternGridRunnerImpl">
-        <property name="genePatternGridClientFactory">
-            <ref local="genePatternGridClientFactory" />
-        </property>
-        <property name="fileManager">
-            <ref local="fileManager" />
-        </property>
-    </bean>
-
-    <bean id="genePatternGridClientFactory" class="gov.nih.nci.caintegrator.application.analysis.GenePatternGridClientFactoryImpl" />
-
-    <bean id="analysisFileManager"
-        class="gov.nih.nci.caintegrator.file.AnalysisFileManagerImpl">
-        <property name="fileManager">
-            <ref local="fileManager" />
-        </property>
-    </bean>
-
-    <bean id="fileManager"
-        class="gov.nih.nci.caintegrator.file.FileManagerImpl">
-        <property name="configurationHelper">
-            <ref local="configurationHelper" />
-        </property>
-    </bean>
-
-    <bean id="viewerServlet"
-        class="gov.nih.nci.caintegrator.web.AnalysisViewerFileServlet">
-        <property name="sessionAnalysisResultsManager">
-            <ref local="sessionAnalysisResultsManager" />
-        </property>
-    </bean>
-
-    <bean id="securityManager" class="gov.nih.nci.caintegrator.security.SecurityManagerImpl">
-        <property name="authorizationManagerFactory">
-            <ref local="authorizationManagerFactory" />
-        </property>
-    </bean>
-
-    <bean id="authorizationManagerFactory" class="gov.nih.nci.caintegrator.security.AuthorizationManagerFactoryImpl"/>
-
-    <bean id="sessionAnalysisResultsManager" scope="singleton" class="gov.nih.nci.caintegrator.application.analysis.SessionAnalysisResultsManager" />
+    <bean id="caIntegratorPlotService" class="gov.nih.nci.caintegrator.plots.services.KMPlotServiceImpl"/>
 
     <!-- ******************************************************************* -->
     <!-- ** SERVICES                                                      ** -->
     <!-- ******************************************************************* -->
-
-    <bean id="cbsToHeatmapFactory" class="gov.nih.nci.caintegrator.application.analysis.CBSToHeatmapFactoryImpl" />
-
+    
+    <bean id="bioDbNetRemoteService" class="gov.nih.nci.caintegrator.external.biodbnet.BioDbNetRemoteServiceFactoryBean">
+        <property name="serviceInterface" value="gov.nih.nci.caintegrator.external.biodbnet.BioDbNetRemoteService" />
+        <property name="wsdlDocumentUrl" value="http://biodbnet.abcc.ncifcrf.gov/webServices/bioDBnet.wsdl" />
+        <property name="namespaceUri" value="urn:bioDBnet"/>
+        <property name="serviceName" value="bioDBnet"/>
+        <property name="portName" value="bioDBnetPort"/>
+        <property name="lookupServiceOnStartup" value="false"/>
+    </bean>
+    
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">
             <ref local="sessionFactory"/>
         </property>
     </bean>
     
-    <bean id="configurationHelper" class="gov.nih.nci.caintegrator.common.ConfigurationHelperImpl">
-        <property name="dataSource">
-            <ref local="dataSource"/>
-        </property>
-    </bean>
-
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <bean id="sessionFactory" class="gov.nih.nci.caintegrator.data.SecureSessionFactory">
@@ -461,9 +150,7 @@
         <property name="configLocation">
             <value>classpath:hibernate.cfg.xml</value>
         </property>
-        <property name="securityManager">
-            <ref local="securityManager" />
-        </property>
+        <property name="securityManager" ref="securityManager"/>
         <property name="securityType" value="group" />
     </bean>
 
@@ -475,12 +162,6 @@
         <property name="shared" value="true"/>
         <property name="configLocation">
             <value>classpath:ehcache.xml</value>
-        </property>
-    </bean>
-
-    <bean id="gridDiscoveryClient" class="gov.nih.nci.caintegrator.application.analysis.grid.GridDiscoveryClientImpl">
-        <property name="configurationHelper">
-            <ref local="configurationHelper" />
         </property>
     </bean>
 
@@ -529,19 +210,4 @@
             </list>
         </property>
     </bean>
-    
-    <bean id="bioDbNetRemoteService" class="gov.nih.nci.caintegrator.external.biodbnet.BioDbNetRemoteServiceFactoryBean">
-        <property name="serviceInterface" value="gov.nih.nci.caintegrator.external.biodbnet.BioDbNetRemoteService" />
-        <property name="wsdlDocumentUrl" value="http://biodbnet.abcc.ncifcrf.gov/webServices/bioDBnet.wsdl" />
-        <property name="namespaceUri" value="urn:bioDBnet"/>
-        <property name="serviceName" value="bioDBnet"/>
-        <property name="portName" value="bioDBnetPort"/>
-        <property name="lookupServiceOnStartup" value="false"/>
-    </bean>
-    
-    <bean id="bioDbNetService" class="gov.nih.nci.caintegrator.external.biodbnet.BioDbNetSearchImpl">
-        <property name="bioDbNetRemoteService" ref="bioDbNetRemoteService"/>
-        <property name="dao" ref="caIntegrator2Dao"/>
-    </bean>
-    
 </beans>

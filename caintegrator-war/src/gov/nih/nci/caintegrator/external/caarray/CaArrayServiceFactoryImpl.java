@@ -17,10 +17,12 @@ import javax.ejb.EJBException;
 import javax.security.auth.login.FailedLoginException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * Implementation of the service factory.
  */
+@Component
 public class CaArrayServiceFactoryImpl implements CaArrayServiceFactory {
 
     /**

@@ -21,22 +21,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.HttpRequestHandler;
 
 /**
  * The request URI will be of the format /caintegrator/igv/retrieveFile.do?JSESSIONID=1234567&file=igvSession.xml
  * An example URL (one full line):
- * 
+ *
  * http://www.broadinstitute.org/igv/dynsession/igv.jnlp?user=anonymous&sessionURL=
  *      http://localhost:8080/caintegrator/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
- * 
+ *
  * Or instead of using broadinstitute.org could be:
- * 
+ *
  * http://localhost:60151/load?file=
  *      http://localhost:8080/caintegrator/igv/retrieveFile.do%3FJSESSIONID%3D123456789%26file%3DigvSession.xml
- * 
+ *
  * These URLs assume a caintegrator host being on the localhost machine.
  */
+@Component("viewerServlet")
 public class AnalysisViewerFileServlet implements HttpRequestHandler {
     /**
      * Session Parameter.
@@ -50,10 +53,10 @@ public class AnalysisViewerFileServlet implements HttpRequestHandler {
      * ViewerType parameter.
      */
     public static final String VIEWERTYPE_PARAMETER = "viewer";
-    
+
     private SessionAnalysisResultsManager sessionAnalysisResultsManager;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -85,7 +88,7 @@ public class AnalysisViewerFileServlet implements HttpRequestHandler {
             outputStream.close();
         }
     }
-    
+
     private void streamHeatmapFile(HttpServletResponse response, String sessionId, HeatmapFileTypeEnum fileType)
     throws IOException {
         File file = sessionAnalysisResultsManager.getJobResultFile(sessionId, fileType);
@@ -110,9 +113,8 @@ public class AnalysisViewerFileServlet implements HttpRequestHandler {
     /**
      * @param sessionAnalysisResultsManager the sessionAnalysisResultsManager to set
      */
+    @Autowired
     public void setSessionAnalysisResultsManager(SessionAnalysisResultsManager sessionAnalysisResultsManager) {
         this.sessionAnalysisResultsManager = sessionAnalysisResultsManager;
     }
-
-
 }

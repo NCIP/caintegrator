@@ -68,17 +68,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of the DAO.
  */
+@Repository("caIntegrator2Dao")
 @Transactional
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
 
@@ -94,6 +98,15 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private static final String NAME_ATTRIBUTE = "name";
     private static final String SYMBOL_ATTRIBUTE = "symbol";
     private SecurityManager securityManager;
+
+    /**
+     * Initialization method.
+     * @param factory the session factory
+     */
+    @Autowired
+    public void init(SessionFactory factory) {
+        setSessionFactory(factory);
+    }
 
     /**
      * {@inheritDoc}
@@ -148,7 +161,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @Override
     @SuppressWarnings(UNCHECKED)
     public <T> T get(Long id, Class<T> objectClass) {
-        return (T) getHibernateTemplate().get(objectClass, id);
+        return getHibernateTemplate().get(objectClass, id);
     }
 
     /**
@@ -927,7 +940,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @Override
     @SuppressWarnings("unchecked")      // hibernate operation not parameterized
     public <T> T merge(T persistentObject) {
-        return (T) getHibernateTemplate().merge(persistentObject);
+        return getHibernateTemplate().merge(persistentObject);
     }
 
     /**
@@ -1017,8 +1030,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * @param securityManager the securityManager to set
      */
+    @Autowired
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
     }
-
 }
