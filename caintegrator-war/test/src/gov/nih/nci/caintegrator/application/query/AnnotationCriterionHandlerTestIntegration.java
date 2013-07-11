@@ -7,8 +7,6 @@
 package gov.nih.nci.caintegrator.application.query;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator.application.query.AnnotationCriterionHandler;
-import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator.data.StudyHelper;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
@@ -28,8 +26,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+
+/**
+ * Annotation criterion handler integration tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/**/dao-test-config.xml"})
+@ContextConfiguration("classpath:integration-test-config.xml")
 @Transactional
 public class AnnotationCriterionHandlerTestIntegration extends AbstractMockitoTest {
 
@@ -55,6 +59,7 @@ public class AnnotationCriterionHandlerTestIntegration extends AbstractMockitoTe
         criterion.setEntityType(EntityTypeEnum.SAMPLE);
 
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(criterion);
-        assertEquals(4, annotationCriterionHandler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>()).size());
+        assertEquals(4, annotationCriterionHandler.getMatches(dao, arrayDataService, query,
+                new HashSet<EntityTypeEnum>()).size());
     }
 }
