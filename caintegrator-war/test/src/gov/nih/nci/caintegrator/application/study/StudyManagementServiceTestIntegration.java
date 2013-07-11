@@ -6,55 +6,48 @@
  */
 package gov.nih.nci.caintegrator.application.study;
 
+import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator.TestDataFiles;
-import gov.nih.nci.caintegrator.application.study.DelimitedTextClinicalSourceConfiguration;
-import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator.application.study.StudyLogo;
-import gov.nih.nci.caintegrator.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator.application.study.ValidationException;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 
 import java.io.IOException;
 
 import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional 
-public class StudyManagementServiceTestIntegration extends AbstractTransactionalSpringContextTests{
-    
+/**
+ * Study management integration tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:integration-test-config.xml")
+@Transactional
+@TransactionConfiguration(defaultRollback = true)
+public class StudyManagementServiceTestIntegration {
+
+    @Autowired
     private StudyManagementService studyManagementService;
-    
-    public StudyManagementServiceTestIntegration() {
-        // Set this to false if you want to see the change occur in the database and not be rolled back.
-        this.setDefaultRollback(true);
-    }
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/service-test-integration-config.xml"};
-    }
-    
-    /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
-     */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
-    }
-    
+
     @Test
     public void testSetClinicalAnnotationAndLoadData() throws ValidationException, IOException {
-        
         // Set Clinical Annotations
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
-                    false);
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration =
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE,
+                    TestDataFiles.VALID_FILE.getName(), false);
         assertNotNull(sourceConfiguration);
-        
+
         // Clean up the test file
         sourceConfiguration.getAnnotationFile().getFile().delete();
     }
-    
+
     @Test
     public void testRetrieveStudyLogo() {
         String name = "StudyName";
@@ -62,11 +55,9 @@ public class StudyManagementServiceTestIntegration extends AbstractTransactional
         studyConfiguration.setStudy(new Study());
         studyConfiguration.getStudy().setShortTitleText(name);
         studyConfiguration.setStudyLogo(new StudyLogo());
-        
-        studyManagementService.save(studyConfiguration);
-        
-        assertNotNull(studyManagementService.retrieveStudyLogo(studyConfiguration.getStudy().getId(), name));
-        
-    }
 
+        studyManagementService.save(studyConfiguration);
+
+        assertNotNull(studyManagementService.retrieveStudyLogo(studyConfiguration.getStudy().getId(), name));
+    }
 }

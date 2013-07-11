@@ -14,6 +14,11 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Tests deployment of the csv clinical study.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 @Transactional(timeout = 2880)
 public class DeployCsvTestClinicalStudyTestIntegration extends AbstractDeployStudyTestIntegration {
 

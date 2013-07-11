@@ -6,6 +6,7 @@
  */
 package gov.nih.nci.caintegrator.external.bioconductor;
 
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.application.arraydata.AffymetrixCnPlatformSource;
@@ -36,24 +37,31 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
 
-public class BioconductorServiceTestIntegration extends AbstractTransactionalSpringContextTests {
-
-    private BioconductorServiceImpl service = new BioconductorServiceImpl();
+/**
+ * Bioconductor service integration tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:integration-test-config.xml")
+@Transactional
+@TransactionConfiguration(defaultRollback = true)
+public class BioconductorServiceTestIntegration {
+    @Autowired
+    private BioconductorServiceImpl service;
+    @Autowired
     private ArrayDataService arrayDataService;
+    @Autowired
     private CaIntegrator2Dao dao;
-
-    public BioconductorServiceTestIntegration() {
-        setDefaultRollback(true);
-    }
-
-    @Override
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/service-test-integration-config.xml"};
-    }
 
     @Test
     public void testAddSegmentationData() throws ConnectionException, PlatformLoadingException, DataRetrievalException {
@@ -119,38 +127,9 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
             files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
             AffymetrixCnPlatformSource source = new AffymetrixCnPlatformSource(files, "Mapping50K_Hind240");
             PlatformConfiguration configuration = new PlatformConfiguration(source);
-            getArrayDataService().savePlatformConfiguration(configuration);
-            platform = getArrayDataService().loadArrayDesign(configuration).getPlatform();
+            arrayDataService.savePlatformConfiguration(configuration);
+            platform = arrayDataService.loadArrayDesign(configuration).getPlatform();
         }
         return platform;
     }
-
-    /**
-     * @return the arrayDataService
-     */
-    public ArrayDataService getArrayDataService() {
-        return arrayDataService;
-    }
-
-    /**
-     * @param arrayDataService the arrayDataService to set
-     */
-    public void setArrayDataService(ArrayDataService arrayDataService) {
-        this.arrayDataService = arrayDataService;
-    }
-
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2Dao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
-    }
-
 }

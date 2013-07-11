@@ -14,8 +14,6 @@
     default-lazy-init="false"
     default-autowire="no">
     
-    <context:component-scan base-package="gov.nih.nci.caintegrator"/>
-    
     <bean id="dataRefreshRunner" scope="prototype" class="gov.nih.nci.caintegrator.application.quartz.DataRefreshJob">
         <property name="dao" ref="caIntegrator2Dao"/>
         <property name="caArrayFacade" ref="caArrayFacade"/>

@@ -48,13 +48,19 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+/**
+ * Tests for evaluating integration with the gene pattern grid services.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:/**/genepattern-test-config.xml" })
+@ContextConfiguration("classpath:integration-test-config.xml")
 public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTest {
 
     private static final String PREPROCESS_DATASET_URL =
@@ -64,6 +70,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTes
     private static final String PCA_URL = "http://cagrid.broadinstitute.org:6060/wsrf/services/cagrid/PCA";
     private static final String GISTIC_URL = "http://cagrid.broadinstitute.org:10010/wsrf/services/cagrid/Gistic";
 
+    @Autowired
     private GenePatternGridRunnerImpl genePatternGridRunner;
     private FileManager fileManager;
     private StudyHelper studyHelper;

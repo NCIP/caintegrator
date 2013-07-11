@@ -158,5 +158,8 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-api-2.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-core-2.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-jsp-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-asm-3.0.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-expression-3.0.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-jdbc-3.0.0.RELEASE.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

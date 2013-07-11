@@ -56,7 +56,7 @@ public final class ConfigurationHelperImpl implements ConfigurationHelper {
     /**
      * @param dataSource the dataSource to set
      */
-    @Autowired
+    @Autowired(required = false)
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
