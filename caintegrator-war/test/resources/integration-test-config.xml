@@ -22,6 +22,15 @@
     
     <bean id="configurationHelper" class="gov.nih.nci.caintegrator.common.ConfigurationHelperStub" />
     
+    <bean id="bioDbNetRemoteService" class="gov.nih.nci.caintegrator.external.biodbnet.BioDbNetRemoteServiceFactoryBean">
+        <property name="serviceInterface" value="gov.nih.nci.caintegrator.external.biodbnet.BioDbNetRemoteService" />
+        <property name="wsdlDocumentUrl" value="http://biodbnet.abcc.ncifcrf.gov/webServices/bioDBnet.wsdl" />
+        <property name="namespaceUri" value="urn:bioDBnet"/>
+        <property name="serviceName" value="bioDBnet"/>
+        <property name="portName" value="bioDBnetPort"/>
+        <property name="lookupServiceOnStartup" value="false"/>
+    </bean>
+    
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">
             <ref local="sessionFactory"/>
