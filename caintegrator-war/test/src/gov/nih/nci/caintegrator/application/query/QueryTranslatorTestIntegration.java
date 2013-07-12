@@ -6,8 +6,10 @@
  */
 package gov.nih.nci.caintegrator.application.query;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator.data.CaIntegrator2DaoImpl;
+import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator.data.StudyHelper;
 import gov.nih.nci.caintegrator.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator.domain.annotation.NumericAnnotationValue;
@@ -27,21 +29,28 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:integration-test-config.xml")
+@Transactional
+public class QueryTranslatorTestIntegration {
 
-    private CaIntegrator2DaoImpl dao;
+    @Autowired
+    private CaIntegrator2Dao dao;
+    @Autowired
     private ArrayDataService arrayDataService;
+    @Autowired
     private ResultHandlerImpl resultHandler;
-
-    @Override
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/query-test-integration.xml"};
-    }
 
     @Test
     public void testExecute() throws InvalidCriterionException {
@@ -120,33 +129,4 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
             }
         }
     }
-
-    /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
-     */
-    public void setDao(CaIntegrator2DaoImpl caIntegrator2Dao) {
-        this.dao = caIntegrator2Dao;
-    }
-
-    /**
-     * @param resultHandler the resultHandler to set
-     */
-    public void setResultHandler(ResultHandlerImpl resultHandler) {
-        this.resultHandler = resultHandler;
-    }
-
-    /**
-     * @return the arrayDataService
-     */
-    public ArrayDataService getArrayDataService() {
-        return arrayDataService;
-    }
-
-    /**
-     * @param arrayDataService the arrayDataService to set
-     */
-    public void setArrayDataService(ArrayDataService arrayDataService) {
-        this.arrayDataService = arrayDataService;
-    }
-
 }
