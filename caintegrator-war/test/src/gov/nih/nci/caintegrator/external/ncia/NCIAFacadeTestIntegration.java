@@ -21,16 +21,21 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Tests integration with the NCIA grid service.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:integration-test-config.xml")
 public class NCIAFacadeTestIntegration {
     private static final Logger LOGGER = Logger.getLogger(NCIAFacadeTestIntegration.class);
+    @Autowired
     private NCIAFacade nciaFacade;
     private ServerConnectionProfile connection;
 
@@ -41,10 +46,8 @@ public class NCIAFacadeTestIntegration {
      */
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml",
-                NCIAFacadeTestIntegration.class);
-        connection = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
-        nciaFacade = (NCIAFacade) context.getBean("nciaFacadeIntegration");
+        connection = new ServerConnectionProfile();
+        connection.setUrl("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
     }
 
     /**
