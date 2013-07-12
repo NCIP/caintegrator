@@ -30,21 +30,27 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import affymetrix.fusion.cdf.FusionCDFData;
 
-
+/**
+ * caArray facade integration tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:integration-test-config.xml")
 public class CaArrayFacadeTestIntegration {
 
+    @Autowired
     private CaArrayFacadeImpl caArrayFacade;
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml",
-                CaArrayFacadeTestIntegration.class);
-        caArrayFacade = (CaArrayFacadeImpl) context.getBean("CaArrayFacadeIntegration");
         caArrayFacade.setDao(new LocalCaIntegrator2DaoStub());
     }
 
