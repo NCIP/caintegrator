@@ -59,6 +59,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * caIntegrator dao integration tests.
@@ -67,11 +68,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:integration-test-config.xml")
-public final class CaIntegrator2DaoTestIntegration {
+@Transactional
+public class CaIntegrator2DaoTestIntegration {
     @Autowired
     private CaIntegrator2Dao dao;
 
-
+    @Test
     public void testGetWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
         workspace.setUsername("username");
@@ -79,7 +81,6 @@ public final class CaIntegrator2DaoTestIntegration {
 
         UserWorkspace workspace2 = this.dao.getWorkspace("username");
         assertEquals(workspace.getId(), workspace2.getId());
-
     }
 
     @Test
