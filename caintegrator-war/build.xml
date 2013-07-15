@@ -1017,23 +1017,6 @@
          </junit>
     </target>
     
-    <target name="test:foo" depends="test:compile:caintegrator.war.test.classes,
-            caintegrator.war,
-            hibernate.cfg.xml.test, caintegrator.csm.xml.test">
-            <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
-                 <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
-                 <classpath>
-                     <pathelement path="${caintegrator.war.integration.dependencies.path}" />
-                 </classpath>
-                 <formatter type="xml" />
-                 <batchtest todir="${caintegrator.war.target.dir}/junit">
-                     <fileset dir="${caintegrator.war.test.src.dir}">
-                         <include name="**/NCIASearchServiceTestIntegration.java" />
-                     </fileset>
-                 </batchtest>
-             </junit>
-        </target>
-
     <!-- ******************************************************************* -->
     <!-- ** DOCUMENTATION TARGETS                                         ** -->
     <!-- ******************************************************************* -->

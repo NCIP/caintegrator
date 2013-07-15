@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 2880)
+@Transactional
 public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends AbstractDeployStudyTestIntegration {
 
     private static final Logger LOGGER = Logger.getLogger(DeployStudyRembrandtWithCopyNumberDataTestIntegration.class);
