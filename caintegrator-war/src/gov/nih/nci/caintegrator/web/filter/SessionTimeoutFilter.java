@@ -21,6 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
@@ -29,8 +33,9 @@ import org.apache.log4j.Logger;
  * the user to the appropriate timeout page if the session is not valid.
  *
  * @author hturksoy
- *
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_SINGLETON)
 public class SessionTimeoutFilter implements Filter {
 
     private static final Logger LOGGER = Logger.getLogger(SessionTimeoutFilter.class);
@@ -116,6 +121,7 @@ public class SessionTimeoutFilter implements Filter {
     /**
      * @param fileManager the fileManager to set
      */
+    @Autowired
     public void setFileManager(AnalysisFileManager fileManager) {
         this.fileManager = fileManager;
     }

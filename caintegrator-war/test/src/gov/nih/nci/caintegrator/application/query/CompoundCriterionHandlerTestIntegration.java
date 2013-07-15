@@ -32,9 +32,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:/**/dao-test-config.xml" })
+@ContextConfiguration("classpath:integration-test-config.xml")
 @Transactional
 public class CompoundCriterionHandlerTestIntegration extends AbstractMockitoTest {
     @Autowired

@@ -15,10 +15,16 @@ import gov.nih.nci.caintegrator.web.ajax.IStudyDeploymentAjaxUpdater;
 import javax.servlet.ServletContext;
 
 import org.apache.struts2.util.ServletContextAware;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Action that deploys a study.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class DeployStudyAction extends SaveStudyAction implements ServletContextAware {
 
     private static final long serialVersionUID = 1L;
@@ -56,6 +62,7 @@ public class DeployStudyAction extends SaveStudyAction implements ServletContext
     /**
      * @param ajaxUpdater the ajaxUpdater to set
      */
+    @Autowired
     public void setAjaxUpdater(IStudyDeploymentAjaxUpdater ajaxUpdater) {
         this.ajaxUpdater = ajaxUpdater;
     }
@@ -70,6 +77,7 @@ public class DeployStudyAction extends SaveStudyAction implements ServletContext
     /**
      * @param deploymentService the deploymentService to set
      */
+    @Autowired
     public void setDeploymentService(DeploymentService deploymentService) {
         this.deploymentService = deploymentService;
     }
@@ -80,7 +88,5 @@ public class DeployStudyAction extends SaveStudyAction implements ServletContext
     @Override
     public void setServletContext(ServletContext servletContext) {
         this.context = servletContext;
-
     }
-
 }

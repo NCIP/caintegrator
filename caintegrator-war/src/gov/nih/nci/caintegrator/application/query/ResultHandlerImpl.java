@@ -30,11 +30,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Component;
 
 
 /**
  * Creates the actual results for the Query and Subjects that passed the criterion checks.
  */
+@Component
 public class ResultHandlerImpl implements ResultHandler {
 
     /**

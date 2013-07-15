@@ -31,6 +31,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -39,6 +41,7 @@ import com.google.common.collect.Lists;
 /**
  * Providers methods to access authentication and authorization data.
  */
+@Service("securityManager")
 public class SecurityManagerImpl implements SecurityManager {
 
     private static final String APPLICATION_CONTEXT_NAME = "caintegrator";
@@ -270,6 +273,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * @param authorizationManagerFactory the authorizationManagerFactory to set
      */
+    @Autowired
     public void setAuthorizationManagerFactory(AuthorizationManagerFactory authorizationManagerFactory) {
         this.authorizationManagerFactory = authorizationManagerFactory;
     }

@@ -8,11 +8,13 @@ package gov.nih.nci.caintegrator.external.ncia;
 
 import gov.nih.nci.caintegrator.file.FileManager;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Creates an NCIADicomJobRunner given the FileManager and Job.
  */
+@Component
 public class NCIADicomJobFactoryImpl implements NCIADicomJobFactory {
-
 
     /**
      * {@inheritDoc}

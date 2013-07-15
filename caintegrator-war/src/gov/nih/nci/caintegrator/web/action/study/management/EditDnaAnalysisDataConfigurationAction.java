@@ -22,12 +22,18 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourceAction {
 
     private static final long serialVersionUID = 1L;
@@ -310,6 +316,7 @@ public class EditDnaAnalysisDataConfigurationAction extends AbstractGenomicSourc
     /**
      * @param configurationHelper the configurationHelper to set
      */
+    @Autowired
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }

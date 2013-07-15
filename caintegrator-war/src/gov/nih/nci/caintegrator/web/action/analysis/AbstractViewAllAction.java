@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  *
  */
@@ -114,6 +116,7 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -156,6 +159,7 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
@@ -170,6 +174,7 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
     /**
      * @param arrayDataService the arrayDataService to set
      */
+    @Autowired
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }

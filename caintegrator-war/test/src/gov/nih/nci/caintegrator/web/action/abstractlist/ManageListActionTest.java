@@ -36,7 +36,6 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         super.setUp();
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(new StudySubscription());
         action = new ManageListAction();
-        action.setFileManager(fileManager);
         action.setWorkspaceService(workspaceService);
         action.prepare();
     }

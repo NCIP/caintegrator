@@ -117,10 +117,6 @@
             <result type="chain">workspace</result>
 		</action>
  
-        <action name="notYetImplemented" class="emptyAction">
-            <result type="tiles">notYetImplemented</result>
-        </action>
-        
         <action name="noAction" class="emptyAction">
              <result type="tiles">homepage</result>
         </action>        

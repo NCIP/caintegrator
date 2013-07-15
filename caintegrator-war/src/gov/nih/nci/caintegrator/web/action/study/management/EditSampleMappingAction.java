@@ -9,11 +9,17 @@ package gov.nih.nci.caintegrator.web.action.study.management;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.caarray.ExperimentNotFoundException;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Action for editing sample mappings.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditSampleMappingAction extends AbstractGenomicSourceAction {
 
     private static final long serialVersionUID = 1L;

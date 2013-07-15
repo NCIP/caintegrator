@@ -10,16 +10,19 @@ import javax.sql.DataSource;
 
 import org.apache.commons.configuration.DataConfiguration;
 import org.apache.commons.configuration.DatabaseConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Helper class for retrieving system configuration.
  */
+@Component("configurationHelper")
 public final class ConfigurationHelperImpl implements ConfigurationHelper {
-    
+
     private static final String TABLE_NAME = "CONFIGURATION_PARAMETER";
     private static final String PARAM_NAME_COLUMN = "PARAMETER";
     private static final String PARAM_VALUE_COLUMN = "RAW_VALUE";
-    
+
     private DataSource dataSource;
 
     /**
@@ -30,12 +33,12 @@ public final class ConfigurationHelperImpl implements ConfigurationHelper {
     }
 
     private DataConfiguration getConfiguration() {
-        DatabaseConfiguration config = 
+        DatabaseConfiguration config =
             new DatabaseConfiguration(dataSource, TABLE_NAME, PARAM_NAME_COLUMN, PARAM_VALUE_COLUMN);
         config.setDelimiterParsingDisabled(true);
         return new DataConfiguration(config);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -53,9 +56,8 @@ public final class ConfigurationHelperImpl implements ConfigurationHelper {
     /**
      * @param dataSource the dataSource to set
      */
+    @Autowired(required = false)
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
-    
 }

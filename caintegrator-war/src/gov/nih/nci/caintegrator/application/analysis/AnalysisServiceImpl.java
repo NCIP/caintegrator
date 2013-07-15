@@ -86,12 +86,15 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.genepattern.webservice.WebServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of the AnalysisService subsystem.
  */
+@Service("analysisService")
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class AnalysisServiceImpl extends CaIntegrator2BaseService implements AnalysisService {
     private KMPlotService kmPlotService;
@@ -666,6 +669,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param kmPlotService the kmPlotService to set
      */
+    @Autowired
     public void setKmPlotService(KMPlotService kmPlotService) {
         this.kmPlotService = kmPlotService;
     }
@@ -680,6 +684,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -694,6 +699,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param gePlotService the gePlotService to set
      */
+    @Autowired
     public void setGePlotService(GeneExpressionPlotService gePlotService) {
         this.gePlotService = gePlotService;
     }
@@ -708,6 +714,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param genePatternClientFactory the genePatternClientFactory to set
      */
+    @Autowired
     public void setGenePatternClientFactory(GenePatternClientFactory genePatternClientFactory) {
         this.genePatternClientFactory = genePatternClientFactory;
     }
@@ -722,6 +729,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param genePatternGridRunner the genePatternGridRunner to set
      */
+    @Autowired
     public void setGenePatternGridRunner(GenePatternGridRunner genePatternGridRunner) {
         this.genePatternGridRunner = genePatternGridRunner;
     }
@@ -791,6 +799,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param fileManager the fileManager to set
      */
+    @Autowired
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
@@ -805,6 +814,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param analysisFileManager the analysisFileManager to set
      */
+    @Autowired
     public void setAnalysisFileManager(AnalysisFileManager analysisFileManager) {
         this.analysisFileManager = analysisFileManager;
     }
@@ -819,6 +829,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param arrayDataService the arrayDataService to set
      */
+    @Autowired
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }
@@ -833,6 +844,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param sessionAnalysisResultsManager the sessionAnalysisResultsManager to set
      */
+    @Autowired
     public void setSessionAnalysisResultsManager(SessionAnalysisResultsManager sessionAnalysisResultsManager) {
         this.sessionAnalysisResultsManager = sessionAnalysisResultsManager;
     }
@@ -847,6 +859,7 @@ public class AnalysisServiceImpl extends CaIntegrator2BaseService implements Ana
     /**
      * @param cbsToHeatmapFactory the cbsToHeatmapFactory to set
      */
+    @Autowired
     public void setCbsToHeatmapFactory(CBSToHeatmapFactory cbsToHeatmapFactory) {
         this.cbsToHeatmapFactory = cbsToHeatmapFactory;
     }

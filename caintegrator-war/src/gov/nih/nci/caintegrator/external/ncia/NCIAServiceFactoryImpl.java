@@ -13,10 +13,12 @@ import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
 import java.rmi.RemoteException;
 
 import org.apache.axis.types.URI.MalformedURIException;
+import org.springframework.stereotype.Component;
 
 /**
  * Implementation of the NCIAServiceFactory.
  */
+@Component
 public class NCIAServiceFactoryImpl implements NCIAServiceFactory {
 
     /**

@@ -81,8 +81,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
+/**
+ * Base class for study deployment integration tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/**/service-test-integration-config.xml"})
+@ContextConfiguration("classpath:integration-test-config.xml")
 @TransactionConfiguration(defaultRollback = false)
 public abstract class AbstractDeployStudyTestIntegration extends AbstractMockitoTest {
     private static final String USER_NCIMANAGER = "ncimanager";
@@ -113,12 +118,9 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
     private boolean isPublicSubscription = Boolean.FALSE;
 
     /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
+     * Deploys the configured study.
+     * @throws Exception on unexpected error
      */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.service = studyManagementService;
-    }
-
     public void deployStudy() throws Exception {
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
         authentication.setUsername(USER_NCIMANAGER);

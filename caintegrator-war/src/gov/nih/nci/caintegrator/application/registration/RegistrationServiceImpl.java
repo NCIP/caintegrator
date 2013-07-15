@@ -25,10 +25,15 @@ import javax.security.auth.login.Configuration;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.security.auth.login.XMLLoginConfigImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
+ * Registration service.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Service
 public class RegistrationServiceImpl implements RegistrationService {
 
     private static final String REG_EMAIL_SUBJECT = "caIntegrator Registration";
@@ -129,6 +134,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     /**
      * @param configurationHelper the configurationHelper to set
      */
+    @Autowired
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }

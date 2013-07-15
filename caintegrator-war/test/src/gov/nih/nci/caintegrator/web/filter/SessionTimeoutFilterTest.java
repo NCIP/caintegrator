@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.filter.SessionTimeoutFilter;
 
 import java.io.IOException;
 
@@ -23,7 +22,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 
 /**
+ * Tests for the session timeout filter.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class SessionTimeoutFilterTest extends AbstractSessionBasedTest {
 
@@ -31,12 +32,17 @@ public class SessionTimeoutFilterTest extends AbstractSessionBasedTest {
     public void testFilter() throws IOException, ServletException {
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
+
         FilterChain chain = mock(FilterChain.class);
+
         SessionTimeoutFilter stf = new SessionTimeoutFilter();
         stf.setFileManager(analysisFileManager);
         stf.init(null);
+
         request.setRequestedSessionIdValid(true);
         request.setRequestURI("/login.action");
+        request.setRequestedSessionId("sessionId");
+
         stf.doFilter(request, response, chain);
         assertNull(response.getRedirectedUrl());
 
@@ -68,4 +74,6 @@ public class SessionTimeoutFilterTest extends AbstractSessionBasedTest {
 
         stf.destroy();
     }
+
+
 }

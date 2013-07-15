@@ -14,10 +14,15 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Adds a new new clinical data source file to a study.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class AddExternalLinksAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;

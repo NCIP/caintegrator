@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -142,6 +143,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     /**
      * @param workspaceService the workspaceService to set
      */
+    @Autowired
     public final void setWorkspaceService(WorkspaceService workspaceService) {
         this.workspaceService = workspaceService;
     }

@@ -6,10 +6,16 @@
  */
 package gov.nih.nci.caintegrator.web.action;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 
 /**
  * Takes the current user to the application homepage.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class HomepageAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
@@ -24,7 +30,7 @@ public class HomepageAction extends AbstractCaIntegrator2Action {
     }
     /**
      * @return studyconfigurationdetails for selected option
-     */ 
+     */
     public String getStudyDetails() {
         return SUCCESS;
     }

@@ -26,6 +26,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Abstract Action dealing with Kaplan-Meier plotting.
  */
@@ -273,6 +275,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -288,6 +291,7 @@ public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAct
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }

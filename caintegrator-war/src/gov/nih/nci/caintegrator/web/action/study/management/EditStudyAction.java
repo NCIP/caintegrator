@@ -10,10 +10,16 @@ import gov.nih.nci.caintegrator.application.study.LogEntry;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.security.exceptions.CSException;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 
 /**
  * Edits a study (new or existing).
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditStudyAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;

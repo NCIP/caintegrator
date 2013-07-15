@@ -13,12 +13,17 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 
 /**
  * Action called to edit an existing clinical data source.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditStudyLogAction extends AbstractStudyAction implements ParameterNameAware {
 
     private static final long serialVersionUID = 1L;

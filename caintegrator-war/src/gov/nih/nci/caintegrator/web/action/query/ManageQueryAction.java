@@ -58,12 +58,18 @@ import javax.servlet.ServletContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.util.ServletContextAware;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 
 /**
  * Handles the form in which the user constructs, edits and runs a query.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class ManageQueryAction extends AbstractDeployedStudyAction implements ParameterNameAware, ServletContextAware {
 
     private static final long serialVersionUID = 1L;
@@ -753,6 +759,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -830,6 +837,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     /**
      * @param studyManagementService the studyManagementService to set
      */
+    @Autowired
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }
@@ -985,6 +993,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }

@@ -93,17 +93,9 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/puretls-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/quartz-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/servlet-api-2.4.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-2.5.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-beans-2.5.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-context-2.5.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-web-2.5.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-webmvc-2.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-core-2.3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-spring-plugin-2.3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-tiles-plugin-2.3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-api-2.0.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-core-2.0.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-jsp-2.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ws-addressing-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ws-core-client-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ws-enumeration-4.0.3.jar"/>
@@ -115,10 +107,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="lib/external-runtime/AIMDataService-stubs.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/sdk-client-framework.jar"/>
-	<classpathentry kind="lib" path="lib/test-junit/junit-4.10.jar"/>
 	<classpathentry kind="lib" path="lib/test-junit/mockito-all-1.9.0.jar"/>
-	<classpathentry kind="lib" path="lib/test-junit/spring-mock-2.0.3.jar"/>
-	<classpathentry kind="lib" path="lib/test-junit/spring-test-2.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/caarray-client-external-v1_0.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/rmiio-2.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/gp-modules.jar"/>
@@ -155,5 +144,22 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/guava-14.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/opencsv-2.3.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ehcache-core-2.6.6.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/axis-jaxrpc-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-api-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-core-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-jsp-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/test-junit/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-beans-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-context-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-context-support-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-core-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-expression-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-jdbc-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-orm-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-tx-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-web-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-webmvc-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/test-junit/spring-test-3.2.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/test-junit/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

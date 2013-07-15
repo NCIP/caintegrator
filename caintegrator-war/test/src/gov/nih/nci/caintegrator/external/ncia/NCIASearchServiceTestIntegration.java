@@ -12,8 +12,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator.external.ncia.NCIASearchService;
-import gov.nih.nci.caintegrator.external.ncia.NCIAServiceFactoryImpl;
 import gov.nih.nci.ncia.domain.Image;
 import gov.nih.nci.ncia.domain.Patient;
 import gov.nih.nci.ncia.domain.Series;
@@ -23,20 +21,32 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-
+/**
+ * NCIA search service integration tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:integration-test-config.xml")
 public class NCIASearchServiceTestIntegration {
+    @Autowired
+    private NCIAServiceFactoryImpl serviceFactory;
+    private NCIASearchService searchService;
 
-    NCIASearchService searchService;
-
+    /**
+     * Sets up the unit tests.
+     * @throws Exception on error
+     */
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class);
-        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaQaServerConnectionProfile");
-        NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
-        searchService = nciaServiceClient.createNCIASearchService(profile);
+        ServerConnectionProfile profile = new ServerConnectionProfile();
+        profile.setUrl("http://imaging-qa.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
+        searchService = serviceFactory.createNCIASearchService(profile);
     }
 
     @Test
@@ -51,7 +61,8 @@ public class NCIASearchServiceTestIntegration {
         List<Study> studies = searchService.retrieveStudyCollectionFromPatient(patients.get(0).getPatientId());
         assertNotNull(studies);
 
-        List<Series> series = searchService.retrieveImageSeriesCollectionFromStudy(studies.get(0).getStudyInstanceUID());
+        List<Series> series =
+                searchService.retrieveImageSeriesCollectionFromStudy(studies.get(0).getStudyInstanceUID());
         assertNotNull(series);
 
         assertFalse(searchService.validate("INVALID SERIES UID"));

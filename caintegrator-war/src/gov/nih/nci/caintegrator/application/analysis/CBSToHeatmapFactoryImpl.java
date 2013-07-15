@@ -9,9 +9,12 @@ package gov.nih.nci.caintegrator.application.analysis;
 import gov.nih.nci.caintegrator.heatmap.CBS2HeatMap;
 import gov.nih.nci.caintegrator.heatmap.CBSToHeatmap;
 
+import org.springframework.stereotype.Component;
+
 /**
- * 
+ *
  */
+@Component
 public class CBSToHeatmapFactoryImpl implements CBSToHeatmapFactory {
 
     /**

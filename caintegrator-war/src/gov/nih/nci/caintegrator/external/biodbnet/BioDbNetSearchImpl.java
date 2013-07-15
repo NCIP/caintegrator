@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -34,6 +36,7 @@ import com.google.common.collect.Sets;
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Service("bioDbNetService")
 public class BioDbNetSearchImpl implements BioDbNetService {
     private static final Logger LOG = Logger.getLogger(BioDbNetSearchImpl.class);
     private static final int GENE_ID_LOOKUP_INDEX = 1;
@@ -265,6 +268,7 @@ public class BioDbNetSearchImpl implements BioDbNetService {
      * Sets the bioDbNet remote service.
      * @param svc the remote service
      */
+    @Autowired
     public void setBioDbNetRemoteService(BioDbNetRemoteService svc) {
         this.bioDbNetRemoteService = svc;
     }
@@ -272,6 +276,7 @@ public class BioDbNetSearchImpl implements BioDbNetService {
     /**
      * @param dao the dao to set
      */
+    @Autowired
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }

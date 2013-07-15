@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Abstract Action dealing with GeneExpression plotting.
  */
@@ -218,6 +220,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -232,6 +235,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }

@@ -21,10 +21,13 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of the NCIAFacade.
  */
+@Service("nciaFacade")
 public class NCIAFacadeImpl implements NCIAFacade {
 
     private static final Logger LOGGER = Logger.getLogger(NCIAFacadeImpl.class);
@@ -143,6 +146,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
     /**
      * @param nciaServiceFactory the nciaServiceFactory to set
      */
+    @Autowired
     public void setNciaServiceFactory(NCIAServiceFactory nciaServiceFactory) {
         this.nciaServiceFactory = nciaServiceFactory;
     }
@@ -157,6 +161,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
     /**
      * @param fileManager the fileManager to set
      */
+    @Autowired
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
@@ -171,6 +176,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
     /**
      * @param nciaDicomJobFactory the nciaDicomJobFactory to set
      */
+    @Autowired
     public void setNciaDicomJobFactory(NCIADicomJobFactory nciaDicomJobFactory) {
         this.nciaDicomJobFactory = nciaDicomJobFactory;
     }

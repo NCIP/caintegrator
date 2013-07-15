@@ -15,17 +15,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Action called to edit an existing clinical data source.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditClinicalSourceAction extends AbstractClinicalSourceAction {
 
     private static final long serialVersionUID = 1L;
-    private List<DisplayableAnnotationFieldDescriptor> displayableFields = 
+    private List<DisplayableAnnotationFieldDescriptor> displayableFields =
         new ArrayList<DisplayableAnnotationFieldDescriptor>();
     private final List<AnnotationGroup> selectableAnnotationGroups = new ArrayList<AnnotationGroup>();
     private final Map<String, AnnotationGroup> annotationGroupNameToGroupMap = new HashMap<String, AnnotationGroup>();
-    
+
     /**
      * {@inheritDoc}
      */
@@ -38,7 +44,7 @@ public class EditClinicalSourceAction extends AbstractClinicalSourceAction {
 
     private void setupAnnotationGroups() {
         selectableAnnotationGroups.clear();
-        List<AnnotationGroup> sortedAnnotationGroups = getStudy().getSortedAnnotationGroups(); 
+        List<AnnotationGroup> sortedAnnotationGroups = getStudy().getSortedAnnotationGroups();
         for (AnnotationGroup group : sortedAnnotationGroups) {
             group = getStudyManagementService().getRefreshedEntity(group);
             selectableAnnotationGroups.add(group);
@@ -52,7 +58,7 @@ public class EditClinicalSourceAction extends AbstractClinicalSourceAction {
             displayableFields.add(new DisplayableAnnotationFieldDescriptor(fileColumn));
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -60,7 +66,7 @@ public class EditClinicalSourceAction extends AbstractClinicalSourceAction {
     public String execute() {
         return SUCCESS;
     }
-    
+
     /**
      * Save action.
      * @return struts value.
@@ -100,5 +106,5 @@ public class EditClinicalSourceAction extends AbstractClinicalSourceAction {
     public List<AnnotationGroup> getSelectableAnnotationGroups() {
         return selectableAnnotationGroups;
     }
-    
+
 }

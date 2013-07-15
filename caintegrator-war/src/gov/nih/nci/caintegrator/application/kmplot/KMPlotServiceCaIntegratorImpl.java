@@ -16,12 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.jfree.chart.JFreeChart;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of KMPlotter that directly uses original caIntegrator KMPlot code.
  */
+@Service("kmPlotService")
 public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
-    
+
     private gov.nih.nci.caintegrator.plots.services.KMPlotService caIntegratorPlotService;
 
     /**
@@ -30,7 +33,7 @@ public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
     public KMPlot generatePlot(KMPlotConfiguration configuration) {
         KMPlotImpl plot = new KMPlotImpl();
         plot.setConfiguration(configuration);
-        Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap = 
+        Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap =
             new HashMap<SubjectGroup, KMSampleGroupCriteriaDTO>();
         KMCriteriaDTO kmCriteriaDTO = createCriteriaDTO(configuration, groupToDTOMap);
         plot.setPlotChart((JFreeChart) caIntegratorPlotService.getChart(kmCriteriaDTO));
@@ -42,7 +45,7 @@ public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
         for (SubjectGroup group1 : groupToDTOMap.keySet()) {
             for (SubjectGroup group2 : groupToDTOMap.keySet()) {
                 if (!group1.equals(group2)) {
-                    Double pValue = caIntegratorPlotService.computeLogRankPValueBetween(groupToDTOMap.get(group1), 
+                    Double pValue = caIntegratorPlotService.computeLogRankPValueBetween(groupToDTOMap.get(group1),
                             groupToDTOMap.get(group2));
                     plot.setPValue(group1, group2, pValue);
                 }
@@ -50,7 +53,7 @@ public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
         }
     }
 
-    private KMCriteriaDTO createCriteriaDTO(KMPlotConfiguration configuration, 
+    private KMCriteriaDTO createCriteriaDTO(KMPlotConfiguration configuration,
             Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap) {
         KMCriteriaDTO criteriaDTO = new KMCriteriaDTO();
         criteriaDTO.setDurationAxisLabel(configuration.getDurationLabel());
@@ -64,7 +67,7 @@ public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
 
 
     private void addSubjectGroups(List<SubjectGroup> subjectGroups,
-                                  Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap, 
+                                  Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap,
                                   KMCriteriaDTO criteriaDTO,
                                   boolean containsSubjects) {
         for (SubjectGroup group : subjectGroups) {
@@ -101,7 +104,8 @@ public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
     /**
      * @param caIntegratorPlotService the caIntegratorPlotService to set
      */
-    public void setCaIntegratorPlotService(gov.nih.nci.caintegrator.plots.services.KMPlotService 
+    @Autowired
+    public void setCaIntegratorPlotService(gov.nih.nci.caintegrator.plots.services.KMPlotService
             caIntegratorPlotService) {
         this.caIntegratorPlotService = caIntegratorPlotService;
     }

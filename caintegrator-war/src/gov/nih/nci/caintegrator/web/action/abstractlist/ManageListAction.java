@@ -13,7 +13,6 @@ import gov.nih.nci.caintegrator.domain.application.AbstractList;
 import gov.nih.nci.caintegrator.domain.application.GeneList;
 import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.application.SubjectList;
-import gov.nih.nci.caintegrator.file.FileManager;
 import gov.nih.nci.caintegrator.web.action.AbstractDeployedStudyAction;
 
 import java.io.File;
@@ -24,17 +23,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Provides functionality to list and add array designs.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class ManageListAction extends AbstractDeployedStudyAction {
 
     private static final long serialVersionUID = 1L;
     private static final int LIST_NAME_LENGTH = 100;
-    private FileManager fileManager;
     private File listFile;
     private String listFileContentType;
     private String listFileFileName;
@@ -277,20 +280,6 @@ public class ManageListAction extends AbstractDeployedStudyAction {
      */
     public void setListFileFileName(String listFileFileName) {
         this.listFileFileName = listFileFileName;
-    }
-
-    /**
-     * @return the fileManager
-     */
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
-    /**
-     * @param fileManager the fileManager to set
-     */
-    public void setFileManager(FileManager fileManager) {
-        this.fileManager = fileManager;
     }
 
     /**
