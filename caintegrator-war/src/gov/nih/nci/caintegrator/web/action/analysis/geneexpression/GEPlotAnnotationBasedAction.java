@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 /**
  * Action dealing with Gene Expression Annotation Based plotting.
  */
-@Component
+@Component("gePlotAnnotationBasedAction")
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
 

@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 /**
  * Action dealing with Kaplan-Meier Gene Expression based plotting.
  */
-@Component
+@Component("kmPlotGeneExpressionBasedAction")
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
 

@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 /**
  * Action dealing with Gene Expression Clinical Query Based plotting.
  */
-@Component
+@Component("gePlotClinicalQueryBasedAction")
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction {
 

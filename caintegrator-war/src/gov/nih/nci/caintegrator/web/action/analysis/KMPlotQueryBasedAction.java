@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 /**
  * Action dealing with Kaplan-Meier Query Based plotting.
  */
-@Component
+@Component("kmPlotQueryBasedAction")
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
 

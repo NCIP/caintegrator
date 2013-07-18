@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 /**
  * Action dealing with Gene Expression Genomic Query Based plotting.
  */
-@Component
+@Component("gePlotGenomicQueryBasedAction")
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction {
 

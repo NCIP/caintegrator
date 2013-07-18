@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * Action to run NCIA Dicom jobs which retrieve and download DICOM files.
  */
-@Component
+@Component("nciaDicomRetrievalAction")
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class NCIADicomRetrievalAction extends AbstractCaIntegrator2Action {
 

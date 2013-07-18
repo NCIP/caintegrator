@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 /**
  * Action dealing with Kaplan-Meier Annotaion Based plotting.
  */
-@Component
+@Component("kmPlotAnnotationBasedAction")
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
