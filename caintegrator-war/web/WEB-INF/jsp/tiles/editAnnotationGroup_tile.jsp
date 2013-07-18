@@ -40,7 +40,7 @@
                     <tr><td> <s:actionerror /></td></tr>
                     <tr><td>
                         <s:textfield label="Group Name" name="groupName" size="40"
-                            required="true" theme="css_xhtml"/>
+                            requiredLabel="true" theme="css_xhtml"/>
                     </td></tr>
                     <tr><td>
                         <s:textarea label="Description" name="annotationGroup.description" cols="40" rows="3" theme="css_xhtml"/>

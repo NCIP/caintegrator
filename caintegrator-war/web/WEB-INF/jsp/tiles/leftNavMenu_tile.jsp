@@ -1,8 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
             
 <div id="leftnav">
-
-    <s:token />
     <!--Study Logo-->
     <s:if test="studySubscription != null">
 	    <div id="study_logo">
@@ -477,15 +475,9 @@
         <ul class="menu">   
             <li class="stdnav"><div>Study Management</div>
                 <ul>
-                    <li><s:url id="manageStudiesUrl" includeParams="none" action="manageStudies">
-		                    <s:param name="struts.token.name">struts.token</s:param>
-		                    <s:param name="struts.token" value="%{struts.token}" />     
-                        </s:url>
+                    <li><s:url id="manageStudiesUrl" includeParams="none" action="manageStudies"/>
                     <a href="${manageStudiesUrl}">Manage Studies</a></li>
-                    <li><s:url id="createStudyUrl" includeParams="none" action="createStudy">
-                            <s:param name="struts.token.name">struts.token</s:param>
-                            <s:param name="struts.token" value="%{struts.token}" />  
-                        </s:url> 
+                    <li><s:url id="createStudyUrl" includeParams="none" action="createStudy"/>
                     <a href="${createStudyUrl}">Create New Study</a></li>
                 </ul>
             </li>
@@ -507,13 +499,9 @@
 	</s:url>
 	<s:url id="loginUrl" namespace="/caintegrator/registration" value="../login.jsp" includeParams="all">
         <s:param name="selectedPage" value="%{'login'}" />
-        <s:param name="struts.token.name">struts.token</s:param>
-        <s:param name="struts.token" value="%{struts.token}" />          
     </s:url>
     <s:url id="loginUrl2" value="login.jsp" includeParams="all">
         <s:param name="selectedPage" value="%{'login'}" />
-        <s:param name="struts.token.name">struts.token</s:param>
-        <s:param name="struts.token" value="%{struts.token}" />        
     </s:url>
     <ul class="menu">
         <li class="stdnavforinvestigator" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator Menu</div>

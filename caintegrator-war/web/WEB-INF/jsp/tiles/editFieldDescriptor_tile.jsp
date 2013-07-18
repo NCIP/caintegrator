@@ -103,7 +103,7 @@
                     <s:hidden name="fieldDescriptor.id" />
             	
                     <s:select id="fieldDescriptorType" label="Field Descriptor Type:" name="fieldDescriptorType"
-                        list="fieldDescriptorTypes" required="true" onchange="changeFieldDescriptorType()" />
+                        list="fieldDescriptorTypes" requiredLabel="true" onchange="changeFieldDescriptorType()" />
                 </s:form>
                 
                 <br>

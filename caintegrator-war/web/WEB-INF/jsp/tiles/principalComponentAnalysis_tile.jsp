@@ -44,10 +44,10 @@
         
             <s:hidden name="selectedAction" />
             
-            <s:textfield name="currentPrincipalComponentAnalysisJob.name" label="Job Name" size="50" required="true" theme="css_xhtml" title="Please enter a name for this analysis job."/> <br>
+            <s:textfield name="currentPrincipalComponentAnalysisJob.name" label="Job Name" size="50" requiredLabel="true" theme="css_xhtml" title="Please enter a name for this analysis job."/> <br>
             <s:select name="currentPrincipalComponentAnalysisJob.pcaUrl"
                 list="pcaServices" label="Principal Component Analysis Server"
-                required="true" theme="css_xhtml"
+                requiredLabel="true" theme="css_xhtml"
                 title="Principle Component Analysis Server is a server which hosts the grid-enabled Gene Pattern Principle Component Analysis module.  Select one from the list and caIntegrator will use the selected server for this portion of the processing."
                 cssClass="editable-select"/>
             <br />
@@ -61,20 +61,20 @@
                 <s:select name="principalComponentAnalysisForm.platformName" 
                             label="Select Platform" 
                             list="platformsInStudy"
-                            headerKey="" headerValue="Select Platform" required="true"
+                            headerKey="" headerValue="Select Platform" requiredLabel="true"
                             onchange="this.form.selectedAction.value = 'updateControls';this.form.submit();"/>
                 <br/>
             </s:if>
             <s:select name="principalComponentAnalysisForm.selectedQueryName"
                 headerKey="" headerValue="All Samples"
                 list="principalComponentAnalysisForm.queries" listValue="value.displayName" label="Annotation Queries and Lists"
-                required="false" theme="css_xhtml"
+                requiredLabel="false" theme="css_xhtml"
                 title="Annotation Queries and Lists enable the user to specify which samples will be processed using PCA.  The queries and lists selected here have been previously saved by the user.  Selected queries and lists will result in the processing of only those samples which are mapped to subjects in the saved query or list result."/>
                 <br/>
             <s:select name="principalComponentAnalysisForm.excludeControlSampleSetName"
                 headerKey="" headerValue="None"
                 list="controlSampleSets" label="Exclude Sample Control Set"
-                required="false" theme="css_xhtml"
+                requiredLabel="false" theme="css_xhtml"
                 title="Samples in this set will be excluded."/>
                 <br/>
             <s:checkbox name="principalComponentAnalysisForm.usePreprocessDataset"
@@ -98,19 +98,19 @@
 
             <s:div name="collapsiblediv">          
                 <s:select name="currentPrincipalComponentAnalysisJob.preprocessDataSetUrl"
-                    list="preprocessDatasetServices" label="Preprocess Server" required="true" theme="css_xhtml" cssClass="editable-select"/> <br>
+                    list="preprocessDatasetServices" label="Preprocess Server" requiredLabel="true" theme="css_xhtml" cssClass="editable-select"/> <br>
                 <s:checkbox name="preprocessDatasetParameterSet.filterFlag" label="Filter flag" labelposition="left" theme="css_xhtml"/> <br>
                 <s:select name="preprocessDatasetParameters.preprocessingFlag" label="Preprocessing Flag"
-                    list="preprocessDatasetParameters.preprocessingFlagOptions" required="true" theme="css_xhtml"/> <br>
-                <s:textfield name="preprocessDatasetParameterSet.minChange" label="Min Change" size="50" required="true" theme="css_xhtml"/> <br>
-                <s:textfield name="preprocessDatasetParameterSet.minDelta" label="Min Delta" size="50" required="true" theme="css_xhtml"/> <br>
-                <s:textfield name="preprocessDatasetParameterSet.threshold" label="Threshold" size="50" required="true" theme="css_xhtml"/> <br>
-                <s:textfield name="preprocessDatasetParameterSet.ceiling" label="Ceiling" size="50" required="true" theme="css_xhtml"/> <br>
-                <s:textfield name="preprocessDatasetParameterSet.maxSigmaBinning" label="Max Sigma Binning" size="50" required="true" theme="css_xhtml"/> <br>
-                <s:textfield name="preprocessDatasetParameterSet.probabilityThreshold" label="Probability Threshold" size="50" required="true" theme="css_xhtml"/> <br>
-                <s:textfield name="preprocessDatasetParameterSet.numExclude" label="Num Exclude" size="50" required="true" theme="css_xhtml"/> <br>
+                    list="preprocessDatasetParameters.preprocessingFlagOptions" requiredLabel="true" theme="css_xhtml"/> <br>
+                <s:textfield name="preprocessDatasetParameterSet.minChange" label="Min Change" size="50" requiredLabel="true" theme="css_xhtml"/> <br>
+                <s:textfield name="preprocessDatasetParameterSet.minDelta" label="Min Delta" size="50" requiredLabel="true" theme="css_xhtml"/> <br>
+                <s:textfield name="preprocessDatasetParameterSet.threshold" label="Threshold" size="50" requiredLabel="true" theme="css_xhtml"/> <br>
+                <s:textfield name="preprocessDatasetParameterSet.ceiling" label="Ceiling" size="50" requiredLabel="true" theme="css_xhtml"/> <br>
+                <s:textfield name="preprocessDatasetParameterSet.maxSigmaBinning" label="Max Sigma Binning" size="50" requiredLabel="true" theme="css_xhtml"/> <br>
+                <s:textfield name="preprocessDatasetParameterSet.probabilityThreshold" label="Probability Threshold" size="50" requiredLabel="true" theme="css_xhtml"/> <br>
+                <s:textfield name="preprocessDatasetParameterSet.numExclude" label="Num Exclude" size="50" requiredLabel="true" theme="css_xhtml"/> <br>
                 <s:checkbox name="preprocessDatasetParameterSet.logBaseTwo" label="Log Base Two" labelposition="left" theme="css_xhtml"/> <br>
-                <s:textfield name="preprocessDatasetParameterSet.numberOfColumnsAboveThreshold" label="Number Of Columns Above Threshold" size="50" required="true" theme="css_xhtml"/> <br>
+                <s:textfield name="preprocessDatasetParameterSet.numberOfColumnsAboveThreshold" label="Number Of Columns Above Threshold" size="50" requiredLabel="true" theme="css_xhtml"/> <br>
             <br>
             <br>
             <br>

@@ -90,7 +90,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/mysql-connector-java-5.1.13.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/nccore-4.0.34.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/nci-commons-core-1.2.18.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/ognl-3.0.5.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ojdbc14-10.2.0.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/puretls-4.0.3.jar"/>
@@ -101,10 +100,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-context-2.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-web-2.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-webmvc-2.5.6.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-core-2.3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-dojo-plugin-2.3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-spring-plugin-2.3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-tiles-plugin-2.3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-api-2.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-core-2.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-jsp-2.0.6.jar"/>
@@ -115,7 +110,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/xalan-2.7.0.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/xercesImpl-2.6.2.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/xmlsec-1.4.0.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/xwork-core-2.3.1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="lib/external-runtime/AIMDataService-stubs.jar"/>
 	<classpathentry kind="lib" path="lib/external-runtime/sdk-client-framework.jar"/>
@@ -156,5 +150,11 @@
 	<classpathentry kind="lib" path="kaplan-meier-jar/lib/compile/weka-3.4.13.jar"/>
 	<classpathentry kind="lib" path="lib/test-junit/javassist-3.9.0.GA.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-runtime/opencsv-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/ognl-3.0.6.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-core-2.3.15.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-spring-plugin-2.3.15.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-tiles-plugin-2.3.15.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/xwork-core-2.3.15.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-dojo-plugin-2.3.15.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

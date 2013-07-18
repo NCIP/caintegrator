@@ -209,7 +209,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
        + studyConfiguration.getId()
        + "&struts.token.name="
        + tokenName
-       + "&struts.token="
+       + "&token="
        + token
        + "\" onclick=\"return confirm('" + deleteMsg + "')\">Delete</a>";
 
@@ -253,7 +253,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
        + studyConfiguration.getId()
        + "&struts.token.name="
        + tokenName
-       + "&struts.token="
+       + "&token="
            + token;
        } else {
            returnString = "<a style=\"color:Grey; text-decoration:none;\""
@@ -283,7 +283,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
        return returnString + studyConfiguration.getId()
        + "&struts.token.name="
        + tokenName
-       + "&struts.token="
+       + "&token="
        + token
        + "\" >" + actionName + "</a>";
     }
