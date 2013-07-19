@@ -65,31 +65,31 @@
 		                </s:div>
 		            </s:div>
 		            <br />
-                    <s:textfield label="Name" name="survivalDefinitionFormValues.survivalValueDefinitionName" required="true"/>
+                    <s:textfield label="Name" name="survivalDefinitionFormValues.survivalValueDefinitionName" requiredLabel="true"/>
                     <br/>
                     <s:select name="survivalDefinitionFormValues.survivalLengthUnits"
                                   list="@gov.nih.nci.caintegrator.domain.annotation.SurvivalLengthUnitsEnum@values()" listValue="value" 
-                                  label="Survival Length Units" required="true"/>
+                                  label="Survival Length Units" requiredLabel="true"/>
                     <br/>              
                     <s:div id="dateInputParams" cssStyle="%{dateInputCssStyle}">
 	                    <s:select name="survivalDefinitionFormValues.survivalStartDateId" 
 	                              list="dateAnnotationDefinitions" 
-	                              listValue="value.displayName" label = "Survival Start Date" required="true"/>
+	                              listValue="value.displayName" label="Survival Start Date" requiredLabel="true"/>
 	                   <br/>              
 	                    <s:select name="survivalDefinitionFormValues.survivalDeathDateId" 
 	                              list="dateAnnotationDefinitions" 
-	                              listValue="value.displayName" label = "Death Date" required="true"/>
+	                              listValue="value.displayName" label="Death Date" requiredLabel="true"/>
 	                    <br/>          
 	                    <s:select name="survivalDefinitionFormValues.lastFollowupDateId" 
 	                              list="dateAnnotationDefinitions" 
-	                              listValue="value.displayName" label = "Last Followup Date" required="true"/>
+	                              listValue="value.displayName" label="Last Followup Date" requiredLabel="true"/>
                         <br/>
                     </s:div>
                     <s:div id="lengthOfTimeInputParams" cssStyle="%{lengthOfTimeInputCssStyle}">
                         <s:select name="survivalDefinitionFormValues.survivalLengthId"
                                   list="numericAnnotationDefinitions"
                                   listValue="value.displayName" label = "Survival Length" 
-                                  headerKey="" headerValue="" required="true"/>
+                                  headerKey="" headerValue="" requiredLabel="true"/>
                         <br/>
                         <s:select name="survivalDefinitionFormValues.survivalStatusId" 
                                   list="survivalStatusAnnotationDefinitions"

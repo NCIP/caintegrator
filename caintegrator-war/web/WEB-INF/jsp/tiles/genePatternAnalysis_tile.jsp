@@ -21,8 +21,8 @@
             <s:token />
             <s:hidden name="selectedAction" />
         
-            <s:textfield name="genePatternAnalysisForm.url" label="GenePattern Server URL" size="50" required="true" />
-            <s:textfield name="genePatternAnalysisForm.username" label="GenePattern Username" size="50" required="true" />
+            <s:textfield name="genePatternAnalysisForm.url" label="GenePattern Server URL" size="50" requiredLabel="true" />
+            <s:textfield name="genePatternAnalysisForm.username" label="GenePattern Username" size="50" requiredLabel="true" />
             <s:password name="genePatternAnalysisForm.password" label="GenePattern Password" size="50" showPassword="true" />
             <tr>
 	            <td> </td>
@@ -33,7 +33,7 @@
 	            </td>
             </tr>
             <s:if test="%{!genePatternAnalysisForm.analysisMethodNames.empty}">
-                <s:textfield name="currentGenePatternAnalysisJob.name" label="Job Name" required="true" />
+                <s:textfield name="currentGenePatternAnalysisJob.name" label="Job Name" requiredLabel="true" />
                 <s:select label="Analysis Method" 
                     name="analysisMethodName" 
                     list="genePatternAnalysisForm.analysisMethodNames"
@@ -46,19 +46,12 @@
             </s:if>
             <s:iterator status="status" value="genePatternAnalysisForm.parameters">
                 <s:if test='%{displayType == "textfield"}'>
-                    <s:textfield 
-                        label="%{name}" 
-                        name="genePatternAnalysisForm.parameters[%{#status.index}].value" 
-                        required="required" 
-                        value="%{value}" />
+                    <s:textfield label="%{name}" name="genePatternAnalysisForm.parameters[%{#status.index}].value" 
+                        requiredLabel="true" value="%{value}" />
                 </s:if>
                 <s:elseif test='%{displayType == "select"}'>
-                    <s:select 
-                        label="%{name}" 
-                        name="genePatternAnalysisForm.parameters[%{#status.index}].value" 
-                        list="choices" 
-                        required="required"
-                        value="%{value}" />
+                    <s:select label="%{name}" name="genePatternAnalysisForm.parameters[%{#status.index}].value" 
+                        list="choices" requiredLabel="true" value="%{value}" />
                 </s:elseif>
             </s:iterator>
             <s:if test='%{genePatternAnalysisForm.executable}'>

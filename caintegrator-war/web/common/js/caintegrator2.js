@@ -85,8 +85,8 @@
     function updateUrlTokenParameters(obj){
     	// retrieve the struts tokens from elsewhere in this page.
     	var tokenName = document.getElementsByName('struts.token.name')[0].value;
-    	var token = document.getElementsByName('struts.token')[0].value;
+    	var token = document.getElementsByName('token')[0].value;
     	// modify the href of the object
     	obj.href = replace_param(obj.href, 'struts.token.name', tokenName);
-    	obj.href = replace_param(obj.href, 'struts.token', token);
+    	obj.href = replace_param(obj.href, 'token', token);
     }

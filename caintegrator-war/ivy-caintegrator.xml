@@ -57,8 +57,7 @@
     <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.6.6" conf="runtime->master"/>
     <dependency org="cglib" name="cglib" rev="2.1_3" conf="runtime->default" transitive="false"/>
     <dependency org="dom4j" name="dom4j" rev="1.6" conf="runtime->master"/>
-    <dependency org="ognl" name="ognl" rev="3.0.5" conf="runtime->master"/>
-    
+
     <dependency org="org.springframework" name="spring-core" rev="3.2.3.RELEASE" conf="runtime->master"/>
     <dependency org="org.springframework" name="spring-orm" rev="3.2.3.RELEASE" conf="runtime->master"/>
     <dependency org="org.springframework" name="spring-tx" rev="3.2.3.RELEASE" conf="runtime->master"/>
@@ -82,9 +81,12 @@
     <dependency org="org.apache.tiles" name="tiles-api" rev="2.2.2" conf="runtime->master"/>
     
     <dependency org="org.freemarker" name="freemarker" rev="2.3.19" conf="runtime->master"/>
-    <dependency org="org.apache.struts" name="struts2-core" rev="2.3.1.1" conf="runtime->master"/>
-    <dependency org="org.apache.struts" name="struts2-spring-plugin" rev="2.3.1.1" conf="runtime->master"/>
-    <dependency org="org.apache.struts" name="struts2-tiles-plugin" rev="2.3.1.1" conf="runtime->master"/>
+    <dependency org="org.apache.struts" name="struts2-core" rev="2.3.15.1" conf="runtime->master"/>
+    <dependency org="org.apache.struts" name="struts2-spring-plugin" rev="2.3.15.1" conf="runtime->master"/>
+    <dependency org="org.apache.struts" name="struts2-tiles-plugin" rev="2.3.15.1" conf="runtime->master"/>
+    <dependency org="org.apache.struts.xwork" name="xwork-core" rev="2.3.15.1" conf="runtime->master" />
+    <dependency org="ognl" name="ognl" rev="3.0.6" conf="runtime->master"/>
+    
     <dependency org="affymetrix" name="affxfusion" rev="1.1" conf="runtime->master" force="true"/>
     <dependency org="ivicore" name="ivicore" rev="1.2dev" conf="runtime->master" />
     <dependency org="genepattern" name="genepattern" rev="3.2.1" conf="runtime->master" />
@@ -169,9 +171,8 @@
     <dependency org="globus" name="puretls" rev="4.0.3" conf="runtime->master" />
     
 
-    <!-- quartz 1.5.2 scheduler -->
+    <!-- quartz scheduler -->
     <dependency org="opensymphony" name="quartz" rev="1.6.1" conf="runtime->master" />
-    <dependency org="org.apache.struts.xwork" name="xwork-core" rev="2.3.1.1" conf="runtime->master" />
 
     <!-- CAS Client -->
     <dependency org="cas" name="casclient" rev="2.1.1" conf="runtime->master"/>

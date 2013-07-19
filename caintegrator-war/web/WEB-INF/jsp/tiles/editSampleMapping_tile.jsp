@@ -71,7 +71,7 @@
                             (csv file with 2 columns for using parsed data or 6 columns otherwise)
                         </td>
                     </tr>
-                    <s:textfield label="Control Sample Set Name" name="controlSampleSetName" required="true" theme="cai2xhtml" size="35"/>
+                    <s:textfield label="Control Sample Set Name" name="controlSampleSetName" requiredLabel="true" theme="cai2xhtml" size="35"/>
                     <s:file name="controlSampleFile" label="Control Samples File" size="35" />
                 </s:if>
                     <tr> 

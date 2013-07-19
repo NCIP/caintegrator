@@ -60,7 +60,7 @@
             <s:token />
             <s:hidden name="selectedAction" />
             
-            <s:textfield name="currentGisticAnalysisJob.name" label="Job Name" size="50" required="true" />
+            <s:textfield name="currentGisticAnalysisJob.name" label="Job Name" size="50" requiredLabel="true" />
             <br />
             <s:div cssStyle="padding: 1em 0 0 0;">
                 <s:div cssClass="wwlbl"><label class="label">GISTIC Service Type:&nbsp;</label></s:div>
@@ -72,12 +72,12 @@
             <br />
             <s:div id="gridServiceInputParams">
             <s:select id="gridServiceUrl" name="gridServiceUrl"
-                list="gisticServices" label="GISTIC Grid Server" required="true" disabled="true" cssClass="editable-select"/>
+                list="gisticServices" label="GISTIC Grid Server" requiredLabel="true" disabled="true" cssClass="editable-select"/>
             </s:div>
             <br/>
             <s:div id="webServiceInputParams" cssStyle="%{useWebServiceOn}">
-                <s:textfield id="webServiceUrl" name="webServiceUrl" label="GenePattern Web Service URL" size="50" required="true" /> <br />
-                <s:textfield id="username" name="gisticParameters.server.username" label="GenePattern Username" size="50" required="true" /> <br />
+                <s:textfield id="webServiceUrl" name="webServiceUrl" label="GenePattern Web Service URL" size="50" requiredLabel="true" /> <br />
+                <s:textfield id="username" name="gisticParameters.server.username" label="GenePattern Username" size="50" requiredLabel="true" /> <br />
                 <s:password id="password" name="gisticParameters.server.password" label="GenePattern Password" size="50" showPassword="true" />
             </s:div>
             <br />
@@ -100,22 +100,20 @@
                         <br/>
                 </s:div>
             </s:if>
-            <s:select name="gisticAnalysisForm.excludeControlSampleSetName"
-                headerKey="" headerValue="None"
-                list="controlSampleSets" label="Exclude Sample Control Set"
-                required="true" theme="css_xhtml"
+            <s:select name="gisticAnalysisForm.excludeControlSampleSetName" headerKey="" headerValue="None"
+                list="controlSampleSets" label="Exclude Sample Control Set" requiredLabel="true" theme="css_xhtml"
                 title="Samples in this set will be excluded."/>
             <br/>
-            <s:textfield name="gisticParameters.amplificationsThreshold" label="Amplifications Threshold" size="50" required="true" />
+            <s:textfield name="gisticParameters.amplificationsThreshold" label="Amplifications Threshold" size="50" requiredLabel="true" />
             <br />
-            <s:textfield name="gisticParameters.deletionsThreshold" label="Deletions Threshold" size="50" required="true" />
+            <s:textfield name="gisticParameters.deletionsThreshold" label="Deletions Threshold" size="50" requiredLabel="true" />
             <br />
-            <s:textfield name="gisticParameters.joinSegmentSize" label="Join Segment Size" size="50" required="true" />
+            <s:textfield name="gisticParameters.joinSegmentSize" label="Join Segment Size" size="50" requiredLabel="true" />
             <br />
-            <s:textfield name="gisticParameters.qvThresh" label="QV Thresh" size="50" required="true" />
+            <s:textfield name="gisticParameters.qvThresh" label="QV Thresh" size="50" requiredLabel="true" />
             <br />
             <s:select name="gisticParameters.removeX" label="Remove X"
-                list="gisticParameters.removeXOptions" required="true" />
+                list="gisticParameters.removeXOptions" requiredLabel="true" />
             <br />
             <s:file name="gisticParameters.cnvSegmentsToIgnoreFile" label="cnv File" />
             <br />

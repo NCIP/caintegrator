@@ -249,7 +249,7 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
         + genomicSource.getStudyConfiguration().getId()
         + "&genomicSource.id=" + genomicSource.getId()
         + "&struts.token.name=" + tokenName
-        + "&struts.token=" + token
+        + "&token=" + token
         + "\""
         + deleteString + "><span class=\"btn_img\"><span class=\""
         + linkCssClass + "\">" + linkDisplay + "</span></span></a>";

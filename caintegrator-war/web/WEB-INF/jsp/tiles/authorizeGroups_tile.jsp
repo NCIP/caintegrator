@@ -35,8 +35,8 @@
                     <s:url var="addAuthorizedGroup" includeParams="none" action="addAuthorizedGroup">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                         <s:param name="selectedGroupId" value="groupId"/>
-                        <s:param name="struts.token.name">struts.token</s:param>
-                        <s:param name="struts.token" value="%{struts.token}" />     
+                        <s:param name="struts.token.name">token</s:param>
+                        <s:param name="token" value="%{token}" />     
                     </s:url>
                     <s:a href="%{addAuthorizedGroup}" cssClass="btn" cssStyle="margin:0 5px;">
                         <span class="btn_img"><span class="add">Authorize This Group</span></span>
@@ -50,8 +50,8 @@
                 <li>
                     <s:url id="cancelAuthorizedGroup" includeParams="none" action="cancelAuthorizedGroup">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="struts.token.name">struts.token</s:param>
-                        <s:param name="struts.token" value="%{struts.token}" />     
+                        <s:param name="struts.token.name">token</s:param>
+                        <s:param name="token" value="%{token}" />     
                     </s:url>
                     <s:a href="%{cancelAuthorizedGroup}" cssClass="btn" cssStyle="margin:0 5px;">
                         <span class="btn_img"><span class="cancel">Cancel</span></span>

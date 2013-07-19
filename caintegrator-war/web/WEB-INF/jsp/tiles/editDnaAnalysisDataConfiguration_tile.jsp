@@ -99,7 +99,7 @@
                     <br/>
                     <s:div id="cghCallInputParams" cssStyle="%{defaultBioconductorSelectCss};">
                     <s:select id="caCghCallUrl" name="caCghCallUrl" cssStyle="width=531px;"
-                        list="caCghCallServices" label="CaCGHCall Service URL" required="true" cssClass="editable-select"/><br>
+                        list="caCghCallServices" label="CaCGHCall Service URL" requiredLabel="true" cssClass="editable-select"/><br>
                     <s:div cssClass="wwlbl"><label class="label">Call Level:&nbsp;</label></s:div>
                     <s:div>
                         <s:radio theme="css_xhtml" name="numberLevelCall" list="#{3:'Use 3 level calls'}"  />
@@ -108,12 +108,12 @@
                     </s:div>
                     <s:div id="dnaCopyInputParams">
                     <s:select id="caDnaCopyUrl" name="caDnaCopyUrl" cssStyle="width=531px"
-                        list="caDnaCopyServices" label="CaDNACopy Service URL" required="true" cssClass="editable-select"/><br>
+                        list="caDnaCopyServices" label="CaDNACopy Service URL" requiredLabel="true" cssClass="editable-select"/><br>
                     </s:div>  
                     <s:textfield name="dnaAnalysisDataConfiguration.changePointSignificanceLevel" label="Change Point Significance Level" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.earlyStoppingCriterion" label="Early Stopping Criterion" /><br>
                     <s:textfield name="dnaAnalysisDataConfiguration.permutationReplicates" label="Permutation Replicates" /><br>
-                    <s:textfield name="dnaAnalysisDataConfiguration.randomNumberSeed" label="Random Number Seed" required="true" /><br>
+                    <s:textfield name="dnaAnalysisDataConfiguration.randomNumberSeed" label="Random Number Seed" requiredLabel="true" /><br>
                 </s:if>
                     <tr>
                         <td></td>

@@ -58,7 +58,7 @@
         class="label"<#t/>
 </#if>
     ><#t/>
-<#if parameters.required?default(false)>
+<#if parameters.requiredLabel?default(false)>
         <span class="required">*</span><#t/>
 </#if>
         ${parameters.label?html}${parameters.labelseparator!":"?html}

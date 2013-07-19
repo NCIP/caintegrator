@@ -172,23 +172,17 @@
         
         <action name="manageStudies" method="manageStudies" class="editStudyAction">
             <result type="tiles">manageStudies</result>
-            <interceptor-ref name="paramsPrepareParamsStack">
-                <param name="tokenSession.includeMethods">*</param>
-            </interceptor-ref>            
         </action>
 
         <action name="createStudy" class="editStudyAction">
             <result type="tiles">editStudy</result>
-            <interceptor-ref name="paramsPrepareParamsStack">
-                <param name="tokenSession.includeMethods">*</param>
-            </interceptor-ref>            
         </action>
             
         <action name="deployStudy" class="deployStudyAction">
             <result type="redirectAction">
                 <param name="actionName">manageStudies</param>
                 <param name="struts.token.name">${tokenName} </param>
-                <param name="struts.token">${newToken}</param>
+                <param name="token">${token}</param>
             </result>
             <result name="error" type="tiles">editStudy</result>
             <result name="input" type="tiles">editStudy</result>
@@ -204,7 +198,7 @@
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="struts.token.name">${tokenName} </param>
-                <param name="struts.token">${newToken}</param>
+                <param name="token">${token}</param>
             </result>
             <result name="error" type="tiles">manageStudies</result>
             <interceptor-ref name="paramsPrepareParamsStack">
@@ -216,7 +210,7 @@
             <result type="redirectAction">
                 <param name="actionName">manageStudies</param>
                 <param name="struts.token.name">${tokenName} </param>
-                <param name="struts.token">${newToken}</param>
+                <param name="token">${token}</param>
             </result>
             <interceptor-ref name="paramsPrepareParamsStack">
                 <param name="tokenSession.includeMethods">*</param>
@@ -227,7 +221,7 @@
             <result type="redirectAction">
                 <param name="actionName">manageStudies</param>
                 <param name="struts.token.name">${tokenName} </param>
-                <param name="struts.token">${newToken}</param>
+                <param name="token">${token}</param>
             </result>
             <result name="error" type="tiles">manageStudies</result>
             <result name="input" type="tiles">manageStudies</result>
@@ -240,7 +234,7 @@
             <result type="redirectAction">
                 <param name="actionName">manageStudies</param>
                 <param name="struts.token.name">${tokenName} </param>
-                <param name="struts.token">${newToken}</param>
+                <param name="token">${token}</param>
             </result>
             <result name="error" type="tiles">manageStudies</result>
             <result name="input" type="tiles">manageStudies</result>            
@@ -495,8 +489,8 @@
                 <param name="actionName">editAnnotationGroup</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="annotationGroup.id">${groupId}</param>
-                <param name="struts.token.name">${tokenName} </param>
-                <param name="struts.token">${newToken}</param>
+                <param name="struts.token.name">${tokenName}</param>
+                <param name="token">${token}</param>
             </result>
         </action>
         
@@ -548,8 +542,8 @@
                 <param name="actionName">editAnnotationGroup</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="annotationGroup.id">${groupId}</param>
-                <param name="struts.token.name">${tokenName} </param>
-                <param name="struts.token">${newToken}</param>
+                <param name="struts.token.name">${tokenName}</param>
+                <param name="token">${token}</param>
             </result>
             <result name="input" type="tiles">editFieldDescriptor</result>
             <result name="error" type="tiles">editFieldDescriptor</result>
@@ -580,8 +574,8 @@
                 <param name="actionName">editAnnotationGroup</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="annotationGroup.id">${groupId}</param>
-                <param name="struts.token.name">${tokenName} </param>
-                <param name="struts.token">${newToken}</param>
+                <param name="struts.token.name">${tokenName}</param>
+                <param name="token">${token}</param>
             </result>
             <result name="input" type="tiles">editFieldDescriptor</result>
             <result name="error" type="tiles">editFieldDescriptor</result>
@@ -614,7 +608,7 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="annotationGroup.id">${groupId}</param>
                 <param name="struts.token.name">${tokenName} </param>
-                <param name="struts.token">${newToken}</param>                
+                <param name="token">${token}</param>                
             </result>
             <result name="input" type="tiles">editFieldDescriptor</result>
             <result name="error" type="tiles">editFieldDescriptor</result>
@@ -1257,18 +1251,12 @@
         </action>
         
         <!-- GeneExpression Plot Actions -->
-        <!-- GeneExpression Plot Actions -->
-        <!-- GeneExpression Plot Actions -->
-        
         <action name="initializeGePlot" method="initializeGePlot" class="gePlotAnnotationBasedAction">
             <result type="tiles">gePlot</result>
             <result name="input" type="tiles">genericErrorWithMenu</result>
         </action>
-
-        <!-- Annotation Based GeneExpression Plot Actions -->
-        <!-- Annotation Based GeneExpression Plot Actions -->
-        <!-- Annotation Based GeneExpression Plot Actions -->
         
+        <!-- Annotation Based GeneExpression Plot Actions -->
         <action name="gePlotAnnotationBasedInput" method="input" class="gePlotAnnotationBasedAction">
             <result>/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBased_tab.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBased_tab.jsp</result>
