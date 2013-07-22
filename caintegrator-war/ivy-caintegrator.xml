@@ -18,28 +18,27 @@
   <dependencies>
     <dependency org="junit" name="junit" rev="4.11" conf="test-junit,test-integration,test-pmd->master"/>
     <dependency org="org.hamcrest" name="hamcrest-core" rev="1.3" conf="test-junit,test-integration->master"/>
-    <dependency org="javassist" name="javassist" rev="3.9.0.GA" conf="test-junit->default"/>
-    <dependency org="org.mockito" name="mockito-all" rev="1.9.0" conf="test-junit->default"/>
+    <dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="test-junit->default"/>
+    <dependency org="org.mockito" name="mockito-all" rev="1.9.5" conf="test-junit->default"/>
     <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4.1" conf="test-cobertura->master"/>
-    <dependency org="log4j" name="log4j" rev="1.2.9" conf="runtime,test-cobertura->master"/>
+    <dependency org="log4j" name="log4j" rev="1.2.17" conf="runtime,test-cobertura->master"/>
     <dependency org="com.puppycrawl.tools" name="checkstyle" rev="5.2" conf="test-checkstyle->master"/>
     <dependency org="commons-beanutils" name="commons-beanutils-core" rev="1.8.3" conf="test-checkstyle->master"/>
     <dependency org="commons-cli" name="commons-cli" rev="1.2" conf="test-checkstyle->master"/>
     <dependency org="pmd" name="pmd" rev="4.2.5" conf="test-pmd->master"/>
-    
-    <dependency org="jaxen" name="jaxen" rev="1.1.1" conf="test-pmd->master" />
+    <dependency org="jaxen" name="jaxen" rev="1.1.4" conf="test-pmd->master" />
     <dependency org="objectweb" name="asm" rev="3.0" conf="test-pmd->master"/>
     <dependency org="objectweb" name="asm" rev="3.0" conf="test-cobertura->master"/>
     <dependency org="objectweb" name="asm-tree" rev="3.0" conf="test-cobertura->master"/>
     
-    <dependency org="concurrent" name="concurrent" rev="1.3.4" conf="compile->master"/>
     <dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7" conf="runtime->master" transitive="false"/>
-    <dependency org="commons-fileupload" name="commons-fileupload" rev="1.2.1" conf="runtime->master"/>
-    <dependency org="commons-codec" name="commons-codec" rev="1.3" conf="runtime->master"/>
-    <dependency org="commons-configuration" name="commons-configuration" rev="1.5" conf="runtime->master"/>
+    <dependency org="commons-fileupload" name="commons-fileupload" rev="1.3" conf="runtime->master"/>
+    <dependency org="commons-codec" name="commons-codec" rev="1.8" conf="runtime->master"/>
+    <dependency org="commons-configuration" name="commons-configuration" rev="1.9" conf="runtime->master"/>
     <dependency org="org.apache.commons" name="commons-lang3" rev="3.1" conf="runtime->master"/>
-    <dependency org="commons-math" name="commons-math" rev="1.2" conf="runtime->master"/>
+    <dependency org="org.apache.commons" name="commons-math3" rev="3.1" conf="runtime->master"/>
     <dependency org="commons-io" name="commons-io" rev="2.4" conf="runtime->master"/>
+    
     <dependency org="jboss" name="jbossall-client" rev="4.0.5.GA" conf="compile->master"/>
     <dependency org="jboss" name="jboss-ejb3x" rev="4.0.5.GA" conf="runtime->master"/>
     <dependency org="jboss" name="jboss-aop-client" rev="1.5.2.GA" conf="compile->master"/>
@@ -73,8 +72,6 @@
     <dependency org="org.springframework" name="spring-test" rev="3.2.3.RELEASE" conf="test-junit->master"/>
     <dependency org="aopalliance" name="aopalliance" rev="1.0" conf="runtime->master"/>
     
-    <dependency org="org.apache.santuario" name="xmlsec" rev="1.4.0" conf="compile->default"/>
-
     <dependency org="org.apache.tiles" name="tiles-servlet" rev="3.0.1" conf="runtime->master"/>
     <dependency org="org.apache.tiles" name="tiles-core" rev="3.0.1" conf="runtime->master"/>
     <dependency org="org.apache.tiles" name="tiles-api" rev="3.0.1" conf="runtime->master"/>
@@ -85,7 +82,6 @@
     <dependency org="org.apache.tiles" name="tiles-request-jsp" rev="1.0.3" conf="runtime->master"/>
     <dependency org="org.apache.tiles" name="tiles-autotag-core-runtime" rev="1.1.0" conf="runtime->master"/>
    
-    
     <dependency org="org.freemarker" name="freemarker" rev="2.3.20" conf="runtime->master"/>
     <dependency org="org.apache.struts" name="struts2-core" rev="2.3.15.1" conf="runtime->master"/>
     <dependency org="org.apache.struts" name="struts2-spring-plugin" rev="2.3.15.1" conf="runtime->master"/>
@@ -98,7 +94,6 @@
     <dependency org="genepattern" name="genepattern" rev="3.2.1" conf="runtime->master" />
     <dependency org="com.google.guava" name="guava" rev="14.0.1" conf="runtime->master" />
 
-    <!-- These exist in the repository -->
     <dependency org="javax.activation" name="activation" rev="1.1" conf="compile->master"/>
     <dependency org="javax.mail" name="mail" rev="1.4" conf="compile->master"/>
     <dependency org="javax.servlet" name="servlet-api" rev="2.4" conf="compile->master"/>
