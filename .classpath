@@ -57,7 +57,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/dom4j-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/dwr-2.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ejb3-persistence-1.0.1.GA.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/freemarker-2.3.19.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/freestylesearch-4.0.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/genepattern-3.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/google-collections-1.0.jar"/>
@@ -140,9 +139,6 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/opencsv-2.3.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ehcache-core-2.6.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/axis-jaxrpc-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-api-2.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-core-2.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-jsp-2.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/test-junit/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-beans-3.2.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/spring-context-3.2.3.RELEASE.jar"/>
@@ -160,7 +156,11 @@
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/ognl-3.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-core-2.3.15.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-spring-plugin-2.3.15.1.jar"/>
-	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-tiles-plugin-2.3.15.1.jar"/>
 	<classpathentry kind="lib" path="lib/caintegrator2-compile/xwork-core-2.3.15.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/struts2-tiles3-plugin-2.3.15.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-api-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-core-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/tiles-jsp-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator2-compile/freemarker-2.3.20.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
