@@ -494,15 +494,16 @@
         </ul>
     </s:if>
     
-	<s:url id="registrationUrl" action="input" namespace="registration" includeParams="all">
+	<s:url id="registrationUrl" namespace="/registration" action="input" includeParams="all">
 	    <s:param name="selectedPage" value="%{'register'}" />
 	</s:url>
-	<s:url id="loginUrl" namespace="/caintegrator/registration" value="../login.jsp" includeParams="all">
+    <s:url id="loginUrl" namespace="/" action="login" includeParams="all">
         <s:param name="selectedPage" value="%{'login'}" />
     </s:url>
-    <s:url id="loginUrl2" value="login.jsp" includeParams="all">
+    <s:url id="loginUrl2" value="/caintegrator/login.jsp" includeParams="all" includeContext="false">
         <s:param name="selectedPage" value="%{'login'}" />
     </s:url>
+    
     <ul class="menu">
         <li class="stdnavforinvestigator" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator Menu</div>
             <ul>
