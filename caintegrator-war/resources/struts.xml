@@ -869,9 +869,6 @@
                 <param name="actionName">editStudy</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
             </result>
-            <interceptor-ref name="paramsPrepareParamsStack">
-                <param name="tokenSession.includeMethods">*</param>
-            </interceptor-ref>
         </action>
         
         <action name="addAuthorizedGroup" method="add" class="gov.nih.nci.caintegrator.web.action.study.management.EditAuthorizedGroupAction">

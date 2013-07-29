@@ -32,15 +32,14 @@
                 <td><s:property value="groupName"/></td>
                 <td><s:property value="groupDesc"/></td>
                 <td style="float: right;">
-                    <s:url var="addAuthorizedGroup" includeParams="none" action="addAuthorizedGroup">
-                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="selectedGroupId" value="groupId"/>
-                        <s:param name="struts.token.name">token</s:param>
-                        <s:param name="token" value="%{token}" />     
-                    </s:url>
-                    <s:a href="%{addAuthorizedGroup}" cssClass="btn" cssStyle="margin:0 5px;">
-                        <span class="btn_img"><span class="add">Authorize This Group</span></span>
-                    </s:a>
+                    <s:form id="addAuthorizationForm_%{groupId}" action="addAuthorizedGroup">
+                        <s:token/>
+                        <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}" />
+                        <s:hidden name="selectedGroupId" value="%{groupId}"/>
+                        <s:a href="javascript:void(0);"cssClass="btn" cssStyle="margin:0 5px;" onclick="$('#addAuthorizationForm_%{groupId}').submit();">
+                            <span class="btn_img"><span class="add">Authorize This Group</span></span>
+                        </s:a>
+                    </s:form>
                 </td>
                 </tr>
             </s:iterator>
