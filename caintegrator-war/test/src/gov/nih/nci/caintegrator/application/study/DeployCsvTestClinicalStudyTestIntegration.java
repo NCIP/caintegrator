@@ -10,7 +10,6 @@ import gov.nih.nci.caintegrator.TestDataFiles;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,19 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-@Transactional(timeout = 2880)
+@Transactional
 public class DeployCsvTestClinicalStudyTestIntegration extends AbstractDeployStudyTestIntegration {
-
-    private final static Logger LOGGER = Logger.getLogger(DeployCsvTestClinicalStudyTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws Exception {
         deployStudy();
-    }
-
-    @Override
-    protected Logger getLogger() {
-        return LOGGER;
     }
 
     @Override
@@ -52,14 +44,6 @@ public class DeployCsvTestClinicalStudyTestIntegration extends AbstractDeployStu
     @Override
     protected File getSubjectAnnotationFile() {
         return TestDataFiles.VALID_FILE;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean getAuthorizeStudy() {
-        return false;
     }
 
     /**

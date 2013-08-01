@@ -14,14 +14,16 @@ import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 14400)
+/**
+ * Tests deployment of a study with Vasari data.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@Transactional
 public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegration {
-    
-    private final static Logger LOGGER = Logger.getLogger(DeployVasariTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws Exception {
@@ -32,12 +34,12 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     protected boolean getLoadDesign() {
         return true;
     }
-    
+
     @Override
     protected boolean getLoadSamples() {
         return true;
     }
-    
+
     @Override
     protected String getCaArrayId() {
         return "rembr-00037";
@@ -59,21 +61,6 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     @Override
-    protected Logger getLogger() {
-        return LOGGER;
-    }
-
-    @Override
-    protected String getNCIAServerUrl() {
-        return "http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
-    }
-    
-    @Override
-    protected String getNCIATrialId() {
-        return "GBM Rembrandt";
-    }
-
-    @Override
     protected String getStudyName() {
         return "Rembrandt/VASARI";
     }
@@ -81,15 +68,6 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     @Override
     protected File getAnnotationGroupFile() {
         return TestDataFiles.REMBRANDT_ANNOTATION_GROUP_FILE;
-    }
-
-    protected File getImageAnnotationFile() {
-        return TestDataFiles.VASARI_IMAGE_ANNOTATION_FILE;
-    }
-
-    @Override
-    protected File getImageMappingFile() {
-        return TestDataFiles.REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE;
     }
 
     @Override
@@ -107,11 +85,6 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
         return TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE;
     }
 
-    @Override
-    protected String getControlSamplesFileName() {
-        return TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE_PATH;
-    }
-    
     @Override
     protected File getSubjectAnnotationFile() {
         return TestDataFiles.REMBRANDT_CLINICAL_FILE;
@@ -160,14 +133,6 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     /**
      * {@inheritDoc}
      */
-    @Override    
-    protected boolean getAuthorizeStudy() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String getQueryFieldDescriptorName() {
         return "Gender";
@@ -179,6 +144,6 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     @Override
     protected String getQueryAnnotationValue() {
         return "F";
-    }     
+    }
 
 }

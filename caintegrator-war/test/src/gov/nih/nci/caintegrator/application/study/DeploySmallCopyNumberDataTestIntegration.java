@@ -29,14 +29,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Tests deployment of a study with a small amount of copy number data.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 @Transactional
 public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStudyTestIntegration {
-
-    private static final Logger LOGGER = Logger.getLogger(DeploySmallCopyNumberDataTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws Exception {
@@ -51,12 +53,14 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
 
     @Override
     protected void configureSegmentationDataCalcuation(DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration) {
-        dnaAnalysisDataConfiguration.getSegmentationService().setUrl("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
+        dnaAnalysisDataConfiguration.getSegmentationService()
+            .setUrl("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
         dnaAnalysisDataConfiguration.setRandomNumberSeed(1234567);
     }
 
     private void checkCopyNumberData() {
-        Set<ArrayData> arrayDatas = getStudyConfiguration().getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null);
+        Set<ArrayData> arrayDatas =
+                getStudyConfiguration().getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null);
         assertEquals(1, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkCopyNumberData(arrayData);
@@ -78,11 +82,6 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
         }
         assertTrue(nonZeroValueCount > 50000);
         assertFalse(arrayData.getSegmentDatas().isEmpty());
-    }
-
-    @Override
-    protected boolean getMapImages() {
-        return false;
     }
 
     @Override
@@ -113,11 +112,6 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     @Override
     protected int getExpectedControlSampleCount() {
         return 1;
-    }
-
-    @Override
-    protected Logger getLogger() {
-        return LOGGER;
     }
 
     @Override
@@ -172,11 +166,6 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     }
 
     @Override
-    protected String getControlSamplesFileName() {
-        return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_FILE_PATH;
-    }
-
-    @Override
     protected File getSubjectAnnotationFile() {
         return TestDataFiles.REMBRANDT_NCRI_CLINICAL_FILE;
     }
@@ -219,19 +208,6 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     @Override
     protected PlatformVendorEnum getPlatformVendor() {
         return PlatformVendorEnum.AFFYMETRIX;
-    }
-
-    @Override
-    protected ArrayDataLoadingTypeEnum getLoadingType() {
-        return ArrayDataLoadingTypeEnum.PARSED_DATA;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean getAuthorizeStudy() {
-        return false;
     }
 
     /**
