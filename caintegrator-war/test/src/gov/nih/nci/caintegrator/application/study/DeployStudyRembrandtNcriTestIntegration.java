@@ -18,10 +18,15 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 2880)
+/**
+ * Integration test for deployment of Rembrandt NCRI study.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@Transactional
 public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudyTestIntegration {
 
-    private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtNcriTestIntegration.class);
+    private static final Logger LOGGER = Logger.getLogger(DeployStudyRembrandtNcriTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws Exception {
@@ -190,7 +195,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
      */
     @Override
     protected boolean getAuthorizeStudy() {
-        return false;
+        return true;
     }
 
     /**
@@ -206,7 +211,6 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
      */
     @Override
     protected String getQueryAnnotationValue() {
-        return "F";
+        return "M";
     }
-
 }

@@ -182,13 +182,13 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
             }
             Set<StudySubjectAssignment> listOfAllowedStudySubjectAssignments = new HashSet<StudySubjectAssignment>();
             Set<String> listOfAllowedExperimentIdentifiers = new HashSet<String>();
-            List<AuthorizedStudyElementsGroup> authorizedStudyElementGroups = dao
-                .getAuthorizedStudyElementGroups(username, studyConfiguration.getId());
+            List<AuthorizedStudyElementsGroup> authorizedStudyElementGroups =
+                    dao.getAuthorizedStudyElementGroups(username, studyConfiguration.getId());
+
             for (AuthorizedStudyElementsGroup asg : authorizedStudyElementGroups) {
                 addToListOfAllowedStudySubjectAssignments(dao, listOfAllowedStudySubjectAssignments, study, asg);
                 addToListOfAllowedExperimentIdentifiers(listOfAllowedExperimentIdentifiers, asg);
             }
-
             ResultTypeEnum queryResultType = query.getResultType();
             if (isFilterableResultType(queryResultType)) {
                 filterResults(rowsBeforeRestriction, listOfAllowedStudySubjectAssignments,

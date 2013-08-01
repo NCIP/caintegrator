@@ -31,7 +31,9 @@ import gov.nih.nci.caintegrator.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator.application.study.deployment.DeploymentService;
 import gov.nih.nci.caintegrator.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator.common.Cai2Util;
+import gov.nih.nci.caintegrator.common.QueryUtil;
 import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator.domain.annotation.PermissibleValue;
 import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator.domain.application.BooleanOperatorEnum;
@@ -44,10 +46,9 @@ import gov.nih.nci.caintegrator.domain.application.Query;
 import gov.nih.nci.caintegrator.domain.application.QueryResult;
 import gov.nih.nci.caintegrator.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator.domain.application.ResultTypeEnum;
-import gov.nih.nci.caintegrator.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator.domain.genomic.Platform;
 import gov.nih.nci.caintegrator.domain.genomic.PlatformConfiguration;
@@ -63,10 +64,12 @@ import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 import gov.nih.nci.caintegrator.security.AuthorizationManagerFactory;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -91,6 +94,8 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 @TransactionConfiguration(defaultRollback = false)
 public abstract class AbstractDeployStudyTestIntegration extends AbstractMockitoTest {
     private static final String USER_NCIMANAGER = "ncimanager";
+    private static final String USER_NCIMANAGER_ID = "3";
+    private static final String PROTECTION_GROUP_ID = "2";
     private static final String APPLICATION_CONTEXT_NAME = "caintegrator";
     private final Logger logger = Logger.getLogger(getClass());
     private long startTime;
@@ -209,8 +214,14 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
         }
     }
 
-    abstract protected String getStudyName();
+    /**
+     * @return the study name
+     */
+    protected abstract String getStudyName();
 
+    /**
+     * @return the study description
+     */
     protected String getDescription() {
         return getStudyName() + " demo study";
     }
@@ -459,8 +470,10 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
     private void mapSamples() throws ValidationException, IOException {
         if (getLoadSamples()) {
             logStart();
-            service.mapSamples(studyConfiguration, getSampleMappingFile(), studyConfiguration.getGenomicDataSources().get(0));
-            assertEquals(getExpectedMappedSampleCount(), studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().size());
+            service.mapSamples(studyConfiguration, getSampleMappingFile(),
+                    studyConfiguration.getGenomicDataSources().get(0));
+            assertEquals(getExpectedMappedSampleCount(),
+                    studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().size());
             logEnd();
         }
     }
@@ -468,8 +481,10 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
     private void loadControlSamples(int genomicSourceIndex) throws ValidationException, IOException {
         if (getLoadSamples() && getControlSamplesFile() != null) {
             logStart();
-            GenomicDataSourceConfiguration genomicSource = studyConfiguration.getGenomicDataSources().get(genomicSourceIndex);
-            service.addControlSampleSet(genomicSource, getControlSampleSetName(), getControlSamplesFile(), getControlSamplesFile().getName());
+            GenomicDataSourceConfiguration genomicSource =
+                    studyConfiguration.getGenomicDataSources().get(genomicSourceIndex);
+            service.addControlSampleSet(genomicSource, getControlSampleSetName(), getControlSamplesFile(),
+                    getControlSamplesFile().getName());
             assertEquals(getExpectedControlSampleCount(), studyConfiguration.
                     getControlSampleSet(getControlSampleSetName()).getSamples().size());
             logEnd();
@@ -495,7 +510,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
     private void deploy(UserWorkspace userWorkspace)
     throws ConnectionException, DataRetrievalException, ValidationException, IOException, InvalidCriterionException {
         logStart();
-        service.setStudyLastModifiedByCurrentUser(studyConfiguration, userWorkspace, null, LogEntry.getSystemLogDeploy(studyConfiguration.getStudy()));
+        service.setStudyLastModifiedByCurrentUser(studyConfiguration, userWorkspace, null,
+                LogEntry.getSystemLogDeploy(studyConfiguration.getStudy()));
         deploymentService.prepareForDeployment(studyConfiguration);
         Status status = deploymentService.performDeployment(studyConfiguration, getHeatmapParameters()).getStatus();
         logEnd();
@@ -508,17 +524,10 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
             IOException, InvalidCriterionException, CSException {
         if (getAuthorizeStudy()) {
             logStart();
-            AuthorizedStudyElementsGroup authorizedStudyElementsGroup1 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup1 = createAuthorizedStudyElementsGroup(studyConfiguration,
-                    "Group 1 for " + getStudyName(), getQueryFieldDescriptorName(), getQueryAnnotationValue());
-            service.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup1);
-
-            AuthorizedStudyElementsGroup authorizedStudyElementsGroup2 = new AuthorizedStudyElementsGroup();
-            authorizedStudyElementsGroup2 = createAuthorizedStudyElementsGroup(studyConfiguration,
-                    "Group 2 for " + getStudyName(), "Age", StringUtils.EMPTY);
-            service.addAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup2);
-
-            service.deleteAuthorizedStudyElementsGroup(studyConfiguration, authorizedStudyElementsGroup2);
+            AuthorizedStudyElementsGroup authorizedStudyElementsGroup =
+                    createAuthorizedStudyElementsGroup(studyConfiguration, "Group 1 for " + getStudyName(),
+                            getQueryFieldDescriptorName(), getQueryAnnotationValue());
+            service.daoSave(authorizedStudyElementsGroup);
             logEnd();
         }
     }
@@ -539,46 +548,46 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
         group.setGroupDesc(desc);
         getAuthorizationManager().createGroup(group);
 
+        getAuthorizationManager().addUsersToGroup(group.getGroupId().toString(), new String[] {USER_NCIMANAGER_ID});
         authorizedStudyElementsGroup.setAuthorizedGroup(group);
+
+        getService().addAuthorizedStudyElementsGroup(getStudyConfiguration(), authorizedStudyElementsGroup);
+
+        ProtectionElement pe =
+                getAuthorizationManager().getProtectionElement(authorizedStudyElementsGroup.getClass().getName());
+        getAuthorizationManager().addProtectionElements(PROTECTION_GROUP_ID,
+                new String[] {pe.getProtectionElementId().toString()});
+
         // add AuthorizedAnnotationFieldDescriptor
-        AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
-        annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(fieldDescriptorName);
-        AuthorizedAnnotationFieldDescriptor authorizedAnnotationFieldDescriptor = new AuthorizedAnnotationFieldDescriptor();
+        AnnotationFieldDescriptor annotationFieldDescriptor =
+                studyConfiguration.getExistingFieldDescriptorInStudy(fieldDescriptorName);
+        AuthorizedAnnotationFieldDescriptor authorizedAnnotationFieldDescriptor =
+                new AuthorizedAnnotationFieldDescriptor();
         authorizedAnnotationFieldDescriptor.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedAnnotationFieldDescriptor.setAnnotationFieldDescriptor(annotationFieldDescriptor);
         authorizedStudyElementsGroup.getAuthorizedAnnotationFieldDescriptors().add(authorizedAnnotationFieldDescriptor);
+
         // add AuthorizedGenomicDataSourceConfigurations
-        AuthorizedGenomicDataSourceConfiguration authorizedGenomicDataSourceConfiguration = new AuthorizedGenomicDataSourceConfiguration();
+        AuthorizedGenomicDataSourceConfiguration authorizedGenomicDataSourceConfiguration =
+                new AuthorizedGenomicDataSourceConfiguration();
         authorizedGenomicDataSourceConfiguration.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
-        authorizedGenomicDataSourceConfiguration.setGenomicDataSourceConfiguration(studyConfiguration.getGenomicDataSources().get(0));
-        authorizedStudyElementsGroup.getAuthorizedGenomicDataSourceConfigurations().add(authorizedGenomicDataSourceConfiguration);
-        // add AuthorizedQuery
+        authorizedGenomicDataSourceConfiguration
+            .setGenomicDataSourceConfiguration(studyConfiguration.getGenomicDataSources().get(0));
+        authorizedStudyElementsGroup
+            .getAuthorizedGenomicDataSourceConfigurations().add(authorizedGenomicDataSourceConfiguration);
+
+        //Add AuthorizedQuery
         Query query = new Query();
-        query.setName("TestAuthorizationQuery");
-        query.setDescription(desc);
-
-        for (StudySubscription studySubscription : workspaceService.getWorkspace().getSubscriptionCollection()) {
-            if (studySubscription.getStudy().getId().equals(studyConfiguration.getStudy().getId())) {
-                query.setSubscription(studySubscription);
-            }
-        }
-
+        query.setName("Authorized Query for " + getStudyName());
         query.setLastModifiedDate(new Date());
-        query.setCompoundCriterion(new CompoundCriterion());
-        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
-        StringComparisonCriterion stringComparisonCriterion = new StringComparisonCriterion();
-        stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
-        stringComparisonCriterion.setStringValue(annotationValue);
-        stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        AbstractCriterion abstractCriterion = stringComparisonCriterion;
-        HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
-        abstractCriterionCollection.add(abstractCriterion);
-        query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.OR);
+        query.getCompoundCriterion().getCriterionCollection()
+            .add(QueryUtil.createStringComparisonCriterion(annotationFieldDescriptor, annotationValue));
+
         AuthorizedQuery authorizedQuery = new AuthorizedQuery();
         authorizedQuery.setAuthorizedStudyElementsGroup(authorizedStudyElementsGroup);
         authorizedQuery.setQuery(query);
         authorizedStudyElementsGroup.getAuthorizedQuerys().add(authorizedQuery);
-
         return authorizedStudyElementsGroup;
     }
 
@@ -593,32 +602,41 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
     private void loadClinicalData()
     throws IOException, ValidationException, ConnectionException, InvalidFieldDescriptorException {
         logStart();
-        sourceConfiguration =
-            service.addClinicalAnnotationFile(studyConfiguration, getSubjectAnnotationFile(),
-                    getSubjectAnnotationFile().getName(), true);
+        sourceConfiguration = service.addClinicalAnnotationFile(studyConfiguration, getSubjectAnnotationFile(),
+                getSubjectAnnotationFile().getName(), true);
         if (getAnnotationGroupFile() == null) {
             sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         }
         assertTrue(sourceConfiguration.isLoadable());
         sourceConfiguration = service.loadClinicalAnnotation(studyConfiguration.getId(), sourceConfiguration.getId());
         assertTrue(sourceConfiguration.isCurrentlyLoaded());
+
+        if (getAuthorizeStudy()) {
+            for (AnnotationFieldDescriptor afd
+                    : studyConfiguration.getClinicalConfigurationCollection().get(0).getAnnotationDescriptors()) {
+                if (StringUtils.equalsIgnoreCase(getQueryFieldDescriptorName(), afd.getName())) {
+                    afd.setShowInAuthorization(true);
+                    break;
+                }
+            }
+            getService().save(studyConfiguration);
+        }
         logEnd();
     }
 
     abstract protected File getSubjectAnnotationFile();
 
-    private void loadAnnotationGroup()
-    throws IOException, ValidationException, ConnectionException {
+    private void loadAnnotationGroup() throws IOException, ValidationException, ConnectionException {
         AnnotationGroup annotationGroup = new AnnotationGroup();
         annotationGroup.setName(Study.DEFAULT_ANNOTATION_GROUP);
         annotationGroup.setDescription("Created by integration test");
-        getService().saveAnnotationGroup(
-                annotationGroup, studyConfiguration, getAnnotationGroupFile());
+        getService().saveAnnotationGroup(annotationGroup, studyConfiguration, getAnnotationGroupFile());
     }
 
     private void loadSurvivalValueDefinition() {
         SurvivalValueDefinition definition = new SurvivalValueDefinition();
-        definition.setSurvivalStartDate(dao.getAnnotationDefinition(getSurvivalStartDateName(), AnnotationTypeEnum.DATE));
+        definition.setSurvivalStartDate(dao.getAnnotationDefinition(getSurvivalStartDateName(),
+                AnnotationTypeEnum.DATE));
         definition.setDeathDate(dao.getAnnotationDefinition(getDeathDateName(), AnnotationTypeEnum.DATE));
         definition.setLastFollowupDate(dao.getAnnotationDefinition(getLastFollowupDateName(), AnnotationTypeEnum.DATE));
         definition.setName("Survival From Start Date");
@@ -671,18 +689,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
         logStart();
         Query query = createQuery();
         query.setResultType(ResultTypeEnum.CLINICAL);
-
-        AnnotationFieldDescriptor annotationFieldDescriptor = new AnnotationFieldDescriptor();
-        annotationFieldDescriptor = studyConfiguration.getExistingFieldDescriptorInStudy(getQueryFieldDescriptorName());
-        StringComparisonCriterion stringComparisonCriterion = new StringComparisonCriterion();
-        stringComparisonCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
-        stringComparisonCriterion.setStringValue(getQueryAnnotationValue());
-        stringComparisonCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
-        stringComparisonCriterion.setEntityType(EntityTypeEnum.SUBJECT);
-        AbstractCriterion abstractCriterion = stringComparisonCriterion;
-        HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
-        abstractCriterionCollection.add(abstractCriterion);
-        query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);
+        query.getCompoundCriterion().getCriterionCollection().add(createAnnotationCriterion());
 
         QueryResult result = queryManagementService.execute(query);
         assertFalse(result.getRowCollection().isEmpty());
@@ -719,19 +726,37 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractMockito
             Query query = createQuery();
             query.setResultType(ResultTypeEnum.GENE_EXPRESSION);
             query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+
             GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
             geneNameCriterion.setGeneSymbol("EGFR");
-            geneNameCriterion.setPlatformName(design.getName());
             geneNameCriterion.setGenomicCriterionType(GenomicCriterionTypeEnum.GENE_EXPRESSION);
 
-            HashSet<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
-            abstractCriterionCollection.add(geneNameCriterion);
-            query.getCompoundCriterion().setCriterionCollection(abstractCriterionCollection);
+            query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
+            if (getAuthorizeStudy()) {
+                query.getCompoundCriterion().getCriterionCollection().add(createAnnotationCriterion());
+            }
             GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
             assertFalse(result.getColumnCollection().isEmpty());
             assertFalse(result.getFilteredRowCollection().isEmpty());
             logEnd();
         }
+    }
+
+    private SelectedValueCriterion createAnnotationCriterion() {
+        AnnotationFieldDescriptor annotationFieldDescriptor =
+                studyConfiguration.getExistingFieldDescriptorInStudy(getQueryFieldDescriptorName());
+        SelectedValueCriterion annotationCriterion = new SelectedValueCriterion();
+        annotationCriterion.setAnnotationFieldDescriptor(annotationFieldDescriptor);
+        annotationCriterion.setEntityType(EntityTypeEnum.SUBJECT);
+        annotationCriterion.setFinalMaskApplied(false);
+        for (PermissibleValue pv : annotationFieldDescriptor.getPermissibleValues()) {
+            if (StringUtils.equalsIgnoreCase(getQueryAnnotationValue(), pv.getValue())) {
+                annotationCriterion.setValueCollection(Arrays.asList(pv));
+                break;
+            }
+        }
+        return annotationCriterion;
     }
 
     abstract protected Logger getLogger();

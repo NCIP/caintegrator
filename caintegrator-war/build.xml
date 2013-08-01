@@ -27,7 +27,7 @@
 
     <property name="cobertura.linecoverage" value="81"/>
     <property name="cobertura.branchcoverage" value="70"/>
-    <property name="pmd.maxRuleViolations" value="185"/>
+    <property name="pmd.maxRuleViolations" value="183"/>
 
     <tstamp>
       <format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
@@ -946,9 +946,8 @@
          </junit>
     </target>
 
-    <target name="deploy:rembrandt-ncri" depends="test:compile:caintegrator.war.test.classes,
-        caintegrator.war,
-        hibernate.cfg.xml.test, caintegrator.csm.xml.test">
+    <target name="deploy:rembrandt-ncri" depends="test:compile:caintegrator.war.test.classes,caintegrator.war,
+        hibernate.cfg.xml.test, caintegrator.csm.xml.test,database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <jvmarg value="-Djava.io.tmpdir=${caintegrator.java.io.tmpdir}"/>
              <classpath>

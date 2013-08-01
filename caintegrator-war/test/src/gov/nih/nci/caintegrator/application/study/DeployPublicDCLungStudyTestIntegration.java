@@ -18,10 +18,15 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 2880)
+/**
+ * Integration test for deployment of the public DC Lung study.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@Transactional
 public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyTestIntegration {
 
-    private final static Logger LOGGER = Logger.getLogger(DeployPublicDCLungStudyTestIntegration.class);
+    private static final Logger LOGGER = Logger.getLogger(DeployPublicDCLungStudyTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws Exception {
@@ -179,7 +184,7 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     protected boolean getAuthorizeStudy() {
-        return false;
+        return true;
     }
 
     /**

@@ -82,8 +82,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementation of the DAO.
  */
-@Repository("caIntegrator2Dao")
 @Transactional
+@Repository("caIntegrator2Dao")
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
 
     private static final String UNCHECKED = "unchecked";
@@ -159,7 +159,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings(UNCHECKED)
     public <T> T get(Long id, Class<T> objectClass) {
         return getHibernateTemplate().get(objectClass, id);
     }
@@ -723,11 +722,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username,
                                                                               Long studyConfigurationId) {
         secureCurrentSession(username);
-        Criteria authorizedStudyElementsGroupCriteria = getCurrentSession().
-                                                         createCriteria(AuthorizedStudyElementsGroup.class).
-                                                         createCriteria("studyConfiguration").
-                                                         add(Restrictions.eq("id", studyConfigurationId));
-        List<AuthorizedStudyElementsGroup> authorizedGroups = authorizedStudyElementsGroupCriteria.list();
+        Query q = getCurrentSession().createQuery("from " + AuthorizedStudyElementsGroup.class.getName()
+                + " where studyConfiguration.id = :id");
+        q.setParameter("id", studyConfigurationId);
+
+        List<AuthorizedStudyElementsGroup> authorizedGroups = q.list();
         return getGroupsUserIsIn(username, authorizedGroups);
     }
 
@@ -938,7 +937,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")      // hibernate operation not parameterized
     public <T> T merge(T persistentObject) {
         return getHibernateTemplate().merge(persistentObject);
     }
