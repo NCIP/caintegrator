@@ -83,6 +83,7 @@
             });
             </script>
         </s:if>
+        <s:head />
 	</head>
 	
 	
