@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class NCIAFacadeTestIntegration {
     @Before
     public void setUp() throws Exception {
         connection = new ServerConnectionProfile();
-        connection.setUrl("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
+        connection.setUrl("http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
     }
 
     /**
@@ -72,17 +71,16 @@ public class NCIAFacadeTestIntegration {
      * @throws ConnectionException on a connection error
      * @throws IOException on an IO error
      */
-    @Ignore("Disabled until the series instance UID can be determined.")
     @Test
     public void testRetrieveDicomFiles() throws ConnectionException, IOException {
-        //String seriesInstanceUID = "2.16.124.113543.6003.2770482660.6726.18091.1680495542";
-        String seriesInstanceUID = "1.3.6.1.4.1.9328.50.45.271121120485314117150046084494551250041";
+        String seriesInstanceUID = "2.16.124.113543.6003.1.857.80828.1120.9007609.95.2";
         String studyInstanceUID = "2.16.124.113543.6003.1.857.80828.1120.9007593.726.1";
         NCIADicomJob job = new NCIADicomJob();
         job.getImageSeriesIDs().add(seriesInstanceUID);
         job.getImageStudyIDs().add(studyInstanceUID);
         job.setServerConnection(connection);
         job.setImageAggregationType(NCIAImageAggregationTypeEnum.IMAGESERIES);
+
         File retrievedZip = nciaFacade.retrieveDicomFiles(job);
         File expectedZip = new File(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload"
                                      + File.separator + "DICOM_JOB_1" + File.separator + "nciaDicomFiles.zip");
@@ -115,5 +113,4 @@ public class NCIAFacadeTestIntegration {
             LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
         }
     }
-
 }
