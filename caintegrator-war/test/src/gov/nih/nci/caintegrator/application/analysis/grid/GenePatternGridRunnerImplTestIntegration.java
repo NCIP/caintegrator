@@ -45,7 +45,6 @@ import org.genepattern.gistic.common.GisticUtils;
 import org.genepattern.io.ParseException;
 import org.genepattern.io.odf.OdfObject;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,7 +188,6 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTes
     }
 
     @Test
-    @Ignore
     public void testRunGistic() throws ConnectionException, InvalidCriterionException, IOException, ParameterException {
         StudySubscription subscription = setupStudySubscription(ArrayDataType.COPY_NUMBER);
         GisticParameters parameters = new GisticParameters();
@@ -230,6 +228,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTes
         checkLine(reader.readNext(), String.valueOf(numSamples), String.valueOf(numReporters));
         reader.readNext(); // Header
         checkValue(reader.readNext(), value); // Row values
+        reader.close();
     }
 
     private void checkValue(String[] readNext, String f) {
