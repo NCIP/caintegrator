@@ -206,12 +206,8 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
         } catch (Exception e) { token = ""; }
 
        String returnString = "<a href=\"deleteStudy.action?studyConfiguration.id="
-       + studyConfiguration.getId()
-       + "&struts.token.name="
-       + tokenName
-       + "&token="
-       + token
-       + "\" onclick=\"return confirm('" + deleteMsg + "')\">Delete</a>";
+               + studyConfiguration.getId() + "&struts.token.name=" + tokenName + "&token=" + token
+               + "\" onclick=\"updateUrlTokenParameters(this);return confirm('" + deleteMsg + "')\">Delete</a>";
 
         return returnString;
     }
@@ -249,12 +245,8 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
        String returnString = null;
 
        if (studyConfiguration.getStudy().isEnabled()) {
-           returnString = "<a href=\"copyStudy.action?studyConfiguration.id="
-       + studyConfiguration.getId()
-       + "&struts.token.name="
-       + tokenName
-       + "&token="
-           + token;
+           returnString = "<a onclick=\"updateUrlTokenParameters(this)\" href=\"copyStudy.action?studyConfiguration.id="
+       + studyConfiguration.getId() + "&struts.token.name=" + tokenName + "&token=" + token;
        } else {
            returnString = "<a style=\"color:Grey; text-decoration:none;\""
                + " title=\"Copy Disabled - Enable Study to Copy\"";
@@ -276,10 +268,12 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
        String returnString = "";
        String actionName = "";
        if (BooleanUtils.isTrue(studyConfiguration.getStudy().isEnabled())) {
-           returnString = "<a href=\"disableStudy.action?studyConfiguration.id=";
+           returnString = "<a onclick=\"updateUrlTokenParameters(this)\" "
+                   + "href=\"disableStudy.action?studyConfiguration.id=";
            actionName = "Disable";
        } else {
-           returnString = "<a href=\"enableStudy.action?studyConfiguration.id=";
+           returnString = "<a onclick=\"updateUrlTokenParameters(this)\" "
+                   + "href=\"enableStudy.action?studyConfiguration.id=";
            actionName = "Enable";
        }
 
