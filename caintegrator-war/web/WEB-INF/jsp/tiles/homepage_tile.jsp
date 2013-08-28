@@ -64,8 +64,8 @@
 	       <div>
 	           <s:url var="loginUrl" value="login.jsp" includeParams="all">
 	               <s:param name="selectedPage" value="'login'"/>
-	               <s:param name="struts.token.name">struts.token</s:param>
-                   <s:param name="struts.token" value="%{struts.token}" />
+	               <s:param name="struts.token.name">token</s:param>
+                   <s:param name="token" value="%{token}" />
 	           </s:url>
 		       <s:a href="%{#loginUrl}" cssClass="btn flush_left_side">
 		          <span class="btn_img">Login</span>

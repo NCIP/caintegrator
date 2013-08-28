@@ -97,7 +97,7 @@ public class RegistrationRequest {
      * @return the phone
      */
     @RequiredStringValidator(message = "Phone number required.")
-    @RegexFieldValidator(expression = "(\\+)?([-\\._\\(\\) ]?[\\d]{3,20}[-\\._\\(\\) ]?){2,10}||^$",
+    @RegexFieldValidator(regexExpression = "(\\+)?([-\\._\\(\\) ]?[\\d]{3,20}[-\\._\\(\\) ]?){2,10}||^$",
                          message = "Must supply valid phone number.")
     public String getPhone() {
         return phone;

@@ -59,7 +59,7 @@
                     <s:div id="aimInputParams" cssStyle="%{aimInputCssStyle}">
 	                    <s:select name="aimServerProfile.url" id="aimUrl" accesskey="false"
 	                        headerKey="" headerValue="--Enter an AIM Server Grid URL--"
-	                        list="aimServices" label=" AIM Server Grid URL " required="true"
+	                        list="aimServices" label=" AIM Server Grid URL " requiredLabel="true"
 	                        cssClass="editable-select" />
 	                    <br/>
 	                    <s:textfield label=" AIM Username " name="aimServerProfile.username"

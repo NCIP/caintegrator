@@ -121,12 +121,12 @@
                     
                     <s:select name="imageSourceConfiguration.serverProfile.url" id="nbiaUrl" accesskey="false"
                         headerKey="" headerValue="--Enter an NBIA Server Grid URL--"
-                        list="nbiaServices" label=" NBIA Server Grid URL " required="true"
+                        list="nbiaServices" label=" NBIA Server Grid URL " requiredLabel="true"
                         cssClass="editable-select" />
-                    <s:textfield label=" NBIA Web URL " name="imageSourceConfiguration.serverProfile.webUrl" id="nbiaWebUrl" size="40" required="true"/>
+                    <s:textfield label=" NBIA Web URL " name="imageSourceConfiguration.serverProfile.webUrl" id="nbiaWebUrl" size="40" requiredLabel="true"/>
                     <s:textfield label=" NBIA Username " name="imageSourceConfiguration.serverProfile.username" id="nbiaUsername" size="40"/>
                     <s:password label=" NBIA Password " name="imageSourceConfiguration.serverProfile.password" id="nbiaPassword" size="40"/>
-                    <s:textfield required="true" label=" Collection Name " name="imageSourceConfiguration.collectionName" id="nbiaCollectionName" size="40"/>
+                    <s:textfield requiredLabel="true" label=" Collection Name " name="imageSourceConfiguration.collectionName" id="nbiaCollectionName" size="40"/>
                 </tr>
                      <script type="text/javascript">
                         var origUrl = document.imagingSourceForm.serverProfileUrl.value;
@@ -146,7 +146,7 @@
                 		</s:if>
                 		<s:radio name="mappingType" 
                             list="@gov.nih.nci.caintegrator.application.study.ImageDataSourceMappingTypeEnum@getStringValues()"
-                            required="true" label="Select Mapping File Type:"
+                            requiredLabel="true" label="Select Mapping File Type:"
                             onclick="disableFormElement(this, 'Auto (No File Required)', document.imagingSourceForm, imageClinicalMappingFile)"/>
                 		<s:file name="imageClinicalMappingFile" label="Subject to Imaging Mapping File" size="40" disabled="true"/>
                 </tr>
