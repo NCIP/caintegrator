@@ -629,9 +629,9 @@
 
     <property name="caintegratordb.dir" location="${software.dir}/common/resources/db-install/mysql" />
     <property name="caintegratordb.sql.upgrade.src.dir" location="${software.dir}/common/resources/db-upgrade/mysql" />
-    <property name="caintegratordb.sql.upgrade.target.dir" location="${caintegratordb.sql.upgrade.src.dir}/target/sql" />
+    <property name="caintegratordb.sql.upgrade.target.dir" location="${target.dir}/db-upgrade" />
     <property name="caintegratordb.sql.src.dir" location="${caintegratordb.dir}" />
-    <property name="caintegratordb.sql.target.dir" location="${caintegratordb.dir}/target/sql" />
+    <property name="caintegratordb.sql.target.dir" location="${target.dir}/db-install" />
     <property name="comment.start" value="&lt;!-- " />
     <property name="comment.end" value=" -->" />
 
