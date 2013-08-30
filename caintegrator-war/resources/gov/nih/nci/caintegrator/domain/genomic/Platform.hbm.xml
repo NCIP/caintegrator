@@ -17,12 +17,11 @@
         <property name="version" type="string" column="VERSION"/>
         <property name="vendor" type="Vendor" column="VENDOR"/>
 		<!-- Associations mapping for the Platform class -->
-		<set name="reporterListsInternal" lazy="true" sort="natural" cascade="all" >
+		<set name="reporterListsInternal" lazy="true" fetch="subselect" sort="natural" cascade="all" >
 			<cache usage="read-write" />
 			<key column="PLATFORM_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator.domain.genomic.ReporterList"/>
 		</set>
-        <one-to-one name="platformConfiguration" class="PlatformConfiguration"
-            property-ref="platform"/>
+        <one-to-one name="platformConfiguration" class="PlatformConfiguration" property-ref="platform"/>
 	</class>
 </hibernate-mapping>
