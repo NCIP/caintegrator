@@ -3028,33 +3028,17 @@
 		<attribute name="target.dir" default="${target.dir}"/>
 		<attribute name="download.dir" default="${download.dir}" />
 		<attribute name="dist.dir" default="${dist.dir}"/>
-		<attribute name="izpack.binary.name" default="izpack-4.3" />
-		<attribute name="izpack.binary.file" default="izpack-4.3.zip" />
-	    <attribute name="izpack-custom.binary.file" default="izpack-custom.zip"/>
+		<attribute name="izpack.binary.name" default="izpack-4.3.5" />
+		<attribute name="izpack.binary.file" default="izpack-4.3.5.zip" />
 	    <attribute name="third-party.dir" default="${software.dir}/third-party"/>
-		<attribute name="product.name" default="caArray-installer" />
+		<attribute name="product.name" default="caintegrator-installer" />
 		<attribute name="product.version" default="2.1.0" />
 		<sequential>
-			<tstamp>
-				<format property="JAR_STAMP" pattern="MMddyyyyhhmmss" unit="millisecond" />
-			</tstamp>
-
 			<!-- Cleanup target area -->
 			<delete dir="@{target.dir}/@{izpack.binary.name}" />
 
 			<!-- Extract izpack -->
 			<unzip dest="@{target.dir}" src="@{third-party.dir}/@{izpack.binary.file}"/>
-
-		    <!-- Extract izpack custom code and copy into izpack dist. -->
-		    <unzip dest="@{target.dir}/@{izpack.binary.name}" src="@{third-party.dir}/@{izpack-custom.binary.file}" overwrite="true"/>
-		    
-			<!-- customize izpack  -->
-			<xmltask preservetype="true" failWithoutMatch="true" source="@{target.dir}/@{izpack.binary.name}/src/build.xml"
-				dest="@{target.dir}/@{izpack.binary.name}/src/build.xml">
-				<xmlcatalog refid="bda.xml.catalog"/>
-				<insert path="//target[@name='build.listeners']" file="@{target.dir}/@{izpack.binary.name}/resources/ProgressBarInstallerListener.xml"/>
-			</xmltask>
-			<copy file="@{target.dir}/@{izpack.binary.name}/resources/eng.xml" todir="@{target.dir}/@{izpack.binary.name}/bin/langpacks/installer" overwrite="true" />
 
 			<!-- Copy over library files -->
 			<mkdir dir="@{target.dir}/@{izpack.binary.name}/lib"/>
@@ -3065,10 +3049,6 @@
 					<include name="ant-nodeps-1.8.1.jar"/>
 				</fileset>
 			</copy>
-
-			<!-- Compile the izpack with custom code -->
-			<ant inheritall="false" antfile="@{target.dir}/@{izpack.binary.name}/src/build.xml" />
-
 			<if>
 				<os family="unix" />
 				<then>

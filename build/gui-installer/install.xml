@@ -15,16 +15,15 @@
 	<property name="target.location" location="${software.location}/target" />
 	<property name="dist.location" location="${target.location}/dist" />
 	<property name="bda-utils.dir" location="${target.location}/bda-utils" />
-	<property name="custom.resource.dir" location="${target.location}/izpack-4.3/resources"/>
 	<property name="project.name" value="bda-blueprints"/>
 	<property name="installer.dir" value=".installer-${project.name}"/>
-	<property name="gui-installer.dist.base.name" value="caintegrator_gui_distribution_${caintegrator.version}.jar"/>
+	<property name="gui-installer.dist.base.name" value="caintegrator_gui_distribution_${caintegrator.version}"/>
 	<property name="install.zip.file" value="${caintegrator.install.zip.file}"/>
 	<property name="upgrade.zip.file" value="${caintegrator.upgrade.zip.file}"/>
 
 	<echoproperties/>
-<echo message="compile.jar.dir ::: ${compile.jar.dir}"/>
-<echo message="this.dir ::: ${this.dir}"/>
+    <echo message="compile.jar.dir ::: ${compile.jar.dir}"/>
+    <echo message="this.dir ::: ${this.dir}"/>
 
 	<taskdef name="IzPack" classpath="${compile.jar.dir}/lib/compiler.jar" classname="com.izforge.izpack.ant.IzPackTask"/>
 
@@ -43,11 +42,8 @@
 				<include name="${gui-installer.dist.base.name}*.jar"/>
 			</fileset>
 		</delete>
-		<tstamp>
-			<format property="build.time" pattern="yyyyMMddHHmm" />
-		</tstamp>
 
-		<IzPack output="${dist.location}/${gui-installer.dist.base.name}-${build.time}.jar"
+		<IzPack output="${dist.location}/${gui-installer.dist.base.name}.jar"
 			installerType="standard"
 			basedir="."
 			IzPackDir="${compile.jar.dir}/">
@@ -309,12 +305,16 @@
 				<resources>
 					<res id="Installer.image"  src="@{this.dir}/logotype.png"/>
 					<res id="AntActionsSpec.xml" src="@{this.dir}/antActionSpec.xml" />
-					<res id="HTMLLicencePanel.licence" src="@{custom.resource.dir}/Licence.html"/>
+					<res id="HTMLLicencePanel.licence" src="@{this.dir}/Licence.html"/>
 					<res id="InfoPanel.info" src="@{this.dir}/Readme.txt"/>
 					<res id="userInputSpec.xml" src="@{this.dir}/userInputSpec.xml" />
 					<res id="CustomActionsLang.xml_eng" src="@{this.dir}/custom_eng.xml"/>
 					<res id="UserPathPanel.dir.windows" src="@{this.dir}/windir.txt"/>
 					<res id="UserPathPanel.dir.linux" src="@{this.dir}/linuxdir.txt" />
+			        <res id="TargetPanel.dir.windows" src="@{this.dir}/windir.txt"/>
+			        <res id="TargetPanel.dir.linux" src="@{this.dir}/linuxdir.txt" />
+			        <res id="TargetPanel.dir.unix" src="@{this.dir}/linuxdir.txt" />
+			        <res id="TargetPanel.dir.mac_osx" src="@{this.dir}/linuxdir.txt" />
 				</resources>
 
 				<!--
@@ -327,10 +327,7 @@
 					<panel classname="InfoPanel"/>
 					<panel classname="HTMLLicencePanel"/>
 					<panel classname="UserInputPanel"  id="UserInputPanel.0" />
-					<!-- Typical or Custom
-					<panel classname="UserInputPanel"  id="UserInputPanel.1" condition="never"/>
-					-->
-					<panel classname="UserPathPanel" id="UserPathPanelInstallation" condition="install"/>
+					<panel classname="TargetPanel" id="UserPathPanelInstallation" condition="install"/>
 					<!-- Contaner selection -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.1"/>
 					<!-- Upgrade, specify app homes and read properties -->
@@ -405,9 +402,7 @@
 					    <description>The base files</description>
 					    <file src="@{dist.location}/@{install.zip.file}" targetdir="$SYSTEM_user_home/@{installer.dir}"/>
 					    <file src="@{this.dir}/build.xml" targetdir="$SYSTEM_user_home/@{installer.dir}"/>
-					    <file src="@{this.dir}/property-template" override="true" targetdir="$SYSTEM_user_home/@{installer.dir}">
-						<excludes>**/.svn/**</excludes>
-					    </file>
+					    <file src="@{this.dir}/property-template" override="true" targetdir="$SYSTEM_user_home/@{installer.dir}"/>
 					</pack>
 
 					<pack name="parse-install" required="no" preselected="no" condition="install">
@@ -475,7 +470,7 @@
 				<include name="**/*" />
 			</fileset>
 		</copy>
-		<jar update="true" destfile="${dist.location}/${gui-installer.dist.base.name}-${build.time}.jar"
+		<jar update="true" destfile="${dist.location}/${gui-installer.dist.base.name}.jar"
 			basedir="${target.location}/working"
 			includes="pre-install/**/*"
 			/>
