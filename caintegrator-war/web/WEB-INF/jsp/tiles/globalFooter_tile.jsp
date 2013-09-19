@@ -3,19 +3,22 @@
         Download Plugins:&nbsp;&nbsp;<a title="Download Plugin Adobe Acrobat Reader" href="http://www.adobe.com/go/gntray_dl_get_reader" target="_blank"><img height="16" border="0" width="16" src="/caintegrator/images/ico_pdf.gif" alt="Download Plugin Adobe Acrobat Reader"></a>
         <a target="_blank" href="http://get.adobe.com/flashplayer/" title="Download Plugin Adobe Flash Player"><img height="16" border="0" width="16" alt="Download Plugin Adobe Flash Player" src="/caintegrator/images/ico_swf.gif"></a>
     </div>
-    <div id="footernav">
-        <div id="footer">
-            <a href="mailto:ncicb@pop.nci.nih.gov?subject=caIntegrator">CONTACT US</a>
-            <a href="http://www.nih.gov/about/privacy.htm">PRIVACY NOTICE</a>
-            <a href="http://www.nih.gov/about/disclaim.htm">DISCLAIMER</a>
-            <a href="http://www3.cancer.gov/accessibility/nci508.htm">ACCESSIBILITY</a>
-            <a href="http://cbiit.nci.nih.gov/support" target="_blank" class="last">SUPPORT</a> 
-        </div>
+    <div id="footer">
+            <a href="/caintegrator/index.jsp">Home</a> |
+            <a href="mailto:ncicb@pop.nci.nih.gov?subject=caIntegrator">Contact CBIIT</a> |
+            <a href="http://www.cancer.gov/global/web/policies">Policies</a> |
+            <a href="http://www.cancer.gov/global/web/policies/accessibility">Accessibility</a> |
+            <a href="http://www.cancer.gov/global/web/policies/foia">FOIA</a>
     </div>
     <div id="partnerlogos">             
-        <a href="http://www.cancer.gov"><img src="/caintegrator/images/footer_nci.gif" width="63" height="31" alt="Logo: National Cancer Institute" /></a>
-        <a href="http://www.dhhs.gov"><img src="/caintegrator/images/footer_hhs.gif" width="39" height="31" alt="Logo: Department of Health and Human Services" /></a>
-        <a href="http://www.nih.gov"><img src="/caintegrator/images/footer_nih.gif" width="46" height="31" alt="Logo: National Institutes of Health" /></a>
-        <a href="http://www.usa.gov"><img src="/caintegrator/images/footer_usagov.gif" width="91" height="31" alt="Logo: USA.gov" /></a>
+        <a href="http://www.hhs.gov">U.S. Department of Health and Human Services</a> |
+        <a href="http://www.nih.gov">National Institute of Health</a> |
+        <a href="http://www.cancer.gov">National Cancer Institute</a> |
+        <a href="http://www.usa.gov">USA.gov</a>
+    </div>
+    <br/>
+    <br/>
+    <div id="slogan">
+        NIH...Turning Discovery Into Health
     </div>
 </div>

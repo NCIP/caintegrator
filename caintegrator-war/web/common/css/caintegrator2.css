@@ -345,19 +345,15 @@ TABLE.login TD.value
 /* Footer */
 
 #footerwrapper
-{ clear:left; font-size:85%; font-weight:bold; }
-#footernav
-{ background:#5c5c5c; height:2.0em; overflow:hidden; }
-#footernav A
-{ display:block; float:left; color:#fff; padding:0 10px; line-height:2.0em; border-left:1px dotted #fff }
-#footernav A:hover
-{ background:#333; text-decoration:none; }
-#footernav A.last
-{ border-right:1px dotted #fff }
+{ clear:left; font-weight:bold; }
 #footer
-{ width:45em; margin:0 auto; }
+{ width:45em; margin:0 auto; text-align: center;}
 #partnerlogos
 { padding-top:10px; text-align:center; }
+#slogan {
+   text-align:center;
+   font-size: 85%;
+}
 
 
 
