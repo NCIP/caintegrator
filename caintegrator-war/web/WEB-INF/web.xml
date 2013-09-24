@@ -70,7 +70,7 @@
     </session-config>
     
     <filter>
-        <filter-name>sessionTimeoutFilter</filter-name>
+        <filter-name>sessionCleanupFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
@@ -115,7 +115,7 @@
     </filter>
 
     <filter-mapping>
-        <filter-name>sessionTimeoutFilter</filter-name>
+        <filter-name>sessionCleanupFilter</filter-name>
         <url-pattern>*.action</url-pattern>
     </filter-mapping>
 

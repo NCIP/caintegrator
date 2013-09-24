@@ -6,7 +6,6 @@
  */
 package gov.nih.nci.caintegrator.web.filter;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
@@ -22,11 +21,11 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 
 /**
- * Tests for the session timeout filter.
+ * Tests for the session cleanup filter.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class SessionTimeoutFilterTest extends AbstractSessionBasedTest {
+public class SessionCleanupFilterTest extends AbstractSessionBasedTest {
 
     @Test
     public void testFilter() throws IOException, ServletException {
@@ -35,44 +34,28 @@ public class SessionTimeoutFilterTest extends AbstractSessionBasedTest {
 
         FilterChain chain = mock(FilterChain.class);
 
-        SessionTimeoutFilter stf = new SessionTimeoutFilter();
-        stf.setFileManager(analysisFileManager);
-        stf.init(null);
+        SessionCleanupFilter sessionCleanupFilter = new SessionCleanupFilter();
+        sessionCleanupFilter.setFileManager(analysisFileManager);
+        sessionCleanupFilter.init(null);
 
         request.setRequestedSessionIdValid(true);
         request.setRequestURI("/login.action");
         request.setRequestedSessionId("sessionId");
 
-        stf.doFilter(request, response, chain);
+        sessionCleanupFilter.doFilter(request, response, chain);
         assertNull(response.getRedirectedUrl());
 
         request.setRequestURI("/sessionTimeout.action");
         response = new MockHttpServletResponse();
-        stf.doFilter(request, response, chain);
+        sessionCleanupFilter.doFilter(request, response, chain);
         assertNull(response.getRedirectedUrl());
 
         request.setRequestURI("/query.action");
         response = new MockHttpServletResponse();
-        stf.doFilter(request, response, chain);
+        sessionCleanupFilter.doFilter(request, response, chain);
         assertNull(response.getRedirectedUrl());
 
-        // Test expired session
-        request.setRequestedSessionIdValid(false);
-        request.setRequestURI("/login.action");
-        stf.doFilter(request, response, chain);
-        assertNull(response.getRedirectedUrl());
-
-        request.setRequestURI("/sessionTimeout.action");
-        response = new MockHttpServletResponse();
-        stf.doFilter(request, response, chain);
-        assertNull(response.getRedirectedUrl());
-
-        request.setRequestURI("/query.action");
-        response = new MockHttpServletResponse();
-        stf.doFilter(request, response, chain);
-        assertEquals("/sessionTimeout.action", response.getRedirectedUrl());
-
-        stf.destroy();
+        sessionCleanupFilter.destroy();
     }
 
 
