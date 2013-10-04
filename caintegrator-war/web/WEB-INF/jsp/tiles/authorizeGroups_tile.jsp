@@ -32,7 +32,7 @@
                 <td><s:property value="groupName"/></td>
                 <td><s:property value="groupDesc"/></td>
                 <td style="float: right;">
-                    <s:form id="addAuthorizationForm_%{groupId}" action="addAuthorizedGroup">
+                    <s:form id="addAuthorizationForm_%{groupId}" action="addAuthorizedGroup" theme="simple">
                         <s:token/>
                         <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}" />
                         <s:hidden name="selectedGroupId" value="%{groupId}"/>
@@ -47,12 +47,11 @@
         <div class="bottombtns">
             <ul class="btnrow">
                 <li>
-                    <s:url id="cancelAuthorizedGroup" includeParams="none" action="cancelAuthorizedGroup">
-                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="struts.token.name">token</s:param>
-                        <s:param name="token" value="%{token}" />     
-                    </s:url>
-                    <s:a href="%{cancelAuthorizedGroup}" cssClass="btn" cssStyle="margin:0 5px;">
+                    <s:form id="cancelAuthorizedGroupForm" action="cancelAuthorizedGroup" theme="simple">
+                        <s:token/>
+                        <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}" />
+                    </s:form>
+                    <s:a href="javascript:void(0);"cssClass="btn" cssStyle="margin:0 5px;" onclick="$('#cancelAuthorizedGroupForm').submit();">
                         <span class="btn_img"><span class="cancel">Cancel</span></span>
                     </s:a>
                 </li>

@@ -74,7 +74,16 @@
                 </tr>
                 <tr>
                     <td>
-
+                        <s:form id="viewStudyLogForm" action="editStudyLog">
+                            <s:token />
+                            <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                            <s:hidden name="readOnly" value="true"/>
+                        </s:form>
+                        <s:form id="editStudyLogForm" action="editStudyLog">
+                            <s:token />
+                            <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                            <s:hidden name="readOnly" value="false"/>
+                        </s:form>
                     <s:form id="studyDeploymentForm" name="studyDeploymentForm" onsubmit="return verifyName(nameId.value)" cssClass="form">        
                         <s:actionerror/>
                         <s:fielderror />
@@ -131,25 +140,17 @@
                             </td>
                         </tr>
                         <s:if test="%{studyConfiguration.id != null}">
-                                <s:url id="viewStudyLog" action="editStudyLog" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="readOnly" value="true" />
-                                    <s:param name="struts.token.name">token</s:param>
-                                    <s:param name="token" value="%{token}" />                                    
-                                </s:url>
-                                <s:url id="editStudyLog" action="editStudyLog" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="readOnly" value="false" />
-                                    <s:param name="struts.token.name">token</s:param>
-                                    <s:param name="token" value="%{token}" />
-                                </s:url>
                             <tr>
                                 <td class="tdLabel label" align="right">
 	                                Study Log:
 	                            </td>
 	                            <td>
-	                               <s:a href="%{viewStudyLog}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="search">View Log</span></span></s:a> 
-	                               <s:a href="%{editStudyLog}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Log</span></span></s:a>
+                                    <s:a href="javascript:void(0)" onclick="$('#viewStudyLogForm').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                        <span class="btn_img"><span class="search">View Log</span></span>
+                                     </s:a>
+                                     <s:a href="javascript:void(0)" onclick="$('#editStudyLogForm').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                        <span class="btn_img"><span class="edit_annotations">Edit Log</span></span>
+                                     </s:a>
 	                            </td>
 	                        </tr>
                         </s:if>
@@ -234,21 +235,21 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                            <s:token />
-							<s:url id="addAnnotationGroup" action="addAnnotationGroup" includeParams="none">
-							        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-							        <s:param name="struts.token.name">token</s:param>
-                                    <s:param name="token" value="%{token}" />
-							</s:url>
-                            <li><s:a href="%{addAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>	                        
+                            <li>
+                                <s:form id="addAnnotationGroupForm" action="addAnnotationGroup">
+                                    <s:token />
+                                    <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                                </s:form>
+                                <s:a href="javascript:void(0)" onclick="$('#addAnnotationGroupForm').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                    <span class="btn_img"><span class="add">Add New</span></span>
+                                </s:a>
+                            </li>
                         </ul>   
                     </del>
                 </th>
             </tr>
             <tr>
                 <td class="table_wrapper" colspan="2">
-                    <s:form action="noAction">
-                    <s:hidden name="studyConfiguration.id"  />
                     <table class="data">
                         <tr>
                             <th>Group Name</th>
@@ -268,29 +269,29 @@
                             <td><s:property value="description" /></td>
                             <td><s:property value="annotationFieldDescriptors.size()" /></td>
                             <td style="float: right;">
-                                <s:url id="editAnnotationGroup" action="editAnnotationGroup" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="annotationGroup.id" value="id" />
-                                    <s:param name="struts.token.name">token</s:param>
-                                    <s:param name="token" value="%{token}" />
-                                </s:url>
-                                <s:a href="%{editAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Group</span></span></s:a>                            
+                                <s:form id="editAnnotationGroupForm_%{id}" action="editAnnotationGroup" theme="simple">
+                                    <s:token />
+                                    <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                                    <s:hidden name="annotationGroup.id" value="%{id}" />
+                                </s:form>
+                                <s:a href="javascript:void(0)" onclick="$('#editAnnotationGroupForm_%{id}').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                    <span class="btn_img"><span class="edit_annotations">Edit Group</span></span>
+                                </s:a>
                                 <s:if test="deletable">
-                                <s:url id="deleteAnnotationGroup" action="deleteAnnotationGroup" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="annotationGroup.id" value="id" />
-                                    <s:param name="struts.token.name">token</s:param>
-                                    <s:param name="token" value="%{token}" />                                    
-                                </s:url> 
-                                <s:a href="%{deleteAnnotationGroup}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('This annotation group will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
+                                    <s:form id="deleteAnnotationGroupForm_%{id}" action="deleteAnnotationGroup" 
+                                        onsubmit="return confirm('This annotation group will be permanently deleted.');" theme="simple">
+                                        <s:token />
+                                        <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                                        <s:hidden name="annotationGroup.id" value="%{id}" />
+                                    </s:form>
+                                    <s:a href="javascript:void(0)" onclick="$('#deleteAnnotationGroupForm_%{id}').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                        <span class="btn_img"><span class="delete">Delete</span></span>
+                                    </s:a>
                                 </s:if>
                             </td>
                         </tr>
                         </s:iterator>
-                        
                     </table>
-                    </s:form>
-                    
                 </td>
             </tr>
             </tbody>
@@ -302,13 +303,20 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                            <li><a name="action:addClinicalFile_clinicalFile" id="addClinicalFile_clinicalFile" class="btn" style="margin: 0pt;" href="javascript://"><span class="btn_img"><span class="add">Add New</span></span></a></li>
-                                <s:url id="editSurvivalValueDefinitions" action="editSurvivalValueDefinitions" includeParams="none">
-                                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                        <s:param name="struts.token.name">token</s:param>
-                                        <s:param name="token" value="%{token}" />                                        
-                                </s:url>
-                            <li><s:a href="%{editSurvivalValueDefinitions}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit">Edit Survival Values</span></span></s:a></li>
+                            <li>
+                              <a id="addClinicalFile_clinicalFile" class="btn" style="margin: 0pt;" href="javascript://">
+                                <span class="btn_img"><span class="add">Add New</span></span>
+                            </a>
+                            </li>
+                            <li>
+                                <s:form id="editSurvivalValueDefinitionsForm" action="editSurvivalValueDefinitions" theme="simple">
+                                    <s:token />
+                                    <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                                </s:form>
+                                <s:a href="javascript:void(0)" onclick="$('#editSurvivalValueDefinitionsForm').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                    <span class="btn_img"><span class="edit">Edit Survival Values</span></span>
+                                </s:a>
+                             </li>
                         </ul>   
                     </del>
                 </th>
@@ -355,12 +363,15 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                                <s:url id="addGenomicSource" action="addGenomicSource" includeParams="none">
-                                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                        <s:param name="struts.token.name">token</s:param>
-                                        <s:param name="token" value="%{token}" />
-                                </s:url>
-                            <li><s:a href="%{addGenomicSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>
+                            <li>
+                                <s:form id="addGenomicSourceForm" action="addGenomicSource" theme="simple">
+                                    <s:token />
+                                    <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                                </s:form>
+                                <s:a href="javascript:void(0)" onclick="$('#addGenomicSourceForm').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                    <span class="btn_img"><span class="add">Add New</span></span>
+                                </s:a>
+                            </li>
                         </ul>   
                     </del>
                 </th>
@@ -396,12 +407,15 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                                <s:url id="addImagingSource" action="addImagingSource" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="struts.token.name">token</s:param>
-                                    <s:param name="token" value="%{token}" />                                        
-                                </s:url>
-                            <li><s:a href="%{addImagingSource}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="add">Add New</span></span></s:a></li>
+                            <li>
+                                <s:form id="addImagingSourceForm" action="addImagingSource" theme="simple">
+                                    <s:token />
+                                    <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                                </s:form>
+                                <s:a href="javascript:void(0)" onclick="$('#addImagingSourceForm').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                    <span class="btn_img"><span class="add">Add New</span></span>
+                                </s:a>
+                            </li>    
                         </ul>   
                     </del>
                 </th>
@@ -502,14 +516,12 @@
                 <th class="thbutton">
                     <del class="btnwrapper">                    
                         <ul class="btnrow">
-                            <s:token />
-                            <s:url id="authorizeGroup" action="authorizeGroups" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="struts.token.name">token</s:param>
-                                    <s:param name="token" value="%{token}" />
-                            </s:url>
                             <li>
-                                <s:a href="%{authorizeGroup}" cssClass="btn" cssStyle="margin: 0pt;">
+                                <s:form id="authorizeGroupForm" action="authorizeGroups" theme="simple">
+                                    <s:token />
+                                    <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                                </s:form>
+                                <s:a href="javascript:void(0)" onclick="$('#authorizeGroupForm').submit();" cssClass="btn" cssStyle="margin: 0pt;">
                                     <s:if test="%{studyConfiguration.authorizedStudyElementsGroups.size == 0}">
                                         <span class="btn_img"><span class="add">Activate Group Authorization</span></span>
                                     </s:if>
@@ -524,8 +536,6 @@
             </tr>
             <tr>
                 <td class="table_wrapper" colspan="2">
-                    <s:form action="noAction">
-                    <s:hidden name="studyConfiguration.id"  />
                     <table class="data">
                         <tr>
                             <th>User Group Name</th>
@@ -542,26 +552,27 @@
                             <td><s:property value="authorizedGroup.groupName"/></td>
                             <td><s:property value="authorizedGroup.groupDesc"/></td>
                             <td style="float: right;">
-                                <s:url id="editAuthorizedGroup" action="editAuthorizedGroup" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="authorizedGroup.id" value="id" />
-                                    <s:param name="struts.token.name">token</s:param>
-                                    <s:param name="token" value="%{token}" />
-                                </s:url>
-                                <s:a href="%{editAuthorizedGroup}" cssClass="btn" cssStyle="margin: 0pt;"><span class="btn_img"><span class="edit_annotations">Edit Authorization</span></span></s:a>                            
-                                <s:url id="deleteAuthorizedGroup" action="deleteAuthorizedGroup" includeParams="none">
-                                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                                    <s:param name="authorizedGroup.id" value="id" />
-                                    <s:param name="struts.token.name">token</s:param>
-                                    <s:param name="token" value="%{token}" />                                    
-                                </s:url> 
-                                <s:a href="%{deleteAuthorizedGroup}" cssClass="btn" cssStyle="margin: 0pt;" onclick="return confirm('This authorization group will be permanently deleted.')"><span class="btn_img"><span class="delete">Delete</span></span></s:a>                                
+                                <s:form id="editAuthorizedGroupForm_%{id}" action="editAuthorizedGroup" theme="simple">
+                                    <s:token />
+                                    <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                                    <s:hidden name="authorizedGroup.id" value="%{id}" />
+                                </s:form>
+                                <s:a href="javascript:void(0)" onclick="$('#editAuthorizedGroupForm_%{id}').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                    <span class="btn_img"><span class="edit_annotations">Edit Authorization</span></span>
+                                </s:a>
+                                <s:form id="deleteAuthorizedGroupForm_%{id}" action="deleteAuthorizedGroup" theme="simple"
+                                    onsubmit="return confirm('This authorization group will be permanently deleted.');" >
+                                    <s:token />
+                                    <s:hidden name="studyConfiguration.id" value="%{studyConfiguration.id}"/>
+                                    <s:hidden name="authorizedGroup.id" value="%{id}" />
+                                </s:form>
+                                <s:a href="javascript:void(0)" onclick="$('#deleteAuthorizedGroupForm_%{id}').submit();" cssClass="btn" cssStyle="margin: 0pt;">
+                                    <span class="btn_img"><span class="delete">Delete</span></span>
+                                </s:a>
                             </td>
                         </tr>
                         </s:iterator>
                     </table>
-                    </s:form>
-                    
                 </td>
             </tr>
             </tbody>
