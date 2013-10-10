@@ -22,18 +22,23 @@
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/caintegrator2.css" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/cai2modal.css" />
         <link rel="stylesheet" type="text/css" href="/caintegrator/common/css/easytabs.css" />
+        <link rel="stylesheet" type="text/css" href="/caintegrator/common/js/navgoco/jquery.navgoco.css"/>
         
         <script type="text/javascript" src="./struts/optiontransferselect.js"></script>
-        <script type="text/javascript" src="/caintegrator/common/js/pde.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/caintegrator2.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/cai2modal.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/onlinehelp.js"></script>
+        
         <script type="text/javascript" src="/caintegrator/common/js/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery.editable-select.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery-ui-1.10.1.custom.min.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery.idletimer.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery.idletimeout.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery.easytabs.min.js"></script>
+        
+        <script type="text/javascript" src="/caintegrator/common/js/navgoco/jquery.navgoco.min.js"></script>
+        
+        
         <s:if test="%{!anonymousUser}"> 
             <script type="text/javascript">
             $(document).ready(function() {
@@ -79,6 +84,16 @@
                 
                 $('.editable-select').editableSelect({
                     bg_iframe: true,
+                });
+                
+                $('.nav').navgoco({
+                    caret: '<span class="caret"></span>',
+                    accordion: true,
+                    openClass: 'open',
+                    slide: {
+                        duration: 200,
+                        easing: 'linear'
+                    } 
                 });
             });
             </script>

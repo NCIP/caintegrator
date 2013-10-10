@@ -184,32 +184,32 @@ LEGEND INPUT, LEGEND SELECT
 
 #leftnav UL.menu LI.treenav
 { background:#333; padding:2px 1px 3px 1px; margin:0; color:#fff; text-transform:uppercase; height:1%}
-#leftnav UL.menu LI.treenav UL.pde
+#leftnav UL.menu LI.treenav UL.nav
 { background:#fff; padding:5px 0;  text-transform:none;  }
-#leftnav UL.menu LI.treenav UL.pde LI
+#leftnav UL.menu LI.treenav UL.nav LI
 { color:#333; padding:3px 0 3px 5px; cursor:default }
-#leftnav UL.menu LI.treenav UL.pde LI LI
-{ padding:3px 0 3px 9px; max-height:150px; overflow-x:hidden; overflow-y:auto }
-#leftnav UL.menu LI.treenav UL.pde A
+#leftnav UL.menu LI.treenav UL.nav LI LI
+{ padding:3px 0 3px 9px; overflow-x:hidden; overflow-y:auto }
+#leftnav UL.menu LI.treenav UL.nav A
 { color:#333; padding:3px }
-#leftnav UL.menu LI.treenav UL.pde A.parent_img
+#leftnav UL.menu LI.treenav UL.nav A.parent_img
 { padding:0 3px }
-#leftnav UL.menu LI.treenav UL.pde A:hover
+#leftnav UL.menu LI.treenav UL.nav A:hover
 { text-decoration:none; background:#eee }
-#leftnav UL.menu LI.treenav UL.pde LI LI LI
+#leftnav UL.menu LI.treenav UL.nav LI LI LI
 { padding:3px 0 3px 10px }
 
-#leftnav UL.menu LI.treenav UL.pde LI LI LI A.Searches, #leftnav UL.menu LI.treenav UL.pde LI LI LI A.lists
+#leftnav UL.menu LI.treenav UL.nav LI LI LI A.Searches, #leftnav UL.menu LI.treenav UL.nav LI LI LI A.lists
 { line-height:1.5em; color:#386ebf; padding:0 0 0 24px; font-weight:normal; display:block; }
-#leftnav UL.menu LI.treenav UL.pde LI LI LI A.Searches
+#leftnav UL.menu LI.treenav UL.nav LI LI LI A.Searches
 { background:url("../../images/ico_search.gif") no-repeat 6px 0; }
-#leftnav UL.menu LI.treenav UL.pde LI LI LI A.lists
+#leftnav UL.menu LI.treenav UL.nav LI LI LI A.lists
 { background:url("../../images/ico_list.gif") no-repeat 6px 0;  }
-#leftnav UL.menu LI.treenav UL.pde LI LI LI A.Searches:hover, #leftnav UL.menu LI.treenav UL.pde LI LI LI A.lists:hover
+#leftnav UL.menu LI.treenav UL.nav LI LI LI A.Searches:hover, #leftnav UL.menu LI.treenav UL.pde LI LI LI A.lists:hover
 { color:#455681; }
-#leftnav UL.menu LI.treenav UL.pde A.queryAction
+#leftnav UL.menu LI.treenav UL.nav A.queryAction
 { font-size:92%; text-decoration:none; color:#666; }
-#leftnav UL.menu LI.treenav UL.pde A.queries
+#leftnav UL.menu LI.treenav UL.nav A.queries
 { font-weight:normal; }
 
 
