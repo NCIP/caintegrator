@@ -538,4 +538,8 @@
         <comment>Updating the DnaAnalysisReporter model to use primative ints instead of Integer objects.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.5/CAINT-1279.sql"/>
     </changeSet>
+    <changeSet id="CAINT-1336" author="etavela">
+        <comment>Fixing SegmentData legacy data (null values for primitive fields).</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4.2/CAINT-1336.sql"/>
+    </changeSet>
 </databaseChangeLog>
