@@ -58,7 +58,7 @@
         <li class="treenav"><div>User Workspace</div>
             <s:if test="%{anonymousUser}">
                 <s:if test="!displayableWorkspace.globalGeneLists.isEmpty() || !displayableWorkspace.globalSubjectLists.isEmpty()">
-                    <ul class="pde">
+                    <ul class="nav">
                     <li><a href="#">Global Lists</a>
                         <ul style="padding: 3px 0px 10px 10px;">
                         <s:if test="!displayableWorkspace.globalGeneLists.isEmpty()">
@@ -150,7 +150,7 @@
                     </ul>
                 </s:if>
                 <s:else>
-                    <ul class="pde" style="padding: 3px 0px 10px 10px;">
+                    <ul class="nav" style="padding: 3px 0px 10px 10px;">
                         <font color="black"><i>Must be logged in to use the workspace.</i></font>
                     </ul>
                 </s:else>

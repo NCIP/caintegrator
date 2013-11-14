@@ -50,6 +50,7 @@ import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator.security.SecurityManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
@@ -735,7 +736,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             List<AuthorizedStudyElementsGroup> authorizedGroups) {
         List<AuthorizedStudyElementsGroup> groupsUserIsIn = new ArrayList<AuthorizedStudyElementsGroup>();
         try {
-            String userId = String.valueOf(securityManager.getAuthorizationManager().getUser(username).getUserId());
+            User user = securityManager.getAuthorizationManager().getUser(username);
+            if (user == null) {
+                return Collections.emptyList();
+            }
+            String userId = String.valueOf(user.getUserId());
             Set<Group> userGroups = securityManager.getAuthorizationManager().getGroups(userId);
             for (AuthorizedStudyElementsGroup authorizedGroup : authorizedGroups) {
                 if (userGroups.contains(authorizedGroup.getAuthorizedGroup())) {
