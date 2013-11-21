@@ -67,7 +67,9 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
@@ -79,6 +81,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * Implementation of the DAO.
@@ -579,24 +584,48 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @Override
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
-        Criteria reporterCriteria = getCurrentSession().createCriteria(AbstractReporter.class);
-        reporterCriteria.createCriteria("reporterList").
-                createCriteria("arrayDatas").
-                    add(Restrictions.eq(STUDY_ASSOCIATION, study));
-        reporterCriteria.createCriteria(GENES_ASSOCIATION).
-            add(Restrictions.in(SYMBOL_ATTRIBUTE, symbols));
-        Set<AbstractReporter> reporterSet = new HashSet<AbstractReporter>();
-        reporterSet.addAll(reporterCriteria.list());
-        Set<String> geneSymbols = new HashSet<String>();
-        for (AbstractReporter reporter : reporterSet) {
-            for (Gene gene : reporter.getGenes()) {
-                String symbol = gene.getSymbol();
-                if (Cai2Util.containsIgnoreCase(symbols, symbol)) {
-                    geneSymbols.add(symbol.toUpperCase(Locale.US));
-                }
-            }
+        List<String> symbolsUpper = toUpperCase(symbols);
+        String symbolsSql = "select distinct(gene.symbol) "
+                + "from gene, reporter_genes, abstract_reporter, reporter_list, array_data_reporter_lists, array_data "
+                + "where gene.id = reporter_genes.gene_id "
+                + "and abstract_reporter.id = reporter_genes.reporter_id "
+                + "and abstract_reporter.reporter_list_id = reporter_list.id "
+                + "and array_data_reporter_lists.reporter_list_id = reporter_list.id "
+                + "and array_data.id = array_data_reporter_lists.array_data_id "
+                + "and gene.symbol in (" + getSymbolParameterPlaceholders(symbolsUpper) + ") "
+                + "and array_data.study_id = :studyId ";
+        SQLQuery query = getCurrentSession().createSQLQuery(symbolsSql);
+        setSymbolParameters(query, symbolsUpper);
+        query.setLong("studyId", study.getId());
+        List<String> symbolList = query.list();
+        Set<String> symbolsInStudy = Sets.newHashSet();
+        symbolsInStudy.addAll(symbolList);
+        return symbolsInStudy;
+    }
+
+    private List<String> toUpperCase(Collection<String> symbols) {
+        List<String> symbolsUpper = Lists.newArrayList();
+        for (String symbol : symbols) {
+            symbolsUpper.add(StringUtils.upperCase(symbol));
         }
-        return geneSymbols;
+        return symbolsUpper;
+    }
+
+    private String getSymbolParameterPlaceholders(List<String> symbolsUpper) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < symbolsUpper.size(); i++) {
+            if (sb.length() != 0) {
+                sb.append(',');
+            }
+            sb.append('?');
+        }
+        return sb.toString();
+    }
+
+    private void setSymbolParameters(SQLQuery query, List<String> symbolsUpper) {
+        for (int i = 0; i < symbolsUpper.size(); i++) {
+            query.setString(i, symbolsUpper.get(i));
+        }
     }
 
     /**
