@@ -14,7 +14,7 @@
         <property name="genomeVersion" type="string" column="GENOME_VERSION" />
         <property name="reporterType" type="ReporterTypeEnum" column="REPORTER_TYPE" />
 		<!-- Associations mapping for the ReporterList class -->
-		<list name="reporters" cascade="all-delete-orphan" inverse="true" lazy="true" fetch="subselect">
+		<list name="reporters" cascade="all-delete-orphan" inverse="true" lazy="true">
 			<cache usage="read-write" />
 			<key column="REPORTER_LIST_ID" />
             <list-index column="REPORTER_INDEX" />

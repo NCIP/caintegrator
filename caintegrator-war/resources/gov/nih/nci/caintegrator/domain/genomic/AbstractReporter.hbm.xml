@@ -10,7 +10,8 @@
 			<generator class="native" />
 		</id>
 		<!-- Attributes mapping for the AbstractReporter class -->
-        <property name="name" type="string" column="NAME"/>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<property name="name" type="string" column="NAME"/>
         <property name="index" type="integer" column="REPORTER_INDEX" not-null="true"/>
 		<!-- Associations mapping for the AbstractReporter class -->
         <set name="genes" table="REPORTER_GENES" lazy="true" fetch="subselect" cascade="save-update,merge" >
@@ -25,19 +26,16 @@
         </set>
 		<many-to-one name="reporterList" class="gov.nih.nci.caintegrator.domain.genomic.ReporterList" 
             column="REPORTER_LIST_ID" not-null="true" lazy="proxy" cascade="save-update,merge" />
-        <joined-subclass name="GeneExpressionReporter" table="GENE_EXPRESSION_REPORTER" lazy="false">
-            <key column="ID" />
-        </joined-subclass>
-        <joined-subclass name="DnaAnalysisReporter" table="DNA_ANALYSIS_REPORTER" lazy="false">
-            <key column="ID" />
+        <subclass name="GeneExpressionReporter" discriminator-value="EXP" lazy="false">
+        </subclass>
+        <subclass name="DnaAnalysisReporter" discriminator-value="DNA" lazy="false">
             <property name="chromosome" type="string" column="CHROMOSOME"/>
             <property name="position" type="integer" column="POSITION"/>
             <property name="dbSnpId" type="string" column="DB_SNP_ID"/>
             <property name="alleleA" type="character" column="ALLELE_A"/>
             <property name="alleleB" type="character" column="ALLELE_B"/>
-        </joined-subclass>
-        <joined-subclass name="GisticGenomicRegionReporter" table="GISTIC_GENOMIC_REGION_REPORTER" lazy="false">
-            <key column="ID" />
+        </subclass>
+        <subclass name="GisticGenomicRegionReporter" discriminator-value="GIS" lazy="false">
             <property name="genomicDescriptor" type="string" column="GENOMIC_DESCRIPTOR"/>
             <property name="broadOrFocal" type="string" column="BROAD_OR_FOCAL"/>
             <property name="qvalue" type="double" column="QVALUE"/>
@@ -46,6 +44,6 @@
             <property name="widePeakBoundaries" type="string" column="WIDE_PEAK_BOUNDARIES"/>
             <property name="geneAmplificationType" type="AmplificationTypeEnum" column="GENE_AMPLIFICATION_TYPE"/>
             
-        </joined-subclass>
+        </subclass>
 	</class>
 </hibernate-mapping>

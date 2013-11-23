@@ -542,4 +542,8 @@
         <comment>Fixing SegmentData legacy data (null values for primitive fields).</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.4.2/CAINT-1336.sql"/>
     </changeSet>
+    <changeSet id="CAINT-1343" author="etavela">
+        <comment>Changing AbstractReporter hierarchy to single table for performance.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4.2/CAINT-1343.sql"/>
+    </changeSet>
 </databaseChangeLog>
