@@ -9,8 +9,6 @@ package gov.nih.nci.caintegrator.domain;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 /**
  * Base class for all domain objects.
  */
