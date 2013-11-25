@@ -52,7 +52,11 @@ public abstract class AbstractCaIntegrator2Object implements Serializable, Clone
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().appendSuper(super.hashCode()).append(getId()).toHashCode();
+        if (getId() != null) {
+            return getId().hashCode();
+        } else {
+            return super.hashCode();
+        }
     }
 
     /**
