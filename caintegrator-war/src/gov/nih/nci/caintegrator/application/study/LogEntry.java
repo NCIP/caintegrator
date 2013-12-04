@@ -6,13 +6,14 @@
  */
 package gov.nih.nci.caintegrator.application.study;
 
-import gov.nih.nci.caintegrator.common.Cai2Util;
 import gov.nih.nci.caintegrator.common.DateUtil;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 
 import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -106,7 +107,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param trimSystemLogMessage the systemLogMessage to trim and set
      */
     public void setTrimSystemLogMessage(String trimSystemLogMessage) {
-        this.systemLogMessage = Cai2Util.trimStringIfTooLong(trimSystemLogMessage, MAX_LENGTH);
+        this.systemLogMessage = StringUtils.abbreviate(trimSystemLogMessage, MAX_LENGTH);
     }
     /**
      * @return the description
@@ -124,7 +125,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
      * @param trimDescription the description to trim and set
      */
     public void setTrimDescription(String trimDescription) {
-        this.description = Cai2Util.trimStringIfTooLong(trimDescription, MAX_LENGTH);
+        this.description = StringUtils.abbreviate(trimDescription, MAX_LENGTH);
     }
     /**
      * @return the username
