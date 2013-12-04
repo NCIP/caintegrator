@@ -7,7 +7,7 @@
 
 package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public interface Analysis extends java.rmi.Remote {
     public int[] getChildren(int jobId) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException;
     public edu.mit.broad.genepattern.gp.services.JobInfo getJob(int jobId) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException;

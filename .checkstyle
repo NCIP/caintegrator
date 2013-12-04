@@ -9,5 +9,6 @@
     <file-match-pattern match-pattern=".*\/test\/.*.java" include-pattern="false"/>
     <file-match-pattern match-pattern="genepattern-service-jar/.*" include-pattern="false"/>
     <file-match-pattern match-pattern="kaplan-meier-jar/.*" include-pattern="false"/>
+    <file-match-pattern match-pattern="cbs-to-heatmap-jar/.*" include-pattern="false"/>
   </fileset>
 </fileset-config>

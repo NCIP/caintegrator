@@ -192,6 +192,7 @@ class GenomicDataHelper {
         }
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private List<DnaAnalysisReporter> convertToDnaAnalysisReporters(ReporterList reporterList) {
         List reporters = reporterList.getReporters();
         return reporters;

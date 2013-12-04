@@ -185,6 +185,7 @@ public class EditAuthorizedGroupActionTest extends AbstractSessionBasedTest {
     /**
      * Tests editing of an authorized user group.
      */
+    @SuppressWarnings("unchecked")
     @Test
     public void edit() {
         Group group = new Group();

@@ -43,6 +43,7 @@ public abstract class AbstractHibernateMappingTestIntegration<T> {
     private AbstractTestDataGenerator<T> dataGenerator;
 
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testMapping() {
         Set<AbstractCaIntegrator2Object> nonCascadedObjects = new HashSet<AbstractCaIntegrator2Object>();

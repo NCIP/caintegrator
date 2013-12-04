@@ -89,6 +89,7 @@ import com.google.common.collect.Sets;
  */
 @Transactional
 @Repository("caIntegrator2Dao")
+@SuppressWarnings("rawtypes")
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
 
     private static final String UNCHECKED = "unchecked";

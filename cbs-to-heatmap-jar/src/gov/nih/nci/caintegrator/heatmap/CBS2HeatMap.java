@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
+@SuppressWarnings("rawtypes")
 public class CBS2HeatMap implements CBSToHeatmap {
 
     private HashMap<String, Object> bins = new HashMap<String, Object>() {
@@ -1046,7 +1047,6 @@ public class CBS2HeatMap implements CBSToHeatmap {
     }
 
     // ######################################################################
-    @SuppressWarnings("unchecked")
     private void computeXYMeans(HeatMapArgs hma) {
 
         Set set = xn.entrySet();

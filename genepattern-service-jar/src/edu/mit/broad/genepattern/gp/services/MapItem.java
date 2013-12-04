@@ -7,8 +7,10 @@
 
 package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings({ "unchecked", "serial" })
-public class MapItem  implements java.io.Serializable {
+import java.io.Serializable;
+
+@SuppressWarnings({ "rawtypes", "serial" })
+public class MapItem  implements Serializable {
     private java.lang.Object key;
     private java.lang.Object value;
 
@@ -66,7 +68,6 @@ public class MapItem  implements java.io.Serializable {
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof MapItem)) return false;
         MapItem other = (MapItem) obj;
-        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);

@@ -96,6 +96,7 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
      * Sets up objects necessary for unit testing.
      * @throws Exception on error
      */
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
         caArrayFacade = new CaArrayFacadeImpl();
