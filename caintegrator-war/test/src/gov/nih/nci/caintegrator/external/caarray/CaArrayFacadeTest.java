@@ -103,6 +103,7 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
 
         dataService = mock(DataService.class);
         when(dataService.getDataSet(any(DataSetRequest.class))).thenAnswer(new Answer<DataSet>() {
+            @SuppressWarnings("unused")
             @Override
             public DataSet answer(InvocationOnMock invocation) throws Throwable {
                 DataSetRequest r = (DataSetRequest) invocation.getArguments()[0];

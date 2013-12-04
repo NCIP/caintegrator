@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -52,21 +53,22 @@ public class AnnotationGroupUploadFileHandler {
     public List<AnnotationGroupUploadContent> extractUploadData()
     throws ValidationException, IOException {
         List<AnnotationGroupUploadContent> annotationGroupUploads = new ArrayList<AnnotationGroupUploadContent>();
-
-        CSVReader reader;
-        reader = new CSVReader(new FileReader(uploadFile));
-        String[] fields;
-        int lineNum = 0;
-        while ((fields = reader.readNext()) != null) {
-            lineNum++;
-            if (fields.length != FILE_NUMBER_COLUMNS) {
-                throw new ValidationException("File must have " + FILE_NUMBER_COLUMNS
-                        + " columns instead of " + fields.length + " on line number " + lineNum);
+        CSVReader reader = new CSVReader(new FileReader(uploadFile));
+        try {
+            String[] fields;
+            int lineNum = 0;
+            while ((fields = reader.readNext()) != null) {
+                lineNum++;
+                if (fields.length != FILE_NUMBER_COLUMNS) {
+                    throw new ValidationException("File must have " + FILE_NUMBER_COLUMNS
+                            + " columns instead of " + fields.length + " on line number " + lineNum);
+                }
+                readDataLine(annotationGroupUploads, fields);
             }
-            readDataLine(annotationGroupUploads, fields);
+            return annotationGroupUploads;
+        } finally {
+            IOUtils.closeQuietly(reader);
         }
-        reader.close();
-        return annotationGroupUploads;
     }
 
     private void readDataLine(List<AnnotationGroupUploadContent> annotationGroupUploads, String[] fields)

@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Locale;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -54,6 +55,7 @@ public class GctDatasetFileWriterTest {
         }
         
         checkLine(reader.readNext(), "REPORTER2", "N/A", "4.4", "5.5", "6.6");
+        IOUtils.closeQuietly(reader);
     }
 
     private void checkLine(String[] line, String... expecteds) {

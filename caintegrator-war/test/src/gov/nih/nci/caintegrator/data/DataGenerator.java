@@ -38,6 +38,7 @@ public class DataGenerator {
     private StudySubscription studySubscription;
     private AnnotationDefinition ad;
 
+    @SuppressWarnings("resource")   // incorrect interpretation of Spring context as closeable resource
     public static void main(String[] args) {
         ApplicationContext context =
                 new ClassPathXmlApplicationContext("integration-test-config.xml", DataGenerator.class);

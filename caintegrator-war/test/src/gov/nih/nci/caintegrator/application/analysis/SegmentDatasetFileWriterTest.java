@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -45,6 +46,7 @@ public class SegmentDatasetFileWriterTest {
         checkLine(reader.readNext(), "Track Name", "Chromosome", "Start Position", "End Position", "Segment Value");
         checkLine(reader.readNext(), "Sample 1", "1", "1", "5", "0.1");
         checkLine(reader.readNext(), "Sample 2", "2", "6", "9", "0.2");
+        IOUtils.closeQuietly(reader);
     }
 
     private void checkLine(String[] line, String... expecteds) {

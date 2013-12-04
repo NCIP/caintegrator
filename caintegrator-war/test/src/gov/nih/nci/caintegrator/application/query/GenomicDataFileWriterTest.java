@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Locale;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -69,6 +70,7 @@ public class GenomicDataFileWriterTest {
         checkLine(reader.readNext(), "Gene Name", "Reporter ID", "", "", "", "");
         checkLine(reader.readNext(), "GENE1", "REPORTER1", "", "1.1", "2.2", "3.3");
         checkLine(reader.readNext(), "", "REPORTER2", "", "4.4", "5.5", "6.6");
+        IOUtils.closeQuietly(reader);
     }
 
     private void checkFileWithSubjectsAsRows(File csvFile) throws IOException {
@@ -80,6 +82,7 @@ public class GenomicDataFileWriterTest {
         checkLine(reader.readNext(), "ASSIGNMENT1", "SAMPLE1",  "", "1.1", "4.4");
         checkLine(reader.readNext(), "ASSIGNMENT2", "SAMPLE2",  "", "2.2", "5.5");
         checkLine(reader.readNext(), "ASSIGNMENT3", "SAMPLE3",  "", "3.3", "6.6");
+        IOUtils.closeQuietly(reader);
     }
 
     private void checkLine(String[] line, String... expecteds) {
