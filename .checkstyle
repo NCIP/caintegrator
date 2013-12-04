@@ -6,5 +6,8 @@
   </local-check-config>
   <fileset name="caIntegrator" enabled="true" check-config-name="caIntegrator" local="true">
     <file-match-pattern match-pattern=".java$" include-pattern="true"/>
+    <file-match-pattern match-pattern=".*\/test\/.*.java" include-pattern="false"/>
+    <file-match-pattern match-pattern="genepattern-service-jar/.*" include-pattern="false"/>
+    <file-match-pattern match-pattern="kaplan-meier-jar/.*" include-pattern="false"/>
   </fileset>
 </fileset-config>

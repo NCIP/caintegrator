@@ -6,8 +6,6 @@
  */
 package gov.nih.nci.caintegrator.plots.kaplanmeier.dto;
 
-import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMSampleGroupCriteriaDTO;
-
 import java.util.Collection;
 
 /**

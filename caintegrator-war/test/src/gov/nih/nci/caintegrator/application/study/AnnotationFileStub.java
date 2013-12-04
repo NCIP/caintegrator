@@ -6,9 +6,6 @@
  */
 package gov.nih.nci.caintegrator.application.study;
 
-import gov.nih.nci.caintegrator.application.study.AnnotationFile;
-import gov.nih.nci.caintegrator.application.study.ValidationException;
-
 import java.io.File;
 
 public class AnnotationFileStub extends AnnotationFile {
