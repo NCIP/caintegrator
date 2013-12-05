@@ -684,6 +684,9 @@
         <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/application-rename.sql" />
         <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4.1/CAINT-1281.sql" />
         <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4.1/CAINT-1285.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.5/CAINT-1279.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4.2/CAINT-1336.sql" />
+        <run-sql-script sql.file="${caintegratordb.sql.upgrade.target.dir}/1.4.2/CAINT-1343.sql" />
     </target>
 
 
