@@ -205,9 +205,9 @@ public class ResultConfiguration {
      */
     public String getSortType(String columnName) {
         if (getColumn(columnName) != null && getColumn(columnName).getSortType() != null) {
-            return getColumn(columnName).getSortType().getValue();
+            return getColumn(columnName).getSortType().name();
         } else {
-            return "";
+            return StringUtils.EMPTY;
         }
     }
 
@@ -216,12 +216,16 @@ public class ResultConfiguration {
      * @param columnName get index of this column.
      * @param sortType to set sortType.
      */
-    public void setSortType(String columnName, SortTypeEnum sortType) {
+    public void setSortType(String columnName, String sortType) {
         ResultColumn column = getColumn(columnName);
         if (column == null) {
             return;
         }
-        column.setSortType(sortType);
+        if (StringUtils.isNotEmpty(sortType)) {
+            column.setSortType(SortTypeEnum.valueOf(sortType));
+        } else {
+            column.setSortType(null);
+        }
     }
 
     /**

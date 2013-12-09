@@ -753,10 +753,10 @@ public class QueryFormTest {
         queryForm.validate(validationAware);
         assertFalse(validationAware.hasFieldErrors());
 
-        queryForm.getResultConfiguration().setSortType("invalidColumn", SortTypeEnum.ASCENDING);
+        queryForm.getResultConfiguration().setSortType("invalidColumn", SortTypeEnum.ASCENDING.name());
         assertEquals("", queryForm.getResultConfiguration().getSortType("invalidColumn"));
-        queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", SortTypeEnum.ASCENDING);
-        assertEquals(SortTypeEnum.ASCENDING.getValue(), queryForm.getResultConfiguration()
+        queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", SortTypeEnum.ASCENDING.name());
+        assertEquals(SortTypeEnum.ASCENDING.name(), queryForm.getResultConfiguration()
                 .getSortType("stringClinicalAnnotation2"));
         queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", null);
         assertEquals("", queryForm.getResultConfiguration().getSortType("stringClinicalAnnotation2"));
