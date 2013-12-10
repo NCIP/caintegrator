@@ -1,6 +1,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
             $(document).ready(function() {
+            	$.ajaxSetup({ cache: false });
                 $("#tab-container").easytabs({
                     animate: false,
                     cache: true,
