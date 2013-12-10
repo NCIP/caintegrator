@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.genepattern.webservice.WebServiceException;
 import org.springframework.transaction.annotation.Propagation;
@@ -77,7 +77,7 @@ class GenomicDataHelper {
     }
 
     void loadData(StudyConfiguration studyConfiguration)
-    throws ConnectionException, DataRetrievalException, ValidationException, IOException {
+            throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
             handleSampleUpdates(genomicSource);
             if (!Status.LOADED.equals(genomicSource.getStatus())) {
@@ -107,11 +107,11 @@ class GenomicDataHelper {
     throws ConnectionException, DataRetrievalException, ValidationException, IOException {
         if (!genomicSource.getSamples().isEmpty()) {
             ArrayDataValues probeSetValues;
-            if (ArrayDataLoadingTypeEnum.PARSED_DATA.equals(genomicSource.getLoadingType())) {
+            if (ArrayDataLoadingTypeEnum.PARSED_DATA == genomicSource.getLoadingType()) {
                 probeSetValues = caArrayFacade.retrieveData(genomicSource);
             } else {
-                AbstractExpressionMappingFileHandler handler = expressionHandlerFactory.getHandler(
-                        genomicSource, caArrayFacade, arrayDataService, dao);
+                AbstractExpressionMappingFileHandler handler =
+                        expressionHandlerFactory.getHandler(genomicSource, caArrayFacade, arrayDataService, dao);
                 probeSetValues = handler.loadArrayData();
             }
             ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
@@ -198,11 +198,10 @@ class GenomicDataHelper {
     }
 
     private ArrayDataValues createGeneArrayDataValues(ArrayDataValues probeSetValues) {
-        PlatformHelper platformHelper =
-            new PlatformHelper(probeSetValues.getReporterList().getPlatform());
+        PlatformHelper platformHelper = new PlatformHelper(probeSetValues.getReporterList().getPlatform());
         Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        ArrayDataValues geneValues = new ArrayDataValues(platformHelper.getAllReportersByType(
-                                                         ReporterTypeEnum.GENE_EXPRESSION_GENE));
+        ArrayDataValues geneValues =
+                new ArrayDataValues(platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_GENE));
         for (ArrayData arrayData : probeSetValues.getArrayDatas()) {
             loadGeneArrayDataValues(geneValues, probeSetValues, arrayData, platformHelper, reporterLists);
         }
@@ -210,8 +209,7 @@ class GenomicDataHelper {
     }
 
     private void loadGeneArrayDataValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues,
-            ArrayData arrayData,
-            PlatformHelper platformHelper, Set<ReporterList> reporterLists) {
+            ArrayData arrayData, PlatformHelper platformHelper, Set<ReporterList> reporterLists) {
         ArrayData geneArrayData = createGeneArrayData(arrayData, reporterLists);
         loadGeneValues(geneValues, probeSetValues, arrayData, geneArrayData, platformHelper);
     }

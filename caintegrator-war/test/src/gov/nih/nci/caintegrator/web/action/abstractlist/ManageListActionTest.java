@@ -21,8 +21,6 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.application.SubjectList;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.abstractlist.ListTypeEnum;
-import gov.nih.nci.caintegrator.web.action.abstractlist.ManageListAction;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -38,7 +36,6 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         super.setUp();
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(new StudySubscription());
         action = new ManageListAction();
-        action.setFileManager(fileManager);
         action.setWorkspaceService(workspaceService);
         action.prepare();
     }
@@ -98,11 +95,11 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         // Test execute
         action.setDescription("Test description");
         action.setSelectedAction("createList");
-        action.setListType(ListTypeEnum.GENE.getValue());
+        action.setListType(ListTypeEnum.GENE);
         assertEquals("editGenePage", action.execute());
         verify(workspaceService, times(1)).createGeneList(any(GeneList.class), anySetOf(String.class));
         // Subject List
-        action.setListType(ListTypeEnum.SUBJECT.getValue());
+        action.setListType(ListTypeEnum.SUBJECT);
         assertEquals("editSubjectPage", action.execute());
         verify(workspaceService, times(1)).createSubjectList(any(SubjectList.class), anySetOf(String.class));
 
@@ -151,11 +148,11 @@ public class ManageListActionTest extends AbstractSessionBasedTest {
         // Test execute
         action.setDescription("Test description");
         action.setSelectedAction("createList");
-        action.setListType(ListTypeEnum.GENE.getValue());
+        action.setListType(ListTypeEnum.GENE);
         assertEquals("editGlobalGenePage", action.execute());
         verify(workspaceService, times(1)).createGeneList(any(GeneList.class), anySetOf(String.class));
         // Subject List
-        action.setListType(ListTypeEnum.SUBJECT.getValue());
+        action.setListType(ListTypeEnum.SUBJECT);
         assertEquals("editGlobalSubjectPage", action.execute());
         verify(workspaceService, times(1)).createSubjectList(any(SubjectList.class), anySetOf(String.class));
     }

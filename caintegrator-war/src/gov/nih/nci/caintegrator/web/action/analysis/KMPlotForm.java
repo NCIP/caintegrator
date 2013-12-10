@@ -9,8 +9,9 @@ package gov.nih.nci.caintegrator.web.action.analysis;
 import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.collect.Maps;
 
 /**
  * Holder for the different types of KM Plot Forms.
@@ -20,10 +21,9 @@ public class KMPlotForm {
     private KMPlotAnnotationBasedActionForm annotationBasedForm = new KMPlotAnnotationBasedActionForm();
     private KMPlotGeneExpressionBasedActionForm geneExpressionBasedForm = new KMPlotGeneExpressionBasedActionForm();
     private KMPlotQueryBasedActionForm queryBasedForm = new KMPlotQueryBasedActionForm();
-    
-    private Map<String, SurvivalValueDefinition> survivalValueDefinitions = 
-        new HashMap<String, SurvivalValueDefinition>();
-    private String survivalValueDefinitionId;
+
+    private Map<String, SurvivalValueDefinition> survivalValueDefinitions = Maps.newHashMap();
+    private Long survivalValueDefinitionId;
 
     /**
      * Clears all forms and the KM Plots out of the session.
@@ -36,7 +36,7 @@ public class KMPlotForm {
         geneExpressionBasedForm.clear();
         queryBasedForm.clear();
     }
-    
+
     /**
      * @return the annotationBasedForm
      */
@@ -64,13 +64,13 @@ public class KMPlotForm {
     /**
      * @return the survivalValueDefinitionId
      */
-    public String getSurvivalValueDefinitionId() {
+    public Long getSurvivalValueDefinitionId() {
         return survivalValueDefinitionId;
     }
     /**
      * @param survivalValueDefinitionId the survivalValueDefinitionId to set
      */
-    public void setSurvivalValueDefinitionId(String survivalValueDefinitionId) {
+    public void setSurvivalValueDefinitionId(Long survivalValueDefinitionId) {
         this.survivalValueDefinitionId = survivalValueDefinitionId;
     }
     /**
@@ -99,6 +99,6 @@ public class KMPlotForm {
     public void setQueryBasedForm(KMPlotQueryBasedActionForm queryBasedForm) {
         this.queryBasedForm = queryBasedForm;
     }
-    
-    
+
+
 }

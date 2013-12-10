@@ -1,4 +1,3 @@
-<%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
      
      <s:actionerror />
@@ -6,10 +5,10 @@
     <s:set name="gePlot" value="#session['gePlot']" />
     <s:if test="#gePlot.clinicalQueryBasedGePlot != null">
         <center>
-            <s:set name="retrieveClinicalQueryGEPlot_mean" id="retrieveClinicalQueryGEPlot_mean" value="%{retrieveGePlotUrl('mean')}"/>
-            <s:set name="retrieveClinicalQueryGEPlot_median" id="retrieveClinicalQueryGEPlot_median" value="%{retrieveGePlotUrl('median')}"/>
-            <s:set name="retrieveClinicalQueryGEPlot_log2" id="retrieveClinicalQueryGEPlot_log2" value="%{retrieveGePlotUrl('log2Intensity')}"/>
-            <s:set name="retrieveClinicalQueryGEPlot_bw" id="retrieveClinicalQueryGEPlot_bw" value="%{retrieveGePlotUrl('boxWhiskerLog2Intensity')}"/>
+            <s:set name="retrieveClinicalQueryGEPlot_mean" id="retrieveClinicalQueryGEPlot_mean" value="%{retrieveGePlotUrl('MEAN')}"/>
+            <s:set name="retrieveClinicalQueryGEPlot_median" id="retrieveClinicalQueryGEPlot_median" value="%{retrieveGePlotUrl('MEDIAN')}"/>
+            <s:set name="retrieveClinicalQueryGEPlot_log2" id="retrieveClinicalQueryGEPlot_log2" value="%{retrieveGePlotUrl('LOG2_INTENSITY')}"/>
+            <s:set name="retrieveClinicalQueryGEPlot_bw" id="retrieveClinicalQueryGEPlot_bw" value="%{retrieveGePlotUrl('BOX_WHISKER_LOG2_INTENSITY')}"/>
             <b> Plot Type: </b> <a href="#" id="clinicalQueryTypeSelection1" style="background-color:yellow;" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_mean}', 'clinicalQueryTypeSelection', '1')">Mean</a> | 
                                  <a href="#" id="clinicalQueryTypeSelection2" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_median}', 'clinicalQueryTypeSelection', '2')">Median</a> |
                                  <a href="#" id="clinicalQueryTypeSelection3" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_log2}', 'clinicalQueryTypeSelection', '3')">Log2</a> |

@@ -22,12 +22,10 @@ import gov.nih.nci.caintegrator.domain.genomic.Gene;
 import gov.nih.nci.caintegrator.domain.genomic.GisticGenomicRegionReporter;
 
 import java.awt.Color;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,6 +41,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -102,7 +101,7 @@ public final class Cai2Util {
      * @param s - string item to see if exists in the collection.
      * @return true/false value.
      */
-    public static boolean containsIgnoreCase(Collection <String> l, String s) {
+    public static boolean containsIgnoreCase(Collection<String> l, String s) {
         Iterator<String> it = l.iterator();
         while (it.hasNext()) {
             if (it.next().equalsIgnoreCase(s)) {
@@ -110,26 +109,6 @@ public final class Cai2Util {
             }
         }
         return false;
-    }
-
-    /**
-     * Write a byte array to a file.
-     * @param fileBytes the byte array
-     * @param tempFile the output file
-     * @throws IOException the I/O exception
-     */
-    public static void byteArrayToFile(byte[] fileBytes, File tempFile) throws IOException {
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempFile));
-        int totalBytesWritten = 0;
-        int fileBytesLength = fileBytes.length;
-        while (totalBytesWritten < fileBytesLength) {
-            int lengthToWrite = fileBytesLength - totalBytesWritten < BUFFER_SIZE
-                ? fileBytesLength - totalBytesWritten : BUFFER_SIZE;
-            bos.write(fileBytes, totalBytesWritten, lengthToWrite);
-            totalBytesWritten += lengthToWrite;
-        }
-        bos.flush();
-        bos.close();
     }
 
     /**
@@ -170,37 +149,13 @@ public final class Cai2Util {
         }
         for (File file : files) {
             LOGGER.info("File name is  " + file.getName());
-            ZipUtilities.insertEntry(sourceZipfile, file.getName(), streamFile(file));
+            ZipUtilities.insertEntry(sourceZipfile, file.getName(), IOUtils.toByteArray(new FileInputStream(file)));
         }
         return sourceZipfile;
     }
 
-    private static byte[] streamFile(File file) throws IOException {
-        InputStream is = new FileInputStream(file);
-        long length = file.length();
-        if (length > Integer.MAX_VALUE) {
-            return null;
-        }
-        byte[] bytes = new byte[(int) length];
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length) {
-            numRead = is.read(bytes, offset, bytes.length - offset);
-            offset += numRead;
-            if (numRead <= 0) {
-                break;
-            }
-        }
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file " + file.getName());
-        }
-        is.close();
-        return bytes;
-    }
-
     private static void addDir(File dirObj, ZipOutputStream out, int index) throws IOException {
         File[] files = dirObj.listFiles();
-
         for (int i = 0; i < files.length; i++) {
             File curFile = files[i];
             if (curFile.isDirectory()) {
@@ -211,8 +166,7 @@ public final class Cai2Util {
         }
     }
 
-    private static void addFile(File curFile, ZipOutputStream out, int index)
-    throws IOException {
+    private static void addFile(File curFile, ZipOutputStream out, int index) throws IOException {
         byte[] tmpBuf = new byte[BUFFER_SIZE];
         FileInputStream in = new FileInputStream(curFile);
         String relativePathName = curFile.getPath().substring(index);
@@ -259,9 +213,7 @@ public final class Cai2Util {
 
     /**
      * Extract the host name from the url.
-     *
-     * @param url
-     *            the url
+     * @param url the url
      * @return the host name
      */
     public static String getHostNameFromUrl(String url) {
@@ -281,11 +233,9 @@ public final class Cai2Util {
      * @param totalNumberOfUniqueColors - total number of unique colors to be created in the palette.
      */
     public static void setColorPalette(int totalNumberOfUniqueColors) {
-
         for (int i = 0; i < MAX_ANGLE_CONSTANT; i += MAX_ANGLE_CONSTANT / totalNumberOfUniqueColors) {
             double colorNumberAsAngle = i * GOLDEN_ANGLE;
             double hue = colorNumberAsAngle - Math.floor(colorNumberAsAngle);
-
             COLOR_PALETTE.add(Color.getHSBColor((float) hue, (float) COLOR_SATURATION, (float) COLOR_BRIGHTNESS));
         }
     }
@@ -297,9 +247,7 @@ public final class Cai2Util {
      * @return - Color object for that number.
      */
     public static Color getColor(int colorNumber) {
-
         Color colorToBeReturned;
-
         if (colorNumber > 10) {
             colorToBeReturned = getUnlimitedColor(colorNumber);
         } else {
@@ -314,13 +262,9 @@ public final class Cai2Util {
      * @return - Color object for that number.
      */
     public static Color getUnlimitedColor(int colorNumber) {
-
         int maxColorsInPalette = COLOR_PALETTE.size();
-        Color[] colorsArray = new Color[maxColorsInPalette];
+        Color[] colorsArray = COLOR_PALETTE.toArray(new Color[maxColorsInPalette]);
         Color colorToBeReturned;
-
-        colorsArray = COLOR_PALETTE.toArray(colorsArray);
-
         if (colorNumber < 1 || colorsArray.length == 0) {
             colorToBeReturned = Color.BLACK;
         } else if (colorNumber > maxColorsInPalette) {
@@ -605,9 +549,7 @@ public final class Cai2Util {
      * @param dir the File directory of which the contents will be logged.
      */
     public static void printDirContents(File dir) {
-
         String[] files = dir.list();
-
         if (files != null) {
             LOGGER.info("Listing: Contents of " + files.length + " files in dir " + dir.getAbsolutePath());
             for (int i = 0; i < files.length; i++) {

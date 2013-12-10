@@ -6,11 +6,13 @@
  */
 package gov.nih.nci.caintegrator.data;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import gov.nih.nci.caintegrator.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator.domain.annotation.PermissibleValue;
@@ -52,20 +54,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.SessionFactory;
 import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-public final class CaIntegrator2DaoTestIntegration extends AbstractTransactionalSpringContextTests {
-
+/**
+ * caIntegrator dao integration tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:integration-test-config.xml")
+@Transactional
+public class CaIntegrator2DaoTestIntegration {
+    @Autowired
     private CaIntegrator2Dao dao;
-    private SessionFactory sessionFactory;
-
-
-    @Override
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/dao-test-config.xml"};
-    }
 
     @Test
     public void testGetWorkspace() {
@@ -75,7 +81,6 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
 
         UserWorkspace workspace2 = this.dao.getWorkspace("username");
         assertEquals(workspace.getId(), workspace2.getId());
-
     }
 
     @Test
@@ -621,26 +626,4 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         gcl.setLocation(location);
         return gcl;
     }
-
-    /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
-     */
-    public void setDao(CaIntegrator2Dao caIntegrator2Dao) {
-        this.dao = caIntegrator2Dao;
-    }
-
-    /**
-     * @return the sessionFactory
-     */
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    /**
-     * @param sessionFactory the sessionFactory to set
-     */
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
 }

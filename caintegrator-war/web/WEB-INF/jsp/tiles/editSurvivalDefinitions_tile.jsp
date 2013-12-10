@@ -60,15 +60,15 @@
 		            <s:div cssStyle="padding: 1em 0 0 0;" id="survivalTypeDiv">
 		                <s:div cssClass="wwlbl label">Survival Definition Type:</s:div>
 		                <s:div>
-		                    <s:radio theme="css_xhtml" name="survivalDefinitionFormValues.survivalValueType" list="#{'By Date':'By Date'}" onclick="document.getElementById('lengthOfTimeInputParams').style.display = 'none'; document.getElementById('dateInputParams').style.display = 'block';" />
-		                    <s:radio theme="css_xhtml" name="survivalDefinitionFormValues.survivalValueType" list="#{'By Length of time in study':'By Length of time in study'}" onclick="document.getElementById('dateInputParams').style.display = 'none'; document.getElementById('lengthOfTimeInputParams').style.display = 'block';" />
+		                    <s:radio theme="css_xhtml" name="survivalDefinitionFormValues.survivalValueType" list="#{'DATE':'By Date'}" onclick="document.getElementById('lengthOfTimeInputParams').style.display = 'none'; document.getElementById('dateInputParams').style.display = 'block';" />
+		                    <s:radio theme="css_xhtml" name="survivalDefinitionFormValues.survivalValueType" list="#{'LENGTH_OF_TIME':'By Length of time in study'}" onclick="document.getElementById('dateInputParams').style.display = 'none'; document.getElementById('lengthOfTimeInputParams').style.display = 'block';" />
 		                </s:div>
 		            </s:div>
 		            <br />
                     <s:textfield label="Name" name="survivalDefinitionFormValues.survivalValueDefinitionName" requiredLabel="true"/>
                     <br/>
                     <s:select name="survivalDefinitionFormValues.survivalLengthUnits"
-                                  list="@gov.nih.nci.caintegrator.domain.annotation.SurvivalLengthUnitsEnum@getDisplayableValues()" 
+                                  list="@gov.nih.nci.caintegrator.domain.annotation.SurvivalLengthUnitsEnum@values()" listValue="value" 
                                   label="Survival Length Units" requiredLabel="true"/>
                     <br/>              
                     <s:div id="dateInputParams" cssStyle="%{dateInputCssStyle}">

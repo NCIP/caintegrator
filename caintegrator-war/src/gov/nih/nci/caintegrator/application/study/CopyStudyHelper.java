@@ -184,24 +184,17 @@ public class CopyStudyHelper {
         for (GenomicDataSourceConfiguration genomicDsConf : copyFrom.getGenomicDataSources()) {
             GenomicDataSourceConfiguration newGenomicDsConf = new GenomicDataSourceConfiguration();
             newGenomicDsConf.setDataType(genomicDsConf.getDataType());
-            newGenomicDsConf.setDataTypeString(genomicDsConf.getDataTypeString());
             newGenomicDsConf.setExperimentIdentifier(genomicDsConf.getExperimentIdentifier());
             copyServerConnectionProfile(genomicDsConf.getServerProfile(), newGenomicDsConf.getServerProfile());
             newGenomicDsConf.setPlatformName(genomicDsConf.getPlatformName());
             newGenomicDsConf.setPlatformVendor(genomicDsConf.getPlatformVendor());
-            newGenomicDsConf.setPlatformVendorString(genomicDsConf.getPlatformVendorString());
             newGenomicDsConf.setLoadingType(genomicDsConf.getLoadingType());
-            newGenomicDsConf.setLoadingTypeString(genomicDsConf.getLoadingTypeString());
             newGenomicDsConf.setStatus(Status.NOT_MAPPED);
             newGenomicDsConf.setSampleMappingFileName("None Configured");
             newGenomicDsConf.setTechnicalReplicatesCentralTendency(genomicDsConf
                     .getTechnicalReplicatesCentralTendency());
-            newGenomicDsConf.setTechnicalReplicatesCentralTendencyString(genomicDsConf
-                    .getTechnicalReplicatesCentralTendencyString());
             newGenomicDsConf.setUseHighVarianceCalculation(genomicDsConf.isUseHighVarianceCalculation());
             newGenomicDsConf.setHighVarianceCalculationType(genomicDsConf.getHighVarianceCalculationType());
-            newGenomicDsConf.setHighVarianceCalculationTypeString(genomicDsConf
-                    .getHighVarianceCalculationTypeString());
             newGenomicDsConf.setHighVarianceThreshold(genomicDsConf.getHighVarianceThreshold());
             newGenomicDsConf.setLastModifiedDate(copyTo.getLastModifiedDate());
             copyTo.getGenomicDataSources().add(newGenomicDsConf);

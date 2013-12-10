@@ -10,9 +10,12 @@ import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Implementation of the CaDSRApplicationServiceFactory.
  */
+@Component
 public class CaDSRApplicationServiceFactoryImpl implements CaDSRApplicationServiceFactory {
     private static final String CADSR_SERVICE = "CaDsrServiceInfo";
 
@@ -21,8 +24,7 @@ public class CaDSRApplicationServiceFactoryImpl implements CaDSRApplicationServi
      */
     public ApplicationService retrieveCaDsrApplicationService(String caDsrUrl) throws ConnectionException {
         try {
-            return ApplicationServiceProvider.getApplicationServiceFromUrl(
-                    caDsrUrl, CADSR_SERVICE);
+            return ApplicationServiceProvider.getApplicationServiceFromUrl(caDsrUrl, CADSR_SERVICE);
         } catch (Exception e) {
             throw new ConnectionException("Error occurred when trying to create caDSR Application Service.", e);
         }

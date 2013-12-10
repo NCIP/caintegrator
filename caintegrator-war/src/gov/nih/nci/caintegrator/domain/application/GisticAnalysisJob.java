@@ -14,7 +14,7 @@ import gov.nih.nci.caintegrator.web.action.analysis.GisticAnalysisForm;
 public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
 
     private static final long serialVersionUID = 1L;
-    
+
     private final transient GisticAnalysisForm gisticAnalysisForm = new GisticAnalysisForm();
     private ResultsZipFile resultsZipFile;
     private ServerConnectionTypeEnum connectionType = ServerConnectionTypeEnum.UNKNOWN;
@@ -37,6 +37,7 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
     /**
      * @return the resultsZipFile
      */
+    @Override
     public ResultsZipFile getResultsZipFile() {
         return resultsZipFile;
     }

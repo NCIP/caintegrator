@@ -13,9 +13,15 @@ import gov.nih.nci.caintegrator.application.study.ValidationException;
 import java.io.File;
 import java.io.IOException;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Adds a new new clinical data source file to a study.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class AddClinicalFileAction extends AbstractClinicalSourceAction {
 
     private static final long serialVersionUID = 1L;
@@ -28,35 +34,36 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")     // PMD mistakenly flagging as empty method
     protected boolean isFileUpload() {
         return true;
-    }     
-    
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute()  {
         try {
-            DelimitedTextClinicalSourceConfiguration clinicalSource = 
-                getStudyManagementService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
+            DelimitedTextClinicalSourceConfiguration clinicalSource =
+                getStudyManagementService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(),
                         getClinicalFileFileName(), createNewAnnotationDefinition);
             setClinicalSource(clinicalSource);
-            setStudyLastModifiedByCurrentUser(clinicalSource, 
+            setStudyLastModifiedByCurrentUser(clinicalSource,
                     LogEntry.getSystemLogAddSubjectAnnotationFile(getClinicalFileFileName()));
             return SUCCESS;
         } catch (ValidationException e) {
-            addActionError(getText("struts.messages.exception.invalid.file", 
+            addActionError(getText("struts.messages.exception.invalid.file",
                                         getArgs(e.getResult().getInvalidMessage())));
             return INPUT;
         } catch (IOException e) {
-            addActionError(getText("struts.messages.exception.file.ioexception", 
+            addActionError(getText("struts.messages.exception.file.ioexception",
                                         getArgs(e.getMessage())));
             return INPUT;
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -69,7 +76,7 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
         }
         prepareValueStack();
     }
-    
+
     /**
      * @return the clinicalFile
      */
@@ -111,7 +118,7 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     public void setClinicalFileFileName(String clinicalFileFileName) {
         this.clinicalFileFileName = clinicalFileFileName;
     }
-   
+
     /**
      * @return the createNewAnnotationDefinition
      */
@@ -125,5 +132,5 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     public void setCreateNewAnnotationDefinition(boolean createNewAnnotationDefinition) {
         this.createNewAnnotationDefinition = createNewAnnotationDefinition;
     }
-    
+
 }

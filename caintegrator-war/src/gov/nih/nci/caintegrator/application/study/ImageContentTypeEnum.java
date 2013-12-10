@@ -24,11 +24,11 @@ public enum ImageContentTypeEnum {
      * GIF type.
      */
     GIF("image/gif");
-    
+
     private static Map<String, ImageContentTypeEnum> valueToTypeMap = new HashMap<String, ImageContentTypeEnum>();
 
     private String value;
-    
+
     private ImageContentTypeEnum(String value) {
         this.value = value;
     }
@@ -55,11 +55,11 @@ public enum ImageContentTypeEnum {
         }
         return valueToTypeMap;
     }
-    
+
     /**
      * Returns the <code>ImageContentTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
-     * 
+     *
      * @param value the value to match
      * @return the matching type.
      */
@@ -70,7 +70,7 @@ public enum ImageContentTypeEnum {
 
     /**
      * Checks to see that the value given is a legal <code>AssayType</code> value.
-     * 
+     *
      * @param value the value to check;
      * @return T/F value depending on if is a valid type.
      */

@@ -15,15 +15,16 @@ import gov.nih.nci.caintegrator.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -46,8 +47,6 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
 
     private final GemlSaxParser gemlSaxParser;
 
-    private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
-
     /**
      * Constructor.
      * @param source the platform source
@@ -69,8 +68,7 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
 
     @Override
     public String getPlatformName() throws PlatformLoadingException {
-        return new GemlPlatformNameParser().extractPlatformName(
-                getAnnotationFiles().get(0));
+        return new GemlPlatformNameParser().extractPlatformName(getAnnotationFiles().get(0));
     }
 
     /**
@@ -102,11 +100,12 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
     }
 
     /**
+     * Handler for extracting the platform name.
      *
+     * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
      */
     class GemlPlatformNameParser extends DefaultHandler {
-
-        private String platformName = null;
+        private String platformName;
 
         /**
          * Parse the GEML XML file to extract the platform name.
@@ -150,7 +149,7 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
          */
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes)
-        throws SAXException {
+                throws SAXException {
             if (qName.equalsIgnoreCase(PROJECT_TAG)) {
                 platformName = attributes.getValue(NAME_ATTRIBUTE);
                 throw new SAXException(DONE);
@@ -162,7 +161,7 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
      *
      */
     class GemlSaxParser extends DefaultHandler {
-
+        private final Pattern chrPattern = Pattern.compile("^chr.*:\\d+-\\d+");
         private CaIntegrator2Dao myDao;
         private Platform myPlatform;
         private ReporterList reporterList;
@@ -194,7 +193,6 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
 
             sp.parse(xmlFile, this);
             reporterList.sortAndLoadReporterIndexes();
-
         }
 
         /**
@@ -217,8 +215,7 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
 
         private void processProjectTag(Attributes attributes) {
             myPlatform.setName(attributes.getValue(NAME_ATTRIBUTE));
-            reporterList = myPlatform.addReporterList(myPlatform.getName(),
-                    ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+            reporterList = myPlatform.addReporterList(myPlatform.getName(), ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         }
 
         private void processReporterTag(Attributes attributes) {
@@ -226,10 +223,9 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
             if (reporterName.startsWith("A_") && !reporterNames.contains(reporterName)) {
                 reporterNames.add(reporterName);
                 reporter = new DnaAnalysisReporter();
-                reporterList.getReporters().add(reporter);
-                reporter.setReporterList(reporterList);
                 reporter.setName(reporterName);
                 setChromosomeInfo(attributes.getValue("systematic_name"));
+                reporterList.addReporter(reporter);
             } else {
                 reporter = null;
             }
@@ -237,7 +233,7 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
 
         private void processGeneTag(Attributes attributes) {
             String symbol = attributes.getValue("primary_name");
-            Gene gene = symbolToGeneMap.get(symbol);
+            Gene gene = getSymbolToGeneMap().get(symbol);
             if (gene == null) {
                 gene = lookupOrCreateGene(null, symbol, myDao);
             }
@@ -247,17 +243,15 @@ public class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
         }
 
         private void setChromosomeInfo(String chrValue) {
-            if (chrValue.matches("^chr.*:\\d+-\\d+")) {
-                String[] chrCoords = chrValue.split(":");
-                reporter.setChromosome(chrCoords[0].substring(3).replaceAll("_random", ""));
+            if (chrPattern.matcher(chrValue).matches()) {
+                String[] chrCoords = StringUtils.split(chrValue, ":");
+                reporter.setChromosome(StringUtils.remove(chrCoords[0].substring(3), "_random"));
                 reporter.setPosition(getStartPos(chrCoords[1]));
             }
         }
 
-        private Integer getStartPos(String value) {
-            return Integer.parseInt(value.split("-")[0]);
+        private int getStartPos(String value) {
+            return NumberUtils.toInt(StringUtils.split(value, '-')[0]);
         }
-
     }
-
 }

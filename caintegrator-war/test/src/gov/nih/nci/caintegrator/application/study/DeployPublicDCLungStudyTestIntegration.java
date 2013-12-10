@@ -14,33 +14,20 @@ import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 2880)
+/**
+ * Integration test for deployment of the public DC Lung study.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@Transactional
 public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyTestIntegration {
-
-    private final static Logger LOGGER = Logger.getLogger(DeployPublicDCLungStudyTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws Exception {
         deployStudy();
-    }
-
-    @Override
-    protected boolean getMapImages() {
-        return false;
-    }
-
-    @Override
-    protected boolean getLoadImages() {
-        return false;
-    }
-
-    @Override
-    protected boolean getLoadImageAnnotation() {
-        return false;
     }
 
     @Override
@@ -74,21 +61,6 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
-    protected Logger getLogger() {
-        return LOGGER;
-    }
-
-    @Override
-    protected String getNCIAServerUrl() {
-        return null;
-    }
-
-    @Override
-    protected String getNCIATrialId() {
-        return null;
-    }
-
-    @Override
     protected String getStudyName() {
         return "DC Lung Study";
     }
@@ -104,15 +76,6 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
-    protected File getImageAnnotationFile() {
-        return null;
-    }
-
-    @Override
-    protected File getImageMappingFile() {
-        return null;
-    }
-    @Override
     protected File getSampleMappingFile() {
         return TestDataFiles.DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE;
     }
@@ -125,11 +88,6 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     @Override
     protected File getControlSamplesFile() {
         return TestDataFiles.DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE;
-    }
-
-    @Override
-    protected String getControlSamplesFileName() {
-        return TestDataFiles.DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE_PATH;
     }
 
     @Override
@@ -179,7 +137,7 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     protected boolean getAuthorizeStudy() {
-        return false;
+        return true;
     }
 
     /**

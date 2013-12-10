@@ -49,12 +49,13 @@ public abstract class AbstractUnparsedSupplementalMappingFileHandler extends Abs
      * @throws FileNotFoundException IO exception
      */
     protected Sample getSample(String sampleName, String subjectIdentifier)
-    throws FileNotFoundException, ValidationException {
-        Sample sample = getGenomicSource().getSample(sampleName);
+            throws FileNotFoundException, ValidationException {
+        Sample sample = getSampleNameToSampleMap().get(sampleName);
         if (sample == null) {
             sample = new Sample();
             sample.setName(sampleName);
             getGenomicSource().getSamples().add(sample);
+            getSampleNameToSampleMap().put(sampleName, sample);
         }
         addSampleAcquisition(subjectIdentifier, sample);
         return sample;

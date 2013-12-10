@@ -9,9 +9,6 @@ package gov.nih.nci.caintegrator.application.arraydata;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator.TestDataFiles;
-import gov.nih.nci.caintegrator.application.arraydata.AffymetrixCdfReadException;
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator.application.study.ValidationException;
 import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator.domain.genomic.GeneLocationConfiguration;
@@ -28,63 +25,53 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Array data service integration tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/**/service-test-integration-config.xml"})
+@ContextConfiguration("classpath:integration-test-config.xml")
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public class ArrayDataServiceTestIntegration {
 
+    private static final int NUMBER_OF_HG18_GENE_LOCATIONS = 22404;
+    private static final int NUMBER_OF_HG19_GENE_LOCATIONS = 22397;
     @Autowired
     private ArrayDataService arrayDataService;
     @Autowired
     private CaIntegrator2Dao dao;
 
+    /**
+     * Tests loading of gene location files.
+     * @throws ValidationException on unexpected error
+     * @throws IOException on unexpected error
+     */
     @Test
     public void testLoadGeneLocationFile() throws ValidationException, IOException {
         GeneLocationConfiguration geneLocationConf =
             arrayDataService.loadGeneLocationFile(TestDataFiles.HG18_GENE_LOCATIONS_FILE, GenomeBuildVersionEnum.HG18);
-        assertEquals(22404, geneLocationConf.getGeneLocations().size());
+        assertEquals(NUMBER_OF_HG18_GENE_LOCATIONS, geneLocationConf.getGeneLocations().size());
 
         geneLocationConf =
             arrayDataService.loadGeneLocationFile(TestDataFiles.HG19_GENE_LOCATIONS_FILE, GenomeBuildVersionEnum.HG19);
-        assertEquals(22397, geneLocationConf.getGeneLocations().size());
+        assertEquals(NUMBER_OF_HG19_GENE_LOCATIONS, geneLocationConf.getGeneLocations().size());
     }
 
+    /**
+     * Tests loading of an array design.
+     * @throws PlatformLoadingException on unexpected error
+     * @throws AffymetrixCdfReadException on unexpected error
+     */
     @Test
     public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
-        checkLoadArrayDesign(TestArrayDesignFiles.HG_U133_PLUS_2_CDF_FILE, TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
+        checkLoadArrayDesign(TestArrayDesignFiles.HG_U133_PLUS_2_CDF_FILE,
+                TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
     }
 
-    private void checkLoadArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
+    private void checkLoadArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException,
+        AffymetrixCdfReadException {
         ArrayDesignChecker.checkLoadAffymetrixExpressionArrayDesign(cdfFile, annotationFile, arrayDataService);
     }
-
-    /**
-     * @return the arrayDataService
-     */
-    public ArrayDataService getArrayDataService() {
-        return arrayDataService;
-    }
-
-    /**
-     * @param arrayDataService the arrayDataService to set
-     */
-    public void setArrayDataService(ArrayDataService arrayDataService) {
-        this.arrayDataService = arrayDataService;
-    }
-
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2Dao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
-    }
-
 }

@@ -21,9 +21,15 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Action dealing with Kaplan-Meier Query Based plotting.
  */
+@Component("kmPlotQueryBasedAction")
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
 
     private static final long serialVersionUID = 1L;

@@ -6,6 +6,8 @@
 
         <!-- @DATASOURCE_CONFIG_START@
         <property name="connection.datasource">java:jdbc/CaIntegratorDataSource</property>
+        <property name="hibernate.cache.use_query_cache">true</property>
+        <property name="hibernate.cache.use_second_level_cache">true</property>
         @DATASOURCE_CONFIG_END@ -->
 
         <!-- @HIBERNATE_CONFIG_START@
@@ -14,13 +16,8 @@
         <property name="connection.username">@database.user@</property>
         <property name="connection.password">@database.password@</property>
         <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
-        <property name="c3p0.max_size">10</property>
-        <property name="c3p0.min_size">2</property>
-        <property name="c3p0.timeout">5000</property>
-        <property name="c3p0.max_statements">100</property>
-        <property name="c3p0.idle_test_period">3000</property>
-        <property name="c3p0.acquire_increment">2</property>
-        <property name="c3p0.validate">false</property>
+        <property name="hibernate.cache.use_query_cache">false</property>
+        <property name="hibernate.cache.use_second_level_cache">false</property>
         @HIBERNATE_CONFIG_END@ -->
 
         <!-- Properties for the session factory -->
@@ -31,9 +28,7 @@
         <property name="hibernate.max_fetch_depth">1</property>
         <property name="hibernate.jdbc.batch_versioned_data">true</property>
         <property name="hibernate.jdbc.use_streams_for_binary">true</property>
-        <property name="hibernate.cache.use_query_cache">true</property>
-        <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
-        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</property>
         <property name="hibernate.current_session_context_class">org.springframework.orm.hibernate3.SpringSessionContext</property> 
         <property name="hibernate.default_batch_fetch_size">16</property>
         <property name="hibernate.jdbc.fetch_size">5</property>

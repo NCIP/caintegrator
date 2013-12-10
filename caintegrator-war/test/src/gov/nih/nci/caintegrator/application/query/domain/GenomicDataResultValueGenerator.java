@@ -7,31 +7,33 @@
 package gov.nih.nci.caintegrator.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.Set;
-
 import gov.nih.nci.caintegrator.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator.domain.application.GenomicDataResultValue;
 
+import java.util.Set;
 
+/**
+ * Data generator for genomic data result values.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public final class GenomicDataResultValueGenerator extends AbstractTestDataGenerator<GenomicDataResultValue> {
 
+    /**
+     * Generator instance.
+     */
     public static final GenomicDataResultValueGenerator INSTANCE = new GenomicDataResultValueGenerator();
-    
+
     private GenomicDataResultValueGenerator() {
         super();
     }
 
     @Override
     public void compareFields(GenomicDataResultValue original, GenomicDataResultValue retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getColumn(), retrieved.getColumn());
-        
-        
     }
-
 
     @Override
     public GenomicDataResultValue createPersistentObject() {
@@ -45,8 +47,5 @@ public final class GenomicDataResultValueGenerator extends AbstractTestDataGener
         GenomicDataResultColumn col = new GenomicDataResultColumn();
         GenomicDataResultColumnGenerator.INSTANCE.setValues(col, nonCascadedObjects);
         resultValue.setColumn(col);
-        
-
     }
-
 }

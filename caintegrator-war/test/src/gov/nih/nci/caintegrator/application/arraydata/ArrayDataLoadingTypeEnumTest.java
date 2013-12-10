@@ -6,59 +6,33 @@
  */
 package gov.nih.nci.caintegrator.application.arraydata;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataLoadingTypeEnum;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformDataTypeEnum;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
 
 import org.junit.Test;
 
+/**
+ * Tests loading type retrieval from enum.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class ArrayDataLoadingTypeEnumTest {
 
+    /**
+     * Tests loading type retrieval.
+     */
     @Test
-    public void testGetValue() {
-    }
-
-    @Test
-    public void testGetByValue() {
-        assertEquals(ArrayDataLoadingTypeEnum.PARSED_DATA,
-                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.PARSED_DATA.getValue()));
-        assertEquals(ArrayDataLoadingTypeEnum.CHP,
-                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.CHP.getValue()));
-        assertEquals(ArrayDataLoadingTypeEnum.CNCHP,
-                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.CNCHP.getValue()));
-        assertEquals(ArrayDataLoadingTypeEnum.SINGLE_SAMPLE_PER_FILE,
-                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.SINGLE_SAMPLE_PER_FILE.getValue()));
-        assertEquals(ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE,
-                ArrayDataLoadingTypeEnum.getByValue(ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE.getValue()));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testCheckType() {
-        ArrayDataLoadingTypeEnum.checkType("not found");
-    }
-
-    @Test
-    public void testGetLoadingTypes() {
+    public void getLoadingTypes() {
         assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AFFYMETRIX,
-                PlatformDataTypeEnum.EXPRESSION).contains(
-                        ArrayDataLoadingTypeEnum.PARSED_DATA.getValue()));
+                PlatformDataTypeEnum.EXPRESSION).contains(ArrayDataLoadingTypeEnum.PARSED_DATA));
         assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AFFYMETRIX,
-                PlatformDataTypeEnum.COPY_NUMBER).contains(
-                        ArrayDataLoadingTypeEnum.CNCHP.getValue()));
+                PlatformDataTypeEnum.COPY_NUMBER).contains(ArrayDataLoadingTypeEnum.CNCHP));
         assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AFFYMETRIX,
-                PlatformDataTypeEnum.SNP).contains(
-                        ArrayDataLoadingTypeEnum.CHP.getValue()));
+                PlatformDataTypeEnum.SNP).contains(ArrayDataLoadingTypeEnum.CHP));
         assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AGILENT,
-                PlatformDataTypeEnum.EXPRESSION).contains(
-                        ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE.getValue()));
+                PlatformDataTypeEnum.EXPRESSION).contains(ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE));
         assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AGILENT,
-                PlatformDataTypeEnum.COPY_NUMBER).contains(
-                        ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE.getValue()));
+                PlatformDataTypeEnum.COPY_NUMBER).contains(ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE));
         assertTrue(ArrayDataLoadingTypeEnum.getLoadingTypes(PlatformVendorEnum.AGILENT,
-                PlatformDataTypeEnum.SNP).contains(
-                        ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE.getValue()));
+                PlatformDataTypeEnum.SNP).contains(ArrayDataLoadingTypeEnum.MULTI_SAMPLE_PER_FILE));
     }
-
 }

@@ -41,12 +41,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation entry point for the WorkspaceService subsystem.
  */
+@Service("workspaceService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements WorkspaceService  {
 
@@ -342,6 +345,7 @@ public class WorkspaceServiceImpl extends CaIntegrator2BaseService implements Wo
     /**
      * @param securityManager the securityManager to set
      */
+    @Autowired
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
     }

@@ -15,10 +15,13 @@ import gov.nih.nci.caintegrator.common.ConfigurationParameter;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Grid Discovery Client to get available services.
  */
+@Component("gridDiscoveryClient")
 public class GridDiscoveryClientImpl implements GridDiscoveryClient {
 
     private DiscoveryClient discClient = null;
@@ -29,7 +32,7 @@ public class GridDiscoveryClientImpl implements GridDiscoveryClient {
      */
     public EndpointReferenceType[] getServices()
             throws ResourcePropertyRetrievalException, MalformedURIException {
-        
+
         EndpointReferenceType[] allServices = null;
         allServices = getDiscClient().getAllServices(true);
         return allServices;
@@ -44,7 +47,7 @@ public class GridDiscoveryClientImpl implements GridDiscoveryClient {
         searchedServices = getDiscClient().discoverServicesBySearchString(searchString);
         return searchedServices;
     }
-    
+
     private DiscoveryClient getDiscClient() throws MalformedURIException {
         if (discClient == null) {
             this.discClient = new DiscoveryClient(
@@ -72,6 +75,7 @@ public class GridDiscoveryClientImpl implements GridDiscoveryClient {
     /**
      * @param configurationHelper the configurationHelper to set
      */
+    @Autowired
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }

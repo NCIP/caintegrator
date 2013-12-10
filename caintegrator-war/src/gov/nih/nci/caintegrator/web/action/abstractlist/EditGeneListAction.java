@@ -10,9 +10,15 @@ import gov.nih.nci.caintegrator.domain.application.AbstractList;
 import gov.nih.nci.caintegrator.domain.application.GeneList;
 import gov.nih.nci.caintegrator.domain.genomic.Gene;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Provides functionality to list and add array designs.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditGeneListAction extends AbstractEditListAction {
 
     private static final long serialVersionUID = 1L;

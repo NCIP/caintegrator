@@ -11,80 +11,79 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.application.study.CentralTendencyTypeEnum;
 import gov.nih.nci.caintegrator.application.study.HighVarianceCalculationTypeEnum;
-import gov.nih.nci.caintegrator.common.CentralTendencyCalculator;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
+ * Tests for the central tendency calculator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class CentralTendencyCalculatorTest {
 
     private CentralTendencyCalculator calculatorNoVariance;
     private CentralTendencyCalculator calculatorWithVariancePercentage;
     private CentralTendencyCalculator calculatorWithVarianceValue;
-    private List<Float> values1;
-    private List<Float> values2;
-    
-    
+    private float[] values1 = {2f, 4f, 6f, 8f};
+    private float[] values2 = {2f, 4f, 4f, 4f, 5f, 5f, 7f, 9f};
+
+    /**
+     * Sets up the tests.
+     * @throws Exception on error
+     */
     @Before
     public void setUp() throws Exception {
         calculatorNoVariance = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEAN);
-        calculatorWithVariancePercentage = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN, true, 45.0, HighVarianceCalculationTypeEnum.PERCENTAGE);
-        calculatorWithVarianceValue = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN, true, 2.0, HighVarianceCalculationTypeEnum.VALUE);
-        values1 = new ArrayList<Float>();
-        values1.add(2f);
-        values1.add(4f);
-        values1.add(6f);
-        values1.add(8f);
-        
-        values2 = new ArrayList<Float>();
-        values2.add(2f);
-        values2.add(4f);
-        values2.add(4f);
-        values2.add(4f);
-        values2.add(5f);
-        values2.add(5f);
-        values2.add(7f);
-        values2.add(9f);
-        
+        calculatorWithVariancePercentage = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN, true, 45.0,
+                        HighVarianceCalculationTypeEnum.PERCENTAGE);
+        calculatorWithVarianceValue = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN, true, 2.0,
+                        HighVarianceCalculationTypeEnum.VALUE);
     }
 
+    /**
+     * Calculate central tendency with no variance.
+     */
     @Test
-    public void testCalculateCentralTendencyValueNoVariance() {
+    public void calculateCentralTendencyValueNoVariance() {
         calculatorNoVariance.calculateCentralTendencyValue(values1);
         assertEquals(Float.valueOf(5), calculatorNoVariance.getCentralTendencyValue());
-        values1.add(8f);
+
+        values1 = ArrayUtils.add(values1, 8f);
         calculatorNoVariance.calculateCentralTendencyValue(values1);
         assertEquals(Float.valueOf("5.6"), calculatorNoVariance.getCentralTendencyValue());
         calculatorNoVariance = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN);
         calculatorNoVariance.calculateCentralTendencyValue(values1);
         assertEquals(Float.valueOf("6"), calculatorNoVariance.getCentralTendencyValue());
     }
-    
+
+    /**
+     * Calculate central tendency with variance as a percentage.
+     */
     @Test
-    public void testCalculateCentralTendencyValueWithVarianceAsPercentage() {
+    public void calculateCentralTendencyValueWithVarianceAsPercentage() {
         calculatorWithVariancePercentage.calculateCentralTendencyValue(values2);
         assertEquals(Float.valueOf("4.5"), calculatorWithVariancePercentage.getCentralTendencyValue());
         assertFalse(calculatorWithVariancePercentage.isHighVariance());
-        calculatorWithVariancePercentage = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN, true, 44.0, HighVarianceCalculationTypeEnum.PERCENTAGE);
+        calculatorWithVariancePercentage = new CentralTendencyCalculator(CentralTendencyTypeEnum.MEDIAN, true, 44.0,
+                HighVarianceCalculationTypeEnum.PERCENTAGE);
         calculatorWithVariancePercentage.calculateCentralTendencyValue(values2);
         assertTrue(calculatorWithVariancePercentage.isHighVariance());
-        values2.add(4.5f);
+        values2 = ArrayUtils.add(values2, 4.5f);
         calculatorWithVariancePercentage.calculateCentralTendencyValue(values2);
         assertFalse(calculatorWithVariancePercentage.isHighVariance());
     }
-    
+
+    /**
+     * Calculate central tendency with variance as a value.
+     */
     @Test
-    public void testCalculateCentralTendencyValueWithVarianceAsValue() {
+    public void calculateCentralTendencyValueWithVarianceAsValue() {
         calculatorWithVarianceValue.calculateCentralTendencyValue(values2);
         assertEquals(Float.valueOf("4.5"), calculatorWithVarianceValue.getCentralTendencyValue());
         assertTrue(calculatorWithVarianceValue.isHighVariance());
-        values2.add(4.5f);
+        values2 = ArrayUtils.add(values2, 4.5f);
         calculatorWithVarianceValue.calculateCentralTendencyValue(values2);
         assertFalse(calculatorWithVarianceValue.isHighVariance());
     }

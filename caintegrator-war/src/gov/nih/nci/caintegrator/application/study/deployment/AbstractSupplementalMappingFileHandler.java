@@ -11,6 +11,7 @@ import gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration
 import gov.nih.nci.caintegrator.application.study.ValidationException;
 import gov.nih.nci.caintegrator.common.Cai2Util;
 import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator.domain.genomic.Sample;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 import gov.nih.nci.caintegrator.external.caarray.CaArrayFacade;
@@ -20,26 +21,34 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+import com.google.common.collect.Maps;
+
 /**
- * Provides base handling to retrieve copy number data based on a copy number mapping file.
+ * Provides base handling to retrieve supplemental mapping file data from caArray.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public abstract class AbstractSupplementalMappingFileHandler extends AbstractCaArrayFileHandler {
-
     private final CaIntegrator2Dao dao;
-    
+    private final Map<String, Sample> sampleNameToSample;
+
     AbstractSupplementalMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService);
-                this.dao = dao;
+        this.dao = dao;
+        sampleNameToSample = Maps.newHashMap();
+        for (Sample sample : getGenomicSource().getSamples()) {
+            sampleNameToSample.put(sample.getName(), sample);
+        }
     }
-    
+
     void loadMappingFile() throws DataRetrievalException, ValidationException {
-        CSVReader reader;
         try {
-            reader = new CSVReader(new FileReader(getMappingFile()));
+            CSVReader reader = new CSVReader(new FileReader(getMappingFile()));
             String[] fields;
             while ((fields = Cai2Util.readDataLine(reader)) != null) {
                 processMappingData(fields);
@@ -52,7 +61,6 @@ public abstract class AbstractSupplementalMappingFileHandler extends AbstractCaA
         } catch (ConnectionException e) {
             throw new DataRetrievalException("Couldn't connect to caArray: ", e);
         }
-        
     }
 
     private void processMappingData(String[] fields)
@@ -68,10 +76,10 @@ public abstract class AbstractSupplementalMappingFileHandler extends AbstractCaA
             mappingSample(subjectId, sampleName, supplementalDataFile);
         }
     }
-    
+
     abstract File getMappingFile() throws FileNotFoundException;
-    
-    abstract void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile) 
+
+    abstract void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
     throws FileNotFoundException, ValidationException, ConnectionException, DataRetrievalException;
 
     /**
@@ -79,6 +87,13 @@ public abstract class AbstractSupplementalMappingFileHandler extends AbstractCaA
      */
     public CaIntegrator2Dao getDao() {
         return dao;
+    }
+
+    /**
+     * @return the mapping of sample names to sample
+     */
+    public Map<String, Sample> getSampleNameToSampleMap() {
+        return sampleNameToSample;
     }
 
 }

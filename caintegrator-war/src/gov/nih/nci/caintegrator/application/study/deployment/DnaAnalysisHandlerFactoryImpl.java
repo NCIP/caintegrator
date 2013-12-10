@@ -12,9 +12,12 @@ import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 import gov.nih.nci.caintegrator.external.caarray.CaArrayFacade;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Default factory implementation.
  */
+@Component
 public class DnaAnalysisHandlerFactoryImpl implements DnaAnalysisHandlerFactory {
 
     /**

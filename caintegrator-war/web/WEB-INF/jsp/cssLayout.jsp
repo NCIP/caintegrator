@@ -1,5 +1,4 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -22,17 +21,24 @@
         <link rel="stylesheet" type="text/css" href="/caintegrator/common/css/ui-lightness/jquery-ui-1.10.1.custom.css" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/caintegrator2.css" />
 		<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/cai2modal.css" />
+        <link rel="stylesheet" type="text/css" href="/caintegrator/common/css/easytabs.css" />
+        <link rel="stylesheet" type="text/css" href="/caintegrator/common/js/navgoco/jquery.navgoco.css"/>
         
         <script type="text/javascript" src="./struts/optiontransferselect.js"></script>
-        <script type="text/javascript" src="/caintegrator/common/js/pde.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/caintegrator2.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/cai2modal.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/onlinehelp.js"></script>
+        
         <script type="text/javascript" src="/caintegrator/common/js/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery.editable-select.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery-ui-1.10.1.custom.min.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery.idletimer.js"></script>
         <script type="text/javascript" src="/caintegrator/common/js/jquery.idletimeout.js"></script>
+        <script type="text/javascript" src="/caintegrator/common/js/jquery.easytabs.min.js"></script>
+        
+        <script type="text/javascript" src="/caintegrator/common/js/navgoco/jquery.navgoco.min.js"></script>
+        
+        
         <s:if test="%{!anonymousUser}"> 
             <script type="text/javascript">
             $(document).ready(function() {
@@ -78,11 +84,21 @@
                 
                 $('.editable-select').editableSelect({
                     bg_iframe: true,
-                    });
+                });
+                
+                $('.nav').navgoco({
+                    caret: '<span class="caret"></span>',
+                    accordion: true,
+                    openClass: 'open',
+                    slide: {
+                        duration: 200,
+                        easing: 'linear'
+                    } 
+                });
             });
             </script>
         </s:if>
-        <sx:head parseContent="true" />
+        <s:head />
 	</head>
 	
 	
@@ -110,7 +126,7 @@
                     </div>
                 </s:if>
         
-                <sx:div id="TB_overlay" cssClass="TB_overlayBG"/>
+                <s:div id="TB_overlay" cssClass="TB_overlayBG"/>
                 <!-- Begin hidden busyDialogDiv -->
                 <s:div id="busyDialogDiv">
                 <img id="busyDialogProcessingImage" src="/caintegrator/images/ajax-loader-snake.gif" alt="ajax snake icon indicating loading process"/><br></br> Please wait for action to complete ...
@@ -120,60 +136,31 @@
                 <!-- Begin hidden geneListSearchForm -->
                 <s:form name="geneListSearchForm" id="geneListSearchForm" onsubmit="runGeneListSearch(); return false;" theme="css_xhtml">
                     <!-- For gene list to know which form element to publish gene symbols to. -->
-                    <s:hidden name="geneSymbolElementId" />
+                    <s:hidden name="geneSymbolElementId"/>
                     <s:hidden name="geneListSearchTopicPublished" value="false" />
-                    <sx:div 
-                        id="geneListSearchInputDiv"
-                        href="geneListSearchInput.action"
-                        showLoadingText="true"
-                        loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
-                        listenTopics="geneListSearchTopic"
-                        refreshOnShow="false" 
-                        cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:458px;max-height: 300px; overflow:auto;"/>
+                    <s:div id="geneListSearchInputDiv" cssStyle="margin-left:-140px;margin-top:-62px;width:458px;max-height: 300px; overflow:auto;"></s:div>
                 </s:form>
                 <!-- End geneListSearchForm -->
                 
-                <!-- Begin hidden bioDbNetSearchForm -->
                 <s:form name="bioDbNetSearchForm" id="bioDbNetSearchForm" onsubmit="runBioDbNetSearch(); return false;" theme="css_xhtml">
                     <!-- For bioDbNet to know which form element to publish gene symbols to. -->
                     <s:hidden name="geneSymbolElementId" />
-                    <sx:div id="bioDbNetSearchInputDiv"
-                        href="bioDbNetSearchInput.action"
-                        showLoadingText="true"
-                        loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
-                        listenTopics="bioDbNetSearchTopic"
-                        refreshOnShow="false" 
-                        cssStyle="display:none;visibility:hidden;margin-top:-62px;width:830px;max-height: 500px; overflow:auto;"/>
+                    <s:div id="bioDbNetSearchInputDiv" cssStyle="margin-top:-62px;width:830px;max-height: 500px; overflow:auto;"></s:div>
                 </s:form>
 				<div id="contentwrapper">
-				    
 				    <!--Content-->
-						
 	                <tiles:insertAttribute name="content" />
-					
 					<!--/Content-->
-    
                 </div>
-                
 				<!--Left Navigation Column-->
-				
 				<tiles:insertAttribute name="leftNavMenu" />
-								
 				<!--/Left Navigation Column-->
 				
 			</div>			
-			
 			<!--/Work Area-->		
-		
 			<!--Footer-->
-			
 			<tiles:insertAttribute name="globalFooter" />
-			
 			<!--/Footer-->
-		
 		</div>
-        
-			
 	</body>
-	
 </html>

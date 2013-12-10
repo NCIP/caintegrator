@@ -17,27 +17,31 @@ import gov.nih.nci.caintegrator.domain.genomic.ReporterTypeEnum;
 
 import java.util.Set;
 
-
+/**
+ * Genomic data result row generator.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public final class GenomicDataResultRowGenerator extends AbstractTestDataGenerator<GenomicDataResultRow> {
 
+    /**
+     * Data generator.
+     */
     public static final GenomicDataResultRowGenerator INSTANCE = new GenomicDataResultRowGenerator();
-    
+
     private GenomicDataResultRowGenerator() {
         super();
     }
 
     @Override
     public void compareFields(GenomicDataResultRow original, GenomicDataResultRow retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getValues().size(), retrieved.getValues().size());
     }
-
 
     @Override
     public GenomicDataResultRow createPersistentObject() {
         return new GenomicDataResultRow();
     }
-
 
     @Override
     public void setValues(GenomicDataResultRow resultRow, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
@@ -47,8 +51,8 @@ public final class GenomicDataResultRowGenerator extends AbstractTestDataGenerat
         resultRow.setReporter(new GeneExpressionReporter());
         resultRow.getReporter().setIndex(0);
         Platform platform = new Platform();
-        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ReporterList reporterList =
+                platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         resultRow.getReporter().setReporterList(reporterList);
     }
-
 }

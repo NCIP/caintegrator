@@ -534,4 +534,16 @@
         <comment>Updating the csm_protection_element for caintegrator to use the new package names instead of the old package names.</comment>
         <sqlFile path="@db-upgrade.run.dir@/1.4.1/CAINT-1285.sql"/>
     </changeSet>
+    <changeSet id="CAINT-1279" author="aevansel">
+        <comment>Updating the DnaAnalysisReporter model to use primative ints instead of Integer objects.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.5/CAINT-1279.sql"/>
+    </changeSet>
+    <changeSet id="CAINT-1336" author="etavela">
+        <comment>Fixing SegmentData legacy data (null values for primitive fields).</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4.2/CAINT-1336.sql"/>
+    </changeSet>
+    <changeSet id="CAINT-1343" author="etavela">
+        <comment>Changing AbstractReporter hierarchy to single table for performance.</comment>
+        <sqlFile path="@db-upgrade.run.dir@/1.4.2/CAINT-1343.sql"/>
+    </changeSet>
 </databaseChangeLog>

@@ -14,7 +14,6 @@ import static org.mockito.Mockito.mock;
 import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.application.analysis.GenePatternGridClientFactoryImpl;
 import gov.nih.nci.caintegrator.application.analysis.StatusUpdateListener;
-import gov.nih.nci.caintegrator.application.analysis.grid.GenePatternGridRunnerImpl;
 import gov.nih.nci.caintegrator.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator.application.analysis.grid.gistic.GisticRefgeneFileEnum;
@@ -48,20 +47,29 @@ import org.genepattern.io.odf.OdfObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+/**
+ * Tests for evaluating integration with the gene pattern grid services.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/**/genepattern-test-config.xml"})
+@ContextConfiguration("classpath:integration-test-config.xml")
 public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTest {
 
-    private static final String PREPROCESS_DATASET_URL = "http://cagrid.broadinstitute.org:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService";
-    private static final String COMPARATIVE_MARKER_URL = "http://cagrid.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc";
-    private static final String PCA_URL                = "http://cagrid.broadinstitute.org:6060/wsrf/services/cagrid/PCA";
-    private static final String GISTIC_URL             = "http://cagrid.broadinstitute.org:10010/wsrf/services/cagrid/Gistic";
+    private static final String PREPROCESS_DATASET_URL =
+            "http://cagrid.broadinstitute.org:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService";
+    private static final String COMPARATIVE_MARKER_URL =
+            "http://cagrid.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc";
+    private static final String PCA_URL = "http://cagrid.broadinstitute.org:6060/wsrf/services/cagrid/PCA";
+    private static final String GISTIC_URL = "http://cagrid.broadinstitute.org:10010/wsrf/services/cagrid/Gistic";
 
+    @Autowired
     private GenePatternGridRunnerImpl genePatternGridRunner;
     private FileManager fileManager;
     private StudyHelper studyHelper;
@@ -109,7 +117,8 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTes
     }
 
     @Test
-    public void testRunPreprocessComparativeMarker() throws ConnectionException, IOException, InvalidCriterionException, ParseException {
+    public void testRunPreprocessComparativeMarker() throws ConnectionException, IOException,
+            InvalidCriterionException, ParseException {
         StudySubscription subscription = setupStudySubscription(ArrayDataType.GENE_EXPRESSION);
         ServerConnectionProfile server = new ServerConnectionProfile();
         server.setUrl(PREPROCESS_DATASET_URL);
@@ -178,7 +187,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTes
         FileUtils.deleteQuietly(fileManager.getUserDirectory(subscription));
     }
 
-	@Test
+    @Test
     public void testRunGistic() throws ConnectionException, InvalidCriterionException, IOException, ParameterException {
         StudySubscription subscription = setupStudySubscription(ArrayDataType.COPY_NUMBER);
         GisticParameters parameters = new GisticParameters();
@@ -203,7 +212,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTes
         List<String> filenames = ZipUtils.extractFromZip(zipFile.getAbsolutePath());
         // if ZIP contains 3 files or less, this typically means the GP module failed to complete.
         boolean isNumFilesGreaterThan3 = filenames.size() > 3;
-        String holdStr = new String("ZIP archive from GISTIC contains too few files: ");
+        String holdStr = "ZIP archive from GISTIC contains too few files: ";
         holdStr = holdStr.concat(Integer.toString(filenames.size()));
         assertTrue(holdStr, isNumFilesGreaterThan3);
         // If ZIP contains 9 files, this is the expected output from the GISTIC module.
@@ -213,12 +222,13 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractMockitoTes
     }
 
     private void checkGctFile(File gctFile, int numSamples, int numReporters, String value) throws IOException {
-        assertTrue("GCT file does not exist.",gctFile.exists());
+        assertTrue("GCT file does not exist.", gctFile.exists());
         CSVReader reader = new CSVReader(new FileReader(gctFile), '\t');
         checkLine(reader.readNext(), "#1.2");
         checkLine(reader.readNext(), String.valueOf(numSamples), String.valueOf(numReporters));
         reader.readNext(); // Header
         checkValue(reader.readNext(), value); // Row values
+        reader.close();
     }
 
     private void checkValue(String[] readNext, String f) {

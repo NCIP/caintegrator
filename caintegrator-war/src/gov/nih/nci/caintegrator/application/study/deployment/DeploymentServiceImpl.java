@@ -27,12 +27,15 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Performs study deployments and notifies clients.
  */
+@Service("deploymentService")
 @Transactional (propagation = Propagation.REQUIRED)
 public class DeploymentServiceImpl implements DeploymentService {
     private static final Logger LOGGER = Logger.getLogger(DeploymentServiceImpl.class);
@@ -97,7 +100,7 @@ public class DeploymentServiceImpl implements DeploymentService {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             GenomicDataHelper genomicDataHelper = new GenomicDataHelper(getCaArrayFacade(),
                     getArrayDataService(), getDao(), getBioconductorService(), getDnaAnalysisHandlerFactory());
-            genomicDataHelper.setExpressionHandlerFactory(getExpressionHandlerFactory());
+            genomicDataHelper.setExpressionHandlerFactory(expressionHandlerFactory);
             genomicDataHelper.setGenePatternClientFactory(getGenePatternClientFactory());
             genomicDataHelper.loadData(studyConfiguration);
             dao.runSessionKeepAlive();
@@ -150,6 +153,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * @param caArrayFacade the caArrayFacade to set
      */
+    @Autowired
     public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
         this.caArrayFacade = caArrayFacade;
     }
@@ -164,6 +168,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * @param dao the dao to set
      */
+    @Autowired
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }
@@ -178,6 +183,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * @param arrayDataService the arrayDataService to set
      */
+    @Autowired
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }
@@ -192,6 +198,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * @param bioconductorService the bioconductorService to set
      */
+    @Autowired
     public void setBioconductorService(BioconductorService bioconductorService) {
         this.bioconductorService = bioconductorService;
     }
@@ -206,6 +213,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * @param dnaAnalysisHandlerFactory the dnaAnalysisHandlerFactory to set
      */
+    @Autowired
     public void setDnaAnalysisHandlerFactory(DnaAnalysisHandlerFactory dnaAnalysisHandlerFactory) {
         this.dnaAnalysisHandlerFactory = dnaAnalysisHandlerFactory;
     }
@@ -220,22 +228,9 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * @param genePatternClientFactory the genePatternClientFactory to set
      */
+    @Autowired
     public void setGenePatternClientFactory(GenePatternClientFactory genePatternClientFactory) {
         this.genePatternClientFactory = genePatternClientFactory;
-    }
-
-    /**
-     * @return the expressionHandlerFactory
-     */
-    public ExpressionHandlerFactory getExpressionHandlerFactory() {
-        return expressionHandlerFactory;
-    }
-
-    /**
-     * @param expressionHandlerFactory the expressionHandlerFactory to set
-     */
-    public void setExpressionHandlerFactory(ExpressionHandlerFactory expressionHandlerFactory) {
-        this.expressionHandlerFactory = expressionHandlerFactory;
     }
 
     /**
@@ -248,6 +243,7 @@ public class DeploymentServiceImpl implements DeploymentService {
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }

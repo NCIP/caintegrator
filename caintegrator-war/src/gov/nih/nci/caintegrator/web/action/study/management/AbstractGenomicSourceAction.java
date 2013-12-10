@@ -11,7 +11,6 @@ import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator.application.study.LogEntry;
-import gov.nih.nci.caintegrator.common.HibernateUtil;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
 
 /**
@@ -34,7 +33,6 @@ public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
         super.prepare();
         if (getGenomicSource().getId() != null) {
             setGenomicSource(getStudyManagementService().getRefreshedEntity(getGenomicSource()));
-            HibernateUtil.loadGenomicSource(getGenomicSource());
         }
     }
 

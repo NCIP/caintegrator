@@ -22,7 +22,7 @@
         <joined-subclass name="DelimitedTextClinicalSourceConfiguration" 
                          table="DELIMITED_TEXT_CLINICAL_SOURCE_CONFIGURATION" lazy="true">
             <key column="ID" />    
-            <many-to-one name="annotationFile" class="gov.nih.nci.caintegrator.application.study.AnnotationFile" column="ANNOTATION_FILE_ID" lazy="proxy" cascade="all"/>        
+            <many-to-one name="annotationFile" class="gov.nih.nci.caintegrator.application.study.AnnotationFile" column="ANNOTATION_FILE_ID" lazy="false" cascade="all"/>        
         </joined-subclass>
         
         

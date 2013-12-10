@@ -11,7 +11,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import gov.nih.nci.caintegrator.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator.web.action.AbstractCaIntegrator2Action;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
@@ -52,7 +51,6 @@ public class CaIntegrator2ActionTest extends AbstractSessionBasedTest {
         assertNotNull(action.getStudySubscription());
         assertNotNull(action.getStudy());
         GenomicDataQueryResult genomicDataQueryResult = new GenomicDataQueryResult();
-        genomicDataQueryResult.setId(1L);
         action.setGenomicDataQueryResult(genomicDataQueryResult);
         assertEquals(genomicDataQueryResult, action.getGenomicDataQueryResult());
         action.setStudySubscription(null);

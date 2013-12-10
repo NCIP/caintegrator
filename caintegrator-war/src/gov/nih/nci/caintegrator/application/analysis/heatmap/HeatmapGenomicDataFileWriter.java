@@ -33,11 +33,11 @@ public class HeatmapGenomicDataFileWriter {
     private static final Integer NUMBER_CHROMOSOMES = 24;
     private final Collection<SegmentData> segmentDatas;
     private final GeneLocationConfiguration geneLocationConfiguration;
-    private final HeatmapParameters parameters; 
+    private final HeatmapParameters parameters;
     private final CBSToHeatmapFactory cbsToHeatmapFactory;
     private final Map<String, Integer> chromosomeGeneSize = new HashMap<String, Integer>();
-    
-    
+
+
     /**
      * @param segmentDatas the segment data to run cbs to heatmap algorithm on.
      * @param geneLocationConfiguration to look up gene chromosome locations.
@@ -45,7 +45,7 @@ public class HeatmapGenomicDataFileWriter {
      * @param cbsToHeatmapFactory factory that creates CBSToHeatmap object, which runs cbsToHeatmap algorithm.
      */
     public HeatmapGenomicDataFileWriter(Collection<SegmentData> segmentDatas,
-            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters, 
+            GeneLocationConfiguration geneLocationConfiguration, HeatmapParameters parameters,
             CBSToHeatmapFactory cbsToHeatmapFactory) {
         this.segmentDatas = segmentDatas;
         this.geneLocationConfiguration = geneLocationConfiguration;
@@ -53,7 +53,7 @@ public class HeatmapGenomicDataFileWriter {
         this.cbsToHeatmapFactory = cbsToHeatmapFactory;
         chromosomeGeneSize.clear();
     }
-    
+
     /**
      * Writes genomic data files to the given path.
      * @param genomoicDataFilePath path for genomic data file.
@@ -64,7 +64,7 @@ public class HeatmapGenomicDataFileWriter {
         writeGenomicDataFile(genomoicDataFilePath);
         writeLayoutFile(layoutFilePath);
     }
-    
+
     private void writeGenomicDataFile(String genomicDataFilePath) throws IOException {
         HeatMapArgs hma = new HeatMapArgs();
         hma.setBigBinFile(parameters.getLargeBinsFile());
@@ -74,7 +74,7 @@ public class HeatmapGenomicDataFileWriter {
         hma.getSegmentDatas().addAll(convertSegmentDatas());
         cbsToHeatmapFactory.getCbsToHeatmap().runCBSToHeatmap(hma);
     }
-    
+
     private void writeLayoutFile(String layoutFilePath) throws IOException {
         FileWriter writer = new FileWriter(layoutFilePath);
         writer.write(HEADER + NEW_LINE);
@@ -87,7 +87,7 @@ public class HeatmapGenomicDataFileWriter {
         writer.flush();
         writer.close();
     }
-    
+
     private Integer writeChromosomeLine(FileWriter writer, String chromosome, Integer startNumber) throws IOException {
         Integer numberGenes = chromosomeGeneSize.get(chromosome);
         if (numberGenes == null) {
@@ -97,7 +97,7 @@ public class HeatmapGenomicDataFileWriter {
         writer.write("chr" + chromosome + TAB + startNumber + TAB + endNumber + NEW_LINE);
         return endNumber;
     }
-    
+
     private List<GeneLocationWrapper> convertGeneLocations(Collection<GeneChromosomalLocation> geneLocations) {
         List<GeneLocationWrapper> geneLocationWrappers = new ArrayList<GeneLocationWrapper>();
         for (GeneChromosomalLocation geneLocation : geneLocations) {
@@ -111,7 +111,7 @@ public class HeatmapGenomicDataFileWriter {
         }
         return geneLocationWrappers;
     }
-    
+
     private List<SegmentDataWrapper> convertSegmentDatas() {
         List<SegmentDataWrapper> segmentDataWrappers = new ArrayList<SegmentDataWrapper>();
         for (SegmentData segmentData : segmentDatas) {
@@ -120,9 +120,7 @@ public class HeatmapGenomicDataFileWriter {
             segmentDataWrapper.setNumberOfMarkers(segmentData.getNumberOfMarkers());
             segmentDataWrapper.setSampleIdentifier(segmentData.getArrayData().getSample().getName());
             if (parameters.isUseCGHCall()) {
-                if (segmentData.getCallsValue() != null) {
-                    segmentDataWrapper.setSegmentValue(Float.valueOf(segmentData.getCallsValue()));
-                }
+                segmentDataWrapper.setSegmentValue(Float.valueOf(segmentData.getCallsValue()));
             } else {
                 segmentDataWrapper.setSegmentValue(segmentData.getSegmentValue());
             }
@@ -132,7 +130,7 @@ public class HeatmapGenomicDataFileWriter {
         }
         return segmentDataWrappers;
     }
-    
+
     private void increaseChromosomeSize(String chromosome) {
         if (!chromosomeGeneSize.containsKey(chromosome)) {
             chromosomeGeneSize.put(chromosome, 0);

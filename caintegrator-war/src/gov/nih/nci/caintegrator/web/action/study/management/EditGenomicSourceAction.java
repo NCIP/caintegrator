@@ -27,10 +27,16 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
 
     private static final long serialVersionUID = 1L;
@@ -162,10 +168,8 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
         SortedSet<String> platformNames = new TreeSet<String>();
         for (PlatformConfiguration platformConfiguration : getArrayDataService().getPlatformConfigurations()) {
             if (Status.LOADED.equals(platformConfiguration.getStatus())
-                    && platformConfiguration.getPlatform().getVendor().equals(
-                            getTempGenomicSource().getPlatformVendor())
-                    && platformConfiguration.getPlatformType().getDataType().equals(
-                            getTempGenomicSource().getDataTypeString())) {
+                    && platformConfiguration.getPlatform().getVendor() == getTempGenomicSource().getPlatformVendor()
+                    && platformConfiguration.getPlatformType().getDataType() == getTempGenomicSource().getDataType()) {
                 platformNames.add(platformConfiguration.getPlatform().getName());
             }
         }
@@ -175,22 +179,9 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @return the list of array data loading types
      */
-    public List<String> getLoadingTypes() {
-        return ArrayDataLoadingTypeEnum.getLoadingTypes(
-                getTempGenomicSource().getPlatformVendor(), getTempGenomicSource().getDataType());
-    }
-
-    /**
-     *
-     * @return a list of data types based on the platform vendor.
-     */
-    public List<String> getDataTypes() {
-        if (PlatformVendorEnum.AFFYMETRIX.getValue().equals(getTempGenomicSource().getPlatformVendor())) {
-            return PlatformDataTypeEnum.getStringValues();
-        }
-        List<String> dataTypes = PlatformDataTypeEnum.getStringValues();
-        dataTypes.remove("SNP");
-        return dataTypes;
+    public List<ArrayDataLoadingTypeEnum> getLoadingTypes() {
+        return ArrayDataLoadingTypeEnum.getLoadingTypes(getTempGenomicSource().getPlatformVendor(),
+                getTempGenomicSource().getDataType());
     }
 
     /**
@@ -203,6 +194,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @param arrayDataService the arrayDataService to set
      */
+    @Autowired
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }
@@ -217,6 +209,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @param updater the updater to set
      */
+    @Autowired
     public void setUpdater(IGenomicDataSourceAjaxUpdater updater) {
         this.updater = updater;
     }
@@ -231,6 +224,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @param caArrayFacade the caArrayFacade to set
      */
+    @Autowired
     public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
         this.caArrayFacade = caArrayFacade;
     }
@@ -245,6 +239,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     /**
      * @param configurationHelper the configurationHelper to set
      */
+    @Autowired
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }

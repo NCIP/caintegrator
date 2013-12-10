@@ -1,10 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 <script type="text/javascript">
-      
-
-    function selectGeneExpressionType()
-    {
+    function selectGeneExpressionType() {
         var arrayOfElements=document.getElementsByName("kmPlotForm.geneExpressionBasedForm.expressionType");
         var tbody = document.getElementById('controlSampleTbody');
         for (var i = 0; i < arrayOfElements.length; i++){
@@ -30,10 +26,21 @@
                 }
             }
         } 
-    }   
+    }
+    $(document).ready(function() {
+        $("#tab-container").easytabs({
+            animate: false,
+            cache: true,
+            updateHash: false
+         });
+        $('#tab-container').bind('easytabs:ajax:beforeSend', function(e, clicked, panel) {
+            var tab = $(panel);
+            tab.html("<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>");
+         });
+        $('#tab-container').easytabs('select', '#' + $('#displayTab').val());
+    });
 </script>
 
-<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/TabContainer.css" />
 <div id="content">
         <!--Page Help-->
 
@@ -60,19 +67,25 @@
             <s:param name="displayTab">queryTab</s:param>
         </s:url>
 
-      <s:set name="displayTab" id="displayTab" value="%{displayTab}"/>
-
-    <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}" templateCssPath="/common/css/TabContainer.css">
-		<sx:div href="%{annotationBasedUrl}" id="annotationTab" label="For Annotation" showLoadingText="true" />
-		<s:if test="%{showGeneExpressionTab}" >
-		  <sx:div href="%{geneExpressionBasedUrl}" preload="false" executeScripts="true" id="geneExpressionTab" label="For Gene Expression" showLoadingText="true"/>
-	    </s:if>
-		<s:if test="!anonymousUser || !displayableWorkspace.globalSubjectLists.isEmpty()">
-		  <sx:div href="%{queryBasedUrl}" preload="false" id="queryTab" label="For Queries and Saved Lists" showLoadingText="true"/>
-	    </s:if>
-    </sx:tabbedpanel>
-	<!--/Tab Box-->
-
+        <s:hidden id="displayTab" value="%{displayTab}"/>
+        
+        <s:div id="tab-container" cssClass="tab-container">
+            <ul class="etabs">
+                <li class="tab"><s:a href="%{annotationBasedUrl}" data-target="#annotationTab">For Annotation</s:a></li>
+                <s:if test="%{showGeneExpressionTab}">
+                    <li class="tab"><s:a href="%{geneExpressionBasedUrl}" data-target="#geneExpressionTab">For Gene Expression</s:a></li>
+                </s:if>
+                <s:if test="!anonymousUser || !displayableWorkspace.globalSubjectLists.isEmpty()">
+                    <li class="tab"><s:a href="%{queryBasedUrl}" data-target="#queryTab">For Queries and Saved Lists</s:a></li>
+                </s:if>
+            </ul>
+            <s:div id="annotationTab"></s:div>
+            <s:if test="%{showGeneExpressionTab}">
+                <s:div id="geneExpressionTab"></s:div>
+            </s:if>
+            <s:if test="!anonymousUser || !displayableWorkspace.globalSubjectLists.isEmpty()">
+                <s:div id="queryTab"></s:div>
+            </s:if>
+        </s:div>
 </div>
-
 <div class="clear"><br /></div>

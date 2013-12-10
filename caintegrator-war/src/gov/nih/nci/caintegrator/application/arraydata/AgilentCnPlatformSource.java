@@ -16,10 +16,10 @@ public class AgilentCnPlatformSource extends AbstractPlatformSource {
     private static final long serialVersionUID = 1L;
     private final String platformName;
     private final String platformFileName;
-    
+
     /**
      * Creates a new instance.
-     * 
+     *
      * @param annotationFile the CSV annotation file.
      * @param platformName the platform name.
      * @param platformFileName the platform file name.
@@ -43,7 +43,7 @@ public class AgilentCnPlatformSource extends AbstractPlatformSource {
         return isXmlFile() ? new AgilentGemlCghPlatformLoader(this)
             : new AgilentTcgaAdfCghPlatformLoader(this);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -55,6 +55,7 @@ public class AgilentCnPlatformSource extends AbstractPlatformSource {
     /**
      * @return the platformName
      */
+    @Override
     public String getPlatformName() {
         return platformName;
     }

@@ -23,10 +23,12 @@ import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Base class for platform loaders.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public abstract class AbstractPlatformLoader {
-    
-    
+
+
     private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
     private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
 
@@ -36,9 +38,9 @@ public abstract class AbstractPlatformLoader {
     AbstractPlatformLoader(AbstractPlatformSource source) {
         this.source = source;
     }
-    
+
     /**
-     * 
+     *
      * @return the platform name
      * @throws PlatformLoadingException when error parsing the annotation file
      */
@@ -47,7 +49,7 @@ public abstract class AbstractPlatformLoader {
     abstract Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException;
 
     /**
-     * 
+     *
      * @param symbol to set
      * @param fields input fields
      * @return a new gene
@@ -68,7 +70,7 @@ public abstract class AbstractPlatformLoader {
         platform.setVendor(platformVendor);
         return platform;
     }
-    
+
     /**
      * Load the annotation file for the platform.
      * @param platform the platform
@@ -86,12 +88,12 @@ public abstract class AbstractPlatformLoader {
             cleanUp();
         }
     }
-    
+
     abstract void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
     throws PlatformLoadingException;
 
     /**
-     * 
+     *
      * @param headers the mapping header
      * @param requiredHeaders the headers to validate
      * @throws PlatformLoadingException when headers don't match
@@ -103,7 +105,7 @@ public abstract class AbstractPlatformLoader {
         }
         validate(requiredHeaders);
     }
-    
+
     private void validate(String[] requiredHeaders) throws PlatformLoadingException {
         for (String header : requiredHeaders) {
             if (!headerToIndexMap.containsKey(header)) {
@@ -113,7 +115,7 @@ public abstract class AbstractPlatformLoader {
     }
 
     /**
-     * 
+     *
      * @param fields filed array
      * @param firstField the first field
      * @return true or false
@@ -123,7 +125,7 @@ public abstract class AbstractPlatformLoader {
     }
 
     /**
-     * 
+     *
      * @param fields field array
      * @param symbol gene symbol
      * @param dao the caIntegratorDao
@@ -139,7 +141,7 @@ public abstract class AbstractPlatformLoader {
     }
 
     /**
-     * 
+     *
      * @param fields field array
      * @param header the header to get the value for
      * @return the value
@@ -152,7 +154,7 @@ public abstract class AbstractPlatformLoader {
     }
 
     /**
-     * 
+     *
      * @param fields field array
      * @param header the header
      * @param noValueSymbol the no value string
@@ -182,7 +184,7 @@ public abstract class AbstractPlatformLoader {
             try {
                 annotationFileReader.close();
             } catch (IOException e) {
-                getLogger().error("Couldn't close annotation file reader for file " 
+                getLogger().error("Couldn't close annotation file reader for file "
                         + getAnnotationFileNames());
             }
         }

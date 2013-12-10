@@ -9,6 +9,7 @@ package gov.nih.nci.caintegrator.application;
 import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fiveamsolutions.nci.commons.util.CGLIBUtils;
@@ -47,6 +48,7 @@ public class CaIntegrator2BaseService {
     /**
      * @param dao the dao to set
      */
+    @Autowired
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }

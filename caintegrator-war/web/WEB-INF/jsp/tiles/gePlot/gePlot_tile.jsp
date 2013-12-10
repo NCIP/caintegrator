@@ -1,29 +1,36 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
-<script language="javascript">
+<script type="text/javascript">
+  function setDynamicPlot(imageId, imageSrc, linkIdName, linkIdNumber) {
+      document.getElementById(imageId).src = imageSrc;
+      for (i = 1; i <= 4; i++) {
+          document.getElementById(linkIdName + i).style.backgroundColor = "white";
+      }
+      document.getElementById(linkIdName + linkIdNumber).style.backgroundColor="yellow";
+  }
 
-     function setDynamicPlot(imageId, imageSrc, linkIdName, linkIdNumber) {
-        document.getElementById(imageId).src = imageSrc;
-        for (i = 1; i <= 4; i++) {
-            document.getElementById(linkIdName + i).style.backgroundColor = "white";
-        }
-        document.getElementById(linkIdName + linkIdNumber).style.backgroundColor="yellow";
-
-     }
+  $(document).ready(function() {
+      $("#tab-container").easytabs({
+          animate: false,
+          cache: true,
+          updateHash: false
+       });
+      $('#tab-container').bind('easytabs:ajax:beforeSend', function(e, clicked, panel) {
+          var tab = $(panel);
+          tab.html("<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>");
+       });
+      $('#tab-container').easytabs('select', '#' + $('#displayTab').val());
+  });
 </script>
-<link rel="stylesheet" type="text/css" href="/caintegrator/common/css/TabContainer.css" />
+
 <div id="content">
 
         <h1><s:property value="#subTitleText" /></h1>
         <s:actionerror/>
         
-        <!--Tab Box-->
-        
         <s:url id="annotationBasedUrl" action="gePlotAnnotationBasedInput">
             <s:param name="displayTab">annotationTab</s:param>
         </s:url>
-        
         
         <s:url id="genomicQueryBasedUrl" action="gePlotGenomicQueryBasedInput">
             <s:param name="displayTab">genomicQueryTab</s:param>
@@ -33,20 +40,25 @@
             <s:param name="displayTab">clinicalQueryTab</s:param>
         </s:url>
 
-      <s:set name="displayTab" id="displayTab" value="%{displayTab}"/>
-    
-    <sx:tabbedpanel id="mainTabPanel" selectedTab="%{displayTab}" templateCssPath="/common/css/TabContainer.css">
-        <sx:div href="%{annotationBasedUrl}" id="annotationTab" label="For Annotation" showLoadingText="true" />
-        <s:if test="!anonymousUser">
-            <sx:div href="%{genomicQueryBasedUrl}" id="genomicQueryTab" label="For Genomic Queries" showLoadingText="true"/>
-        </s:if>
-        <s:if test="!anonymousUser || !displayableWorkspace.globalSubjectLists.isEmpty()">
-            <sx:div href="%{clinicalQueryBasedUrl}" id="clinicalQueryTab" label="For Annotation Queries and Saved Lists" showLoadingText="true"/>
-        </s:if>
-    </sx:tabbedpanel>
-
-	<!--/Tab Box-->
-
+        <s:hidden id="displayTab" value="%{displayTab}"/>
+        
+        <s:div id="tab-container" cssClass="tab-container">
+            <ul class="etabs">
+                <li class="tab"><s:a href="%{annotationBasedUrl}" data-target="#annotationTab">For Annotation</s:a></li>
+                <s:if test="!anonymousUser">
+                    <li class="tab"><s:a href="%{genomicQueryBasedUrl}" data-target="#genomicQueryTab">For Genomic Queries</s:a></li>
+                </s:if>
+                <s:if test="!anonymousUser || !displayableWorkspace.globalSubjectLists.isEmpty()">
+                    <li class="tab"><s:a href="%{clinicalQueryBasedUrl}" data-target="#clinicalQueryTab">For Annotation Queries and Saved Lists</s:a></li>
+                </s:if>
+            </ul>
+            <s:div id="annotationTab"></s:div>
+            <s:if test="!anonymousUser">
+                <s:div id="genomicQueryTab"></s:div>
+            </s:if>
+            <s:if test="!anonymousUser || !displayableWorkspace.globalSubjectLists.isEmpty()">
+                <s:div id="clinicalQueryTab"></s:div>
+            </s:if>
+        </s:div>
 </div>
-
 <div class="clear"><br /></div>

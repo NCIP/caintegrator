@@ -1,4 +1,3 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
      
      <s:actionerror />
@@ -6,10 +5,10 @@
     <s:set name="gePlot" value="#session['gePlot']" />
     <s:if test="#gePlot.genomicQueryBasedGePlot != null">
         <center>
-            <s:set name="retrieveGenomicQueryGEPlot_mean" id="retrieveGenomicQueryGEPlot_mean" value="%{retrieveGePlotUrl('mean')}"/>
-            <s:set name="retrieveGenomicQueryGEPlot_median" id="retrieveGenomicQueryGEPlot_median" value="%{retrieveGePlotUrl('median')}"/>
-            <s:set name="retrieveGenomicQueryGEPlot_log2" id="retrieveGenomicQueryGEPlot_log2" value="%{retrieveGePlotUrl('log2Intensity')}"/>
-            <s:set name="retrieveGenomicQueryGEPlot_bw" id="retrieveGenomicQueryGEPlot_bw" value="%{retrieveGePlotUrl('boxWhiskerLog2Intensity')}"/>
+            <s:set name="retrieveGenomicQueryGEPlot_mean" id="retrieveGenomicQueryGEPlot_mean" value="%{retrieveGePlotUrl('MEAN')}"/>
+            <s:set name="retrieveGenomicQueryGEPlot_median" id="retrieveGenomicQueryGEPlot_median" value="%{retrieveGePlotUrl('MEDIAN')}"/>
+            <s:set name="retrieveGenomicQueryGEPlot_log2" id="retrieveGenomicQueryGEPlot_log2" value="%{retrieveGePlotUrl('LOG2_INTENSITY')}"/>
+            <s:set name="retrieveGenomicQueryGEPlot_bw" id="retrieveGenomicQueryGEPlot_bw" value="%{retrieveGePlotUrl('BOX_WHISKER_LOG2_INTENSITY')}"/>
             <b> Plot Type: </b> <a href="#" id="genomicQueryTypeSelection1" style="background-color:yellow;" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_mean}', 'genomicQueryTypeSelection', '1')">Mean</a> | 
                                  <a href="#" id="genomicQueryTypeSelection2" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_median}', 'genomicQueryTypeSelection', '2')">Median</a> |
                                  <a href="#" id="genomicQueryTypeSelection3" onclick="setDynamicPlot('genomicQueryBasedImage', '${retrieveGenomicQueryGEPlot_log2}', 'genomicQueryTypeSelection', '3')">Log2</a> |

@@ -6,7 +6,6 @@
  */
 package gov.nih.nci.caintegrator.domain.application;
 
-import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator.domain.genomic.SampleSet;
 
@@ -14,29 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * Representation of a genomic data result row.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class GenomicDataResultRow extends AbstractCaIntegrator2Object implements GenomicDataResultComparable {
-
-    private static final long serialVersionUID = 1L;
-    
+public class GenomicDataResultRow implements GenomicDataResultComparable {
     private AbstractReporter reporter;
     private SegmentDataResultValue segmentDataResultValue;
     private final List<GenomicDataResultValue> values = new ArrayList<GenomicDataResultValue>();
     private boolean hasMatchingValues = false;
-    private Float sortedValue;
+    private float sortedValue;
 
     /**
      * {@inheritDoc}
      */
-    public Float getSortedValue() {
+    public float getSortedValue() {
         return sortedValue;
     }
 
     /**
      * @param sortedValue the sortedValue to set
      */
-    public void setSortedValue(Float sortedValue) {
+    public void setSortedValue(float sortedValue) {
         this.sortedValue = sortedValue;
     }
 
@@ -46,7 +44,7 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object implements
     public AbstractReporter getReporter() {
         return reporter;
     }
-    
+
     /**
      * @param reporter the reporter to set
      */
@@ -59,7 +57,7 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object implements
     public List<GenomicDataResultValue> getValues() {
         return values;
     }
-    
+
     /**
      * @param sampleSet the set of samples to be excluded from the values.
      */

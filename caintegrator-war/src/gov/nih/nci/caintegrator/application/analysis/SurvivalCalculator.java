@@ -53,12 +53,12 @@ public final class SurvivalCalculator {
     private static SubjectSurvivalData createDateBasedSurvivalData(SurvivalValueDefinition survivalValueDefinition,
             StudySubjectAssignment subjectAssignment) {
 
-        DateAnnotationValue subjectSurvivalStartDate = null;
-        DateAnnotationValue subjectDeathDate = null;
-        DateAnnotationValue subjectLastFollowupDate = null;
-        subjectSurvivalStartDate = subjectAssignment.getDateAnnotation(survivalValueDefinition.getSurvivalStartDate());
-        subjectDeathDate = subjectAssignment.getDateAnnotation(survivalValueDefinition.getDeathDate());
-        subjectLastFollowupDate = subjectAssignment.getDateAnnotation(survivalValueDefinition.getLastFollowupDate());
+        DateAnnotationValue subjectSurvivalStartDate =
+                subjectAssignment.getDateAnnotation(survivalValueDefinition.getSurvivalStartDate());
+        DateAnnotationValue subjectDeathDate =
+                subjectAssignment.getDateAnnotation(survivalValueDefinition.getDeathDate());
+        DateAnnotationValue subjectLastFollowupDate =
+                subjectAssignment.getDateAnnotation(survivalValueDefinition.getLastFollowupDate());
         Calendar calSubjectStartDate = Calendar.getInstance();
         Calendar calSubjectEndDate = Calendar.getInstance();
         if (subjectSurvivalStartDate != null && subjectSurvivalStartDate.getDateValue() != null) {
@@ -70,15 +70,14 @@ public final class SurvivalCalculator {
         if (censor == null) {
             return null;
         }
-        Integer survivalLength = calculateSurvivalLength(survivalValueDefinition, calSubjectStartDate,
-                calSubjectEndDate);
+        int survivalLength = calculateSurvivalLength(survivalValueDefinition, calSubjectStartDate, calSubjectEndDate);
         return new SubjectSurvivalData(survivalLength, censor);
     }
 
-    private static Integer calculateSurvivalLength(SurvivalValueDefinition survivalValueDefinition,
+    private static int calculateSurvivalLength(SurvivalValueDefinition survivalValueDefinition,
             Calendar calSubjectStartDate, Calendar calSubjectEndDate) {
-        Integer survivalLength = Integer.valueOf(0);
-        Integer daysBetween = daysBetween(calSubjectStartDate, calSubjectEndDate);
+        int survivalLength = 0;
+        int daysBetween = daysBetween(calSubjectStartDate, calSubjectEndDate);
         switch (survivalValueDefinition.getSurvivalLengthUnits()) {
         case DAYS:
             survivalLength = daysBetween;
@@ -97,8 +96,8 @@ public final class SurvivalCalculator {
 
     private static SubjectSurvivalData createDurationBasedSurvivalData(SurvivalValueDefinition survivalValueDefinition,
             StudySubjectAssignment subjectAssignment) {
-        NumericAnnotationValue survivalLength = subjectAssignment.getNumericAnnotation(
-                survivalValueDefinition.getSurvivalLength());
+        NumericAnnotationValue survivalLength =
+                subjectAssignment.getNumericAnnotation(survivalValueDefinition.getSurvivalLength());
         if (survivalLength == null || survivalLength.getNumericValue() == null) {
             return null;
         }
@@ -140,10 +139,8 @@ public final class SurvivalCalculator {
         return censor;
     }
 
-
-    private static Integer daysBetween(Calendar startDate, Calendar endDate) {
+    private static int daysBetween(Calendar startDate, Calendar endDate) {
         return Math.round(((endDate.getTimeInMillis() - startDate.getTimeInMillis() + ONE_HOUR))
                                 / (ONE_HOUR * HOURS_IN_DAY));
     }
-
 }

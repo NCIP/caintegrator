@@ -18,10 +18,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * AIM data service facade.
  */
+@Service("aimFacade")
 public class AIMFacadeImpl implements AIMFacade {
 
     private static final String IMAGING_OBSERVATION_GROUP_NAME = "Imaging Observations";
@@ -94,6 +97,7 @@ public class AIMFacadeImpl implements AIMFacade {
     /**
      * @param aimServiceFactory the aimServiceFactory to set
      */
+    @Autowired
     public void setAimServiceFactory(AIMServiceFactory aimServiceFactory) {
         this.aimServiceFactory = aimServiceFactory;
     }

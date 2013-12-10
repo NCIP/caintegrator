@@ -40,19 +40,20 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional (propagation = Propagation.REQUIRED)
 class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupplementalMappingFileHandler {
-    
+
     private final List<Sample> samples = new ArrayList<Sample>();
     private final Map<String, SupplementalDataFile> supplementalDataFiles = new HashMap<String, SupplementalDataFile>();
     private final Map<String, File> dataFiles = new HashMap<String, File>();
-    
+
     private static final Logger LOGGER = Logger.getLogger(GenericSupplementalMultiSamplePerFileHandler.class);
     private static final int ONE_THOUSAND = 1000;
-    
+
     GenericSupplementalMultiSamplePerFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
 
+    @Override
     void mappingSample(String subjectIdentifier, String sampleName, SupplementalDataFile supplementalDataFile)
     throws FileNotFoundException, ValidationException, ConnectionException, DataRetrievalException {
         samples.add(getSample(sampleName, subjectIdentifier));
@@ -62,11 +63,10 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         }
     }
 
+    @Override
     List<ArrayDataValues> loadArrayDataValue() throws DataRetrievalException {
-        PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(
-            getGenomicSource().getPlatformName()));
+        PlatformHelper platformHelper = new PlatformHelper(getDao().getPlatform(getGenomicSource().getPlatformName()));
         Set<ReporterList> reporterLists = platformHelper.getReporterLists(getReporterType());
-        
         return createArrayDataByBucket(platformHelper, reporterLists);
     }
 
@@ -76,7 +76,7 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         int bucketNum = 0;
         List<List<String>> sampleBuckets = createSampleBuckets(reporterLists, getSampleList());
         for (List<String> sampleBucket : sampleBuckets) {
-            LOGGER.info("Starting an extract data on samples of size " + sampleBucket.size() 
+            LOGGER.info("Starting an extract data on samples of size " + sampleBucket.size()
                     + ", for bucket number " + ++bucketNum + "/" + sampleBuckets.size());
             loadArrayData(arrayDataValuesList, platformHelper, reporterLists, extractData(sampleBucket));
         }
@@ -106,20 +106,20 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         return (ONE_THOUSAND * Cai2Util.getHeapSizeMB()) / numReporters;
     }
 
-    private Map<String, Map<String, List<Float>>> extractData(List<String> mappedSampleBucket)
-    throws DataRetrievalException {
-        Map<String, Map<String, List<Float>>> dataMap = new HashMap<String, Map<String, List<Float>>>();
+    private Map<String, Map<String, float[]>> extractData(List<String> mappedSampleBucket)
+            throws DataRetrievalException {
+        Map<String, Map<String, float[]>> dataMap = new HashMap<String, Map<String, float[]>>();
         for (SupplementalDataFile dataFile : supplementalDataFiles.values()) {
-            GenericMultiSamplePerFileParser parser = new GenericMultiSamplePerFileParser(
-                    dataFiles.get(dataFile.getFileName()), dataFile.getProbeNameHeader(),
-                    dataFile.getSampleHeader(), mappedSampleBucket);
+            GenericMultiSamplePerFileParser parser =
+                    new GenericMultiSamplePerFileParser(dataFiles.get(dataFile.getFileName()),
+                            dataFile.getProbeNameHeader(), dataFile.getSampleHeader(), mappedSampleBucket);
             parser.loadData(dataMap);
         }
         validateSampleMapping(dataMap, mappedSampleBucket);
         return dataMap;
     }
 
-    private void validateSampleMapping(Map<String, Map<String, List<Float>>> dataMap, List<String> sampleList)
+    private void validateSampleMapping(Map<String, Map<String, float[]>> dataMap, List<String> sampleList)
     throws DataRetrievalException {
         StringBuffer errorMsg = new StringBuffer();
         for (String sampleName : sampleList) {
@@ -151,10 +151,9 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
         }
         return null;
     }
-    
+
     private void loadArrayData(List<ArrayDataValues> arrayDataValuesList, PlatformHelper platformHelper,
-            Set<ReporterList> reporterLists, Map<String, Map<String, List<Float>>> dataMap)
-    throws DataRetrievalException {
+            Set<ReporterList> reporterLists, Map<String, Map<String, float[]>> dataMap) throws DataRetrievalException {
         for (String sampleName : dataMap.keySet()) {
             LOGGER.info("Start LoadArrayData for : " + sampleName);
             ArrayData arrayData = createArrayData(getSample(sampleName), reporterLists, getDataType());
@@ -162,22 +161,20 @@ class GenericSupplementalMultiSamplePerFileHandler extends AbstractGenericSupple
             ArrayDataValues values = new ArrayDataValues(platformHelper
                     .getAllReportersByType(getReporterType()));
             arrayDataValuesList.add(values);
-            Map<String, List<Float>> reporterMap = dataMap.get(sampleName);
+            Map<String, float[]> reporterMap = dataMap.get(sampleName);
             for (String probeName : reporterMap.keySet()) {
                 AbstractReporter reporter = platformHelper.getReporter(getReporterType(), probeName);
                 if (reporter == null) {
                     LOGGER.warn("Reporter with name " + probeName + " was not found in platform "
                             + platformHelper.getPlatform().getName());
                 } else {
-                    values.setFloatValue(arrayData, reporter, getDataValueType(), reporterMap
-                            .get(probeName), getCentralTendencyCalculator());
+                    values.setFloatValue(arrayData, reporter, getDataValueType(),
+                            reporterMap.get(probeName), getCentralTendencyCalculator());
                 }
             }
             getArrayDataService().save(values);
             values.clearMaps(); // Fixes a memory leak where the maps never got garbage collected.
             LOGGER.info("Done LoadArrayData for : " + sampleName);
-
         }
     }
-
  }

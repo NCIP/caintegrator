@@ -7,7 +7,6 @@
 package gov.nih.nci.caintegrator.web.action;
 
 import gov.nih.nci.caintegrator.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator.common.HibernateUtil;
 import gov.nih.nci.caintegrator.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator.domain.application.GenePatternAnalysisJob;
@@ -36,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -143,6 +143,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     /**
      * @param workspaceService the workspaceService to set
      */
+    @Autowired
     public final void setWorkspaceService(WorkspaceService workspaceService) {
         this.workspaceService = workspaceService;
     }
@@ -191,16 +192,6 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
             return getStudySubscription().getStudy();
         } else {
             return null;
-        }
-    }
-
-    /**
-     * Refreshes genomic sources for any page that needs it.
-     */
-    protected final void refreshGenomicSources() {
-        if (getCurrentStudy() != null) {
-            HibernateUtil.loadGenomicSources(getWorkspaceService().getRefreshedEntity(
-                    getCurrentStudy().getStudyConfiguration()).getGenomicDataSources());
         }
     }
 

@@ -15,9 +15,15 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Global singleton object that manages the results based on sessionId.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_SINGLETON)
 public class SessionAnalysisResultsManager {
 
     private final Map<String, IGVResult> igvResultMap = new HashMap<String, IGVResult>();

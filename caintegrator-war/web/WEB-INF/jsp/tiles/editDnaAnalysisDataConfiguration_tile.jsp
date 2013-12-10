@@ -81,7 +81,7 @@
                 <s:if test="%{studyConfiguration.hasLoadedClinicalDataSource()}">
                     <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" cssClass="readonly" size="35" />
                     <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" size="35" />
-                    <s:textfield label="Loading Type" name="genomicSource.loadingTypeString" readonly="true" cssClass="readonly" size="35" />
+                    <s:textfield label="Loading Type" name="genomicSource.loadingType.value" readonly="true" cssClass="readonly" size="35" />
                     <s:file name="mappingFile" label="Subject and Sample Mapping File" size="40"/><br>
                         <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="display: block;">
                             <span class="wwlbl">(csv file with 2 columns for using parsed data or 6 columns otherwise)</span>

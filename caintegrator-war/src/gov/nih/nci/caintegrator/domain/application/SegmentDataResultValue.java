@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import com.google.common.primitives.Ints;
 
 /**
  *
@@ -50,26 +53,26 @@ public class SegmentDataResultValue extends AbstractCaIntegrator2Object {
     public String getDisplayGenes() {
         return StringUtils.join(genes, ", ");
     }
+
     /**
      * @param segmentDataResultValue to compare
      * @return the comparator code
      */
     public int compareTo(SegmentDataResultValue segmentDataResultValue) {
         int i = 0;
-        try {
-            // Try casting the chromosome to an integer, if it fails then just compare as string.
-            i = Integer.valueOf(chromosomalLocation.getChromosome()).compareTo(
-                    Integer.valueOf(segmentDataResultValue.getChromosomalLocation().getChromosome()));
-        } catch (Exception e) {
+        if (NumberUtils.isNumber(chromosomalLocation.getChromosome())) {
+            i = Ints.compare(NumberUtils.toInt(chromosomalLocation.getChromosome()),
+                    NumberUtils.toInt(segmentDataResultValue.getChromosomalLocation().getChromosome()));
+        } else {
             i = chromosomalLocation.getChromosome().compareTo(
                     segmentDataResultValue.getChromosomalLocation().getChromosome());
         }
         if (i == 0) {
-            i = chromosomalLocation.getStartPosition().compareTo(
+            i = Ints.compare(chromosomalLocation.getStartPosition(),
                     segmentDataResultValue.getChromosomalLocation().getStartPosition());
         }
         if (i == 0) {
-            i = chromosomalLocation.getEndPosition().compareTo(
+            i = Ints.compare(chromosomalLocation.getEndPosition(),
                     segmentDataResultValue.getChromosomalLocation().getEndPosition());
         }
         return i;

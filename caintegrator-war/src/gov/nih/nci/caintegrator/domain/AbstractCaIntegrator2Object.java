@@ -13,7 +13,7 @@ import java.util.Comparator;
  * Base class for all domain objects.
  */
 public abstract class AbstractCaIntegrator2Object implements Serializable, Cloneable {
-    
+
     /**
      * Default serialize.
      */
@@ -22,14 +22,14 @@ public abstract class AbstractCaIntegrator2Object implements Serializable, Clone
     /**
      * Comparator that orders objects by id.
      */
-    public static final Comparator<AbstractCaIntegrator2Object> ID_COMPARATOR = 
+    public static final Comparator<AbstractCaIntegrator2Object> ID_COMPARATOR =
         new Comparator<AbstractCaIntegrator2Object>() {
         public int compare(AbstractCaIntegrator2Object object1, AbstractCaIntegrator2Object object2) {
             return (int) (object1.getId() - object2.getId());
         }
     };
     private Long id;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -44,7 +44,7 @@ public abstract class AbstractCaIntegrator2Object implements Serializable, Clone
             return getId() != null && getId().equals(caIntegrator2Object.getId());
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -74,6 +74,7 @@ public abstract class AbstractCaIntegrator2Object implements Serializable, Clone
     /**
      * {@inheritDoc}
      */
+    @Override
     protected AbstractCaIntegrator2Object clone() throws CloneNotSupportedException {
         AbstractCaIntegrator2Object clone = (AbstractCaIntegrator2Object) super.clone();
         clone.setId(null);

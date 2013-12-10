@@ -34,20 +34,23 @@ import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSe
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 import org.genepattern.gistic.common.GisticI;
 import org.genepattern.pca.common.PCAI;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Entry point to run all GenePattern grid jobs.
  */
+@Service("genePatternGridRunner")
 public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
-    
+
     private GenePatternGridClientFactory genePatternGridClientFactory;
     private FileManager fileManager;
-    
+
     /**
      * {@inheritDoc}
      */
     public File runGistic(StatusUpdateListener updater, GisticAnalysisJob job, File segmentFile, File markersFile,
-            File cnvFile) 
+            File cnvFile)
     throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
         GisticParameters parameters = job.getGisticAnalysisForm().getGisticParameters();
         StudySubscription studySubscription = job.getSubscription();
@@ -62,10 +65,10 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
         }
     }
-    
+
     /**
      * {@inheritDoc}
-     * @throws InvalidCriterionException 
+     * @throws InvalidCriterionException
      */
     public File runPreprocessComparativeMarkerSelection(StatusUpdateListener updater,
             ComparativeMarkerSelectionAnalysisJob job, File gctFile, File clsFile)
@@ -75,7 +78,7 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
                 gctFile);
         File resultsFile = runComparativeMarkerSelection(updater, studySubscription, job, gctFile, clsFile);
         updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
-        
+
         return resultsFile;
     }
 
@@ -87,7 +90,7 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     throws ConnectionException, InvalidCriterionException {
         StudySubscription studySubscription = job.getSubscription();
         updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_REMOTELY);
-        PreprocessDatasetMAGEServiceI client = 
+        PreprocessDatasetMAGEServiceI client =
             genePatternGridClientFactory.createPreprocessDatasetClient(parameters.getServer());
         PreprocessDatasetGridRunner runner = new PreprocessDatasetGridRunner(client);
         try {
@@ -98,7 +101,7 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -112,7 +115,7 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         }
         return executePCA(updater, job, client, gctFile);
     }
-    
+
     private File executePCA(StatusUpdateListener updater,
             PrincipalComponentAnalysisJob job, PCAI client, File gctFile)
     throws ConnectionException {
@@ -124,10 +127,10 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
             updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
             if (Cai2Util.isValidZipFile(zipFile)) {
                  Cai2Util.addFilesToZipFile(zipFile, gctFile);
-            }    
+            }
         } catch (IOException e) {
             FileUtils.deleteQuietly(zipFile);
-            throw new IllegalStateException("Invalid Zip File retrieved from grid service:  " 
+            throw new IllegalStateException("Invalid Zip File retrieved from grid service:  "
                                             + "Unable to add gct/cls files to the zip file.", e);
         } catch (InterruptedException e) {
             return null;
@@ -136,10 +139,10 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         }
         return zipFile;
     }
-    
+
     private File runComparativeMarkerSelection(StatusUpdateListener updater,
-            StudySubscription subscription, ComparativeMarkerSelectionAnalysisJob job, 
-            File gctFile, File clsFile) 
+            StudySubscription subscription, ComparativeMarkerSelectionAnalysisJob job,
+            File gctFile, File clsFile)
     throws ConnectionException {
         File zipFile = null;
         try {
@@ -170,22 +173,22 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     /**
      * @param genePatternGridClientFactory the genePatternGridClientFactory to set
      */
+    @Autowired
     public void setGenePatternGridClientFactory(GenePatternGridClientFactory genePatternGridClientFactory) {
         this.genePatternGridClientFactory = genePatternGridClientFactory;
     }
 
-
     /**
      * @param fileManager the fileManager to set
      */
+    @Autowired
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
-    
-    private void updateStatus(StatusUpdateListener updater,
-            AbstractPersistedAnalysisJob job, AnalysisJobStatusEnum status) {
+
+    private void updateStatus(StatusUpdateListener updater, AbstractPersistedAnalysisJob job,
+            AnalysisJobStatusEnum status) {
         job.setStatus(status);
         updater.updateStatus(job);
     }
-
 }

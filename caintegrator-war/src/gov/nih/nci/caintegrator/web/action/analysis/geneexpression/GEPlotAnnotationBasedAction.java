@@ -26,10 +26,16 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Action dealing with Gene Expression Annotation Based plotting.
  */
+@Component("gePlotAnnotationBasedAction")
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
 
     private static final long serialVersionUID = 1L;
@@ -366,6 +372,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     /**
      * @param studyManagementService the studyManagementService to set
      */
+    @Autowired
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }

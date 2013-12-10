@@ -17,10 +17,16 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class ViewAllIGVAction extends AbstractViewAllAction {
 
     private static final long serialVersionUID = 1L;
@@ -141,6 +147,7 @@ public class ViewAllIGVAction extends AbstractViewAllAction {
     /**
      * @param studyManagementService the studyManagementService to set
      */
+    @Autowired
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }

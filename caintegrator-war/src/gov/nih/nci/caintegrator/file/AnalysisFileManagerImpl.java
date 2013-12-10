@@ -36,10 +36,14 @@ import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 /**
+ * The analysis file manager.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Service("analysisFileManager")
 public class AnalysisFileManagerImpl implements AnalysisFileManager {
     private FileManager fileManager;
 
@@ -209,8 +213,7 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
      */
     @Override
     public File retrieveIGVFile(Study study, IGVFileTypeEnum fileType, String platformName) {
-        return new File(getStudyIGVDirectory(study) + File.separator
-                + platformName + "_" + fileType.getFilename());
+        return new File(getStudyIGVDirectory(study) + File.separator + platformName + "_" + fileType.getFilename());
     }
 
     private File getStudyIGVDirectory(Study study) {
@@ -258,6 +261,7 @@ public class AnalysisFileManagerImpl implements AnalysisFileManager {
     /**
      * @param fileManager the fileManager to set
      */
+    @Autowired
     @Override
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;

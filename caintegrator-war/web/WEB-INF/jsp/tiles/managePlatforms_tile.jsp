@@ -25,37 +25,37 @@
     
     function CheckPlatformType() {
         var type = document.managePlatformForm.platformType.value;
-        if (type == "Affymetrix Gene Expression") {
+        if (type == "AFFYMETRIX_GENE_EXPRESSION") {
             document.getElementById("platformNameDiv").style.display = "none";
             document.getElementById("platformChannelTypeDiv").style.display = "none";
-            document.getElementById("platformChannelType").value = "One-Color";
+            document.getElementById("platformChannelType").value = "ONE_COLOR";
             document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
             document.getElementById("commentAllFormatsDiv").style.display = "none";
-        } else if (type == "Affymetrix SNP" || type == "Affymetrix Copy Number"){
+        } else if (type == "AFFYMETRIX_SNP" || type == "AFFYMETRIX_COPY_NUMBER"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformChannelTypeDiv").style.display = "none";
-            document.getElementById("platformChannelType").value = "One-Color";
+            document.getElementById("platformChannelType").value = "ONE_COLOR";
             document.getElementById("commentNameDiv").style.display = "none";
             document.getElementById("addFileButtonDiv").style.display = "block";
             document.getElementById("commentCsvDiv").style.display = "block";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
             document.getElementById("commentAllFormatsDiv").style.display = "none";
-        } else if (type == "Agilent Gene Expression"){
+        } else if (type == "AGILENT_GENE_EXPRESSION"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformChannelTypeDiv").style.display = "block";
-            document.getElementById("platformChannelType").value = "Two-Color";
+            document.getElementById("platformChannelType").value = "TWO_COLOR";
             document.getElementById("commentNameDiv").style.display = "block";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "none";
             document.getElementById("commentAdfGemlDiv").style.display = "none";
             document.getElementById("commentAllFormatsDiv").style.display = "block";
-        } else if (type == "Agilent Copy Number"){
+        } else if (type == "AGILENT_COPY_NUMBER"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformChannelTypeDiv").style.display = "block";
-            document.getElementById("platformChannelType").value = "Two-Color";
+            document.getElementById("platformChannelType").value = "TWO_COLOR";
             document.getElementById("commentNameDiv").style.display = "block";
             document.getElementById("addFileButtonDiv").style.display = "none";
             document.getElementById("commentCsvDiv").style.display = "none";
@@ -66,7 +66,7 @@
     
     function setSelectedAction(selectAction, type) {
         document.managePlatformForm.selectedAction.value = selectAction;
-        if (selectAction == "createPlatform" && type == "Affymetrix SNP" 
+        if (selectAction == "createPlatform" && type == "AFFYMETRIX_SNP" 
             && document.getElementById("platformFile").value != "") {
         	if (confirm("The annotation file must be added to the list of file(s) selected\n"
                 + "or it will not be included in the platform creation.")) {
@@ -118,12 +118,12 @@
                         <s:token />
                         <s:hidden name="selectedAction" />
                         <s:select id="platformType" name="platformType" label="Platform Type"
-                            list="@gov.nih.nci.caintegrator.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
-                            onchange="CheckPlatformType();" theme="css_xhtml" /><br>
+                            list="@gov.nih.nci.caintegrator.application.arraydata.PlatformTypeEnum@enabledPlatforms()" 
+                            listValue="value" onchange="CheckPlatformType();" theme="css_xhtml" /><br>
                         <s:div id="platformChannelTypeDiv" cssStyle="%{platformChannelTypeDisplay}">
                             <s:select id="platformChannelType" name="platformChannelType" label="Platform Channel Type"
-                                list="@gov.nih.nci.caintegrator.application.arraydata.PlatformChannelTypeEnum@getValuesToDisplay()"
-                                theme="css_xhtml" /><br>
+                                list="@gov.nih.nci.caintegrator.application.arraydata.PlatformChannelTypeEnum@values()"
+                                listValue="value" theme="css_xhtml" /><br>
                         </s:div>
                         <s:div id="platformNameDiv" cssStyle="%{platformNameDisplay}">
                             <s:textfield id="platformName" name="platformName" label="Platform Name" size="50"

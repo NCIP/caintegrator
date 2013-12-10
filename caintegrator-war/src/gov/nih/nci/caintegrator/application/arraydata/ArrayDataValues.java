@@ -13,34 +13,34 @@ import gov.nih.nci.caintegrator.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator.domain.genomic.ReporterList;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 /**
  * Transports and provides access to genomic data values.
  */
 public class ArrayDataValues {
-    
     private final List<AbstractReporter> reporters;
     private Set<ReporterList> reporterLists;
-    private final Map<String, Integer> reporterIndexMap = new HashMap<String, Integer>();
-    private final Map<ArrayDataValueType, TypeValues> typeValuesMap = new HashMap<ArrayDataValueType, TypeValues>();
+    private final Map<String, Integer> reporterIndexMap = Maps.newHashMap();
+    private final Map<ArrayDataValueType, TypeValues> typeValuesMap = Maps.newHashMap();
 
     /**
      * Creates a new values object.
-     * 
+     *
      * @param reporters the values object will contain data for these reporters.
      */
     public ArrayDataValues(List<AbstractReporter> reporters) {
         this.reporters = reporters;
         loadReporterIndexMap();
     }
-    
+
     /**
      * Need to clear the map to free the memory.
      */
@@ -60,10 +60,10 @@ public class ArrayDataValues {
     public List<AbstractReporter> getReporters() {
         return Collections.unmodifiableList(reporters);
     }
-    
+
     /**
      * Gets log2 value of a single data point for a single reporter / array / type combination.
-     * 
+     *
      * @param arrayData the array data the data value is associated to.
      * @param reporter the reporter the data value is associated to.
      * @param type the type of data
@@ -72,14 +72,13 @@ public class ArrayDataValues {
      */
     public double getLog2Value(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type,
             PlatformChannelTypeEnum channelType) {
-        return PlatformChannelTypeEnum.TWO_COLOR.equals(channelType)
-            ? getFloatValue(arrayData, getReporterIndex(reporter), type)
-            : Cai2Util.log2(getFloatValue(arrayData, getReporterIndex(reporter), type));
+        return PlatformChannelTypeEnum.TWO_COLOR == channelType
+                ? getFloatValue(arrayData, reporter, type) : Cai2Util.log2(getFloatValue(arrayData, reporter, type));
     }
-    
+
     /**
      * Gets a single data point for a single reporter / array / type combination.
-     * 
+     *
      * @param arrayData the array data the data value is associated to.
      * @param reporter the reporter the data value is associated to.
      * @param type the type of data
@@ -88,22 +87,22 @@ public class ArrayDataValues {
     public float getFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type) {
         return getFloatValue(arrayData, getReporterIndex(reporter), type);
     }
-    
+
     /**
      * Gets a single data point for a single reporter / array / type combination.
-     * 
+     *
      * @param arrayData the array data the data value is associated to.
      * @param reporterIndex the index of the reporter the data value is associated to.
      * @param type the type of data
      * @return the value.
      */
-    public float getFloatValue(ArrayData arrayData, int reporterIndex, ArrayDataValueType type) {
+    private float getFloatValue(ArrayData arrayData, int reporterIndex, ArrayDataValueType type) {
         return getTypeValues(type).getFloatValue(arrayData, reporterIndex);
     }
 
     /**
      * Gets all data for an array / type combination.
-     * 
+     *
      * @param arrayData the array data the data are associated to.
      * @param type the type of data
      * @return the values.
@@ -114,7 +113,7 @@ public class ArrayDataValues {
 
     /**
      * Sets a single data point for a single reporter / array / type combination.
-     * 
+     *
      * @param arrayData the array data the data value is associated to.
      * @param reporter the reporter the data value is associated to.
      * @param type the type of data
@@ -123,19 +122,19 @@ public class ArrayDataValues {
     public void setFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type, float value) {
         getTypeValues(type).setFloatValue(arrayData, reporter, value);
     }
-    
+
     /**
      * Sets a single data point for a single reporter / array / type combination, where there are more than one float
      * values to calculate a central tendency.
-     * 
+     *
      * @param arrayData the array data the data value is associated to.
      * @param reporter the reporter the data value is associated to.
      * @param type the type of data
      * @param values the values to set.
      * @param centralTendencyCalculator used to calculate the central tendency of the float values.
      */
-    public void setFloatValue(ArrayData arrayData, AbstractReporter reporter, 
-            ArrayDataValueType type, List<Float> values, CentralTendencyCalculator centralTendencyCalculator) {
+    public void setFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type,
+            float[] values, CentralTendencyCalculator centralTendencyCalculator) {
         centralTendencyCalculator.calculateCentralTendencyValue(values);
         setFloatValue(arrayData, reporter, type, centralTendencyCalculator.getCentralTendencyValue());
         if (centralTendencyCalculator.isHighVariance()) {
@@ -146,7 +145,7 @@ public class ArrayDataValues {
 
     /**
      * Sets a single data point for a single reporter / array / type combination.
-     * 
+     *
      * @param arrayData the array data the data values are associated to.
      * @param forReporters the reporters the data values are associated to.
      * @param type the type of data
@@ -175,19 +174,19 @@ public class ArrayDataValues {
         }
         return reporterIndexMap.get(reporter.getName());
     }
-    
+
     /**
      * Returns the data types in this values object.
-     * 
+     *
      * @return the data types.
      */
     public Set<ArrayDataValueType> getTypes() {
         return typeValuesMap.keySet();
     }
-    
+
     /**
      * Returns a set of all <code>ArrayDatas</code> that have data in this values object.
-     * 
+     *
      * @return the arrays.
      */
     public Set<ArrayData> getArrayDatas() {
@@ -202,15 +201,14 @@ public class ArrayDataValues {
      * @return the array datas in order by id.
      */
     public List<ArrayData> getOrderedArrayDatas() {
-        List<ArrayData> arrayDatas = new ArrayList<ArrayData>();
-        arrayDatas.addAll(getArrayDatas());
+        List<ArrayData> arrayDatas = Lists.newArrayList(getArrayDatas());
         Collections.sort(arrayDatas, AbstractCaIntegrator2Object.ID_COMPARATOR);
         return arrayDatas;
     }
 
     /**
      * Returns the <code>ReporterList</code> that data in this values object is associated with.
-     * 
+     *
      * @return the reporter list.
      */
     public ReporterList getReporterList() {
@@ -223,7 +221,7 @@ public class ArrayDataValues {
 
     /**
      * Returns all reporter lists for reporters in this values object.
-     * 
+     *
      * @return the reporter lists.
      */
     public Set<ReporterList> getReporterLists() {
@@ -235,5 +233,4 @@ public class ArrayDataValues {
         }
         return reporterLists;
     }
-
 }

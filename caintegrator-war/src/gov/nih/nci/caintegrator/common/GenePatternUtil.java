@@ -193,9 +193,8 @@ public final class GenePatternUtil {
             boolean addGenesToReporters)
     throws InvalidCriterionException {
         Set<Query> clinicalQuerySet = new HashSet<Query>(clinicalQueries);
-        Query allGenomicDataQuery =
-            QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet, platformName,
-                    ResultTypeEnum.GENE_EXPRESSION);
+        Query allGenomicDataQuery = QueryUtil.createAllGenomicDataQuery(studySubscription, clinicalQuerySet,
+                platformName, ResultTypeEnum.GENE_EXPRESSION);
         allGenomicDataQuery.setNeedsGenomicHighlighting(false);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         genomicData.excludeSampleSet(excludedControlSampleSet);

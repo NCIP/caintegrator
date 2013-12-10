@@ -1,5 +1,4 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 
 <s:div cssClass="TB_ajaxWindowTitle"/>
 <s:div cssClass="TB_closeAjaxWindow">
@@ -39,14 +38,4 @@
     </td>
     </tr>
 </s:div>
-
-<s:url id="bioDbNetSearch" action="bioDbNetSearch"/>
-<sx:div id="bioDbNetSearchResultsDiv" 
-        href="%{bioDbNetSearch}" 
-        formId="bioDbNetSearchForm" 
-        showLoadingText="true"
-        loadingText="<img src='images/ajax-loader.gif' alt='ajax icon indicating loading process'/>"
-        listenTopics="searchBioDbNet" 
-        refreshOnShow="false"
-        preload="false"
-        cssStyle="padding: 0 0 0 5px;" />
+<div id="bioDbNetSearchResultsDiv"></div>

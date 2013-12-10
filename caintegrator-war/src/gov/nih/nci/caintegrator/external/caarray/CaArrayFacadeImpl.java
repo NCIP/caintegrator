@@ -32,9 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  * Implementation of the CaArrayFacade subsystem.
  */
+@Service("caArrayFacade")
 public class CaArrayFacadeImpl implements CaArrayFacade {
 
     private static final String ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE =
@@ -83,6 +87,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * @param serviceFactory the serviceFactory to set
      */
+    @Autowired
     public void setServiceFactory(CaArrayServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
     }
@@ -143,7 +148,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
                     arrayDataService);
         }
         throw new DataRetrievalException("Unsupported platform vendor: " + genomicSource.getPlatformVendor()
-                + " and type " + genomicSource.getDataTypeString());
+                + " and type " + genomicSource.getDataType().getValue());
     }
 
     /**
@@ -156,6 +161,7 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * @param dao the dao to set
      */
+    @Autowired
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }

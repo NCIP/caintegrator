@@ -24,10 +24,15 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Action dealing with Gene Expression Clinical Query Based plotting.
  */
+@Component("gePlotClinicalQueryBasedAction")
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction {
 
     private static final long serialVersionUID = 1L;

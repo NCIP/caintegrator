@@ -6,14 +6,12 @@
  */
 package gov.nih.nci.caintegrator.application.geneexpression;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * 
+ *
  */
 public enum GenomicValueResultsTypeEnum {
-    
+
     /**
      * Mean.
      */
@@ -23,12 +21,9 @@ public enum GenomicValueResultsTypeEnum {
      * Median.
      */
     FOLD_CHANGE("Fold Change");
-        
-    private static Map<String, GenomicValueResultsTypeEnum> valueToTypeMap = 
-                    new HashMap<String, GenomicValueResultsTypeEnum>();
 
     private String value;
-    
+
     private GenomicValueResultsTypeEnum(String value) {
         this.value = value;
     }
@@ -46,41 +41,4 @@ public enum GenomicValueResultsTypeEnum {
     public void setValue(String value) {
         this.value = value;
     }
-
-    private static Map<String, GenomicValueResultsTypeEnum> getValueToTypeMap() {
-        if (valueToTypeMap.isEmpty()) {
-            for (GenomicValueResultsTypeEnum type : values()) {
-                valueToTypeMap.put(type.getValue(), type);
-            }
-        }
-        return valueToTypeMap;
-    }
-    
-    /**
-     * Returns the <code>GenomicValueResultsTypeEnum</code> corresponding to the given value. Returns null
-     * for null value.
-     * 
-     * @param value the value to match
-     * @return the matching type.
-     */
-    public static GenomicValueResultsTypeEnum getByValue(String value) {
-        if (!checkType(value)) {
-            return null;
-        }
-        return getValueToTypeMap().get(value);
-    }
-
-    /**
-     * Checks to see that the value given is a legal <code>AssayType</code> value.
-     * 
-     * @param value the value to check;
-     * @return T/F value if it exists.
-     */
-    public static boolean checkType(String value) {
-        if (value == null || !getValueToTypeMap().containsKey(value)) {
-            return false;
-        }
-        return true;
-    }
-
 }

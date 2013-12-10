@@ -1,0 +1,1 @@
+update dna_analysis_reporter set position = -1 where position is null;

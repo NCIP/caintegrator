@@ -20,7 +20,6 @@ import gov.nih.nci.caintegrator.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
-import gov.nih.nci.caintegrator.application.study.DnaAnalysisDataConfiguration;
 import gov.nih.nci.caintegrator.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator.domain.genomic.ReporterTypeEnum;
@@ -30,14 +29,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 2880)
+/**
+ * Tests deployment of the Rembrandt study with copy number data.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
+@Transactional
 public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends AbstractDeployStudyTestIntegration {
-
-    private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtWithCopyNumberDataTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws Exception {
@@ -47,12 +48,14 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
 
     @Override
     protected void configureSegmentationDataCalcuation(DnaAnalysisDataConfiguration dnaAnalysisDataConfiguration) {
-        dnaAnalysisDataConfiguration.getSegmentationService().setUrl("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
+        dnaAnalysisDataConfiguration.getSegmentationService()
+            .setUrl("http://bioconductor.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
         dnaAnalysisDataConfiguration.setRandomNumberSeed(1234567);
     }
 
     private void checkCopyNumberData() {
-        Set<ArrayData> arrayDatas = getStudyConfiguration().getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null);
+        Set<ArrayData> arrayDatas =
+                getStudyConfiguration().getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER, null);
         assertEquals(5, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkCopyNumberData(arrayData);
@@ -112,11 +115,6 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     }
 
     @Override
-    protected Logger getLogger() {
-        return LOGGER;
-    }
-
-    @Override
     protected String getStudyName() {
         return "Rembrandt with Copy Number Data";
     }
@@ -168,11 +166,6 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     }
 
     @Override
-    protected String getControlSamplesFileName() {
-        return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_FILE_PATH;
-    }
-
-    @Override
     protected File getSubjectAnnotationFile() {
         return TestDataFiles.REMBRANDT_NCRI_CLINICAL_FILE;
     }
@@ -215,14 +208,6 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     @Override
     protected PlatformVendorEnum getPlatformVendor() {
         return PlatformVendorEnum.AFFYMETRIX;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean getAuthorizeStudy() {
-        return false;
     }
 
     /**

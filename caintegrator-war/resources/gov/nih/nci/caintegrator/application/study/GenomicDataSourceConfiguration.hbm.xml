@@ -37,7 +37,8 @@
             column="STUDY_CONFIGURATION_ID"
             not-null="true"
             insert="false"
-            update="false"/>
+            update="false"
+            lazy="false"/>
 		
         <many-to-one name="serverProfile" class="gov.nih.nci.caintegrator.external.ServerConnectionProfile" column="SERVER_CONNECTION_PROFILE_ID"
             lazy="false" cascade="all" />

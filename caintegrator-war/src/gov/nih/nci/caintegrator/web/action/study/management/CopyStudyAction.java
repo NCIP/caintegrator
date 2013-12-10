@@ -20,10 +20,16 @@ import gov.nih.nci.security.exceptions.CSException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Saves basic study information.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class CopyStudyAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
@@ -157,6 +163,7 @@ public class CopyStudyAction extends AbstractStudyAction {
     /**
      * @param updater the updater to set
      */
+    @Autowired
     public void setUpdater(ISubjectDataSourceAjaxUpdater updater) {
         this.updater = updater;
     }

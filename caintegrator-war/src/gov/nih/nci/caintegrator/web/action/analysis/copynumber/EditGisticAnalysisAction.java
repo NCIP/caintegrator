@@ -16,9 +16,16 @@ import gov.nih.nci.caintegrator.web.action.AbstractCaIntegrator2Action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
  * Provides functionality to view / edit the gistic analysis job.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
@@ -148,12 +155,12 @@ public class EditGisticAnalysisAction extends AbstractCaIntegrator2Action {
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
 
     /**
-     *
      * @return creationDate.
      */
     public String getCreationDate() {

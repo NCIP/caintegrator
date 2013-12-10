@@ -14,7 +14,7 @@ import gov.nih.nci.caintegrator.web.action.analysis.PrincipalComponentAnalysisFo
 public class PrincipalComponentAnalysisJob extends AbstractPersistedAnalysisJob {
 
     private static final long serialVersionUID = 1L;
-    
+
     private final transient PrincipalComponentAnalysisForm form = new PrincipalComponentAnalysisForm();
     private String preprocessDataSetUrl;
     private ResultsZipFile resultsZipFile;
@@ -31,6 +31,7 @@ public class PrincipalComponentAnalysisJob extends AbstractPersistedAnalysisJob 
     /**
      * @return the resultsZipFile
      */
+    @Override
     public ResultsZipFile getResultsZipFile() {
         return resultsZipFile;
     }

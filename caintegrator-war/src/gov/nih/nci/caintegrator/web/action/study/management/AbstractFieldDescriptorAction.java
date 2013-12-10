@@ -10,7 +10,6 @@ import gov.nih.nci.caintegrator.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator.application.study.ValidationException;
-import gov.nih.nci.caintegrator.common.HibernateUtil;
 import gov.nih.nci.caintegrator.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.CommonDataElement;
@@ -74,7 +73,6 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
             if (fieldDescriptor.getDefinition() != null) {
                 fieldDescriptor.setDefinition(getStudyManagementService().getRefreshedEntity(
                         fieldDescriptor.getDefinition()));
-                HibernateUtil.loadCollections(fieldDescriptor.getDefinition());
             }
         }
         setReadOnly(true);
@@ -333,10 +331,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
      * @return if the ColumnType is ANNOTATION_TYPE.
      */
     public boolean isColumnTypeAnnotation() {
-        if (getFieldDescriptorType().equals(ANNOTATION_TYPE)) {
-            return true;
-        }
-        return false;
+        return getFieldDescriptorType().equals(ANNOTATION_TYPE);
     }
 
 
@@ -443,19 +438,12 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
         return getDisplayableWorkspace().getDataElementSearchObject().getKeywordsForSearch();
     }
 
-
-
     /**
      *
      * @return if the Permissible is available.
      */
     public boolean isPermissibleOn() {
-        if (isColumnTypeAnnotation()
-                && fieldDescriptor != null
-                && fieldDescriptor.getDefinition() != null) {
-            return true;
-        }
-        return false;
+        return isColumnTypeAnnotation() && fieldDescriptor != null && fieldDescriptor.getDefinition() != null;
     }
 
     /**
@@ -477,8 +465,7 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
      * @return the Struts result.
      */
     private void updatePermissible() {
-        PermissibleValueUtil.update(getDefinitionType(),
-                getPermissibleCollection(), getPermissibleUpdateList());
+        PermissibleValueUtil.update(getDefinitionType(), getPermissibleCollection(), getPermissibleUpdateList());
     }
 
     private Collection<PermissibleValue> getPermissibleCollection() {
@@ -519,12 +506,8 @@ public abstract class AbstractFieldDescriptorAction extends AbstractStudyAction 
      * @return T/F value.
      */
     public boolean isFromCadsr() {
-        if (fieldDescriptor != null
-            && fieldDescriptor.getDefinition() != null
-            && fieldDescriptor.getDefinition().getCommonDataElement().getPublicID() != null) {
-            return true;
-        }
-        return false;
+        return fieldDescriptor != null && fieldDescriptor.getDefinition() != null
+            && fieldDescriptor.getDefinition().getCommonDataElement().getPublicID() != null;
     }
 
     /**

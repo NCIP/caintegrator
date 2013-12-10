@@ -35,7 +35,7 @@ abstract class AbstractGenericSupplementalMappingFileHandler extends AbstractUnp
     private final ReporterTypeEnum reporterType;
     private final ArrayDataType dataType;
     private final ArrayDataValueType dataValueType;
-    
+
     AbstractGenericSupplementalMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
@@ -62,35 +62,9 @@ abstract class AbstractGenericSupplementalMappingFileHandler extends AbstractUnp
     abstract List<ArrayDataValues> loadArrayDataValue()
     throws ConnectionException, DataRetrievalException, ValidationException;
 
+    @Override
     abstract void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
     throws FileNotFoundException, ValidationException, ConnectionException, DataRetrievalException;
-    
-    /**
-     * Mapping data.
-     */
-    protected class MappingData {
-        private String subjectId;
-        private String sampleName;
-        private SupplementalDataFile dataFile;
-        /**
-         * @return the subjectId
-         */
-        public String getSubjectId() {
-            return subjectId;
-        }
-        /**
-         * @return the sampleName
-         */
-        public String getSampleName() {
-            return sampleName;
-        }
-        /**
-         * @return the dataFile
-         */
-        public SupplementalDataFile getDataFile() {
-            return dataFile;
-        }
-    }
 
     @Override
     String getFileType() {
@@ -117,5 +91,4 @@ abstract class AbstractGenericSupplementalMappingFileHandler extends AbstractUnp
     protected ArrayDataValueType getDataValueType() {
         return dataValueType;
     }
-
- }
+}

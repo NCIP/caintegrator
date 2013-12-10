@@ -6,70 +6,74 @@
  */
 package gov.nih.nci.caintegrator.domain.genomic;
 
-import static java.lang.Character.isDigit;
-
 import java.io.Serializable;
+
+import org.apache.commons.lang3.math.NumberUtils;
+
+import com.google.common.primitives.Ints;
 
 /**
  * Represents a segment of a chromosome.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class ChromosomalLocation implements Serializable, Comparable<ChromosomalLocation> {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private String chromosome;
-    private Integer startPosition;
-    private Integer endPosition;
-    
+    private int startPosition;
+    private int endPosition;
+
     /**
      * @return the chromosome
      */
     public String getChromosome() {
         return chromosome;
     }
-    
+
     /**
      * @param chromosome the chromosome to set
      */
     public void setChromosome(String chromosome) {
         this.chromosome = chromosome;
     }
-    
+
     /**
      * @return the startPosition
      */
-    public Integer getStartPosition() {
+    public int getStartPosition() {
         return startPosition;
     }
-    
+
     /**
      * @param startPosition the startPosition to set
      */
-    public void setStartPosition(Integer startPosition) {
+    public void setStartPosition(int startPosition) {
         this.startPosition = startPosition;
     }
-    
+
     /**
      * @return the endPosition
      */
-    public Integer getEndPosition() {
+    public int getEndPosition() {
         return endPosition;
     }
-    
+
     /**
      * @param endPosition the endPosition to set
      */
-    public void setEndPosition(Integer endPosition) {
+    public void setEndPosition(int endPosition) {
         this.endPosition = endPosition;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public int compareTo(ChromosomalLocation location) {
         int chromosomeComparison = compareChromosome(location);
         return chromosomeComparison == 0 ? comparePosition(location) : chromosomeComparison;
-        
+
     }
 
     private int compareChromosome(ChromosomalLocation location) {
@@ -83,21 +87,14 @@ public class ChromosomalLocation implements Serializable, Comparable<Chromosomal
     }
 
     private int compareChromosomeStrings(ChromosomalLocation location) {
-        if (isDigit(getChromosome().charAt(0)) && isDigit(location.getChromosome().charAt(0))) {
-            return Integer.valueOf(getChromosome()) - Integer.valueOf(location.getChromosome());
+        if (NumberUtils.isNumber(getChromosome()) && NumberUtils.isNumber(location.getChromosome())) {
+            return Ints.compare(NumberUtils.toInt(getChromosome()), NumberUtils.toInt(location.getChromosome()));
         } else {
             return getChromosome().compareTo(location.getChromosome());
         }
     }
 
     private int comparePosition(ChromosomalLocation location) {
-        if (getStartPosition() == null) {
-            return location.getStartPosition() == null ? 0 : 1;
-        } else if (location.getStartPosition() == null) {
-            return -1;
-        } else {
-            return getStartPosition().compareTo(location.getStartPosition());
-        }
+        return Ints.compare(getStartPosition(), location.getStartPosition());
     }
-
 }

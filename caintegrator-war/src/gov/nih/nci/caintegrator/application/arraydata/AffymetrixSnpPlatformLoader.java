@@ -112,12 +112,12 @@ class AffymetrixSnpPlatformLoader extends AbstractPlatformLoader {
         reporter.setPosition(getIntegerValue(fields, POSITION_HEADER));
     }
 
-    private Integer getIntegerValue(String[] fields, String header) {
+    private int getIntegerValue(String[] fields, String header) {
         String value = getAnnotationValue(fields, header);
         if (!NumberUtils.isNumber(value)) {
-            return null;
+            return -1;
         }
-        return Integer.parseInt(value);
+        return NumberUtils.toInt(value);
     }
 
     private Set<Gene> getGenes(String[] symbols, String[] fields, CaIntegrator2Dao dao) {

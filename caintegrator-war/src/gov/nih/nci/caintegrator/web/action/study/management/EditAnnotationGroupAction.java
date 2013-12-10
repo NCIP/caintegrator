@@ -11,7 +11,6 @@ import gov.nih.nci.caintegrator.application.study.AnnotationGroup;
 import gov.nih.nci.caintegrator.application.study.LogEntry;
 import gov.nih.nci.caintegrator.application.study.ValidationException;
 import gov.nih.nci.caintegrator.external.ConnectionException;
-import gov.nih.nci.caintegrator.file.FileManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,14 +21,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
+ * Edit annotation group action.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class EditAnnotationGroupAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
-    private FileManager fileManager;
     private File annotationGroupFile;
     private String annotationGroupFileContentType;
     private String annotationGrouptFileFileName;
@@ -263,20 +268,6 @@ public class EditAnnotationGroupAction extends AbstractStudyAction {
      */
     public void setAnnotationGrouptFileFileName(String annotationGrouptFileFileName) {
         this.annotationGrouptFileFileName = annotationGrouptFileFileName;
-    }
-
-    /**
-     * @return the fileManager
-     */
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
-    /**
-     * @param fileManager the fileManager to set
-     */
-    public void setFileManager(FileManager fileManager) {
-        this.fileManager = fileManager;
     }
 
     /**

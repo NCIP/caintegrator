@@ -33,13 +33,13 @@ import com.opensymphony.xwork2.ValidationAware;
  * single top-level group per query.
  */
 public class CriteriaGroup {
-    
+
     private static final String NULL_ANNOTATION_AFD_TYPE = "~NULL_AFD_TYPE~";
     private final CompoundCriterion compoundCriterion;
     private final QueryForm form;
     private String criterionType = "";
     private final List<AbstractCriterionRow> rows = new ArrayList<AbstractCriterionRow>();
-    
+
 
     CriteriaGroup(QueryForm form) {
         if (form.getQuery() == null || form.getQuery().getCompoundCriterion() == null) {
@@ -52,7 +52,7 @@ public class CriteriaGroup {
 
     private void initializeCriteria(Study study, Collection<AbstractCriterion> criterionCollection) {
         Iterator<AbstractCriterion> iterator = criterionCollection.iterator();
-        while (iterator.hasNext()) {            
+        while (iterator.hasNext()) {
             addCriterionRow(study, iterator.next());
         }
     }
@@ -89,8 +89,8 @@ public class CriteriaGroup {
     }
 
     private String getAnnotationCriterionRowName(AbstractCriterion criterion) {
-        AbstractAnnotationCriterion annotationCriterion = (AbstractAnnotationCriterion) criterion; 
-        if (annotationCriterion.getAnnotationFieldDescriptor() == null 
+        AbstractAnnotationCriterion annotationCriterion = (AbstractAnnotationCriterion) criterion;
+        if (annotationCriterion.getAnnotationFieldDescriptor() == null
                 || annotationCriterion.getAnnotationFieldDescriptor().getAnnotationGroup() == null) {
             return NULL_ANNOTATION_AFD_TYPE;
         }
@@ -100,17 +100,17 @@ public class CriteriaGroup {
     /**
      * @return the booleanOperator
      */
-    public String getBooleanOperator() {
-        return compoundCriterion.getBooleanOperator().getValue();
+    public BooleanOperatorEnum getBooleanOperator() {
+        return compoundCriterion.getBooleanOperator();
     }
 
     /**
      * @param booleanOperator the booleanOperator to set
      */
-    public void setBooleanOperator(String booleanOperator) {
-        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.getByValue(booleanOperator));
+    public void setBooleanOperator(BooleanOperatorEnum booleanOperator) {
+        compoundCriterion.setBooleanOperator(booleanOperator);
     }
-    
+
     /**
      * Removes the row at the given row number.
      * @param rowNumber to remove from list.
@@ -178,7 +178,7 @@ public class CriteriaGroup {
     public void setCriterionTypeName(String criterionTypeName) {
         criterionType = criterionTypeName;
     }
-    
+
     StudySubscription getSubscription() {
         return getForm().getQuery().getSubscription();
     }
@@ -209,14 +209,14 @@ public class CriteriaGroup {
             row.processCriteriaChanges();
         }
     }
-    
+
     /**
      * @return boolean of having no gene expression criterion
      */
     public boolean hasNoGeneExpressionCriterion() {
         for (AbstractCriterionRow row : getRows()) {
             if (row.getCriterion() instanceof GeneNameCriterion
-                    || row.getCriterion() instanceof FoldChangeCriterion 
+                    || row.getCriterion() instanceof FoldChangeCriterion
                     || row.getCriterion() instanceof ExpressionLevelCriterion) {
                 return false;
             }

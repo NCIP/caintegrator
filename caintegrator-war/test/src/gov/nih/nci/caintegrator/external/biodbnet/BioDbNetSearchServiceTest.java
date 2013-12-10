@@ -9,12 +9,19 @@ package gov.nih.nci.caintegrator.external.biodbnet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyCollectionOf;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import gov.nih.nci.caintegrator.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.external.biodbnet.enums.Taxon;
 import gov.nih.nci.caintegrator.external.biodbnet.search.GeneResults;
 import gov.nih.nci.caintegrator.external.biodbnet.search.PathwayResults;
 import gov.nih.nci.caintegrator.external.biodbnet.search.SearchParameters;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -39,6 +46,8 @@ public class BioDbNetSearchServiceTest extends AbstractMockitoTest {
     private static final Set<String> PATHWAYS = Sets.newHashSet("h_bard1Pathway", "h_carm-erPathway", "h_atmPathway",
             "h_g2Pathway", "h_atrbrcaPathway");
     private BioDbNetService bioDbNetService;
+    private Study studyOne = new Study();
+    private Study studyTwo = new Study();
 
     /**
      * Sets up the necessary mock information.
@@ -47,6 +56,13 @@ public class BioDbNetSearchServiceTest extends AbstractMockitoTest {
     public void setUp() {
         BioDbNetSearchImpl searchService = new BioDbNetSearchImpl();
         searchService.setBioDbNetRemoteService(bioDbNetRemoteService);
+
+        CaIntegrator2Dao dao = mock(CaIntegrator2Dao.class);
+        when(dao.retrieveGeneSymbolsInStudy(anyCollectionOf(String.class), eq(studyOne)))
+            .thenReturn(Sets.newHashSet(BRCA1_GENE_NAME));
+        when(dao.retrieveGeneSymbolsInStudy(anyCollectionOf(String.class), eq(studyTwo)))
+            .thenReturn(new HashSet<String>());
+        searchService.setDao(dao);
         bioDbNetService = searchService;
     }
 
@@ -138,4 +154,39 @@ public class BioDbNetSearchServiceTest extends AbstractMockitoTest {
         assertEquals("ATM Signaling Pathway", result.getTitle());
     }
 
+    /**
+     * Tests filtering of gene symbols based on those that are availble to the study when the given gene
+     * symbol is allowed.
+     */
+    @Test
+    public void filterGeneSymbolsAllowed() {
+        SearchParameters params = new SearchParameters();
+        params.setTaxon(Taxon.ALL);
+        params.setInputValues(BRCA1_GENE_ID.toString());
+        params.setFilterGenesOnStudy(true);
+        params.setStudy(studyOne);
+
+        Set<GeneResults> genes = bioDbNetService.retrieveGenesById(params);
+        assertFalse(genes.isEmpty());
+        assertEquals(23, genes.size());
+        for (GeneResults result : genes) {
+            assertEquals(BRCA1_GENE_NAME, result.getSymbol());
+        }
+    }
+
+    /**
+     * Tests filtering of gene symbols based on those that are availble to the study when the given gene
+     * symbol is not allowed.
+     */
+    @Test
+    public void filterGeneSymbolsNotAllowed() {
+        SearchParameters params = new SearchParameters();
+        params.setTaxon(Taxon.ALL);
+        params.setInputValues("1");
+        params.setFilterGenesOnStudy(true);
+        params.setStudy(studyTwo);
+
+        Set<GeneResults> genes = bioDbNetService.retrieveGenesById(params);
+        assertTrue(genes.isEmpty());
+    }
 }

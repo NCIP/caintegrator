@@ -30,7 +30,6 @@ import gov.nih.nci.caintegrator.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.web.SessionHelper;
 import gov.nih.nci.caintegrator.web.action.AbstractSessionBasedTest;
-import gov.nih.nci.caintegrator.web.action.analysis.KMPlotGeneExpressionBasedAction;
 
 import java.awt.Color;
 
@@ -89,7 +88,7 @@ public class KMPlotGeneExpressionBasedActionTest extends AbstractSessionBasedTes
     @Test
     public void testPrepare() {
         action.getKmPlotParameters().setSurvivalValueDefinition(survivalValue);
-        action.getKmPlotForm().setSurvivalValueDefinitionId("1");
+        action.getKmPlotForm().setSurvivalValueDefinitionId(1L);
         setupActionVariables();
         action.prepare();
         verify(queryManagementService, atLeastOnce()).getRefreshedEntity(any(AbstractCaIntegrator2Object.class));

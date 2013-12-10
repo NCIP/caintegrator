@@ -50,7 +50,7 @@ Guide to this file:
 		<field type="title" txt="Existing Locations" bold="true" size="1" />
 		<field type="staticText" align="left" txt="Select the locations of the existing components that are installed. These values will be used to read the existing configuration of the components and pre-populate the following screens with the values from the existing install.  New properties that are part of this installation will have default values."/>
 		<field type="divider" align="top"/>
-		<field type="dir" variable="UserPathPanelVariable">
+		<field type="dir" variable="INSTALL_PATH">
 			<spec txt="Application Root Directory:" size="25" set="c:/apps/caintegrator"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Application Root Directory is a required field" />
 		</field>
@@ -71,7 +71,7 @@ Guide to this file:
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
 		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:common:init" language="ant">
-			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="UserPathPanelVariable"/>
+			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="$INSTALL_PATH"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
 			<inpropertymap inpropertyname="jboss.server.name" inpropertyvalue="jboss.server.name"/>
 			<propertymap propertyname="authentication.type" mapname="authentication.type"/>
@@ -174,7 +174,7 @@ Guide to this file:
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
 		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:jboss:init" language="ant">
-			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="UserPathPanelVariable"/>
+			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="$INSTALL_PATH"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
 			<inpropertymap inpropertyname="jboss.server.name" inpropertyvalue="jboss.server.name"/>
 			<propertymap propertyname="authentication.type" mapname="authentication.type"/>
@@ -276,7 +276,7 @@ Guide to this file:
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
 		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:tomcat:init" language="ant">
-			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="UserPathPanelVariable"/>
+			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="$INSTALL_PATH"/>
 			<inpropertymap inpropertyname="tomcat.home" inpropertyvalue="tomcat.home"/>
 			<propertymap propertyname="database.name" mapname="database.name"/>
 			<propertymap propertyname="database.password" mapname="database.password"/>
@@ -340,7 +340,7 @@ Guide to this file:
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
 		<field type="staticText" txt="Please click Next to continue." bold="true" size="1" />
 		<panelreader classname="pre-install/install.xml" methodname="upgrade:database:init" language="ant">
-			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="UserPathPanelVariable"/>
+			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="$INSTALL_PATH"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
 			<inpropertymap inpropertyname="jboss.server.name" inpropertyvalue="jboss.server.name"/>
 			<propertymap propertyname="authentication.type" mapname="authentication.type"/>
@@ -360,7 +360,7 @@ Guide to this file:
 	<!-- Jboss Configuration -->
 	<panel order="7">
 		<field type="title" txt="JBoss Configuration" bold="true" size="1" />
-		<field type="staticText" align="left" txt="As part of this installation, JBoss will be installed in ${UserPathPanelVariable}/${jboss.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the hostname accesible from this machine and others on the local network. To access this JBoss application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
+		<field type="staticText" align="left" txt="As part of this installation, JBoss will be installed in $INSTALL_PATH/${jboss.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the hostname accesible from this machine and others on the local network. To access this JBoss application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
 		<field type="divider" align="top"/>
 		<field type="text" align="left" variable="jboss.server.hostname">
 			<spec txt="Hostname of this Server:" size="25" set="$HOST_NAME"/>
@@ -384,7 +384,7 @@ Guide to this file:
 			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your JBoss Web Console passwords"/>
 		</field>
 		<field type="text" variable="jboss.java.opts">
-			<spec txt="JBoss Server JAVA_OPTS:" size="135" set="-server -Xms256m -Xmx512m -XX:SurvivorRatio=10 -XX:PermSize=128m -XX:MaxPermSize=128m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Djava.awt.headless=true"/>
+			<spec txt="JBoss Server JAVA_OPTS:" size="135" set="-server -Xms256m -Xmx2048m -XX:SurvivorRatio=10 -XX:PermSize=128m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Djava.awt.headless=true"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="JBoss Server JAVA_OPTS is a required field" />
 		</field>
 
@@ -894,11 +894,11 @@ Guide to this file:
 	<!-- Tomcat Base Config 0.9.0 -->
 	<panel order="21">
 		<field type="title" txt="Tomcat Configuration" bold="true" size="1" />
-		<field type="staticText" align="left" txt="As part of this installation, Tomcat will be installed in ${UserPathPanelVariable}/${tomcat.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network. To access this Tomcat application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
+		<field type="staticText" align="left" txt="As part of this installation, Tomcat will be installed in $INSTALL_PATH/${tomcat.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network. To access this Tomcat application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
 		<field type="divider" align="top"/>
 		<field type="text" align="left" variable="tomcat.relative.path">
-			<spec txt="Relative Directory for Tomcat (relative from ${UserPathPanelVariable}):" size="25" set="${tomcat.binaries.relative.dir}"/>
-			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Enter a value for Relative Directory for Tomcat (relative from ${UserPathPanelVariable})" />
+			<spec txt="Relative Directory for Tomcat (relative from $INSTALL_PATH):" size="25" set="${tomcat.binaries.relative.dir}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Enter a value for Relative Directory for Tomcat (relative from $INSTALL_PATH)" />
 		</field>
 		<field type="text" align="left" variable="tomcat.hostname">
 			<spec txt="Hostname of this Server:" size="20" set="$HOST_NAME"/>
@@ -1057,7 +1057,7 @@ Guide to this file:
 		<field type="staticText" align="left" txt="Below are the current configurations"/>
 		<field type="divider" align="top"/>
 
-		<field type="staticText" align="left" txt="JBoss Home [${UserPathPanelVariable}/${jboss.binaries.relative.dir}] - This is where JBoss is installed."/>
+		<field type="staticText" align="left" txt="JBoss Home [$INSTALL_PATH/${jboss.binaries.relative.dir}] - This is where JBoss is installed."/>
 		<field type="space"/>
 		<field type="staticText" align="left" txt="JBoss Server Name [${jboss.server.hostname}] - This is the hostname where jboss is running.  If you want to make this Application avaliable from the internet you may need to provide this to your network administrator."/>
 		<field type="space"/>
@@ -1065,7 +1065,7 @@ Guide to this file:
 		<field type="space"/>
 		<field type="staticText" align="left" txt="JBoss URL [http://${jboss.server.hostname}:${jboss.server.port}/caintegrator] - This will be the url to reach your application when the install is finished."/>
 		<field type="space"/>
-		<field type="staticText" align="left" txt="JBoss Log Dir [${UserPathPanelVariable}/${jboss.binaries.relative.dir}/server/${jboss.server.name}] - This is where the logs can be found."/>
+		<field type="staticText" align="left" txt="JBoss Log Dir [$INSTALL_PATH/${jboss.binaries.relative.dir}/server/${jboss.server.name}] - This is where the logs can be found."/>
 
 		<field type="space"/>
 		<field type="staticText" align="left" txt="Database URL [jdbc:mysql://${database.server}:${database.port}/${database.name}] "/>

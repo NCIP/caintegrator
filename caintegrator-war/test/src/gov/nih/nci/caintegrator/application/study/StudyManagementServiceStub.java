@@ -8,25 +8,6 @@ package gov.nih.nci.caintegrator.application.study;
 
 import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
 import gov.nih.nci.caintegrator.TestDataFiles;
-import gov.nih.nci.caintegrator.application.study.AbstractClinicalSourceConfiguration;
-import gov.nih.nci.caintegrator.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator.application.study.AnnotationFieldType;
-import gov.nih.nci.caintegrator.application.study.AnnotationGroup;
-import gov.nih.nci.caintegrator.application.study.AnnotationGroupUploadContent;
-import gov.nih.nci.caintegrator.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator.application.study.AuthorizedStudyElementsGroup;
-import gov.nih.nci.caintegrator.application.study.DelimitedTextClinicalSourceConfiguration;
-import gov.nih.nci.caintegrator.application.study.ExternalLinkList;
-import gov.nih.nci.caintegrator.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator.application.study.ImageAnnotationConfiguration;
-import gov.nih.nci.caintegrator.application.study.ImageDataSourceConfiguration;
-import gov.nih.nci.caintegrator.application.study.ImageDataSourceMappingTypeEnum;
-import gov.nih.nci.caintegrator.application.study.Status;
-import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator.application.study.StudyLogo;
-import gov.nih.nci.caintegrator.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator.application.study.ValidationException;
-import gov.nih.nci.caintegrator.application.study.ValidationResult;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.CommonDataElement;
@@ -628,7 +609,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
     @Override
-    public void checkForSampleUpdates(StudyConfiguration sc) throws ConnectionException, ExperimentNotFoundException {
+    public void checkForSampleUpdates(GenomicDataSourceConfiguration sc) throws ConnectionException,
+    ExperimentNotFoundException {
         checkForSampleUpdates = false;
     }
 

@@ -19,13 +19,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
- * 
+ *
  */
 public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private static final String VIEW_ALL = "viewAll";
     private static final String CANCEL_ACTION = "cancel";
     private static final String HOME_PAGE = "homePage";
@@ -45,6 +47,7 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void prepare() {
         super.prepare();
         copyNumberPlatformsInStudy = getQueryManagementService().retrieveCopyNumberPlatformsForStudy(getStudy());
@@ -74,6 +77,7 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String execute() {
         if  (VIEW_ALL.equals(selectedAction)) {
             return viewAll();
@@ -112,6 +116,7 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -154,6 +159,7 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
@@ -168,10 +174,11 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
     /**
      * @param arrayDataService the arrayDataService to set
      */
+    @Autowired
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }
-    
+
     /**
      * @return the option label for copy number platform selector
      */
@@ -205,19 +212,5 @@ public abstract class AbstractViewAllAction extends AbstractDeployedStudyAction 
      */
     public void setCopyNumberType(CopyNumberCriterionTypeEnum copyNumberType) {
         this.copyNumberType = copyNumberType;
-    }
-    
-    /**
-     * @return the displayableCopyNumberType
-     */
-    public String getDisplayableCopyNumberType() {
-        return copyNumberType.getValue();
-    }
-    
-    /**
-     * @param copyNumberTypeString the copyNumberTypeString to set
-     */
-    public void setDisplayableCopyNumberType(String copyNumberTypeString) {
-        this.copyNumberType = CopyNumberCriterionTypeEnum.getByValue(copyNumberTypeString);
     }
 }

@@ -1,4 +1,3 @@
-<%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
      
      <s:actionerror />
@@ -6,10 +5,10 @@
     <s:set name="gePlot" value="#session['gePlot']" />
     <s:if test="#gePlot.annotationBasedGePlot != null">
         <center>
-            <s:set name="retrieveAnnotationGEPlot_mean" id="retrieveAnnotationGEPlot_mean" value="%{retrieveGePlotUrl('mean')}"/>
-            <s:set name="retrieveAnnotationGEPlot_median" id="retrieveAnnotationGEPlot_median" value="%{retrieveGePlotUrl('median')}"/>
-            <s:set name="retrieveAnnotationGEPlot_log2" id="retrieveAnnotationGEPlot_log2" value="%{retrieveGePlotUrl('log2Intensity')}"/>
-            <s:set name="retrieveAnnotationGEPlot_bw" id="retrieveAnnotationGEPlot_bw" value="%{retrieveGePlotUrl('boxWhiskerLog2Intensity')}"/>
+            <s:set name="retrieveAnnotationGEPlot_mean" id="retrieveAnnotationGEPlot_mean" value="%{retrieveGePlotUrl('MEAN')}"/>
+            <s:set name="retrieveAnnotationGEPlot_median" id="retrieveAnnotationGEPlot_median" value="%{retrieveGePlotUrl('MEDIAN')}"/>
+            <s:set name="retrieveAnnotationGEPlot_log2" id="retrieveAnnotationGEPlot_log2" value="%{retrieveGePlotUrl('LOG2_INTENSITY')}"/>
+            <s:set name="retrieveAnnotationGEPlot_bw" id="retrieveAnnotationGEPlot_bw" value="%{retrieveGePlotUrl('BOX_WHISKER_LOG2_INTENSITY')}"/>
             <b> Plot Type: </b> <a href="#" id="annotationTypeSelection1" style="background-color:yellow;" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_mean}', 'annotationTypeSelection', '1')">Mean</a> | 
                                  <a href="#" id="annotationTypeSelection2" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_median}', 'annotationTypeSelection', '2')">Median</a> |
                                  <a href="#" id="annotationTypeSelection3" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_log2}', 'annotationTypeSelection', '3')">Log2</a> |

@@ -27,10 +27,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Action that deals with Principal Component Analysis.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyAction {
 
     private static final long serialVersionUID = 1L;
@@ -246,6 +252,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
@@ -260,6 +267,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -274,6 +282,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
     /**
      * @param ajaxUpdater the ajaxUpdater to set
      */
+    @Autowired
     public void setAjaxUpdater(IPersistedAnalysisJobAjaxUpdater ajaxUpdater) {
         this.ajaxUpdater = ajaxUpdater;
     }

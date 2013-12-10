@@ -6,7 +6,6 @@
  */
 package gov.nih.nci.caintegrator.web.action.analysis;
 
-import gov.nih.nci.caintegrator.application.analysis.ExpressionTypeEnum;
 import gov.nih.nci.caintegrator.application.analysis.KMGeneExpressionBasedParameters;
 import gov.nih.nci.caintegrator.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator.application.kmplot.PlotTypeEnum;
@@ -20,10 +19,15 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Action dealing with Kaplan-Meier Gene Expression based plotting.
  */
+@Component("kmPlotGeneExpressionBasedAction")
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
 
     private static final long serialVersionUID = 1L;
@@ -65,7 +69,7 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
         }
         kmPlotParameters.setGeneSymbol(getForm().getGeneSymbol());
         kmPlotParameters.setControlSampleSetName(getForm().getControlSampleSetName());
-        kmPlotParameters.setExpressionType(ExpressionTypeEnum.getByValue(getForm().getExpressionType()));
+        kmPlotParameters.setExpressionType(getForm().getExpressionType());
         kmPlotParameters.setPlatformName(getForm().getPlatformName());
     }
 

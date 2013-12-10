@@ -50,6 +50,7 @@ import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator.security.SecurityManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
@@ -67,19 +68,27 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * Implementation of the DAO.
  */
 @Transactional
+@Repository("caIntegrator2Dao")
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
 
     private static final String UNCHECKED = "unchecked";
@@ -94,6 +103,15 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private static final String NAME_ATTRIBUTE = "name";
     private static final String SYMBOL_ATTRIBUTE = "symbol";
     private SecurityManager securityManager;
+
+    /**
+     * Initialization method.
+     * @param factory the session factory
+     */
+    @Autowired
+    public void init(SessionFactory factory) {
+        setSessionFactory(factory);
+    }
 
     /**
      * {@inheritDoc}
@@ -146,9 +164,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings(UNCHECKED)
     public <T> T get(Long id, Class<T> objectClass) {
-        return (T) getHibernateTemplate().get(objectClass, id);
+        return getHibernateTemplate().get(objectClass, id);
     }
 
     /**
@@ -566,24 +583,48 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @Override
     @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
-        Criteria reporterCriteria = getCurrentSession().createCriteria(AbstractReporter.class);
-        reporterCriteria.createCriteria("reporterList").
-                createCriteria("arrayDatas").
-                    add(Restrictions.eq(STUDY_ASSOCIATION, study));
-        reporterCriteria.createCriteria(GENES_ASSOCIATION).
-            add(Restrictions.in(SYMBOL_ATTRIBUTE, symbols));
-        Set<AbstractReporter> reporterSet = new HashSet<AbstractReporter>();
-        reporterSet.addAll(reporterCriteria.list());
-        Set<String> geneSymbols = new HashSet<String>();
-        for (AbstractReporter reporter : reporterSet) {
-            for (Gene gene : reporter.getGenes()) {
-                String symbol = gene.getSymbol();
-                if (Cai2Util.containsIgnoreCase(symbols, symbol)) {
-                    geneSymbols.add(symbol.toUpperCase(Locale.US));
-                }
-            }
+        List<String> symbolsUpper = toUpperCase(symbols);
+        String symbolsSql = "select distinct(gene.symbol) "
+                + "from gene, reporter_genes, abstract_reporter, reporter_list, array_data_reporter_lists, array_data "
+                + "where gene.id = reporter_genes.gene_id "
+                + "and abstract_reporter.id = reporter_genes.reporter_id "
+                + "and abstract_reporter.reporter_list_id = reporter_list.id "
+                + "and array_data_reporter_lists.reporter_list_id = reporter_list.id "
+                + "and array_data.id = array_data_reporter_lists.array_data_id "
+                + "and gene.symbol in (" + getSymbolParameterPlaceholders(symbolsUpper) + ") "
+                + "and array_data.study_id = :studyId ";
+        SQLQuery query = getCurrentSession().createSQLQuery(symbolsSql);
+        setSymbolParameters(query, symbolsUpper);
+        query.setLong("studyId", study.getId());
+        List<String> symbolList = query.list();
+        Set<String> symbolsInStudy = Sets.newHashSet();
+        symbolsInStudy.addAll(symbolList);
+        return symbolsInStudy;
+    }
+
+    private List<String> toUpperCase(Collection<String> symbols) {
+        List<String> symbolsUpper = Lists.newArrayList();
+        for (String symbol : symbols) {
+            symbolsUpper.add(StringUtils.upperCase(symbol));
         }
-        return geneSymbols;
+        return symbolsUpper;
+    }
+
+    private String getSymbolParameterPlaceholders(List<String> symbolsUpper) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < symbolsUpper.size(); i++) {
+            if (sb.length() != 0) {
+                sb.append(',');
+            }
+            sb.append('?');
+        }
+        return sb.toString();
+    }
+
+    private void setSymbolParameters(SQLQuery query, List<String> symbolsUpper) {
+        for (int i = 0; i < symbolsUpper.size(); i++) {
+            query.setString(i, symbolsUpper.get(i));
+        }
     }
 
     /**
@@ -710,11 +751,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<AuthorizedStudyElementsGroup> getAuthorizedStudyElementGroups(String username,
                                                                               Long studyConfigurationId) {
         secureCurrentSession(username);
-        Criteria authorizedStudyElementsGroupCriteria = getCurrentSession().
-                                                         createCriteria(AuthorizedStudyElementsGroup.class).
-                                                         createCriteria("studyConfiguration").
-                                                         add(Restrictions.eq("id", studyConfigurationId));
-        List<AuthorizedStudyElementsGroup> authorizedGroups = authorizedStudyElementsGroupCriteria.list();
+        Query q = getCurrentSession().createQuery("from " + AuthorizedStudyElementsGroup.class.getName()
+                + " where studyConfiguration.id = :id");
+        q.setParameter("id", studyConfigurationId);
+
+        List<AuthorizedStudyElementsGroup> authorizedGroups = q.list();
         return getGroupsUserIsIn(username, authorizedGroups);
     }
 
@@ -723,7 +764,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             List<AuthorizedStudyElementsGroup> authorizedGroups) {
         List<AuthorizedStudyElementsGroup> groupsUserIsIn = new ArrayList<AuthorizedStudyElementsGroup>();
         try {
-            String userId = String.valueOf(securityManager.getAuthorizationManager().getUser(username).getUserId());
+            User user = securityManager.getAuthorizationManager().getUser(username);
+            if (user == null) {
+                return Collections.emptyList();
+            }
+            String userId = String.valueOf(user.getUserId());
             Set<Group> userGroups = securityManager.getAuthorizationManager().getGroups(userId);
             for (AuthorizedStudyElementsGroup authorizedGroup : authorizedGroups) {
                 if (userGroups.contains(authorizedGroup.getAuthorizedGroup())) {
@@ -925,9 +970,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")      // hibernate operation not parameterized
     public <T> T merge(T persistentObject) {
-        return (T) getHibernateTemplate().merge(persistentObject);
+        return getHibernateTemplate().merge(persistentObject);
     }
 
     /**
@@ -1017,8 +1061,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * @param securityManager the securityManager to set
      */
+    @Autowired
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
     }
-
 }

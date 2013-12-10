@@ -23,10 +23,13 @@ import gov.nih.nci.caintegrator.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * Handler that matches genes based on the Symbol name.
@@ -48,14 +51,17 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
         Study study = query.getSubscription().getStudy();
         ReporterTypeEnum reporterType = query.getReporterType();
         Set<AbstractReporter> reporters =
-            getReporterMatches(dao, study, reporterType, query.getGeneExpressionPlatform());
-        Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
+                getReporterMatches(dao, study, reporterType, query.getGeneExpressionPlatform());
+        Set<SampleAcquisition> sampleAcquisitions = Sets.newHashSet();
+        List<ArrayData> allArrayData = Lists.newArrayList();
         for (AbstractReporter reporter : reporters) {
-            for (ArrayData arrayData : reporter.getReporterList().getArrayDatas()) {
-                Sample sample = arrayData.getSample();
-                if (study.equals(arrayData.getStudy()) && CollectionUtils.isNotEmpty(sample.getSampleAcquisitions())) {
-                    sampleAcquisitions.addAll(sample.getSampleAcquisitions());
-                }
+            allArrayData.addAll(reporter.getReporterList().getArrayDatas());
+        }
+
+        for (ArrayData arrayData : allArrayData) {
+            Sample sample = arrayData.getSample();
+            if (study.equals(arrayData.getStudy()) && CollectionUtils.isNotEmpty(sample.getSampleAcquisitions())) {
+                sampleAcquisitions.addAll(sample.getSampleAcquisitions());
             }
         }
         ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
@@ -71,9 +77,7 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
         if (reporterType == null) {
             throw new IllegalArgumentException("ReporterType is not set.");
         }
-        Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        reporters.addAll(dao.findReportersForGenes(criterion.getGeneSymbols(), reporterType, study, platform));
-        return reporters;
+        return dao.findReportersForGenes(criterion.getGeneSymbols(), reporterType, study, platform);
     }
 
     /**

@@ -20,20 +20,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Maps;
+
 /**
  * Provides useful methods for working with <code>Platforms</code> and they objects they contain.
  */
 public class PlatformHelper {
-    
     private final Platform platform;
-    private final Map<ReporterTypeEnum, Map<String, AbstractReporter>> reporterMaps = 
-        new HashMap<ReporterTypeEnum, Map<String, AbstractReporter>>();
-    private final Map<ReporterTypeEnum, Map<Gene, Collection<AbstractReporter>>> geneToReporterMaps = 
-        new HashMap<ReporterTypeEnum, Map<Gene, Collection<AbstractReporter>>>();
-    
+    private final Map<ReporterTypeEnum, Map<String, AbstractReporter>> reporterMaps = Maps.newHashMap();
+    private final Map<ReporterTypeEnum, Map<Gene, Collection<AbstractReporter>>> geneToReporterMaps = Maps.newHashMap();
+
     /**
      * Creates a new instance.
-     * 
+     *
      * @param platform the associated array design.
      */
     public PlatformHelper(Platform platform) {
@@ -46,10 +45,10 @@ public class PlatformHelper {
     public Platform getPlatform() {
         return platform;
     }
-    
+
     /**
      * Returns the reporter for the type and name given.
-     * 
+     *
      * @param type the reporter type
      * @param name the reporter name
      * @return the matching reporter.
@@ -80,20 +79,20 @@ public class PlatformHelper {
 
     /**
      * Returns the reporter set for the reporter type given.
-     * 
+     *
      * @param type return set of this type
      * @return the set.
      */
     public Set<ReporterList> getReporterLists(ReporterTypeEnum type) {
         Set<ReporterList> reporterLists = new HashSet<ReporterList>();
         for (ReporterList reporterList : platform.getReporterLists()) {
-            if (type.equals(reporterList.getReporterType())) {
+            if (type == reporterList.getReporterType()) {
                 reporterLists.add(reporterList);
             }
         }
         return reporterLists;
     }
-    
+
     /**
      * Given a Set of ReporterList objects, returns all AbstractReporter.
      * @param type the reporter type to retrieve reports on for the platform.
@@ -111,7 +110,7 @@ public class PlatformHelper {
      * Returns all reporters associated to a single gene. For gene level reporters this collection
      * should only contain (at most) one reporter, for probe set reporters this will return multiple
      * reporters.
-     * 
+     *
      * @param gene find reporters associated to this gene.
      * @param type find reporters of this type.
      * @return the reporters for the gene.

@@ -146,7 +146,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
 
     private void assignRowsToGroup(SubjectGroup group, Collection<ResultRow> rows) {
         for (ResultRow row : rows) {
-        StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
+            StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
             SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
             if (subjectSurvivalData != null) {
                 group.getSurvivalData().add(subjectSurvivalData);

@@ -17,10 +17,11 @@ import gov.nih.nci.caintegrator.external.biodbnet.search.SearchParameters;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.google.common.collect.Sets;
 
@@ -29,6 +30,8 @@ import com.google.common.collect.Sets;
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:integration-test-config.xml")
 public class BioDbNetSearchServiceTestIntegration {
     private static final Long BRCA1_GENE_ID = 672L;
     private static final String BRCA1_GENE_NAME = "BRCA1";
@@ -38,17 +41,8 @@ public class BioDbNetSearchServiceTestIntegration {
             "100914310");
     private static final Set<String> PATHWAYS = Sets.newHashSet("h_bard1Pathway", "h_carm-erPathway", "h_atmPathway",
             "h_g2Pathway", "h_atrbrcaPathway");
+    @Autowired
     private BioDbNetService bioDbNetService;
-
-    /**
-     * Sets up the necessary mock information.
-     */
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("biodbnet-test-config.xml",
-                BioDbNetSearchServiceTestIntegration.class);
-        bioDbNetService = (BioDbNetSearchImpl) context.getBean("bioDbNetService");
-    }
 
     /**
      * Tests retrieval of gene ids from gene symbols.
@@ -60,10 +54,7 @@ public class BioDbNetSearchServiceTestIntegration {
         params.setTaxon(Taxon.ALL);
         Set<String> geneIds = bioDbNetService.retrieveGeneIds(params);
         assertFalse(geneIds.isEmpty());
-        assertEquals(GENE_IDS.size(), geneIds.size());
-        for (String id : geneIds) {
-            assertTrue(GENE_IDS.contains(id));
-        }
+        assertEquals(51, geneIds.size());
     }
 
     /**
@@ -137,7 +128,7 @@ public class BioDbNetSearchServiceTestIntegration {
 
         Set<String> geneIds = bioDbNetService.retrieveGeneIdsByAlias(params);
         assertFalse(geneIds.isEmpty());
-        assertEquals(24, geneIds.size());
+        assertEquals(52, geneIds.size());
     }
 
     /**
@@ -151,7 +142,7 @@ public class BioDbNetSearchServiceTestIntegration {
         params.setCaseSensitiveSearch(true);
 
         Set<GeneResults> genes = bioDbNetService.retrieveGenesByPathway(params);
-        assertEquals(122,  genes.size());
+        assertEquals(69,  genes.size());
 
         GeneResults gene = genes.iterator().next();
         assertTrue(gene.getGeneId().equals(190L));

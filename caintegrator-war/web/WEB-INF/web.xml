@@ -70,7 +70,7 @@
     </session-config>
     
     <filter>
-        <filter-name>SessionTimeoutFilter</filter-name>
+        <filter-name>sessionCleanupFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
@@ -115,7 +115,7 @@
     </filter>
 
     <filter-mapping>
-        <filter-name>SessionTimeoutFilter</filter-name>
+        <filter-name>sessionCleanupFilter</filter-name>
         <url-pattern>*.action</url-pattern>
     </filter-mapping>
 
@@ -269,7 +269,7 @@
     </welcome-file-list>
 
     <listener>
-        <listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
+        <listener-class>org.apache.tiles.web.startup.simple.SimpleTilesListener</listener-class>
     </listener>
 
 </web-app>

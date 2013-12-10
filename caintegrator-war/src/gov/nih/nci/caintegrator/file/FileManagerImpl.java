@@ -31,10 +31,13 @@ import org.apache.log4j.Logger;
 import org.genepattern.cabig.util.ZipUtils;
 import org.genepattern.gistic.Marker;
 import org.genepattern.gistic.common.GisticUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of file storage and retrieval subsystem.
  */
+@Service("fileManager")
 public class FileManagerImpl implements FileManager {
 
     private ConfigurationHelper configurationHelper;
@@ -207,6 +210,7 @@ public class FileManagerImpl implements FileManager {
     /**
      * @param configurationHelper the configurationHelper to set
      */
+    @Autowired
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }

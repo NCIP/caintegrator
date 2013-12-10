@@ -6,36 +6,34 @@
  */
 package gov.nih.nci.caintegrator.domain.application;
 
-import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator.domain.genomic.SampleAcquisition;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * Representation of a genomic data result column.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class GenomicDataResultColumn extends AbstractCaIntegrator2Object implements GenomicDataResultComparable {
-
-    private static final long serialVersionUID = 1L;
-
+public class GenomicDataResultColumn implements GenomicDataResultComparable {
     private SampleAcquisition sampleAcquisition;
     private List<GenomicDataResultValue> values;
     private GenomicDataQueryResult result;
     private int columnIndex;
-    private Float sortedValue;
+    private float sortedValue;
 
     /**
      * {@inheritDoc}
      */
-    public Float getSortedValue() {
+    public float getSortedValue() {
         return sortedValue;
     }
-    
+
     /**
      * @param sortedValue the sortedValue to set
      */
-    public void setSortedValue(Float sortedValue) {
+    public void setSortedValue(float sortedValue) {
         this.sortedValue = sortedValue;
     }
 
@@ -45,17 +43,17 @@ public class GenomicDataResultColumn extends AbstractCaIntegrator2Object impleme
     public SampleAcquisition getSampleAcquisition() {
         return sampleAcquisition;
     }
-    
+
     /**
      * @param sampleAcquisition the sampleAcquisition to set
      */
     public void setSampleAcquisition(SampleAcquisition sampleAcquisition) {
         this.sampleAcquisition = sampleAcquisition;
     }
-    
+
     /**
      * Returns the values for this column.
-     * 
+     *
      * @return the values.
      */
     public List<GenomicDataResultValue> getValues() {

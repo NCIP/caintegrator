@@ -24,7 +24,6 @@ import gov.nih.nci.caintegrator.external.caarray.SupplementalDataFile;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,16 +31,18 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
+
 /**
- * Reads and retrieves copy number data from a caArray instance.
+ * Retrieves and loads single sample per file data from caArray.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 @Transactional (propagation = Propagation.REQUIRED)
 class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpressionMappingFileHandler {
-
     private static final Logger LOGGER = Logger.getLogger(ExpressionSingleSamplePerFileMappingFileHandler.class);
-    
-    private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap =
-        new HashMap<Sample, List<SupplementalDataFile>>();
+    private final Map<Sample, List<SupplementalDataFile>> sampleToDataFileMap = Maps.newHashMap();
+
     ExpressionSingleSamplePerFileMappingFileHandler(GenomicDataSourceConfiguration genomicSource,
             CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
         super(genomicSource, caArrayFacade, arrayDataService, dao);
@@ -55,9 +56,10 @@ class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpression
         return getArrayDataValues();
     }
 
-    void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile) 
+    @Override
+    void mappingSample(String subjectId, String sampleName, SupplementalDataFile supplementalDataFile)
     throws ValidationException, FileNotFoundException {
-        Sample sample = getGenomicSource().getSample(sampleName);
+        Sample sample = getSampleNameToSampleMap().get(sampleName);
         addDataFile(sample, supplementalDataFile);
     }
 
@@ -70,15 +72,14 @@ class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpression
         supplementalDataFiles.add(supplementalDataFile);
     }
 
-    private void loadArrayDataValues() 
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    private void loadArrayDataValues() throws ConnectionException, DataRetrievalException, ValidationException {
         for (Sample sample : sampleToDataFileMap.keySet()) {
             loadArrayDataValues(sample);
         }
     }
 
-    private void loadArrayDataValues(Sample sample) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    private void loadArrayDataValues(Sample sample)
+            throws ConnectionException, DataRetrievalException, ValidationException {
         List<SupplementalDataFile> supplementalDataFiles = new ArrayList<SupplementalDataFile>();
         try {
             for (SupplementalDataFile supplementalDataFile : sampleToDataFileMap.get(sample)) {
@@ -93,24 +94,24 @@ class ExpressionSingleSamplePerFileMappingFileHandler extends AbstractExpression
         }
     }
 
-    private void loadArrayDataValues(Sample sample, List<SupplementalDataFile> supplementalDataFiles) 
+    private void loadArrayDataValues(Sample sample, List<SupplementalDataFile> supplementalDataFiles)
     throws DataRetrievalException, ValidationException {
         ArrayData arrayData = createArrayData(sample);
         getDao().save(arrayData);
         for (SupplementalDataFile supplementalDataFile : supplementalDataFiles) {
-            Map<String, List<Float>> dataMap = GenericSingleSamplePerFileParser.INSTANCE.extractData(
+            Map<String, float[]> dataMap = GenericSingleSamplePerFileParser.INSTANCE.extractData(
                     supplementalDataFile, getPlatformHelper().getPlatform().getVendor());
             loadArrayDataValues(dataMap, arrayData);
         }
         getArrayDataService().save(getArrayDataValues());
     }
-    
-    protected void loadArrayDataValues(Map<String, List<Float>> dataMap, ArrayData arrayData) {
+
+    protected void loadArrayDataValues(Map<String, float[]> dataMap, ArrayData arrayData) {
         for (String probeName : dataMap.keySet()) {
-            AbstractReporter reporter = getPlatformHelper().getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, 
+            AbstractReporter reporter = getPlatformHelper().getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET,
                     probeName);
             if (reporter == null) {
-                LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
+                LOGGER.warn("Reporter with name " + probeName + " was not found in platform "
                         + getPlatformHelper().getPlatform().getName());
             } else {
                 getArrayDataValues().setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL,

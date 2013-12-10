@@ -23,8 +23,6 @@ import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator.external.bioconductor.BioconductorClientFactory;
-import gov.nih.nci.caintegrator.external.bioconductor.BioconductorServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,17 +45,17 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 public class BioconductorServiceTest {
-
     private static BioconductorServiceImpl service = new BioconductorServiceImpl();
-    private static String STUDY_NAME = "UnitTestStudyName";
-    private static Date STUDY_DEPLOYMENT_START_DATE = new Date();
-    private static String SAMPLE_1_NAME = "UnitTestSample10000";
-    private static String SAMPLE_2_NAME = "UnitTestSample20000";
+    private static final String STUDY_NAME = "UnitTestStudyName";
+    private static final Date STUDY_DEPLOYMENT_START_DATE = new Date();
+    private static final String SAMPLE_1_NAME = "UnitTestSample10000";
+    private static final String SAMPLE_2_NAME = "UnitTestSample20000";
 
     @Before
     public void setUp() throws Exception {
         CaCGHcallI cghCall = mock(CaCGHcallI.class);
-        when(cghCall.getDerivedCGHcallSegment(any(CGHcallAssays.class), any(CGHcallParameter.class))).then(new Answer<DerivedCGHcallSegment>() {
+        when(cghCall.getDerivedCGHcallSegment(any(CGHcallAssays.class), any(CGHcallParameter.class)))
+            .then(new Answer<DerivedCGHcallSegment>() {
 
             @Override
             public DerivedCGHcallSegment answer(InvocationOnMock invocation) throws Throwable {
@@ -68,7 +66,8 @@ public class BioconductorServiceTest {
         });
 
         CaDNAcopyI dnaCall = mock(CaDNAcopyI.class);
-        when(dnaCall.getDerivedDNAcopySegment(any(DNAcopyAssays.class), any(DNAcopyParameter.class))).then(new Answer<DerivedDNAcopySegment>() {
+        when(dnaCall.getDerivedDNAcopySegment(any(DNAcopyAssays.class), any(DNAcopyParameter.class)))
+            .then(new Answer<DerivedDNAcopySegment>() {
 
             @Override
             public DerivedDNAcopySegment answer(InvocationOnMock invocation) throws Throwable {
@@ -105,7 +104,7 @@ public class BioconductorServiceTest {
         arrayData1.setId(0L);
         arrayData1.setSample(sample1);
         arrayData1.setStudy(study);
-        dnaAnalysisData.addDnaAnalysisData(arrayData1, new float[] {(float) 1.1, (float) 2.2, (float) 3.3});
+        dnaAnalysisData.addDnaAnalysisData(arrayData1, new float[] {1.1f, 2.2f, 3.3f});
         //
         ArrayData arrayData2 = new ArrayData();
         Sample sample2 = new Sample();
@@ -113,7 +112,7 @@ public class BioconductorServiceTest {
         arrayData2.setId(1L);
         arrayData2.setSample(sample2);
         arrayData2.setStudy(study);
-        dnaAnalysisData.addDnaAnalysisData(arrayData2, new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
+        dnaAnalysisData.addDnaAnalysisData(arrayData2, new float[] {4.4f, 5.5f, 6.6f });
         DnaAnalysisDataConfiguration configuration = new DnaAnalysisDataConfiguration();
         configuration.setSegmentationService(new ServerConnectionProfile());
         configuration.setChangePointSignificanceLevel(0.0);
@@ -139,8 +138,8 @@ public class BioconductorServiceTest {
         ArrayData arrayData1 = getArrayData(dnaAnalysisData, 0);
         assertEquals(2, arrayData1.getSegmentDatas().size());
         Iterator<SegmentData> iterator = arrayData1.getSegmentDatas().iterator();
-        checkSegmentDataDNAcopy(arrayData1, iterator.next(), 5, 1.1F, "1", 0, 9);
-        checkSegmentDataDNAcopy(arrayData1, iterator.next(), 10, 2.2F, "1", 10, 19);
+        checkSegmentDataDNAcopy(arrayData1, iterator.next(), 5, 1.1f, "1", 0, 9);
+        checkSegmentDataDNAcopy(arrayData1, iterator.next(), 10, 2.2f, "1", 10, 19);
         ArrayData arrayData2 = getArrayData(dnaAnalysisData, 1);
         assertEquals(1, arrayData2.getSegmentDatas().size());
         iterator = arrayData2.getSegmentDatas().iterator();
@@ -151,12 +150,12 @@ public class BioconductorServiceTest {
         ArrayData arrayData1 = getArrayData(dnaAnalysisData, 0);
         assertEquals(2, arrayData1.getSegmentDatas().size());
         Iterator<SegmentData> iterator = arrayData1.getSegmentDatas().iterator();
-        checkSegmentDataCGHcall(arrayData1, iterator.next(), 5, 1.1F, "1", 0, 9, -1, 0.1F, 0.1F, 0.1F, 0.1F);
-        checkSegmentDataCGHcall(arrayData1, iterator.next(), 10, 2.2F, "1", 10, 19, 0, 0.2F, 0.2F, 0.2F, 0.2F);
+        checkSegmentDataCGHcall(arrayData1, iterator.next(), 5, 1.1f, "1", 0, 9, -1, 0.1F, 0.1F, 0.1f, 0.1f);
+        checkSegmentDataCGHcall(arrayData1, iterator.next(), 10, 2.2f, "1", 10, 19, 0, 0.2f, 0.2f, 0.2f, 0.2f);
         ArrayData arrayData2 = getArrayData(dnaAnalysisData, 1);
         assertEquals(1, arrayData2.getSegmentDatas().size());
         iterator = arrayData2.getSegmentDatas().iterator();
-        checkSegmentDataCGHcall(arrayData2, iterator.next(), 15, 3.3F, "2", 20, 29, 1, 0.3F, 0.3F, 0.3F, 0.3F);
+        checkSegmentDataCGHcall(arrayData2, iterator.next(), 15, 3.3f, "2", 20, 29, 1, 0.3f, 0.3f, 0.3f, 0.3f);
     }
 
     private void checkSegmentDataDNAcopy(ArrayData arrayData1,
@@ -211,19 +210,27 @@ public class BioconductorServiceTest {
     private static void checkAssaysCGHcall(CGHcallAssays assays) {
         compareIntArrays(new int[] {1, 1, 2}, assays.getChromsomeId());
         compareLongArrays(new long[] {0, 5, 0}, assays.getMapLocation());
-        String sampleName1 = service.makeId(STUDY_NAME,SAMPLE_1_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
-        String sampleName2 = service.makeId(STUDY_NAME,SAMPLE_2_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
-        compareDoubleArrays(new double[] {1.1, 2.2, 3.3}, getExpressionDataCGHcall(assays, sampleName1).getLogRatioValues());
-        compareDoubleArrays(new double[] {4.4, 5.5, 6.6}, getExpressionDataCGHcall(assays, sampleName2).getLogRatioValues());
+        String sampleName1 = service.makeId(STUDY_NAME, SAMPLE_1_NAME,
+                DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName2 = service.makeId(STUDY_NAME, SAMPLE_2_NAME,
+                DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        compareDoubleArrays(new double[] {1.1, 2.2, 3.3},
+                getExpressionDataCGHcall(assays, sampleName1).getLogRatioValues());
+        compareDoubleArrays(new double[] {4.4, 5.5, 6.6},
+                getExpressionDataCGHcall(assays, sampleName2).getLogRatioValues());
     }
 
     private static void checkAssaysDNAcopy(DNAcopyAssays assays) {
         compareIntArrays(new int[] {1, 1, 2}, assays.getChromsomeId());
         compareLongArrays(new long[] {0, 5, 0}, assays.getMapLocation());
-        String sampleName1 = service.makeId(STUDY_NAME,SAMPLE_1_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
-        String sampleName2 = service.makeId(STUDY_NAME,SAMPLE_2_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
-        compareDoubleArrays(new double[] {1.1, 2.2, 3.3}, getExpressionDataDNAcopy(assays, sampleName1).getLogRatioValues());
-        compareDoubleArrays(new double[] {4.4, 5.5, 6.6}, getExpressionDataDNAcopy(assays, sampleName2).getLogRatioValues());
+        String sampleName1 = service.makeId(STUDY_NAME, SAMPLE_1_NAME,
+                DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName2 = service.makeId(STUDY_NAME, SAMPLE_2_NAME,
+                DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        compareDoubleArrays(new double[] {1.1, 2.2, 3.3},
+                getExpressionDataDNAcopy(assays, sampleName1).getLogRatioValues());
+        compareDoubleArrays(new double[] {4.4, 5.5, 6.6},
+                getExpressionDataDNAcopy(assays, sampleName2).getLogRatioValues());
     }
 
     private static ExpressionData getExpressionDataDNAcopy(DNAcopyAssays assays, String id) {
@@ -270,8 +277,10 @@ public class BioconductorServiceTest {
         segment.setChromosomeIndex(new String[] {"1", "1", "2"});
         segment.setEndMapPosition(new long[] {9, 19, 29});
         segment.setMarkersPerSegment(new int[] {5, 10, 15});
-        String sampleName1 = service.makeId(STUDY_NAME,SAMPLE_1_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
-        String sampleName2 = service.makeId(STUDY_NAME,SAMPLE_2_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName1 = service.makeId(STUDY_NAME, SAMPLE_1_NAME,
+                DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName2 = service.makeId(STUDY_NAME, SAMPLE_2_NAME,
+                DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
         segment.setSampleId(new String[] {sampleName1, sampleName1, sampleName2});
         segment.setStartMapPosition(new long[] {0, 10, 20});
         return segment;
@@ -283,8 +292,10 @@ public class BioconductorServiceTest {
         segment.setChromosomeIndex(new String[] {"1", "1", "2"});
         segment.setEndMapPosition(new long[] {9, 19, 29});
         segment.setMarkersPerSegment(new int[] {5, 10, 15});
-        String sampleName1 = service.makeId(STUDY_NAME,SAMPLE_1_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
-        String sampleName2 = service.makeId(STUDY_NAME,SAMPLE_2_NAME,DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName1 = service.makeId(STUDY_NAME, SAMPLE_1_NAME,
+                DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
+        String sampleName2 = service.makeId(STUDY_NAME, SAMPLE_2_NAME,
+                DateUtil.getFilenameTimeStamp(STUDY_DEPLOYMENT_START_DATE));
         segment.setSampleId(new String[] {sampleName1, sampleName1, sampleName2});
         segment.setStartMapPosition(new long[] {0, 10, 20});
         segment.setCalls(new int[] {-1, 0, 1});

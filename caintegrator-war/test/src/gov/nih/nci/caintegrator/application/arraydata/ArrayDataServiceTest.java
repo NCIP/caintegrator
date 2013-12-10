@@ -10,18 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.TestArrayDesignFiles;
-import gov.nih.nci.caintegrator.application.arraydata.AffymetrixCdfReadException;
-import gov.nih.nci.caintegrator.application.arraydata.AffymetrixSnpPlatformSource;
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataServiceImpl;
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataValueType;
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator.application.arraydata.DataRetrievalRequest;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformChannelTypeEnum;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformHelper;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformLoadingException;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformTypeEnum;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator.domain.application.FoldChangeCriterion;
@@ -53,11 +41,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Array Data Service tests.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ */
 public class ArrayDataServiceTest extends AbstractMockitoTest {
-
     private CaIntegrator2DaoStub daoStub;
     private ArrayDataService service;
 
+    /**
+     * Set up unit tests.
+     * @throws Exception on unexpected error
+     */
     @Before
     public void setUp() throws Exception {
         daoStub = new CaIntegrator2DaoStub();
@@ -67,6 +63,9 @@ public class ArrayDataServiceTest extends AbstractMockitoTest {
         service = arrayDataService;
     }
 
+    /**
+     * Post unit test clean up.
+     */
     @After
     public void tearDown() {
         File testFile = new File(fileManager.getStudyDirectory(null), "data1.nc");
@@ -75,28 +74,62 @@ public class ArrayDataServiceTest extends AbstractMockitoTest {
         }
     }
 
+    /**
+     * Tests loading of Affymetrix Expression array designs.
+     * @throws PlatformLoadingException on error
+     * @throws AffymetrixCdfReadException on error
+     */
     @Test
-    public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
-        checkLoadAffymetrixExpressionArrayDesign(TestArrayDesignFiles.YEAST_2_CDF_FILE, TestArrayDesignFiles.YEAST_2_ANNOTATION_FILE);
-        checkLoadAgilentExpressionArrayDesign(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
-        checkLoadAgilentExpressionArrayDesign(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE);
-        checkLoadAgilentCopyNumberArrayDesign(TestArrayDesignFiles.AGILENT_014693_XML_ANNOTATION_FILE);
+    public void loadAffymetrixExpressionArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
+        checkLoadAffymetrixExpressionArrayDesign(TestArrayDesignFiles.YEAST_2_CDF_FILE,
+                TestArrayDesignFiles.YEAST_2_ANNOTATION_FILE);
+    }
+
+    /**
+     * Tests loading of Affymetric SNP array designs.
+     * @throws PlatformLoadingException on error
+     * @throws AffymetrixCdfReadException on error
+     */
+    @Test
+    public void loadAffymtrixSNPArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
         List<File> files = new ArrayList<File>();
         files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
         AffymetrixSnpPlatformSource source = new AffymetrixSnpPlatformSource(files, "GeneChip Human Mapping 100K Set");
-        File[] cdfs = new File[] {TestArrayDesignFiles.MAPPING_50K_HIND_CDF_FILE, TestArrayDesignFiles.MAPPING_50K_XBA_CDF};
+        File[] cdfs = new File[] {TestArrayDesignFiles.MAPPING_50K_HIND_CDF_FILE,
+                TestArrayDesignFiles.MAPPING_50K_XBA_CDF};
         checkLoadAffymetrixSnpArrayDesign(cdfs, source);
-
     }
 
-    private void checkLoadAffymetrixExpressionArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
-        Platform platform = ArrayDesignChecker.checkLoadAffymetrixExpressionArrayDesign(cdfFile, annotationFile, service);
+    /**
+     * Tests loading of Agilent Expression array designs.
+     * @throws PlatformLoadingException on error
+     */
+    @Test
+    public void loadAgilentExpressionArrayDesign() throws PlatformLoadingException {
+        checkLoadAgilentExpressionArrayDesign(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
+        checkLoadAgilentExpressionArrayDesign(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE);
+    }
+
+    /**
+     * Tests loading of Agilent Copy Number array designs.
+     * @throws PlatformLoadingException on error
+     */
+    @Test
+    public void loadAgilentCopyNumberArrayDesign() throws PlatformLoadingException {
+        checkLoadAgilentCopyNumberArrayDesign(TestArrayDesignFiles.AGILENT_014693_XML_ANNOTATION_FILE);
+    }
+
+    private void checkLoadAffymetrixExpressionArrayDesign(File cdfFile, File annotationFile)
+            throws PlatformLoadingException, AffymetrixCdfReadException {
+        Platform platform =
+                ArrayDesignChecker.checkLoadAffymetrixExpressionArrayDesign(cdfFile, annotationFile, service);
         checkGenesForReporters(platform);
         assertTrue(daoStub.saveCalled);
     }
 
-    private void checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixSnpPlatformSource source) throws PlatformLoadingException, AffymetrixCdfReadException {
+    private void checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixSnpPlatformSource source)
+            throws PlatformLoadingException, AffymetrixCdfReadException {
         ArrayDesignChecker.checkLoadAffymetrixSnpArrayDesign(cdfs, source, service);
         assertTrue(daoStub.saveCalled);
     }
@@ -118,10 +151,12 @@ public class ArrayDataServiceTest extends AbstractMockitoTest {
 
     private void checkGenesForReporters(Platform platform) {
         PlatformHelper platformHelper = new PlatformHelper(platform);
-        Collection<AbstractReporter> geneReporters = platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        Collection<AbstractReporter> geneReporters =
+                platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         for (AbstractReporter reporter : geneReporters) {
             Gene gene = reporter.getGenes().iterator().next();
-            Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(gene, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            Collection<AbstractReporter> probeSets =
+                    platformHelper.getReportersForGene(gene, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             for (AbstractReporter probeSetReporter : probeSets) {
                 GeneExpressionReporter probeSet = (GeneExpressionReporter) probeSetReporter;
                 assertTrue(probeSet.getGenes().contains(gene));
@@ -132,13 +167,14 @@ public class ArrayDataServiceTest extends AbstractMockitoTest {
     @Test
     public void testGetFoldChangeValues() throws IOException {
         Platform platform = new Platform();
-        platform.setId(1l);
+        platform.setId(1L);
         PlatformConfiguration platformConfiguration = new PlatformConfiguration();
         platform.setPlatformConfiguration(platformConfiguration);
         platformConfiguration.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION);
         platformConfiguration.setPlatformChannelType(PlatformChannelTypeEnum.ONE_COLOR);
         ((ArrayDataServiceImpl) service).setFileManager(fileManager);
-        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ReporterList reporterList =
+                platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList.setId(1L);
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         reporter1.setId(1L);
@@ -183,27 +219,27 @@ public class ArrayDataServiceTest extends AbstractMockitoTest {
         controlArrayDatas.add(controlData2);
         controlArrayDatas.add(controlData3);
         ArrayDataValues controlValues = new ArrayDataValues(reporters);
-        controlValues.setFloatValue(controlData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
-        controlValues.setFloatValue(controlData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
-        controlValues.setFloatValue(controlData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 9.9);
-        controlValues.setFloatValue(controlData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
-        controlValues.setFloatValue(controlData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
-        controlValues.setFloatValue(controlData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 1.1);
+        controlValues.setFloatValue(controlData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 0.1f);
+        controlValues.setFloatValue(controlData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 2.0f);
+        controlValues.setFloatValue(controlData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 9.9f);
+        controlValues.setFloatValue(controlData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 0.1f);
+        controlValues.setFloatValue(controlData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 2.0f);
+        controlValues.setFloatValue(controlData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 1.1f);
         List<ArrayDataValues> controlValuesList = new ArrayList<ArrayDataValues>();
         controlValuesList.add(controlValues);
 
-        values.setFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.2);
-        values.setFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 4.4);
-        values.setFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 6.6);
-        values.setFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 8.8);
+        values.setFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 2.2f);
+        values.setFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 4.4f);
+        values.setFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 6.6f);
+        values.setFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 8.8f);
 
-        values.setFloatValue(controlData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
-        values.setFloatValue(controlData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
-        values.setFloatValue(controlData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 9.9);
+        values.setFloatValue(controlData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 0.1f);
+        values.setFloatValue(controlData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 2.0f);
+        values.setFloatValue(controlData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 9.9f);
 
-        values.setFloatValue(controlData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
-        values.setFloatValue(controlData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
-        values.setFloatValue(controlData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 1.1);
+        values.setFloatValue(controlData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 0.1f);
+        values.setFloatValue(controlData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 2.0f);
+        values.setFloatValue(controlData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 1.1f);
 
         service.save(values);
         DataRetrievalRequest request = new DataRetrievalRequest();
@@ -213,10 +249,14 @@ public class ArrayDataServiceTest extends AbstractMockitoTest {
         ArrayDataValues foldChangeValues = service.getFoldChangeValues(request, controlValuesList, null);
         assertEquals(2, foldChangeValues.getArrayDatas().size());
         assertEquals(2, foldChangeValues.getReporters().size());
-        assertEquals(-1.8182, foldChangeValues.getFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(1.65, foldChangeValues.getFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(4.125, foldChangeValues.getFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(8.25, foldChangeValues.getFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(-1.8182,
+                foldChangeValues.getFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(1.65,
+                foldChangeValues.getFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(4.125,
+                foldChangeValues.getFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(8.25,
+                foldChangeValues.getFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
 
         // Test getFoldChangeValues by query
         Query query = new Query();

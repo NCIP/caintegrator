@@ -82,24 +82,16 @@ public class ResultConfiguration {
     /**
      * @return the copyNumberType.
      */
-    public String getCopyNumberType() {
-        if (getQuery().getCopyNumberCriterionType() == null) {
-            return "";
-        } else {
-            return getQuery().getCopyNumberCriterionType().getValue();
-        }
+    public CopyNumberCriterionTypeEnum getCopyNumberType() {
+        return getQuery().getCopyNumberCriterionType();
     }
 
     /**
      *
      * @param copyNumberType the copyNumberType to set.
      */
-    public void setCopyNumberType(String copyNumberType) {
-        if (StringUtils.isBlank(copyNumberType)) {
-            getQuery().setCopyNumberCriterionType(null);
-        } else {
-            getQuery().setCopyNumberCriterionType(CopyNumberCriterionTypeEnum.getByValue(copyNumberType));
-        }
+    public void setCopyNumberType(CopyNumberCriterionTypeEnum copyNumberType) {
+        getQuery().setCopyNumberCriterionType(copyNumberType);
     }
 
     /**
@@ -213,9 +205,9 @@ public class ResultConfiguration {
      */
     public String getSortType(String columnName) {
         if (getColumn(columnName) != null && getColumn(columnName).getSortType() != null) {
-            return getColumn(columnName).getSortType().getValue();
+            return getColumn(columnName).getSortType().name();
         } else {
-            return "";
+            return StringUtils.EMPTY;
         }
     }
 
@@ -229,10 +221,10 @@ public class ResultConfiguration {
         if (column == null) {
             return;
         }
-        if (StringUtils.isBlank(sortType)) {
-            column.setSortType(null);
+        if (StringUtils.isNotEmpty(sortType)) {
+            column.setSortType(SortTypeEnum.valueOf(sortType));
         } else {
-            column.setSortType(SortTypeEnum.getByValue(sortType));
+            column.setSortType(null);
         }
     }
 

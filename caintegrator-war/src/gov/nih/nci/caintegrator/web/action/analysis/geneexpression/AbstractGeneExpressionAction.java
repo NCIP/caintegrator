@@ -19,11 +19,13 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Abstract Action dealing with GeneExpression plotting.
  */
 public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudyAction {
-    
+
     /**
      * Default serialize.
      */
@@ -49,26 +51,26 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     private AnalysisService analysisService;
     private String displayTab;
     private List<String> platformsInStudy = new ArrayList<String>();
-    
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public void prepare() {
         super.prepare();
-        refreshGenomicSources();
-        platformsInStudy = new ArrayList<String>(
-                getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
+        platformsInStudy =
+                new ArrayList<String>(getQueryManagementService().retrieveGeneExpressionPlatformsForStudy(getStudy()));
         Collections.sort(platformsInStudy);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void validate() {
         super.validate();
         if (!getCurrentStudy().hasExpressionData()) {
-            addActionError(getText("struts.messages.error.study.has.no.expression.data", 
+            addActionError(getText("struts.messages.error.study.has.no.expression.data",
                     getArgs("GeneExpression plot")));
         }
     }
@@ -80,45 +82,45 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     public String initializeGePlot() {
         return SUCCESS;
     }
-    
+
     /**
      * Return the gePlotParameters for the action.
      * @param <T> implementation subclass of AbstractGEPlotParameter.
      * @return implementation subclass of AbstractGEPlotParameter.
      */
     public abstract <T extends AbstractGEPlotParameters> T getPlotParameters();
-    
+
     /**
      * The URL for the action which retrieves the GE Plot mean based graph image for display.
      * @return URL string.
      */
     public abstract String getMeanPlotUrl();
-    
+
     /**
      * The URL for the action which retrieves the GE Plot median based graph image for display.
      * @return URL string.
      */
     public abstract String getMedianPlotUrl();
-    
+
     /**
      * The URL for the action which retrieves the GE Plot log2 based graph image for display.
      * @return URL string.
      */
     public abstract String getLog2PlotUrl();
-    
+
     /**
      * The URL for the action which retrieves the GE Plot box-whisker based graph image for display.
      * @return URL string.
      */
     public abstract String getBoxWhiskerPlotUrl();
-    
+
     /**
      * Clears the gene name.
      */
     protected void clearGePlot() {
         SessionHelper.clearGePlots();
     }
-    
+
     /**
      * Returns the GEPlotResult image to the JSP.
      * @return Struts return value.
@@ -126,23 +128,23 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     public String retrievePlot() {
         return GEPLOT_RESULT;
     }
-    
+
     /**
      * Determines if the "Create Plot" button should be displayed.
      * @return T/F value.
      */
     public abstract boolean isCreatable();
-    
+
     /**
      * This function figures out which gePlot action it needs to forward to, and then adds the current
-     * time to the end to be absolutely sure the image gets redrawn everytime (and not cached), since 
+     * time to the end to be absolutely sure the image gets redrawn everytime (and not cached), since
      * the graph will be drawn without a page refresh using AJAX.
      * @param calculationType - the PlatCalculationTypeEnum to use for the plot.
      * @return action URL to return to JSP.
      */
-    public String retrieveGePlotUrl(String calculationType) {
+    public String retrieveGePlotUrl(PlotCalculationTypeEnum calculationType) {
         String url =  "";
-        switch (PlotCalculationTypeEnum.getByValue(calculationType)) {
+        switch (calculationType) {
         case MEAN:
             url = getMeanPlotUrl();
             break;
@@ -159,7 +161,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
         }
         return url + Calendar.getInstance().getTimeInMillis();
     }
-    
+
     /**
      * When the form is filled out and the user clicks "Create Plot" this calls the
      * analysis service to generate a KMPlot object.
@@ -174,13 +176,13 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
         }
         return returnString;
     }
-    
+
     /**
      * Since createPlot creates 2 calls, this function is used to do the actual running
      * of the service layer to generate the plot.
      */
-    protected abstract void runFirstCreatePlotThread(); 
-    
+    protected abstract void runFirstCreatePlotThread();
+
     /**
      * This gets called by the CreatePlot function to add validation error messages and to see if it's the
      * second call to CreatePlot().  There is a bug when using s:div inside an s:tabbedPanel where it will call
@@ -189,7 +191,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
      * @return struts 2 return value.
      * @throws InterruptedException if thread.wait doesn't work.
      */
-    protected synchronized String validateAndWaitSecondCreatePlotThread() 
+    protected synchronized String validateAndWaitSecondCreatePlotThread()
         throws InterruptedException {
         String returnString = SUCCESS;
         AbstractGEPlotParameters plotParameters = getPlotParameters();
@@ -218,6 +220,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     /**
      * @param queryManagementService the queryManagementService to set
      */
+    @Autowired
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
@@ -232,6 +235,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     /**
      * @param analysisService the analysisService to set
      */
+    @Autowired
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
@@ -266,7 +270,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     public void setCreatePlotSelected(boolean createPlotSelected) {
         getDisplayableWorkspace().setCreatePlotSelected(createPlotSelected);
     }
-    
+
     /**
      * @return the createPlotSelected
      */
@@ -280,7 +284,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     public void setCreatePlotRunning(boolean createPlotRunning) {
         getDisplayableWorkspace().setCreatePlotRunning(createPlotRunning);
     }
-    
+
     /**
      * Checks to see if the study has any control samples associated with it (to display the checkbox).
      * @return T/F value.
@@ -288,7 +292,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     public boolean hasControlSamples() {
         return getStudy().getStudyConfiguration().hasControlSamples();
     }
-    
+
     /**
      * @return the platformsInStudy
      */

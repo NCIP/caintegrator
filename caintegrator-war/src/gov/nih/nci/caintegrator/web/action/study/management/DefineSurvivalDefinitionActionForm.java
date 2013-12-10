@@ -6,6 +6,7 @@
  */
 package gov.nih.nci.caintegrator.web.action.study.management;
 
+import gov.nih.nci.caintegrator.domain.annotation.SurvivalLengthUnitsEnum;
 import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueTypeEnum;
 
@@ -19,9 +20,9 @@ public class DefineSurvivalDefinitionActionForm {
     private String survivalStartDateId;
     private String survivalDeathDateId;
     private String lastFollowupDateId;
-    private String survivalValueType;
+    private SurvivalValueTypeEnum survivalValueType;
     private String survivalLengthId;
-    private String survivalLengthUnits;
+    private SurvivalLengthUnitsEnum survivalLengthUnits;
     private String survivalStatusId;
     private String valueForCensored;
 
@@ -89,13 +90,13 @@ public class DefineSurvivalDefinitionActionForm {
     /**
      * @return the survivalValueType
      */
-    public String getSurvivalValueType() {
+    public SurvivalValueTypeEnum getSurvivalValueType() {
         return survivalValueType;
     }
     /**
      * @param survivalValueType the survivalValueType to set
      */
-    public void setSurvivalValueType(String survivalValueType) {
+    public void setSurvivalValueType(SurvivalValueTypeEnum survivalValueType) {
         this.survivalValueType = survivalValueType;
     }
     /**
@@ -113,13 +114,13 @@ public class DefineSurvivalDefinitionActionForm {
     /**
      * @return the survivalLengthUnits
      */
-    public String getSurvivalLengthUnits() {
+    public SurvivalLengthUnitsEnum getSurvivalLengthUnits() {
         return survivalLengthUnits;
     }
     /**
      * @param survivalLengthUnits the survivalLengthUnits to set
      */
-    public void setSurvivalLengthUnits(String survivalLengthUnits) {
+    public void setSurvivalLengthUnits(SurvivalLengthUnitsEnum survivalLengthUnits) {
         this.survivalLengthUnits = survivalLengthUnits;
     }
     /**
@@ -150,7 +151,7 @@ public class DefineSurvivalDefinitionActionForm {
      * Clears all the variables to null.
      */
     public void clear() {
-        setSurvivalValueType(SurvivalValueTypeEnum.DATE.getValue());
+        setSurvivalValueType(SurvivalValueTypeEnum.DATE);
         survivalValueDefinitionId = null;
         survivalStartDateId = null;
         survivalDeathDateId = null;
@@ -169,7 +170,7 @@ public class DefineSurvivalDefinitionActionForm {
         if (survivalValueDefinition != null) {
             setSurvivalValueDefinitionId(String.valueOf(survivalValueDefinition.getId()));
             setSurvivalValueDefinitionName(survivalValueDefinition.getName());
-            setSurvivalValueType(survivalValueDefinition.getSurvivalValueType().getValue());
+            setSurvivalValueType(survivalValueDefinition.getSurvivalValueType());
             if (survivalValueDefinition.getSurvivalStartDate() != null) {
                 setSurvivalStartDateId(String.valueOf(survivalValueDefinition.getSurvivalStartDate().getId()));
             }
@@ -185,9 +186,7 @@ public class DefineSurvivalDefinitionActionForm {
             if (survivalValueDefinition.getSurvivalStatus() != null) {
                 setSurvivalStatusId(String.valueOf(survivalValueDefinition.getSurvivalStatus().getId()));
             }
-            if (survivalValueDefinition.getSurvivalLengthUnits() != null) {
-                setSurvivalLengthUnits(survivalValueDefinition.getSurvivalLengthUnits().getValue());
-            }
+            setSurvivalLengthUnits(survivalValueDefinition.getSurvivalLengthUnits());
             setValueForCensored(survivalValueDefinition.getValueForCensored());
         }
     }

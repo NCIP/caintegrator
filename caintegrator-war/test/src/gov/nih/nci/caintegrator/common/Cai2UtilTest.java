@@ -14,8 +14,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator.common.Cai2Util;
-import gov.nih.nci.caintegrator.common.DateUtil;
 import gov.nih.nci.caintegrator.domain.analysis.GisticAnalysis;
 import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.SurvivalValueDefinition;
@@ -30,9 +28,7 @@ import gov.nih.nci.caintegrator.file.FileManagerImpl;
 import gov.nih.nci.caintegrator.mockito.AbstractMockitoTest;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -128,24 +124,6 @@ public class Cai2UtilTest extends AbstractMockitoTest {
         assertFalse(Cai2Util.isValidZipFile(nullZipFile));
         // test if input is not a ZIP file
         assertFalse(Cai2Util.isValidZipFile(destFile));
-    }
-
-    @Test
-    public void testByteArrayToFile() throws IOException {
-        FileManagerImpl fileManager = new FileManagerImpl();
-        fileManager.setConfigurationHelper(configurationHelper);
-        File tempDirectory = fileManager.getNewTemporaryDirectory("cai2UtilTest3");
-        File destFile = new File(tempDirectory, "tempFile");
-        byte[] byteArray = "This is a test".getBytes();
-        Cai2Util.byteArrayToFile(byteArray, destFile);
-        assertEquals(destFile.length(), 14);
-        InputStream is = new FileInputStream(destFile);
-        byte[] byteCheck = new byte[14];
-        is.read(byteCheck);
-        is.close();
-        String stringCheck = new String(byteCheck);
-        assertTrue(stringCheck.equals("This is a test"));
-        FileUtils.deleteDirectory(tempDirectory);
     }
 
     @Test
@@ -322,7 +300,7 @@ public class Cai2UtilTest extends AbstractMockitoTest {
     @Test
     public void testGetHeapSize() {
         long heapSize = Cai2Util.getHeapSizeMB();
-        System.out.println("Heap size = " + heapSize);
+        assertTrue(heapSize > 0);
     }
 
 }

@@ -13,23 +13,23 @@ import gov.nih.nci.caintegrator.common.DateUtil;
 import java.util.Date;
 
 /**
- * 
+ *
  */
 public class DateAnnotationValue extends AbstractAnnotationValue {
 
     private static final long serialVersionUID = 1L;
-    
+
     private Date dateValue;
-    
+
     /**
      * Default empty constructor.
      */
-    public DateAnnotationValue() { 
+    public DateAnnotationValue() {
         // Empty Constructor
     }
-    
+
     /**
-     * Converts the given annotation value to a a new object, as well as moves it to the new 
+     * Converts the given annotation value to a a new object, as well as moves it to the new
      * annotationDefinition.
      * @param value to use to update this object.
      * @param annotationDefinition is the new definition to move value to.
@@ -51,13 +51,13 @@ public class DateAnnotationValue extends AbstractAnnotationValue {
     public void setDateValue(Date dateValue) {
         this.dateValue = dateValue;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return dateValue != null ? DateUtil.toString(dateValue) : "";
+        return DateUtil.toString(dateValue);
     }
 
     /**
@@ -72,7 +72,7 @@ public class DateAnnotationValue extends AbstractAnnotationValue {
      * {@inheritDoc}
      */
     @Override
-    public void convertAnnotationValue(AnnotationDefinition annotationDefinition) 
+    public void convertAnnotationValue(AnnotationDefinition annotationDefinition)
     throws ValidationException {
         switch (annotationDefinition.getDataType()) {
             case DATE:

@@ -53,9 +53,9 @@
                         headerKey="" headerValue="%{copyNumberPlatformOption}"
                         label="Copy Number Platform" list="copyNumberPlatformsInStudy"/>
                      <s:if test="study.hasCghCalls()" >
-                        <s:select name="displayableCopyNumberType" 
-                            list="@gov.nih.nci.caintegrator.domain.application.CopyNumberCriterionTypeEnum@getDisplayableValues()"
-                            label="Preferred Copy Number Method"/>
+                        <s:select name="copyNumberType" 
+                            list="@gov.nih.nci.caintegrator.domain.application.CopyNumberCriterionTypeEnum@values()" 
+                            listValue="value" label="Preferred Copy Number Method"/>
                     </s:if>
                     <br/>
                 </td>

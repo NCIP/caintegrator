@@ -294,7 +294,7 @@
         </delete>
         <gui-installer-prep product.name="${caintegrator.install.name}" product.version="${caintegrator.version}" /> 
         <ant inheritAll="false" inheritRefs="false" antfile="install.xml" target="build:installer" dir="${build.dir}/gui-installer">
-            <property name="compile.jar.dir" value="${target.dir}/izpack-4.3" />
+            <property name="compile.jar.dir" value="${target.dir}/izpack-4.3.5" />
         </ant>
     </target>
 
@@ -326,7 +326,7 @@
 			optional.property.list="ldap.url,ldap.basedn"
 			delete.property.list="exclude.jboss.backup"
 			/>                      
-		<zip destfile="${dist.dir}/${caintegrator.install.zip.file}" basedir="${dist.exploded.dir}" />
+	    <zip destfile="${dist.dir}/${caintegrator.install.zip.file}" basedir="${dist.exploded.dir}" />
 	</target>
 
 	<!-- for DAC Upgrades-->
@@ -362,7 +362,7 @@
 
 		<obfuscate-properties-file
 			properties.file="${dist.exploded.dir}/upgrade.properties"
-			comment.property.list="application.base.path.windows,application.base.path.linux,jboss.relative.path,tomcat.relative.path"
+			comment.property.list="application.base.path.windows,application.base.path.linux,tomcat.relative.path"
 			uncomment.property.list="application.base.path,tomcat.home,jboss.home"
 			required.property.list="application.base.path,database.system.user,database.system.password,database.server,database.port,database.name,database.user,database.password,mail.smtp.host,jboss.server.hostname,struts.devMode"
 			optional.property.list="ldap.url,ldap.basedn"

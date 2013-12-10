@@ -30,9 +30,9 @@ import au.com.bytecode.opencsv.CSVReader;
  * Used to load Agilent CopyNumber array designs.
  */
 class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
-    
+
     private static final Logger LOGGER = Logger.getLogger(AgilentTcgaAdfCghPlatformLoader.class);
-    
+
     // ADF file headers
     private static final String FIRST_FIELD_HEADER = "X_Block";
     private static final String PROBE_SET_ID_HEADER = "Reporter_ID";
@@ -42,7 +42,7 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
     private static final String NA_COORDS = "NA-NA";
     private static final String[] REQUIRED_HEADERS = {FIRST_FIELD_HEADER, PROBE_SET_ID_HEADER,
         GENE_SYMBOL_HEADER, COMPOSITE_CHR_COORDS_HEADER};
-    
+
     private static final Map<String, String> GENOMIC_VERSION_MAPPING = new HashMap<String, String>();
     static {
         GENOMIC_VERSION_MAPPING.put("36", "Hg18");
@@ -68,13 +68,14 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
     public String getPlatformName() throws PlatformLoadingException {
         return getSource().getPlatformName();
     }
-    
+
+    @Override
     void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
     throws PlatformLoadingException {
         try {
             setAnnotationFileReader(new CSVReader(new FileReader(annotationFile), '\t'));
             loadHeaders();
-            ReporterList reporterList = 
+            ReporterList reporterList =
                 platform.addReporterList(platform.getName(), ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
             loadAnnotations(reporterList, dao);
             reporterList.sortAndLoadReporterIndexes();
@@ -83,7 +84,7 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
         }
     }
 
-    protected void loadAnnotations(ReporterList reporterList, CaIntegrator2Dao dao) 
+    protected void loadAnnotations(ReporterList reporterList, CaIntegrator2Dao dao)
     throws IOException {
         String[] fields;
         while ((fields = getAnnotationFileReader().readNext()) != null) {
@@ -98,12 +99,12 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
                 loadAnnotationHeaders(fields, REQUIRED_HEADERS);
                 return;
             }
-        }        
-        throw new PlatformLoadingException("Invalid Agilent annotation file; headers not found in file: " 
+        }
+        throw new PlatformLoadingException("Invalid Agilent annotation file; headers not found in file: "
                 + getAnnotationFileNames());
     }
 
-    private void loadAnnotations(String[] fields, ReporterList reporterList, 
+    private void loadAnnotations(String[] fields, ReporterList reporterList,
             CaIntegrator2Dao dao) {
         String[] symbols = getSymbols(fields);
         String probeSetName = getAnnotationValue(fields, PROBE_SET_ID_HEADER);
@@ -118,7 +119,7 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
         String[] chrCoords = getAnnotationValue(fields, COMPOSITE_CHR_COORDS_HEADER).split(":");
         if (chrCoords.length < 3) {
             getLogger().error("Platform Loading: "
-                    + "invalid chromosome coords found for this probe: " 
+                    + "invalid chromosome coords found for this probe: "
                     + probeSetName);
         } else {
             DnaAnalysisReporter reporter = new DnaAnalysisReporter();
@@ -131,14 +132,14 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
             reporter.setPosition(getIntegerValue(chrCoords[2]));
         }
     }
-    
+
     private String mapGenomicVersion(String version) {
         return GENOMIC_VERSION_MAPPING.get(version.split("\\.")[0]);
     }
-    
-    private Integer getIntegerValue(String value) {
+
+    private int getIntegerValue(String value) {
         if (value.equalsIgnoreCase(NA_COORDS)) {
-            return null;
+            return -1;
         } else {
             return Integer.parseInt(value.split("-")[0]);
         }
@@ -153,7 +154,7 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
         }
         return genes;
     }
-    
+
     private void addGene(Set<Gene> genes, String symbol, String[] fields, CaIntegrator2Dao dao) {
         Gene gene = getSymbolToGeneMap().get(symbol.toUpperCase(Locale.getDefault()));
         if (gene == null) {

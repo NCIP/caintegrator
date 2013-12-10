@@ -389,7 +389,7 @@ public class LogEntry extends AbstractCaIntegrator2Object {
         return LOAD_GENOMIC_SOURCE
             + SERVER_INFORMATION + QUOTE + genomicSource.getServerProfile().toString() + QUOTE + COMMA
             + EXPERIMENT_IDENTIFIER + QUOTE + genomicSource.getExperimentIdentifier() + QUOTE + COMMA
-            + "Data Type = " + QUOTE + genomicSource.getDataTypeString() + QUOTE + COMMA
+            + "Data Type = " + QUOTE + genomicSource.getDataType().getValue() + QUOTE + COMMA
             + "Platform Name = " + QUOTE + genomicSource.getPlatformName() + QUOTE;
     }
 

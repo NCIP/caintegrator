@@ -10,14 +10,16 @@ import gov.nih.nci.caintegrator.common.Cai2Util;
 import gov.nih.nci.caintegrator.external.DataRetrievalException;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -25,10 +27,9 @@ import au.com.bytecode.opencsv.CSVReader;
  * Reads data in supplemental data file.
  */
 public final class GenericMultiSamplePerFileParser {
-    
     private CSVReader dataFileReader;
     private final Map<String, Integer> sampleToIndexMap = new HashMap<String, Integer>();
-    
+
     /**
      * @param dataFile data file
      * @param sampleList list of samples to process
@@ -36,18 +37,15 @@ public final class GenericMultiSamplePerFileParser {
      * @param sampleHeader the sample header
      * @throws DataRetrievalException data retrieval exception
      */
-    public GenericMultiSamplePerFileParser(File dataFile, String probeHeader,
-            String sampleHeader, List<String> sampleList)
-    throws DataRetrievalException {
+    public GenericMultiSamplePerFileParser(File dataFile, String probeHeader, String sampleHeader,
+            List<String> sampleList) throws DataRetrievalException {
         createDataFileReader(dataFile, probeHeader, sampleHeader, sampleList);
     }
 
-    private void createDataFileReader(File dataFile, String probeHeader,
-            String sampleHeader, List<String> sampleList)
+    private void createDataFileReader(File dataFile, String probeHeader, String sampleHeader, List<String> sampleList)
     throws DataRetrievalException {
         try {
-            dataFileReader = new CSVReader(new InputStreamReader(
-                    new FileInputStream(dataFile)), '\t');
+            dataFileReader = new CSVReader(new FileReader(dataFile), '\t');
             loadHeaders(probeHeader, sampleHeader, sampleList);
         } catch (FileNotFoundException e) {
             throw new DataRetrievalException("Supplemental file not found: ", e);
@@ -60,15 +58,15 @@ public final class GenericMultiSamplePerFileParser {
      * @param dataMap the data mapping
      * @throws DataRetrievalException read data exception
      */
-    public void loadData(Map<String, Map<String, List<Float>>> dataMap) throws DataRetrievalException {
+    public void loadData(Map<String, Map<String, float[]>> dataMap) throws DataRetrievalException {
         String[] fields;
         try {
             while ((fields = Cai2Util.readDataLine(dataFileReader)) != null) {
                 String probeName = fields[0];
                 for (String sampleName : sampleToIndexMap.keySet()) {
-                    Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
-                    if (log2Ratio != null) {
-                        setReporterMap(dataMap, sampleName, probeName, log2Ratio);
+                    String valueField = StringUtils.trim(fields[sampleToIndexMap.get(sampleName)]);
+                    if (NumberUtils.isNumber(valueField)) {
+                        setReporterMap(dataMap, sampleName, probeName,  NumberUtils.toFloat(valueField));
                     }
                 }
             }
@@ -81,15 +79,15 @@ public final class GenericMultiSamplePerFileParser {
      * @param dataMap the data mapping
      * @throws DataRetrievalException read data exception
      */
-    public void loadMultiDataPoint(Map<String, Map<String, List<Float>>> dataMap) throws DataRetrievalException {
+    public void loadMultiDataPoint(Map<String, Map<String, float[]>> dataMap) throws DataRetrievalException {
         String[] fields;
         try {
             while ((fields = Cai2Util.readDataLine(dataFileReader)) != null) {
                 String probeName = fields[0];
                 for (String sampleName : sampleToIndexMap.keySet()) {
-                    Float log2Ratio = getLog2Ratio(fields, sampleToIndexMap.get(sampleName));
-                    if (log2Ratio != null) {
-                        setMultiPointReporterMap(dataMap, sampleName, probeName, log2Ratio);
+                    String valueField = StringUtils.trim(fields[sampleToIndexMap.get(sampleName)]);
+                    if (NumberUtils.isNumber(valueField)) {
+                        setMultiPointReporterMap(dataMap, sampleName, probeName, NumberUtils.toFloat(valueField));
                     }
                 }
             }
@@ -97,49 +95,37 @@ public final class GenericMultiSamplePerFileParser {
             throw new DataRetrievalException("Couldn't read supplemental file.", e);
         }
     }
-    
-    private Float getLog2Ratio(String[] fields, int index) {
-        try {
-            return new Float(fields[index]);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    
-    private void setReporterMap(Map<String, Map<String, List<Float>>> dataMap, String sampleName,
-            String probeName, Float log2Ratio) {
+
+    private void setReporterMap(Map<String, Map<String, float[]>> dataMap, String sampleName, String probeName,
+            float log2Ratio) {
         if (!dataMap.containsKey(sampleName)) {
-            Map<String, List<Float>> reporterMap = new HashMap<String, List<Float>>();
+            Map<String, float[]> reporterMap = new HashMap<String, float[]>();
             dataMap.put(sampleName, reporterMap);
         }
-        Map<String, List<Float>> reporterMap = dataMap.get(sampleName);
+        Map<String, float[]> reporterMap = dataMap.get(sampleName);
         if (!reporterMap.containsKey(probeName)) {
-            reporterMap.put(probeName, new ArrayList<Float>());
+            reporterMap.put(probeName, new float[]{});
         }
-        dataMap.get(sampleName).get(probeName).add(log2Ratio);
+        dataMap.get(sampleName).put(probeName, ArrayUtils.add(dataMap.get(sampleName).get(probeName), log2Ratio));
     }
-    
-    private void setMultiPointReporterMap(Map<String, Map<String, List<Float>>> dataMap, String sampleName,
-            String probeName, Float log2Ratio) {
+
+    private void setMultiPointReporterMap(Map<String, Map<String, float[]>> dataMap, String sampleName,
+            String probeName, float log2Ratio) {
         if (!dataMap.containsKey(sampleName)) {
-            Map<String, List<Float>> reporterMap = new HashMap<String, List<Float>>();
+            Map<String, float[]> reporterMap = new HashMap<String, float[]>();
             dataMap.put(sampleName, reporterMap);
         }
         addValueToDataMap(dataMap.get(sampleName), probeName, log2Ratio);
     }
-    
-    private void addValueToDataMap(Map<String, List<Float>> dataMap, String probeName, Float value) {
-        if (!dataMap.containsKey(probeName)) {
-            dataMap.put(probeName, new ArrayList<Float>());
-        }
-        dataMap.get(probeName).add(value);
+
+    private void addValueToDataMap(Map<String, float[]> dataMap, String probeName, float value) {
+        dataMap.put(probeName, ArrayUtils.add(dataMap.get(probeName), value));
     }
 
     private void loadHeaders(String probeHeader, String sampleHeader, List<String> sampleList)
     throws IOException, DataRetrievalException {
         sampleToIndexMap.clear();
-        String[] fields;
-        fields = Cai2Util.readDataLine(dataFileReader);
+        String[] fields = Cai2Util.readDataLine(dataFileReader);
         checkHeadersLine(fields, sampleHeader);
         loadSampleHeaders(fields, sampleList);
         if (!probeHeader.equalsIgnoreCase(sampleHeader)) {
@@ -155,7 +141,7 @@ public final class GenericMultiSamplePerFileParser {
             }
         }
     }
-    
+
     private void checkHeadersLine(String[] fields, String keyword) throws DataRetrievalException {
         if (fields == null || !keyword.equals(fields[0])) {
             throw new DataRetrievalException("Invalid supplemental data file; headers not found in file.");

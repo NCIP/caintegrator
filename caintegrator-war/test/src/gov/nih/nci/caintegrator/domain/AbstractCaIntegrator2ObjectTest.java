@@ -8,7 +8,7 @@ package gov.nih.nci.caintegrator.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -23,11 +23,11 @@ public class AbstractCaIntegrator2ObjectTest {
         AbstractCaIntegrator2Object anotherNullId = create(null);
         Object differentClass = new Object();
         assertEquals(id1, id1);
-        assertFalse(id1.equals(null));
+        assertNotNull(id1);
         assertFalse(id1.equals(id2));
         assertEquals(id1, anotherId1);
         assertEquals(nullId, nullId);
-        assertFalse(nullId.equals(null));
+        assertNotNull(nullId);
         assertFalse(nullId.equals(anotherNullId));
         assertFalse(id1.equals(differentClass));
     }

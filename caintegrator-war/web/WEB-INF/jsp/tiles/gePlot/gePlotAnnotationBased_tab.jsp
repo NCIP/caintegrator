@@ -1,10 +1,25 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
+
+<script type="text/javascript">
+  function resetAnnotationForm() {
+      var form =  $('#geneExpressionAnnotationInputForm');
+      form.attr('action', 'resetAnnotationBasedGEPlot.action');
+      form.submit();
+  }
+  
+  function createAnnotationPlot() {
+      var form =  $('#geneExpressionAnnotationInputForm');
+      form.find('#createPlotSelected').val(true);
+      $('#annotationGePlotDiv').html("<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>");
+      $.post('createAnnotationBasedGEPlot.action', form.serialize(), function(data) {
+          $('#annotationGePlotDiv').html(data);
+      }, 'html');
+  }
+</script>
 
 <s:form name="geneExpressionAnnotationInputForm" id="geneExpressionAnnotationInputForm" theme="simple">
     <s:token />            
-    <s:hidden name="createPlotSelected" value="false" />
+    <s:hidden name="createPlotSelected" id="createPlotSelected" value="false" />
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
     
     <!-- Gene Expression Inputs -->
@@ -135,31 +150,13 @@
         <br>
         <div>
         <center>
-        
-        <button type="button" 
-                onclick="document.geneExpressionAnnotationInputForm.action = 'resetAnnotationBasedGEPlot.action';
-                document.geneExpressionAnnotationInputForm.submit();"> Reset 
-        </button>
-        
-        <button type="button" 
-                onclick="document.geneExpressionAnnotationInputForm.createPlotSelected.value = 'true';
-                dojo.event.topic.publish('createAnnotationPlot');"> Create Plot 
-        </button>
+            <button type="button" onclick="resetAnnotationForm();">Reset</button>
+            <button type="button" onclick="createAnnotationPlot();">Create Plot</button>
         </center>
         </div>
-
-    <!-- /Gene Expression Inputs -->
-    <s:url id="createAnnotationBasedGEPlot" action="createAnnotationBasedGEPlot"/>
-    
     <br>
     <center>
-    <sx:div id="annotationGePlotDiv" 
-            href="%{createAnnotationBasedGEPlot}" 
-            formId="geneExpressionAnnotationInputForm" 
-            showLoadingText="true"
-            loadingText="<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>"
-            listenTopics="createAnnotationPlot" refreshOnShow="true" />
-        
+        <s:div id="annotationGePlotDiv"></s:div>
     </center>
     
 </s:form>

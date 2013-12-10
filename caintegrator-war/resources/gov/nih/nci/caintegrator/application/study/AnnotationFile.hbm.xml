@@ -10,7 +10,7 @@
 		
         <property name="path" type="string" column="PATH"/>
         <property name="currentlyLoaded" type="string" column="CURRENTLY_LOADED"/>
-        <list name="columns" lazy="true" cascade="all">
+        <list name="columns" lazy="false" cascade="all">
             <cache usage="read-write" />
             <key column="ANNOTATION_FILE_ID" />
             <list-index column="LIST_INDEX"/>

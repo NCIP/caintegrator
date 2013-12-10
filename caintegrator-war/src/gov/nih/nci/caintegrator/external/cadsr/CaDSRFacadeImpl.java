@@ -26,14 +26,16 @@ import java.util.List;
 
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 
 /**
  * Implements the CaDSRFacade interface.
  */
+@Service("caDSRFacade")
 public class CaDSRFacadeImpl implements CaDSRFacade {
-
-
     private Search search;
     private String dataDescription;
     private CaDSRApplicationServiceFactory caDsrApplicationServiceFactory;
@@ -210,6 +212,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     /**
      * @param search the search to set
      */
+    @Autowired
     public void setSearch(Search search) {
         this.search = search;
     }
@@ -217,6 +220,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     /**
      * @param dataDescription the dataDescription to set
      */
+    @Value("http://freestyle.nci.nih.gov")
     public void setDataDescription(String dataDescription) {
         this.dataDescription = dataDescription;
     }
@@ -224,6 +228,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     /**
      * @param caDsrUrl the caDsrUrl to set
      */
+    @Value("http://cadsrapi.nci.nih.gov/cadsrapi40/")
     public void setCaDsrUrl(String caDsrUrl) {
         this.caDsrUrl = caDsrUrl;
     }
@@ -231,6 +236,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     /**
      * @param caDsrApplicationServiceFactory the caDsrApplicationServiceFactory to set
      */
+    @Autowired
     public void setCaDsrApplicationServiceFactory(CaDSRApplicationServiceFactory caDsrApplicationServiceFactory) {
         this.caDsrApplicationServiceFactory = caDsrApplicationServiceFactory;
     }

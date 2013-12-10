@@ -105,10 +105,10 @@ class AffymetrixCnPlatformLoader extends AbstractPlatformLoader {
         reporter.setPosition(getIntegerValue(fields, getPositionHeader()));
     }
 
-    private Integer getIntegerValue(String[] fields, String header) {
+    private int getIntegerValue(String[] fields, String header) {
         String value = getAnnotationValue(fields, header);
         if (!NumberUtils.isNumber(value)) {
-            return null;
+            return -1;
         }
         return Integer.parseInt(value);
     }

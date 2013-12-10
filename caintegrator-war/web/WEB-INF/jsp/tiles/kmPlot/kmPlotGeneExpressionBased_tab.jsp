@@ -1,10 +1,27 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
+
+<script type="text/javascript">
+  function resetGeneExpressionForm() {
+      var form =  $('#kaplanMeierGeneExpressionInputForm');
+      form.find('#resetSelected').val(true);
+      form.attr('action', 'resetGeneExpressionBasedKMPlot.action');
+      form.submit();
+  }
+  
+  function createGeneExpressionPlot() {
+      var form =  $('#kaplanMeierGeneExpressionInputForm');
+      form.find('#createPlotSelected').val(true);
+      $('#geneExpressionKmPlotDiv').html("<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>");
+      $.post('createGeneExpressionBasedKMPlot.action', form.serialize(), function(data) {
+          $('#geneExpressionKmPlotDiv').html(data);
+      }, 'html');
+  }
+</script>
 
 <s:form name="kaplanMeierGeneExpressionInputForm" id="kaplanMeierGeneExpressionInputForm" theme="simple">
     <s:token />
-    <s:hidden name="createPlotSelected" value="false" />
-    <s:hidden name="resetSelected" value="false" />
+    <s:hidden name="createPlotSelected" id="createPlotSelected" value="false" />
+    <s:hidden name="resetSelected" id="resetSelected" value="false" />
     
     <!-- Kaplan-Meier Inputs -->
     <h2>Gene Expression Based Kaplan-Meier Survival Plots</h2>
@@ -36,7 +53,7 @@
                 </td>
                 <td class="value_inline">
                     <s:radio name="kmPlotForm.geneExpressionBasedForm.expressionType"
-                    list="@gov.nih.nci.caintegrator.application.analysis.KMGeneExpressionBasedParameters@getExpressionTypeValuesToDisplay()"
+                    list="@gov.nih.nci.caintegrator.application.analysis.ExpressionTypeEnum@values()" listValue="value"
                     onclick="selectGeneExpressionType()" disabled="kmPlotForm.geneExpressionBasedForm.disableExpressionTypeSelector"/>                
                 </td>
                 <td class="value_inline"></td>
@@ -101,40 +118,22 @@
                     Select Control Sample Set:<br>
                 </td>
                 <td class="value_inline">
-                    <s:select name="kmPlotForm.geneExpressionBasedForm.controlSampleSetName"
-                        list="controlSampleSets" theme="simple"/>
+                    <s:select name="kmPlotForm.geneExpressionBasedForm.controlSampleSetName" list="controlSampleSets" theme="simple"/>
                 </td>
             </tr>
             </tbody>
         </table>
         <br>
         <div>
-        <center>
-        <button type="button" 
-                onclick="document.kaplanMeierGeneExpressionInputForm.resetSelected.value = 'true';
-                document.kaplanMeierGeneExpressionInputForm.action = 'resetGeneExpressionBasedKMPlot.action';
-                document.kaplanMeierGeneExpressionInputForm.submit();"> Reset 
-        </button>
-        <s:if test="creatable">
-            <button type="button" 
-                    onclick="document.kaplanMeierGeneExpressionInputForm.createPlotSelected.value = 'true';
-                    dojo.event.topic.publish('createGeneExpressionPlot');"> Create Plot 
-            </button>
-        </s:if>
-        </center>
+            <center>
+                <button type="button" onclick="resetGeneExpressionForm();">Reset</button>
+                <s:if test="creatable">
+                    <button type="button" onclick="createGeneExpressionPlot();">Create Plot</button>
+                </s:if>
+            </center>
         </div>
-    <!-- /Kaplan-Meier Inputs -->
-    
-    <s:url id="createGeneExpressionBasedKMPlot" action="createGeneExpressionBasedKMPlot"/>
-    
     <br><br>
     <center>
-    <sx:div id="geneExpressionKmPlotDiv" 
-            href="%{createGeneExpressionBasedKMPlot}" 
-            formId="kaplanMeierGeneExpressionInputForm" 
-            showLoadingText="true"
-            loadingText="<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>"
-            listenTopics="createGeneExpressionPlot" refreshOnShow="true" />
-        
+        <s:div id="geneExpressionKmPlotDiv"></s:div>
     </center>
 </s:form>

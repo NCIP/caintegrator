@@ -4,11 +4,3 @@ caintegrator-war/local.properties
 target/
 caintegrator-war/target/
 lib/
-caintegrator-war/test/resources/tmp*
-caintegrator-war/test/resources/QA_Test_Study
-caintegrator-war/test/resources/__MACOSX
-caintegrator-war/test/resources/Pilot Study
-caintegrator-war/test/resources/arraydesign/affymetrix/*.csv
-caintegrator-war/test/resources/arraydesign/affymetrix/*.cdf
-caintegrator-war/test/resources/arraydesign/affymetrix/*.txt
-caintegrator-war/test/resources/arraydata/affymetrix/*.cnchp

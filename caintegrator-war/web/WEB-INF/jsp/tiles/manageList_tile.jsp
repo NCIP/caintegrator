@@ -11,27 +11,6 @@
 </div>
 
 <!--/Page Help-->
-
-<script type="text/javascript">
-    
-    function setSelectedAction(selectAction) {
-        document.manageList.selectedAction.value = selectAction;
-        return true;
-    }
-    
-    function checkListType(type) {
-        if (type == "Gene List") {
-            document.getElementById("geneDiv").style.display = "block";
-            document.getElementById("subjectDiv").style.display = "none";
-        }
-        else {
-            document.getElementById("geneDiv").style.display = "none";
-            document.getElementById("subjectDiv").style.display = "block";
-        }
-    }
-    
-</script>
-
     <h1><s:property value="#subTitleText" /></h1>
     
     <s:if test="%{anonymousUser}">
@@ -76,8 +55,8 @@
                                     <div class="wwlbl"><label class="label">List Type</label></div>
                                         <div class="wwctrl">
                                             <s:radio id="listType" name="listType"
-                                                list="@gov.nih.nci.caintegrator.web.action.abstractlist.ListTypeEnum@getValueToTypeMap()"
-                                                listKey="key" listValue="value" onclick="checkListType(this.value);"/>
+                                                list="@gov.nih.nci.caintegrator.web.action.abstractlist.ListTypeEnum@values()"
+                                                listValue="value" onclick="checkListType(this.value);"/>
                                         </div>
                                 </td>
                             </tr>
@@ -149,3 +128,23 @@
 
 <div class="clear"><br />
 </div>
+
+<script type="text/javascript">
+    
+    function setSelectedAction(selectAction) {
+        document.manageList.selectedAction.value = selectAction;
+        return true;
+    }
+    
+    function checkListType(type) {
+        if (type == "Gene List") {
+            document.getElementById("geneDiv").style.display = "block";
+            document.getElementById("subjectDiv").style.display = "none";
+        }
+        else {
+            document.getElementById("geneDiv").style.display = "none";
+            document.getElementById("subjectDiv").style.display = "block";
+        }
+    }
+    
+</script>

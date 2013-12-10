@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 
+ * Base class for genomic reporters.
+ *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public abstract class AbstractReporter extends AbstractCaIntegrator2Object implements Comparable<AbstractReporter> {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Comparator that sorts reporters by index.
      */
@@ -31,34 +33,34 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
             return reporter1.getIndex() - reporter2.getIndex();
         }
     };
-    
+
     private String name;
-    private Integer index;
+    private int index;
     private ReporterList reporterList;
     private Set<Gene> genes = new HashSet<Gene>();
     private Set<Sample> samplesHighVariance = new HashSet<Sample>();
-    
+
     /**
      * @return the name
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * @return the reporterList
      */
     public ReporterList getReporterList() {
         return reporterList;
     }
-    
+
     /**
      * @param reporterList the reporterList to set
      */
@@ -69,14 +71,14 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
     /**
      * @return the index
      */
-    public Integer getIndex() {
+    public int getIndex() {
         return index;
     }
 
     /**
      * @param index the index to set
      */
-    public void setIndex(Integer index) {
+    public void setIndex(int index) {
         this.index = index;
     }
 
@@ -127,7 +129,7 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
     private void setGenes(Set<Gene> genes) {
         this.genes = genes;
     }
-    
+
     /**
      * @return the samplesHighVariance
      */
@@ -145,7 +147,7 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
 
     /**
      * Provides a comma-separated list of gene symbols intended for display.
-     * 
+     *
      * @return symbols of all associated genes.
      */
     public String getGeneSymbols() {
@@ -158,10 +160,10 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
         }
         return buffer.toString();
     }
-    
+
     /**
      * Provides a URL to CGAP for the gene symbols.
-     * 
+     *
      * @return symbols of all associated genes.
      */
     public String getGeneSymbolsCgapUrl() {
@@ -170,11 +172,10 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
 
     /**
      * Returns the index used for storage and retrieval of array data associated with this reporter.
-     * 
+     *
      * @return the storage index.
      */
     public int getDataStorageIndex() {
         return getReporterList().getFirstDataStorageIndex() + getIndex();
     }
-
 }

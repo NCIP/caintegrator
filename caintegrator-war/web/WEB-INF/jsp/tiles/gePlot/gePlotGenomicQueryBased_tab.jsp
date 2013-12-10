@@ -1,11 +1,28 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
+
+<script type="text/javascript">
+  function resetGenomicQueryForm() {
+      var form =  $('#geneExpressionGenomicQueryInputForm');
+      form.find('#resetSelected').val(true);
+      form.attr('action', 'resetGenomicQueryBasedGEPlot.action');
+      form.submit();
+  }
+  
+  function createGenomicQueryPlot() {
+      var form =  $('#geneExpressionGenomicQueryInputForm');
+      form.find('#createPlotSelected').val(true);
+      $('#genomicQueryGePlotDiv').html("<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>");
+      $.post('createGenomicQueryBasedGEPlot.action', form.serialize(), function(data) {
+          $('#genomicQueryGePlotDiv').html(data);
+      }, 'html');
+  }
+</script>
+
 
 <s:form name="geneExpressionGenomicQueryInputForm" id="geneExpressionGenomicQueryInputForm" theme="simple">
     <s:token />                
-    <s:hidden name="createPlotSelected" value="false" />
-    <s:hidden name="resetSelected" value="false" />
+    <s:hidden name="createPlotSelected" id="createPlotSelected" value="false" />
+    <s:hidden name="resetSelected" id="resetSelected" value="false" />
     
        
     <!-- Gene Expression Inputs -->
@@ -55,38 +72,17 @@
                 </td>
             </tr>
         </table>
-        
-
         <br>
         <div>
-        <center>
-        
-        <button type="button" 
-                onclick="document.geneExpressionGenomicQueryInputForm.resetSelected.value = 'true';
-                document.geneExpressionGenomicQueryInputForm.action = 'resetGenomicQueryBasedGEPlot.action';
-                document.geneExpressionGenomicQueryInputForm.submit();"> Reset 
-        </button>
-        
-        <s:if test="creatable">
-            <button type="button" 
-                    onclick="document.geneExpressionGenomicQueryInputForm.createPlotSelected.value = 'true';
-                    dojo.event.topic.publish('createGenomicQueryPlot');"> Create Plot 
-            </button>
-        </s:if>
-        </center>
+            <center>
+                <button type="button" onclick="resetGenomicQueryForm();">Reset</button>
+                <s:if test="creatable">
+                    <button type="button" onclick="createGenomicQueryPlot();">Create Plot</button>
+                </s:if>
+            </center>
         </div>
-    <!-- /Gene Expression Inputs -->
-    <s:url id="createGenomicQueryBasedGEPlot" action="createGenomicQueryBasedGEPlot"/>
-    
     <br>
     <center>
-    <sx:div id="genomicQueryGePlotDiv" 
-            href="%{createGenomicQueryBasedGEPlot}" 
-            formId="geneExpressionGenomicQueryInputForm" 
-            showLoadingText="true"
-            loadingText="<img src='images/ajax-loader-processing.gif' alt='ajax icon indicating loading process'/>"
-            listenTopics="createGenomicQueryPlot" refreshOnShow="true" />
-        
+        <s:div id="genomicQueryGePlotDiv"></s:div>
     </center>
-    
 </s:form>

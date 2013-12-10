@@ -49,24 +49,6 @@ import gov.nih.nci.caintegrator.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator.domain.genomic.Sample;
 import gov.nih.nci.caintegrator.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator.domain.translational.Study;
-import gov.nih.nci.caintegrator.web.action.query.form.AbstractCriterionParameter;
-import gov.nih.nci.caintegrator.web.action.query.form.AbstractCriterionRow;
-import gov.nih.nci.caintegrator.web.action.query.form.AnnotationCriterionRow;
-import gov.nih.nci.caintegrator.web.action.query.form.CopyNumberCriterionRow;
-import gov.nih.nci.caintegrator.web.action.query.form.CriteriaGroup;
-import gov.nih.nci.caintegrator.web.action.query.form.CriterionOperatorEnum;
-import gov.nih.nci.caintegrator.web.action.query.form.CriterionRowTypeEnum;
-import gov.nih.nci.caintegrator.web.action.query.form.FoldChangeCriterionWrapper;
-import gov.nih.nci.caintegrator.web.action.query.form.GeneExpressionCriterionRow;
-import gov.nih.nci.caintegrator.web.action.query.form.GeneNameCriterionWrapper;
-import gov.nih.nci.caintegrator.web.action.query.form.IdentifierCriterionRow;
-import gov.nih.nci.caintegrator.web.action.query.form.IdentifierCriterionWrapper;
-import gov.nih.nci.caintegrator.web.action.query.form.MultiSelectParameter;
-import gov.nih.nci.caintegrator.web.action.query.form.QueryForm;
-import gov.nih.nci.caintegrator.web.action.query.form.SavedListCriterionRow;
-import gov.nih.nci.caintegrator.web.action.query.form.SelectListParameter;
-import gov.nih.nci.caintegrator.web.action.query.form.SubjectListCriterionWrapper;
-import gov.nih.nci.caintegrator.web.action.query.form.TextFieldParameter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -223,9 +205,9 @@ public class QueryFormTest {
     public void testCriteriaGroup() {
         queryForm.createQuery(subscription, null, null, null);
         CriteriaGroup group = queryForm.getCriteriaGroup();
-        assertEquals(BooleanOperatorEnum.AND.getValue(), group.getBooleanOperator());
-        group.setBooleanOperator("or");
-        assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperator());
+        assertEquals(BooleanOperatorEnum.AND, group.getBooleanOperator());
+        group.setBooleanOperator(BooleanOperatorEnum.OR);
+        assertEquals(BooleanOperatorEnum.OR, group.getBooleanOperator());
         group.setCriterionTypeName("");
         assertEquals("", group.getCriterionTypeName());
         group.setCriterionTypeName("subjects");
@@ -712,7 +694,7 @@ public class QueryFormTest {
         CriteriaGroup group = queryForm.getCriteriaGroup();
         assertNotNull(group);
         assertEquals(compoundCriterion, group.getCompoundCriterion());
-        assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperator());
+        assertEquals(BooleanOperatorEnum.OR, group.getBooleanOperator());
         assertEquals(3, group.getRows().size());
 
         AnnotationCriterionRow criterionRow = (AnnotationCriterionRow) group.getRows().get(0);
@@ -755,7 +737,8 @@ public class QueryFormTest {
         assertEquals(1, queryForm.getResultConfiguration().getColumnSelectionLists().get(0).getValues().length);
 
         queryForm.getResultConfiguration().getColumnSelectionLists().get(0).setValues(new String[0]);
-        queryForm.getResultConfiguration().getColumnSelectionLists().get(1).setValues(new String[] {"stringClinicalAnnotation2"});
+        queryForm.getResultConfiguration().getColumnSelectionLists().get(1)
+            .setValues(new String[] {"stringClinicalAnnotation2"});
         assertEquals(1, queryForm.getResultConfiguration().getColumnSelectionLists().get(1).getValues().length);
         assertEquals(1, queryForm.getResultConfiguration().getSelectedColumns().size());
         ResultColumn column = queryForm.getResultConfiguration().getSelectedColumns().iterator().next();
@@ -763,17 +746,19 @@ public class QueryFormTest {
         assertEquals(0, (int) column.getColumnIndex());
         assertEquals(1, queryForm.getResultConfiguration().getColumnIndex("stringClinicalAnnotation2"));
         assertEquals(1, queryForm.getResultConfiguration().getSelectedColumns().size());
-        assertEquals(stringClinicalAnnotation2, queryForm.getResultConfiguration().getSelectedColumns().get(0).getAnnotationDefinition());
+        assertEquals(stringClinicalAnnotation2,
+                queryForm.getResultConfiguration().getSelectedColumns().get(0).getAnnotationDefinition());
 
         ValidationAwareSupport validationAware = new ValidationAwareSupport();
         queryForm.validate(validationAware);
         assertFalse(validationAware.hasFieldErrors());
 
-        queryForm.getResultConfiguration().setSortType("invalidColumn", SortTypeEnum.ASCENDING.getValue());
+        queryForm.getResultConfiguration().setSortType("invalidColumn", SortTypeEnum.ASCENDING.name());
         assertEquals("", queryForm.getResultConfiguration().getSortType("invalidColumn"));
-        queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", SortTypeEnum.ASCENDING.getValue());
-        assertEquals(SortTypeEnum.ASCENDING.getValue(), queryForm.getResultConfiguration().getSortType("stringClinicalAnnotation2"));
-        queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", "");
+        queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", SortTypeEnum.ASCENDING.name());
+        assertEquals(SortTypeEnum.ASCENDING.name(), queryForm.getResultConfiguration()
+                .getSortType("stringClinicalAnnotation2"));
+        queryForm.getResultConfiguration().setSortType("stringClinicalAnnotation2", null);
         assertEquals("", queryForm.getResultConfiguration().getSortType("stringClinicalAnnotation2"));
 
     }

@@ -34,7 +34,7 @@
 			messageid="AntAction.convert-install-path"			
 			>
 			<target name="convert-install-path"/>
-			<property name="install.base.path" value="$UserPathPanelVariable"/>
+			<property name="install.base.path" value="$INSTALL_PATH"/>
 			<property name="install.path" value="$SYSTEM_user_home/${installer.dir}"/>
 		</antcall>
 	</pack>
@@ -48,7 +48,7 @@
 			messageid="AntAction.convert-upgrade-path"			
 			>
 			<target name="convert-upgrade-path"/>
-			<property name="application.base.path" value="$UserPathPanelVariable"/>
+			<property name="application.base.path" value="$INSTALL_PATH"/>
 			<property name="jboss.home" value="${jboss.home}"/>
 			<property name="tomcat.home" value="${tomcat.home}"/>
 			<property name="install.path" value="$SYSTEM_user_home/${installer.dir}"/>
