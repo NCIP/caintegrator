@@ -10,6 +10,7 @@
   }
 
   $(document).ready(function() {
+      $.ajaxSetup({ cache: false });
       $("#tab-container").easytabs({
           animate: false,
           cache: true,
