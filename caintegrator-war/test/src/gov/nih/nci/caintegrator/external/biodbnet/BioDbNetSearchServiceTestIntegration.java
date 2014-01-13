@@ -54,7 +54,7 @@ public class BioDbNetSearchServiceTestIntegration {
         params.setTaxon(Taxon.ALL);
         Set<String> geneIds = bioDbNetService.retrieveGeneIds(params);
         assertFalse(geneIds.isEmpty());
-        assertEquals(51, geneIds.size());
+        assertEquals(55, geneIds.size());
     }
 
     /**
@@ -128,7 +128,7 @@ public class BioDbNetSearchServiceTestIntegration {
 
         Set<String> geneIds = bioDbNetService.retrieveGeneIdsByAlias(params);
         assertFalse(geneIds.isEmpty());
-        assertEquals(52, geneIds.size());
+        assertEquals(56, geneIds.size());
     }
 
     /**
