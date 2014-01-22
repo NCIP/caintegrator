@@ -335,8 +335,6 @@
                 <filter token="git.revision" value="${git.revision}"/>
                 <filter token="git.caintegrator.version" value="${git.caintegrator.version}"/>
                 <filter token="caintegrator.builddate" value="${build.date}"/>
-                <filter token="cas.server.hostname" value="${cas.server.hostname}"/>
-                <filter token="cas.server.post" value="${cas.server.port}"/>
             </filterset>
         </copy>
         <copy todir="${web-inf.working.dir}" file="${caintegrator.war.web.src.dir}/WEB-INF/web.xml" filtering="true" overwrite="true">
@@ -347,7 +345,7 @@
                 <filter token="git.caintegrator.version" value="${git.caintegrator.version}"/>
                 <filter token="caintegrator.builddate" value="${build.date}"/>
                 <filter token="cas.server.hostname" value="${cas.server.hostname}"/>
-                <filter token="cas.server.post" value="${cas.server.port}"/>
+                <filter token="cas.server.port" value="${cas.server.port}"/>
             </filterset>
         </copy>
 

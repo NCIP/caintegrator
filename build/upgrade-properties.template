@@ -15,7 +15,7 @@ database.port=
 ########################
 ###  JBOSS SETTINGS  ###
 ########################
-jboss.relative.path=
+#jboss.relative.path=
 jboss.home=
 jboss.server.hostname=
 jboss.server.jndi.port=
