@@ -550,7 +550,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
         if (inputString != null) {
              String holdString = inputString.replaceAll("(<[^>]+>)", StringUtils.EMPTY);
              holdString = holdString.replaceAll("(<.+)", StringUtils.EMPTY);
-             holdString = holdString.replaceAll("[^a-zA-Z0-9 ]", StringUtils.EMPTY);
+             holdString = holdString.replaceAll("[^a-zA-Z0-9_\\- ]", StringUtils.EMPTY);
              holdString = holdString.replaceAll("[,']", StringUtils.EMPTY);
              holdString = holdString.replaceAll("[,\"]", StringUtils.EMPTY);
              holdString = holdString.replaceAll("[,>]", StringUtils.EMPTY);
