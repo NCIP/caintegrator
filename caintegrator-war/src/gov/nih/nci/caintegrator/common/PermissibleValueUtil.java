@@ -10,9 +10,12 @@ import gov.nih.nci.caintegrator.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator.domain.annotation.PermissibleValue;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -202,12 +205,22 @@ public final class PermissibleValueUtil {
             for (T uniqueValue : uniqueValues) {
                 if (!permissibleValues.contains(uniqueValue)
                      && StringUtils.isNotBlank(ObjectUtils.toString(uniqueValue))) {
-                    valuesNotInPemissibleList.add(uniqueValue.toString());
+                    valuesNotInPemissibleList.add(toString(uniqueValue));
                 }
             }
         }
         return valuesNotInPemissibleList;
     }
+
+    private static <T> String toString(T uniqueValue) {
+        final DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        if (uniqueValue instanceof Date) {
+                return dateFormat.format((Date) uniqueValue);
+        } else {
+            return uniqueValue.toString();
+        }
+    }
+    
 
     @SuppressWarnings("unchecked")
     private static <T> Set <T> retrieveUniquePermissibleValues(AnnotationDefinition annotationDefinition) {
