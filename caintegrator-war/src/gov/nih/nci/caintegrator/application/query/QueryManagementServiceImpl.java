@@ -124,6 +124,8 @@ public class QueryManagementServiceImpl extends CaIntegrator2BaseService impleme
     }
 
     private void addPlatformToQuery(Query query) throws InvalidCriterionException {
+        query.setCopyNumberPlatform(null);
+        query.setGeneExpressionPlatform(null);
         if (QueryUtil.isQueryCopyNumber(query)) {
             query.setCopyNumberPlatform(
                 retrievePlatform(query, retrieveCopyNumberPlatformsForStudy(query.getSubscription().getStudy()),
