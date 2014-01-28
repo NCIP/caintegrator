@@ -96,12 +96,14 @@ public class CaArrayFacadeTest extends AbstractMockitoTest {
      * Sets up objects necessary for unit testing.
      * @throws Exception on error
      */
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
         caArrayFacade = new CaArrayFacadeImpl();
 
         dataService = mock(DataService.class);
         when(dataService.getDataSet(any(DataSetRequest.class))).thenAnswer(new Answer<DataSet>() {
+            @SuppressWarnings("unused")
             @Override
             public DataSet answer(InvocationOnMock invocation) throws Throwable {
                 DataSetRequest r = (DataSetRequest) invocation.getArguments()[0];

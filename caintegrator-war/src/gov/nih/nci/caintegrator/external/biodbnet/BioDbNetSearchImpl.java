@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -112,6 +113,8 @@ public class BioDbNetSearchImpl implements BioDbNetService {
             }
         } catch (IOException e) {
             LOG.error("Unabled to read dbBioNet gene results.", e);
+        } finally {
+            IOUtils.closeQuietly(reader);
         }
         return params.isFilterGenesOnStudy() && !retrievedGenes.isEmpty()
                 ? filterGenes(retrievedGenes, params) : retrievedGenes;
@@ -163,6 +166,8 @@ public class BioDbNetSearchImpl implements BioDbNetService {
             }
         } catch (IOException e) {
             LOG.error("Unabled to read dbBioNet pathway by gene results.", e);
+        } finally {
+            IOUtils.closeQuietly(reader);
         }
         return pathways;
     }
@@ -201,6 +206,8 @@ public class BioDbNetSearchImpl implements BioDbNetService {
             }
         } catch (IOException e) {
             LOG.error("Unabled to read dbBioNet gene id results.", e);
+        } finally {
+            IOUtils.closeQuietly(reader);
         }
         return results;
     }

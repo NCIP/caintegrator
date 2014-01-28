@@ -142,6 +142,7 @@ public class DefaultKMAlgorithmImpl implements KMAlgorithm {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private static class KaplanMeierSampleComparator implements Comparator{
         public int compare(Object o1, Object o2) throws ClassCastException {
             int val;

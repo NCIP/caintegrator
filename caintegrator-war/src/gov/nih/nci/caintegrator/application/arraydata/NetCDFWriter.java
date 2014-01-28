@@ -60,6 +60,7 @@ class NetCDFWriter extends AbstractNetCdfFileHandler {
 
     private void createNetCdfFile(File file) {
         try {
+            file.getParentFile().mkdirs();
             writer = NetcdfFileWriteable.createNew(file.getAbsolutePath(), true);
             Dimension reporterDimension = writer.addDimension(REPORTER_DIMENSION_NAME, values.getReporters().size());
             Dimension arrayDataDimension = writer.addUnlimitedDimension(ARRAY_DATA_DIMENSION_NAME);

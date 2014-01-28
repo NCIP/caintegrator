@@ -24,6 +24,7 @@ import org.hibernate.usertype.UserType;
  * Got this from http://www.hibernate.org/272.html.  It is to persist our enum types
  * in hibernate and is only referenced in hbm.xml files.
  */
+@SuppressWarnings("rawtypes")
 public class GenericEnumUserType implements UserType, ParameterizedType {
     private static final String DEFAULT_IDENTIFIER_METHOD_NAME = "name";
     private static final String DEFAULT_VALUE_OF_METHOD_NAME = "valueOf";

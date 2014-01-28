@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
@@ -29,6 +31,15 @@ final class GeneLocationFileLoader {
     static void loadFile(GeneLocationConfiguration geneLocationConfiguration, 
             File geneLocationFile) throws ValidationException, IOException {
         CSVReader geneFileReader = new CSVReader(new FileReader(geneLocationFile), DELIMITER);
+        try {
+            loadFile(geneLocationConfiguration, geneFileReader);
+        } finally {
+            IOUtils.closeQuietly(geneFileReader);
+        }
+    }
+
+    private static void loadFile(GeneLocationConfiguration geneLocationConfiguration, CSVReader geneFileReader)
+            throws IOException, ValidationException {
         String[] fields;
         while ((fields = geneFileReader.readNext()) != null) {
             if (fields.length != 4) {

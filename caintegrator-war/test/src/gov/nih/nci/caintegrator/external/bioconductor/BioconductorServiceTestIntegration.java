@@ -103,7 +103,7 @@ public class BioconductorServiceTestIntegration {
         assertEquals(23, arrayData.getSegmentDatas().size());
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private float[] getValues(File chpFile, List<DnaAnalysisReporter> reporters) throws DataRetrievalException {
         PublicAffymetrixDnaAnalysisChpParser parser = new PublicAffymetrixDnaAnalysisChpParser(chpFile);
         ArrayData arrayData = new ArrayData();
@@ -113,7 +113,7 @@ public class BioconductorServiceTestIntegration {
         return values.getFloatValues(arrayData, ArrayDataValueType.DNA_ANALYSIS_LOG2_RATIO);
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private List<DnaAnalysisReporter> getReporters(Platform platform) {
         PlatformHelper helper = new PlatformHelper(platform);
         List list = helper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);

@@ -7,7 +7,7 @@
 
 package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings({ "unchecked", "serial" })
+@SuppressWarnings({ "rawtypes", "serial" })
 public class ParameterInfo  implements java.io.Serializable {
     private java.util.HashMap attributes;
     private java.util.HashMap choices;
@@ -273,7 +273,6 @@ public class ParameterInfo  implements java.io.Serializable {
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof ParameterInfo)) return false;
         ParameterInfo other = (ParameterInfo) obj;
-        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);

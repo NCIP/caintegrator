@@ -6,7 +6,6 @@
  */
 package gov.nih.nci.caintegrator.application.study;
 
-import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator.domain.translational.Study;
 import gov.nih.nci.caintegrator.domain.translational.Timepoint;
 

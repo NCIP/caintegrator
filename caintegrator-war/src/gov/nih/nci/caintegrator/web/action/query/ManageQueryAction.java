@@ -419,7 +419,7 @@ public class ManageQueryAction extends AbstractDeployedStudyAction implements Pa
         return executeQuery();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private void loadSubjectList(boolean isGlobal) {
         getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.SAVED_LIST.getValue());
         addCriterionRow();

@@ -32,9 +32,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.matchers.JUnitMatchers;
 import org.junit.rules.ExpectedException;
 
 
@@ -165,7 +165,7 @@ public class AnnotationFileTest {
     @Test
     public void tooLongIdsThrowsValidationException() throws Exception {
         expected.expect(ValidationException.class);
-        expected.expectMessage(JUnitMatchers.containsString("Identifiers can only be up to"));
+        expected.expectMessage(CoreMatchers.containsString("Identifiers can only be up to"));
 
         AnnotationFile annotationFile = createAnnotationFile(TestDataFiles.INVALID_FILE_TOO_LONG_IDS);
         annotationFile.setIdentifierColumn(annotationFile.getColumns().get(0));
@@ -176,7 +176,7 @@ public class AnnotationFileTest {
     @Test
     public void duplcateIdsThrowsValidationException() throws IOException, ValidationException {
         expected.expect(ValidationException.class);
-        expected.expectMessage(JUnitMatchers.containsString("Multiples identifiers found for"));
+        expected.expectMessage(CoreMatchers.containsString("Multiples identifiers found for"));
 
         AnnotationFile annotationFile = createAnnotationFile(TestDataFiles.INVALID_FILE_DUPLICATE_IDS);
         annotationFile.setIdentifierColumn(annotationFile.getColumns().get(0));

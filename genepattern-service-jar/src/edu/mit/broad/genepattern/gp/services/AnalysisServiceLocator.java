@@ -7,7 +7,7 @@
 
 package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings({ "unchecked", "serial" })
+@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
 public class AnalysisServiceLocator extends org.apache.axis.client.Service implements edu.mit.broad.genepattern.gp.services.AnalysisService {
 
     public AnalysisServiceLocator() {

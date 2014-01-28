@@ -76,23 +76,7 @@ public final class Cai2Util {
      * @return trimmed string if too long, or full string if it isn't too long.
      */
     public static String trimDescription(String statusDescription) {
-        return trimStringIfTooLong(statusDescription, MAX_DESCRIPTION_LENGTH);
-    }
-
-    /**
-     * Trims string if it is greater than the maxCharacters to be '[trimmedString]...'.
-     * @param string to possibly trim.
-     * @param maxCharacters of the string.
-     * @return trimmed string if too long, or full string if it isn't too long.
-     * @deprecated use {@link StringUtils#abbreviate(String, int)}
-     */
-    @Deprecated
-    public static String trimStringIfTooLong(String string, int maxCharacters) {
-        if (maxCharacters <= 3) {
-            throw new IllegalArgumentException("maxCharacters has to be at least 4 characters.");
-        }
-        return (string != null && string.length() > maxCharacters)
-            ? string.substring(0, maxCharacters - 3) + "..." : string;
+        return StringUtils.abbreviate(statusDescription, MAX_DESCRIPTION_LENGTH);
     }
 
     /**

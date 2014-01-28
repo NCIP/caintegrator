@@ -11,7 +11,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator.TestDataFiles;
 import gov.nih.nci.caintegrator.application.study.CopyStudyHelper;
-import gov.nih.nci.caintegrator.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator.application.study.ExternalLink;
 import gov.nih.nci.caintegrator.application.study.ExternalLinkList;
 import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
@@ -136,8 +135,7 @@ public class CopyStudyHelperTest extends AbstractMockitoTest {
         StudyConfiguration copyTo = createNewStudy(8L);
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         smSvc.save(studyConfiguration);
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration =
-            smSvc.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
+        smSvc.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(),
                     false);
         assertEquals(1, studyConfiguration.getClinicalConfigurationCollection().size());
         assertTrue(copyTo.getClinicalConfigurationCollection().isEmpty());

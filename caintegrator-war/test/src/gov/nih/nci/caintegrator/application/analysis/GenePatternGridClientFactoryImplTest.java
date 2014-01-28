@@ -6,7 +6,6 @@
  */
 package gov.nih.nci.caintegrator.application.analysis;
 
-import gov.nih.nci.caintegrator.application.analysis.GenePatternGridClientFactoryImpl;
 import gov.nih.nci.caintegrator.external.ConnectionException;
 import gov.nih.nci.caintegrator.external.ServerConnectionProfile;
 

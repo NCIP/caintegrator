@@ -202,7 +202,7 @@ public class JFreeChartIKMPlottermpl implements KMPlotter {
         return new Line2D.Float(0, -5, 0, 5);
     }
 
-   @SuppressWarnings("unchecked")
+   @SuppressWarnings("rawtypes")
    private static Color getKMSetColor(Collection<KMPlotPointSeriesSet> kmPlotSets, Comparable setKey, KMPlotPointSeries.SeriesType type) {
             for(KMPlotPointSeriesSet seriesSet: kmPlotSets)
                 if(seriesSet.getHashKey() == setKey ) return seriesSet.getColor();

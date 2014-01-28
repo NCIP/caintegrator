@@ -9,6 +9,8 @@ package gov.nih.nci.caintegrator.application.study;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
@@ -20,6 +22,15 @@ final class ExternalLinksLoader {
     
     static void loadLinks(ExternalLinkList externalLinkList) throws ValidationException, IOException {
         CSVReader reader = new CSVReader(new FileReader(externalLinkList.getFile()));
+        try {
+            loadLinks(externalLinkList, reader);
+        } finally {
+            IOUtils.closeQuietly(reader);
+        }
+    }
+
+    private static void loadLinks(ExternalLinkList externalLinkList, CSVReader reader) throws IOException,
+            ValidationException {
         String[] values;
         while ((values = reader.readNext()) != null) {
             if (values.length != 3) {

@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -191,7 +192,7 @@ public class ManageListAction extends AbstractDeployedStudyAction {
 
     private void extractInputElements(File uploadFile) {
         if (uploadFile != null) {
-            CSVReader reader;
+            CSVReader reader = null;
             try {
                 reader = new CSVReader(new FileReader(uploadFile));
                 String[] elements;
@@ -211,6 +212,8 @@ public class ManageListAction extends AbstractDeployedStudyAction {
                 }
             } catch (IOException e) {
                 addFieldError(LIST_FILE, getText("struts.messages.error.file.read", getArgs("list")));
+            } finally {
+                IOUtils.closeQuietly(reader);
             }
         }
     }

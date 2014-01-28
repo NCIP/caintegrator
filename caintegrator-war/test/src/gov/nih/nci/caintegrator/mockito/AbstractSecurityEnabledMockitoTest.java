@@ -160,6 +160,7 @@ public abstract class AbstractSecurityEnabledMockitoTest extends AbstractMockito
         when(secManager.doesUserExist(eq(USERNAME))).thenReturn(Boolean.TRUE);
         when(secManager.retrieveManagedStudyConfigurations(anyString(), anyCollectionOf(Study.class))).thenAnswer(new Answer<Set<StudyConfiguration>>() {
 
+            @SuppressWarnings("unchecked")
             @Override
             public Set<StudyConfiguration> answer(InvocationOnMock invocation) throws Throwable {
                 Set<StudyConfiguration> results = new HashSet<StudyConfiguration>();

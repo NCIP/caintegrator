@@ -63,6 +63,7 @@ public class EditImagingSourceAnnotationsActionTest extends AbstractSessionBased
         AIMFacade aimFacade = mock(AIMFacade.class);
         when(aimFacade.retrieveImageSeriesAnnotations(any(ServerConnectionProfile.class),
                 anyCollectionOf(ImageSeries.class))).thenAnswer(new Answer<Map<ImageSeries, ImageSeriesAnnotationsWrapper>>() {
+                    @SuppressWarnings("unchecked")
                     @Override
                     public Map<ImageSeries, ImageSeriesAnnotationsWrapper> answer(InvocationOnMock invocation) throws Throwable {
                         Collection<ImageSeries> images = (Collection<ImageSeries>) invocation.getArguments()[1];

@@ -6,7 +6,6 @@
  */
 package gov.nih.nci.caintegrator.application.study;
 
-import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator.data.AbstractHibernateMappingTestIntegration;
 
 public class StudyConfigurationMappingTestIntegration extends AbstractHibernateMappingTestIntegration<StudyConfiguration>  {

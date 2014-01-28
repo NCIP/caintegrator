@@ -6,14 +6,6 @@
  */
 package gov.nih.nci.caintegrator.application.arraydata;
 
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataValueType;
-import gov.nih.nci.caintegrator.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator.application.arraydata.DataRetrievalRequest;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformChannelTypeEnum;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformDataTypeEnum;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformTypeEnum;
-import gov.nih.nci.caintegrator.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator.application.study.Status;
 import gov.nih.nci.caintegrator.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator.application.study.ValidationException;

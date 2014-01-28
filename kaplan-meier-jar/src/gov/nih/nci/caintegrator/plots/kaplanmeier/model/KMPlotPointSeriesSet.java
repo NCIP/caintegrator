@@ -33,7 +33,7 @@ public class KMPlotPointSeriesSet implements Serializable{
 	private KMPlotPointSeries probabilityPlotPoints = null;
 	private String legendTitle = "";
 	private String name = "";
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
     private Comparable hashKey = 0;
 	private Color color;
 	private Integer groupSize;
@@ -125,7 +125,7 @@ public class KMPlotPointSeriesSet implements Serializable{
 	 * data set once it was placed into a JFreeChart.
 	 *
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
     private Comparable createHash(){
 		double result = Math.random() * (double)System.currentTimeMillis();
 		return result;
@@ -135,7 +135,7 @@ public class KMPlotPointSeriesSet implements Serializable{
 	 * A unique id that represents all members of this set
 	 * @return Returns the hashKey.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
     public Comparable getHashKey() {
 		return hashKey;
 	}

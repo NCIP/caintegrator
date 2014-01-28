@@ -147,7 +147,7 @@ public class GenePatternClientImpl implements GenePatternClient {
         return handlers;
     }
 
-    @SuppressWarnings("unchecked")  // parameter attributes is untyped
+    @SuppressWarnings("rawtypes")  // parameter attributes is untyped
     private boolean isFileParameter(ParameterInfo parameter) {
         Map attributes = parameter.getAttributes();
         return attributes != null
@@ -403,7 +403,7 @@ public class GenePatternClientImpl implements GenePatternClient {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private org.genepattern.webservice.TaskInfo convertTaskInfoToNewVersion(TaskInfo taskInfo) {
         org.genepattern.webservice.TaskInfo newTaskInfo = new org.genepattern.webservice.TaskInfo();
         newTaskInfo.setAccessId(taskInfo.getAccessId());

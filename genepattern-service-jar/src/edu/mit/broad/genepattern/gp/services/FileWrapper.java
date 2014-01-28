@@ -7,8 +7,10 @@
 
 package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings({ "unchecked", "serial" })
-public class FileWrapper  implements java.io.Serializable {
+import java.io.Serializable;
+
+@SuppressWarnings({ "rawtypes", "serial" })
+public class FileWrapper implements Serializable {
     private javax.activation.DataHandler dataHandler;
     private java.lang.String filename;
     private long lastModified;
@@ -112,7 +114,6 @@ public class FileWrapper  implements java.io.Serializable {
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof FileWrapper)) return false;
         FileWrapper other = (FileWrapper) obj;
-        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);

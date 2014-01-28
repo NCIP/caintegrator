@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * Annotation of allowed values for <code>AnnotationDefintion.type</code>.
  */
+@SuppressWarnings("rawtypes")
 public enum AnnotationTypeEnum  {
 
     /**

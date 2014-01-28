@@ -49,22 +49,6 @@ public class Cai2UtilTest extends AbstractMockitoTest {
         assertEquals(string, Cai2Util.trimDescription(string));
     }
 
-
-    @Test
-    public void testTrimStringIfTooLong() {
-        String string = "This is my test string, it may or may not need to be trimmed.";
-        try {
-            Cai2Util.trimStringIfTooLong(string, 3);
-            fail();
-        } catch (IllegalArgumentException e) {
-            // this is expected.
-        }
-        assertEquals(string.substring(0, 22) + "...", Cai2Util.trimStringIfTooLong(string, 25));
-
-        assertEquals(string, Cai2Util.trimStringIfTooLong(string, 100));
-    }
-
-
     @Test
     public void testContainsIgnoreCase() {
         Collection<String> stringsCollection = new HashSet<String>();

@@ -6,8 +6,6 @@
  */
 package gov.nih.nci.caintegrator.plots.kaplanmeier.model;
 
-import gov.nih.nci.caintegrator.plots.kaplanmeier.model.XYCoordinate;
-
 import java.util.Collection;
 import java.awt.*;
 

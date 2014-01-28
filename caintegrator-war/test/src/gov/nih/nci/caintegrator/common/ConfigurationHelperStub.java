@@ -6,9 +6,6 @@
  */
 package gov.nih.nci.caintegrator.common;
 
-import gov.nih.nci.caintegrator.common.ConfigurationHelper;
-import gov.nih.nci.caintegrator.common.ConfigurationParameter;
-
 /**
  * Helper class for retrieving system configuration.
  */

@@ -7,7 +7,7 @@
 
 package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings({ "unchecked", "serial" })
+@SuppressWarnings({ "rawtypes", "serial" })
 public class TaskInfo  implements java.io.Serializable {
     private int ID;
     private int accessId;
@@ -297,7 +297,6 @@ public class TaskInfo  implements java.io.Serializable {
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof TaskInfo)) return false;
         TaskInfo other = (TaskInfo) obj;
-        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);

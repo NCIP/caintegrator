@@ -6,7 +6,6 @@
  */
 package gov.nih.nci.caintegrator.application.study;
 
-import gov.nih.nci.caintegrator.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator.domain.AbstractCaIntegrator2Object;
 
 import java.util.Set;

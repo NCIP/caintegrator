@@ -10,6 +10,7 @@ package gov.nih.nci.caintegrator.domain.application;
 /**
  * Base class for annotation criteria that compare values.
  */
+@SuppressWarnings("serial")
 public abstract class AbstractComparisonCriterion extends AbstractAnnotationCriterion {
 
     /**

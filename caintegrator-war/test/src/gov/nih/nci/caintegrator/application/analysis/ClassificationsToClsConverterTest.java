@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -38,6 +39,7 @@ public class ClassificationsToClsConverterTest {
         checkLine(reader.readNext(), "3", "2", "1");
         checkLine(reader.readNext(), "#", "class1", "class2");
         checkLine(reader.readNext(), "0", "1", "0");
+        IOUtils.closeQuietly(reader);
     }
 
     private void checkLine(String[] line, String... expecteds) {
