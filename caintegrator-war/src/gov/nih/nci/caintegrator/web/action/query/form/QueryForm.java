@@ -98,7 +98,7 @@ public class QueryForm {
             criteriaGroup = new CriteriaGroup(this);
             resultConfiguration = new ResultConfiguration(this);
             controlSamplesInStudy = study.getStudyConfiguration().hasControlSamples();
-            studyHasSavedLists = !getQuery().getSubscription().getSubjectLists().isEmpty();
+            studyHasSavedLists = hasSavedSubjectLists(study);
         } else {
             criteriaGroup = null;
             resultConfiguration = null;
@@ -107,6 +107,11 @@ public class QueryForm {
             sortedAnnotationGroups.clear();
         }
         orgQueryName = "";
+    }
+
+    private boolean hasSavedSubjectLists(Study study) {
+        return !getQuery().getSubscription().getSubjectLists().isEmpty()
+                || !study.getStudyConfiguration().getSubjectLists().isEmpty();
     }
 
     private void setupPlatforms(Set<String> geneExpressionPlatformsInStudy, Set<String> copyNumberPlatformsInStudy,
