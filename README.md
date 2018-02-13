@@ -9,12 +9,11 @@ Please see the NOTICE and LICENSE files for details.
 
 You will find more details about caIntegrator in the following links:
 
- * Home Page: https://wiki.nci.nih.gov/x/c4b3Ag (Requires login. Email [NCI CBIIT Application Support](mailto:ncicbiit@mail.nih.gov) for access.)
+ * Home Page: https://wiki.nci.nih.gov/x/c4b3Ag 
  * Code Repository: http://github.com/NCIP/caintegrator
  * Document Repository: http://github.com/NCIP/caintegrator-docs
  * Data Repository: http://github.com/NCIP/caintegrator-data
- * Documentation: https://wiki.nci.nih.gov/x/JgUuAQ (Requires login. Email [NCI CBIIT Application Support](mailto:ncicbiit@mail.nih.gov) for access.)
- * Installer Downloads: https://gforge.nci.nih.gov/frs/?group_id=507
- * Hosted Instance of caIntegrator: https://caintegrator.nci.nih.gov/
+ * Documentation: https://wiki.nci.nih.gov/x/JgUuAQ 
+ * Installer Downloads: https://gforge.nci.nih.gov/frs/?group_id=507 (Email [NCI CBIIT Application Support](mailto:ncicbiit@mail.nih.gov) for access.)
 
 Please join us in further developing and improving caIntegrator.
