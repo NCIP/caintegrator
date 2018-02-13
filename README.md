@@ -16,6 +16,6 @@ You will find more details about caIntegrator in the following links:
  * Documentation: https://wiki.nci.nih.gov/x/JgUuAQ 
  * Installer Downloads: https://gforge.nci.nih.gov/frs/?group_id=507 (Email [NCI CBIIT Application Support](mailto:ncicbiit@mail.nih.gov) for access.)
 
-The NCI-hosted instance of caIntegrator has been retired but data is available in other locations. For more information, see the [caIntegrator Retirement Announcement](https://wiki.nci.nih.gov/display/caIntegrator/caIntegrator+Retirement+Announcement
+The NCI-hosted instance of caIntegrator has been retired but data is available in other locations. For more information, see the [caIntegrator Retirement Announcement](https://wiki.nci.nih.gov/display/caIntegrator/caIntegrator+Retirement+Announcement)
 
 Please join us in further developing and improving caIntegrator.
